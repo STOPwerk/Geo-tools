@@ -1,0 +1,82 @@
+<p>
+    <a href="https://gdal.org/drivers/vector/gml.html" target="_blank">GFS</a> is een
+    dataformaat voor een bestand dat de inhoud van een GML-bestand conform <a href="@@@STOP_Documentatie_Url@@@">STOP</a> beschrijft.
+    Het wordt gebruikt door <a href="https://gdal.org/" target="_blank">GDAL</a>, een open source
+    bibliotheek om geo-data in te lezen en te schrijven, die weer wordt toegepast
+    in veel andere GIS software. Een <a href="@@@STOP_Documentatie_Url@@@gio-intro.html">
+    GIO</a>, <a href="@@@STOP_Documentatie_Url@@@effectgebied.html">
+    effectgebied</a> of <a href="@@@STOP_Documentatie_Url@@@gebiedsmarkering.html">
+    gebiedsmarkering</a> kan gemakkelijker in GDAL-gebruikende pakketten
+    (zoals <a href="https://www.qgis.org/">QGIS</a>) geopend worden als er naast het 
+    GML bestand een GFS bestand met dezelfde bestandsnaam geplaatst wordt.
+</p>
+<p>
+    Deze pagina kan een GFS bestand maken die past bij een specifiek STOP GML-bestand.
+    De pagina kan opgeslagen worden en daarna offline gebruikt worden.
+</p>
+<h2>Automatische detectie</h2>
+<form id="autodetect_form">
+    <div class="box">
+        <label>
+            <span class="link">Selecteer de GML bestanden</span>
+            <span>of sleep ze hier naar toe.</span>
+            <input class="box__file" type="file" name="files[]" multiple accept="application/json,application/xml" />
+        </label>
+    </div>
+    <p id="autodetect_links">
+    </p>
+</form>
+<h2>Handmatig</h2>
+<form id="handmatig_form">
+    <table>
+        <tr>
+            <th rowspan="2">Type module</th>
+            <td><input type="radio" id="handmatig_type_gio" name="type" value="GIO" checked="checked"><label for="handmatig_type_gio">GIO bij een besluit</label></td>
+            <td><input type="radio" id="handmatig_type_cgio" name="type" value="CGIO"><label for="handmatig_type_cgio">Geconsolideerde GIO</label></td>
+            <td><input type="radio" id="handmatig_type_giow" name="type" value="GIOW"><label for="handmatig_type_giow">GIO-wijziging</label></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="radio" id="handmatig_type_eg" name="type" value="EG"><label for="handmatig_type_eg">Effectgebied of gebiedsmarkering</label></td>
+        </tr>
+        <tr class="voor_giow">
+            <th>Onderdeel</th>
+            <td><input type="radio" id="handmatig_giow_was" name="giow" value="was"><label for="handmatig_giow_was">Oude locaties / was-versie</label></td>
+            <td><input type="radio" id="handmatig_giow_wordt" name="giow" value="wordt"><label for="handmatig_giow_wordt">Nieuwe locaties / wordt-versie</label></td>
+            <td><input type="radio" id="handmatig_giow_renvooi" name="giow" value="wijzigmarkering"><label for="handmatig_giow_renvooi">Wijzigmarkering</label></td>
+        </tr>
+        <tr class="geen_niet_voor_wm">
+            <th rowspan="2">Geometrie</th>
+            <td><input type="radio" id="handmatig_geo_2" name="geo" value="Polygon"><label for="handmatig_geo_2">Polygon</label></td>
+            <td><input type="radio" id="handmatig_geo_1" name="geo" value="Line"><label for="handmatig_geo_1">Line</label></td>
+            <td><input type="radio" id="handmatig_geo_0" name="geo" value="Point"><label for="handmatig_geo_0">Point</label></td>
+        </tr>
+        <tr class="geen_niet_voor_wm">
+            <td><input type="radio" id="handmatig_geo_m2" name="geo" value="MultiPolygon"><label for="handmatig_geo_m2">MultiPolygon</label></td>
+            <td><input type="radio" id="handmatig_geo_m1" name="geo" value="MultiLine"><label for="handmatig_geo_m1">MultiLine</label></td>
+            <td><input type="radio" id="handmatig_geo_m0" name="geo" value="MultiPoint"><label for="handmatig_geo_m0">MultiPoint</label></td>
+        </tr>
+        <tr>
+            <th>Coördinatenstelsel</th>
+            <td><input type="radio" id="handmatig_rd" name="srs" value="urn:ogc:def:crs:EPSG::28992"><label for="handmatig_rd">RD (nieuw)</label></td>
+            <td><input type="radio" id="handmatig_etrs89" name="srs" value="urn:ogc:def:crs:EPSG::4258"><label for="handmatig_etrs89">ETRS89</label></td>
+        </tr>
+        <tr class="voor_gio">
+            <th rowspan="2">Inhoud</th>
+            <td><input type="radio" id="handmatig_attr_geo" name="attr" value="-" checked="checked"><label for="handmatig_attr_geo">Alleen geometrie</label></td>
+            <td><input type="radio" id="handmatig_attr_groep" name="attr" value="groepID"><label for="handmatig_attr_groep">GIO-delen</label></td>
+            <td><input type="radio" id="handmatig_attr_norm_n" name="attr" value="kwantitatieveNormwaarde"><label for="handmatig_attr_norm_n">Kwantitatieve normwaarde</label></td>
+        </tr>
+        <tr class="voor_gio">
+            <td colspan="2"></td>
+            <td><input type="radio" id="handmatig_attr_norm_s" name="attr" value="kwalitatieveNormwaarde"><label for="handmatig_attr_norm_s">Kwalitatieve normwaarde</label></td>
+        </tr>
+    </table>
+    <p>
+        <a id="handmatig_download" href="#">Download het GFS bestand</a>
+    </p>
+    <p>
+        De inhoud van het GFS bestand is:
+    </p>
+    <textarea id="handmatig_gfs" rows="30">
+		</textarea>
+</form>

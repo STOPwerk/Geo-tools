@@ -1,0 +1,64 @@
+#autodetect_form .box {
+    background-color: white;
+    outline: 2px dashed black;
+    width: 100%;
+    height: 15em;
+}
+
+    #autodetect_form .box.is-dragover {
+        background-color: #dae8fc;
+    }
+
+#autodetect_form .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    #autodetect_form .box input {
+        display: none;
+    }
+
+#autodetect_form .link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+    #autodetect_form .link:hover {
+        color: blue;
+    }
+
+#handmatig_form .geen_giow input {
+    pointer-events: none;
+    color: #cccccc;
+}
+
+#handmatig_form .geen_giow label {
+    pointer-events: none;
+    color: #cccccc;
+}
+
+#handmatig_form .geen_niet_voor_wm input {
+    pointer-events: none;
+    color: #cccccc;
+}
+
+#handmatig_form .geen_niet_voor_wm label {
+    pointer-events: none;
+    color: #cccccc;
+}
+
+#handmatig_form .geen_gio input {
+    pointer-events: none;
+    color: #cccccc;
+}
+
+#handmatig_form .geen_gio label {
+    pointer-events: none;
+    color: #cccccc;
+}
+
+#handmatig_gfs {
+    width: 100%;
+}

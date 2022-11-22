@@ -34,7 +34,7 @@ wsgi_app = app.wsgi_app
 def index():
     """Startpagina"""
     generator = WebpaginaGenerator ("Geo-tools online")
-    generator.LeesHtmlTemplate ('')
+    generator.LeesHtmlTemplate ('pagina')
     return generator.Html ()
 
 @app.route('/gfs_maker')

@@ -19,7 +19,7 @@ window.addEventListener('load', function () {
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd"
 	version="1.1.0">
     <!--
-    Gemaakt met https://404.vercel.app/sld_maker
+    Gemaakt met https://geo-tools.vercel.app/sld_maker
     -->
 	<NamedLayer>
 		<Name>STOP symbolisatie</Name>

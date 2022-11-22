@@ -27,7 +27,7 @@ window.addEventListener('load', function () {
     <!--
         Gebruik dit *.gfs bestand om de data uit ` + (this.Bestandsnaam ? this.Bestandsnaam : (this.Type === 'EG' ? 'een effectgebied/gebiedsmarkering' : 'een GIO')) + ` in te lezen
         in software die de OGR/GDAL specificatie ondersteunt.
-        Gemaakt met https://404.vercel.app/gfs_maker
+        Gemaakt met https://geo-tools.vercel.app/gfs_maker
     -->
     <GMLFeatureClass>`;
 

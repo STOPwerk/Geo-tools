@@ -1,6 +1,6 @@
 # Geo-tools
 
-[Geo-tools online](https://404.vercel.app/) - huidige versie: `2022-11-22 23:38:31`.
+[Geo-tools online](https://geo-tools.vercel.app/) - huidige versie: `2022-11-22 23:58:15`.
 
 ## Wat is het?
 Gereedschap om met [geografische informatieobjecten](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/gio-intro.html) (GIO's) uit [STOP](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/) om te kunnen gaan. Laat ook zien hoe de randvoorwaarden voor het muteren van GIO's ingevuld kunnen worden.
@@ -8,13 +8,13 @@ Gereedschap om met [geografische informatieobjecten](https://koop.gitlab.io/STOP
 ## Wat zit er in?
 
 Twee webpagina's om aanvullende bestanden te maken die kunnen helpen om een GIO in GIS software (onder andere [QGIS](https://www.qgis.org/)) te tonen:
-- [GFS bestand voor een GIO](https://404.vercel.app/gfs_maker)
-- [SLD bestand voor een symbolisatie](https://404.vercel.app/sld_maker)
+- [GFS bestand voor een GIO](https://geo-tools.vercel.app/gfs_maker)
+- [SLD bestand voor een symbolisatie](https://geo-tools.vercel.app/sld_maker)
 
 Een aantal [Python scripts](broncode/geo-tools) die aan software leveranciers demonstreren hoe een GIO-wijziging bepaald en getoond kan worden. De scripts zijn online uit te voeren:
 
-- [Bepaling van een GIO-wijziging](https://404.vercel.app/gio_wijziging) uit twee versies van een GIO.
-- [Tonen van een GIO-wijziging](https://404.vercel.app/toon_gio_wijziging) die de geo-renvooi voor een GIO-wijziging toont.
+- [Bepaling van een GIO-wijziging](https://geo-tools.vercel.app/gio_wijziging) uit twee versies van een GIO.
+- [Tonen van een GIO-wijziging](https://geo-tools.vercel.app/toon_gio_wijziging) die de geo-renvooi voor een GIO-wijziging toont.
 
 De scripts sluiten aan bij de [beschrijving in STOP](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/404.html).
 

@@ -1,5 +1,5 @@
 @echo off
-rem Origineel is: templates\broncode\uitleveren\publiceer_git.bat
+rem Origineel is: publiceer_git_template.bat
 
 if not "A%1" == "A" goto Start
 echo.
@@ -12,6 +12,17 @@ echo on
 @echo Commit naar development
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
+
+@echo Update wiki
+python.exe pas_configuratie_toe.py . wiki
+@if errorlevel 1 goto Pause
+@cd wiki
+git config user.mail "@@@STOPwerk_Github_email@@@"
+@if errorlevel 1 goto Pause
+git config user.name "@@@STOPwerk_Github_user@@@"
+git commit -a -m "Release @@@VERSIE@@@"
+@if errorlevel 1 goto Pause
+@cd ..
 
 @echo Switch naar main en update repository
 git config user.mail "@@@STOPwerk_Github_email@@@"
@@ -32,6 +43,7 @@ python.exe pas_configuratie_toe.py . ..\..
 @if errorlevel 1 goto Pause
 python.exe pas_configuratie_toe.py . ..\geo-tools
 @if errorlevel 1 goto Pause
+rd /s /q ..\wiki
 git add -A
 @if errorlevel 1 goto Pause
 git commit -a -m "Release @@@VERSIE@@@"
@@ -49,6 +61,10 @@ if /I "%gitpush%" NEQ "J" goto End
 @echo Push naar deze repo en naar wiki-repo
 git push --all
 @if errorlevel 1 goto Pause
+@cd wiki
+git push --all
+@if errorlevel 1 goto Pause
+@cd ..
 
 if errorlevel 0 goto End
 :Pause

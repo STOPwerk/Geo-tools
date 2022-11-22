@@ -18,3 +18,18 @@ Een aantal [Python scripts](broncode/geo-tools) die aan software leveranciers de
 
 De scripts sluiten aan bij de [beschrijving in STOP](@@@STOP_Documentatie_Url@@@404.html).
 
+### Offline / eigen computer
+
+De twee webpsagina's kunnen op de eigen computer opgeslagen worden en van daaruit gestart worden. Ze gebruiken geen andere bestanden van het internet en zijn offline uit te voeren.
+
+De Python scripts kunnen gedownload worden en op de eigen computer uitgevoerd worden:
+
+- Zorg dat Python geïnstalleerd is. Dat is op Unix en MacOS meestal het geval. Voor Windows kan de laatste versie van Python [hier](https://www.python.org/downloads/) gedownload worden.
+
+- [Download](download.zip) de tools en pak het zip bestand uit.
+
+- Lees de [documentatie](../../wiki) waarin staat hoe de invoerbestanden gemaakt moeten worden.
+
+- Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_tools_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken.
+
+- Bekijk de [voorbeelden](voorbeelden) om inspiratie op te doen. De tools zijn ook gebruikt voor de [STOP voorbeelden](@@@STOP_Voorbeelden_Url@@@Coderingen/GIO/GIO-wijziging).

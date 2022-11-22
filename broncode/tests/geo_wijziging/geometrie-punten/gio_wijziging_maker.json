@@ -1,6 +1,6 @@
 {
-  "test": "gio_wijziging_maker",
   "was": "verkeersborden_STOP_was.gml",
   "wordt": "verkeersborden_STOP_wordt.gml",
-  "nauwkeurigheid": 1.0
+  "nauwkeurigheid": 1.0,
+  "wijziging": "verkeersborden_STOP_wijziging.gml"
 }

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>geo-tools\applicatie_test.py</StartupFile>
+    <StartupFile>geo-tools\applicatie.py</StartupFile>
     <SearchPath>tests\code</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -33,16 +33,26 @@
     <Content Include="geo-tools\weergave_webpagina_einde.html" />
     <Content Include="geo-tools\weergave_webpagina_start.html" />
     <Content Include="Geo-Tools.pyproj.vsspell" />
-    <Content Include="tests\geo_wijziging\geometrie-punten\test.json" />
+    <Content Include="tests\geo_wijziging\geometrie-punten\gio_wijziging_maker.json" />
     <Content Include="tests\geo_wijziging\geometrie-punten\verkeersborden_STOP.json" />
     <Content Include="uitleveren\configuratie.json" />
+    <Content Include="uitleveren\download\LEESMIJ.txt" />
+    <Content Include="uitleveren\download\voer_tools_uit_voor_mijn_voorbeelden.bat" />
     <Content Include="uitleveren\publiceer.bat" />
     <Content Include="uitleveren\publiceer_git_template.bat" />
     <Content Include="uitleveren\README.md" />
+    <Content Include="uitleveren\wiki_extra\Maak STOPwerk git user.bat" />
+    <Content Include="uitleveren\wiki_extra\__LEESMIJ.txt" />
+    <Content Include="wiki\Code-gio-wijziging.md" />
+    <Content Include="wiki\Code-toon-gio-wijziging.md" />
+    <Content Include="wiki\Geo-tools-uitvoeren.md" />
+    <Content Include="wiki\Home.md" />
+    <Content Include="wiki\Invoerspecificatie.md" />
+    <Content Include="wiki\_Sidebar.md" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="geo-tools\applicatie_request.py" />
-    <Compile Include="geo-tools\applicatie_test.py" />
+    <Compile Include="geo-tools\applicatie.py" />
     <Compile Include="geo-tools\applicatie_meldingen.py" />
     <Compile Include="geo-tools\gio_wijziging_maker.py">
       <SubType>Code</SubType>
@@ -60,6 +70,9 @@
     <Folder Include="tests\geo_wijziging\" />
     <Folder Include="tests\geo_wijziging\geometrie-punten\" />
     <Folder Include="uitleveren\" />
+    <Folder Include="uitleveren\download\" />
+    <Folder Include="uitleveren\wiki_extra\" />
+    <Folder Include="wiki\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.9" />

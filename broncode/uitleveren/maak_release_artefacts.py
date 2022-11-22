@@ -73,3 +73,62 @@ try:
 except Exception as e:
     print ('Kan bestand "' + publiceer_git_Pad + '" niet schrijven: ' + str(e))
     sys.exit(2)
+
+# Vervang de wiki documentatie
+wiki_doel_pad = os.path.join (uitleverbestanden_map, 'wiki')
+for root, dirs, files in os.walk (wiki_doel_pad):
+    for file in files:
+        try:
+            os.remove (os.path.join (root, file))
+        except Exception as e:
+            print ('Kan bestaand wiki bestand "' + file + '" niet weggooien: ' + str(e))
+            sys.exit(2)
+    for dir in dirs:
+        if dir == '.git':
+            continue
+        try:
+            shutil.rmtree (os.path.join (root, dir))
+        except Exception as e:
+            print ('Kan bestaand wiki map "' + dir + '" niet weggooien: ' + str(e))
+            sys.exit(2)
+    break
+try:
+    shutil.copytree (os.path.join (uitleverbestanden_map, 'wiki_extra'), wiki_doel_pad, dirs_exist_ok=True)
+except Exception as e:
+    print ('Kan map wiki-extra niet kopieren naar de wiki repository: ' + str(e))
+    sys.exit(2)
+try:
+    shutil.copytree (os.path.join (repo_root_map, 'broncode', 'wiki'), wiki_doel_pad, dirs_exist_ok=True)
+except Exception as e:
+    print ('Kan map broncode/wiki niet kopieren naar de wiki repository: ' + str(e))
+    sys.exit(2)
+
+
+# Maak een zip bestand om te downloaden
+downloadPad = os.path.join (repo_root_map, 'download.zip')
+with zipfile.ZipFile (downloadPad, 'w') as zip:
+    for root, dirs, files in os.walk (os.path.join (repo_root_map, 'broncode', 'geo-tools')):
+        for file in files:
+            if file.startswith ('Geo-Tools.Web'):
+                # Visual Studio bestanden
+                pass
+            elif file == 'index.py' or file.startswith ('gfs_maker') or file.startswith ('sld_maker') or file == 'requirements.txt' or file == 'vercel.json':
+                # Web bestanden
+                pass
+            else:
+                try:
+                    with open (os.path.join (root, file), 'r') as tekstfile:
+                        tekst = tekstfile.read ()
+                except Exception as e:
+                    print ('Kan bestand "' + file + '" niet lezen: ' + str(e))
+                    sys.exit(2)
+                for term, waarde in configuratie.items ():
+                    tekst = tekst.replace ('@@@' + term + '@@@', waarde)
+                zip.writestr ('simulator/' + file, tekst)
+        break
+
+    zip.writestr (zipfile.ZipInfo("mijn voorbeelden/"), "") 
+    for root, dirs, files in os.walk (os.path.join (uitleverbestanden_map, 'download')):
+        for file in files:
+            zip.write (os.path.join (root, file), file)
+        break

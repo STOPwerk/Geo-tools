@@ -1,4 +1,4 @@
-# Ontwikkeling van Versiebeheer-simulator
+# Ontwikkeling van geo-tools
 
 ## Indeling
 Dit is de root directory voor de ontwikkeling van de STOPwerk Versiebeheer-simulator. Hierin staat de Python code en alle testen.

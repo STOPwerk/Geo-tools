@@ -23,6 +23,9 @@ Wat het `publiceer.bat` script doet:
 - Past bestanden op de huidige (_development_) branch aan:
     - Werkt de VERSIE in [configuratie.json](configuratie.json) bij met het versienummer van de release.
     - Vervangt de parameters in [publiceer_git.bat](publiceer_git.bat).
+    - Overschrijft het [download.zip](../../download.zip) bestand
+    - Kopieert de inhoud van de [wiki](../wiki) documentatiebron en van [wiki_extra](wiki_extra) naar de `wiki` map en vervangt de parameters
+- Commit de wijzigingen voor de wiki
 - Commit de wijzigingen naar de huidige branch
 - Switcht naar de _main_ branch en voert een pull uit
 - Merget de inhoud van de _development_ branch in _main_

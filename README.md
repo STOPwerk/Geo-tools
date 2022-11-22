@@ -1,6 +1,6 @@
 # Geo-tools
 
-[Geo-tools online](https://geo-tools.vercel.app/) - huidige versie: `2022-11-22 23:58:15`.
+[Geo-tools online](https://geo-tools.vercel.app/) - huidige versie: `2022-11-23 00:01:14`.
 
 ## Wat is het?
 Gereedschap om met [geografische informatieobjecten](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/gio-intro.html) (GIO's) uit [STOP](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/) om te kunnen gaan. Laat ook zien hoe de randvoorwaarden voor het muteren van GIO's ingevuld kunnen worden.

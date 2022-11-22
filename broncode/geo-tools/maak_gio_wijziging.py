@@ -30,7 +30,7 @@ class GIOWijzigingMaker:
     @staticmethod
     def ResultaatHtml(request : Parameters):
         log = Meldingen (False)
-        log.Informatie ("Bepaling van een GIO-wijziging, versie 2022-11-22 23:58:15.")
+        log.Informatie ("Bepaling van een GIO-wijziging, versie 2022-11-23 00:01:14.")
         try:
             generator = WebpaginaGenerator ("GIO-wijziging")
             generator.LeesHtmlTemplate ('resultaat')

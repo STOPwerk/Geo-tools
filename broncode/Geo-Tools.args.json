@@ -1,0 +1,14 @@
+{
+  "FileVersion": 2,
+  "Id": "a00fa148-8f87-4637-aea6-1a4774de7551",
+  "Items": [
+    {
+      "Id": "c4caa9bb-c657-4a3f-9757-7d32b97dcaba",
+      "Command": "-m logs -a "
+    },
+    {
+      "Id": "faedcf93-524e-4ea3-bd97-3791ed72d5ed",
+      "Command": "-t tests"
+    }
+  ]
+}

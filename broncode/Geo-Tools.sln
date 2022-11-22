@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33027.164
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Geo-Tools", "Geo-Tools.pyproj", "{A00FA148-8F87-4637-AEA6-1A4774DE7551}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED6D49FC-DEED-4C0B-A2AC-4636EFBDB3D7}"
+	ProjectSection(SolutionItems) = preProject
+		Geo-Tools.sln.vsspell = Geo-Tools.sln.vsspell
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Geo-Tools.Web", "geo-tools\Geo-Tools.Web.pyproj", "{B77CD3E4-97F9-464E-B516-0DB5201E9C81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A00FA148-8F87-4637-AEA6-1A4774DE7551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00FA148-8F87-4637-AEA6-1A4774DE7551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {421E6513-4800-4E5F-9647-785F5C633E35}
+	EndGlobalSection
+EndGlobal

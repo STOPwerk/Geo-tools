@@ -1,0 +1,20 @@
+<p>
+    <a href="https://www.ogc.org/standards/sld" target="_blank">SLD</a> (Styled Layer Descriptor) is een
+    OGC dataformaat voor een bestand dat de opmaak van een kaartlaag beschrijft. Sommige GIS pakketten (zoals <a href="https://www.qgis.org/">QGIS</a>)
+    kunnen niet rechtstreeks een symbolisatie conform <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/">STOP</a> lezen maar wel een SLD bestand.
+</p>
+<p>
+    Deze pagina kan een SLD bestand maken op basis van een XML bestand waarin precies
+    één <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/se_xsd_Element_se_FeatureTypeStyle.html">FeatureTypeStyle</a> element zit.
+</p>
+<form id="upload_form">
+    <div class="box">
+        <label>
+            <span class="link">Selecteer de XML bestanden</span>
+            <span>of sleep ze hier naar toe.</span>
+            <input class="box__file" type="file" name="files[]" multiple accept="application/json,application/xml" />
+        </label>
+    </div>
+    <p id="upload_links">
+    </p>
+</form>

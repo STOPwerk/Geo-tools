@@ -1,0 +1,20 @@
+<GMLFeatureClassList>
+    <!--
+        Gebruik dit *.gfs bestand om de data uit verkeersborden_STOP_wordt.gml in te lezen
+        in software die de OGR/GDAL specificatie ondersteunt.
+        Gemaakt met @@@GeoTools_Online_Url@@@gfs_maker
+    -->
+    <GMLFeatureClass>
+        <Name>verkeersborden_STOP_wordt - punten</Name>
+        <ElementPath>locaties|Locatie</ElementPath>
+        <GeometryName>geometrie</GeometryName>
+        <GeometryElementPath>geometrie|Geometrie|geometrie</GeometryElementPath>
+        <GeometryType>Point</GeometryType>
+        <SRSName>urn:ogc:def:crs:EPSG::28992</SRSName>
+        <PropertyDefn>
+            <Name>groepID</Name>
+            <ElementPath>groepID</ElementPath>
+            <Type>String</Type>
+        </PropertyDefn>
+    </GMLFeatureClass>
+</GMLFeatureClassList>

@@ -109,8 +109,8 @@ downloadPad = os.path.join (repo_root_map, 'download.zip')
 with zipfile.ZipFile (downloadPad, 'w') as zip:
     for root, dirs, files in os.walk (os.path.join (repo_root_map, 'broncode', 'geo-tools')):
         for file in files:
-            if file.startswith ('Geo-Tools.Web'):
-                # Visual Studio bestanden
+            if file.startswith ('Geo-Tools.Web') or file == '.gitignore':
+                # Visual Studio / git bestanden
                 pass
             elif file.startswith ('index') or file.startswith ('gfs_maker') or file.startswith ('sld_maker') or file == 'requirements.txt' or file == 'vercel.json':
                 # Web bestanden
@@ -124,7 +124,7 @@ with zipfile.ZipFile (downloadPad, 'w') as zip:
                     sys.exit(2)
                 for term, waarde in configuratie.items ():
                     tekst = tekst.replace ('@@@' + term + '@@@', waarde)
-                zip.writestr ('simulator/' + file, tekst)
+                zip.writestr ('geo-tools/' + file, tekst)
         break
 
     zip.writestr (zipfile.ZipInfo("mijn voorbeelden/"), "") 

@@ -1,2 +1,2 @@
-Flask
-geopandas
+Flask~=2.2.2
+geopandas~=0.12

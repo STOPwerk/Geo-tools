@@ -4,5 +4,11 @@
 		{ "src": "static/*.*", "use": "@vercel/static" },
 		{ "src": "*.*", "use": "@vercel/static" },
 		{ "src": "index.py", "use": "@vercel/python" }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
     ]
 }

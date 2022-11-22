@@ -8,7 +8,7 @@
     },
     {
       "Id": "faedcf93-524e-4ea3-bd97-3791ed72d5ed",
-      "Command": "tests"
+      "Command": "-t tests"
     }
   ]
 }

@@ -37,12 +37,12 @@ goto Pause
 @rem ===== Script
 :Start
 rd /s /q wiki
-git clone https://github.com/STOPwerk/Versiebeheer-simulator.wiki.git wiki
+git clone https://github.com/STOPwerk/Geo-tools.wiki.git wiki
 if errorlevel 1 goto Pause
 
 python.exe maak_release_artefacts.py . ..\..
 if errorlevel 1 goto Pause
-call publiceer_git.bat ..\simulator\ || goto Pause
+call publiceer_git.bat ..\geo-tools\ || goto Pause
 
 if errorlevel 0 goto End
 :Pause

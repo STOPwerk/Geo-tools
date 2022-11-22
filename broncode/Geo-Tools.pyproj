@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  tests</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -27,14 +27,18 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="geo-tools\maak_gio_wijziging_invoer.html" />
     <Content Include="README.md" />
     <Content Include="geo-tools\applicatie_meldingen_einde.html" />
     <Content Include="geo-tools\applicatie_meldingen_start.html" />
     <Content Include="geo-tools\weergave_webpagina_einde.html" />
     <Content Include="geo-tools\weergave_webpagina_start.html" />
     <Content Include="Geo-Tools.pyproj.vsspell" />
-    <Content Include="tests\geo_wijziging\geometrie-punten\gio_wijziging_maker.json" />
-    <Content Include="tests\geo_wijziging\geometrie-punten\verkeersborden_STOP.json" />
+    <Content Include="tests\geo_wijziging\punten\geometrie\maak_gio_wijziging.json" />
+    <Content Include="tests\geo_wijziging\punten\GIO-delen\maak_gio_wijziging.json" />
+    <Content Include="tests\geo_wijziging\punten\normwaarden\maak_gio_wijziging.json" />
+    <Content Include="tests\geo_wijziging\punten\puntsymbolen.json" />
+    <Content Include="tests\geo_wijziging\punten\verkeersborden_STOP.json" />
     <Content Include="uitleveren\configuratie.json" />
     <Content Include="uitleveren\download\LEESMIJ.txt" />
     <Content Include="uitleveren\download\voer_tools_uit_voor_mijn_voorbeelden.bat" />
@@ -54,13 +58,15 @@
     <Compile Include="geo-tools\applicatie_request.py" />
     <Compile Include="geo-tools\applicatie.py" />
     <Compile Include="geo-tools\applicatie_meldingen.py" />
-    <Compile Include="geo-tools\gio_wijziging_maker.py">
+    <Compile Include="geo-tools\toon_gio_wijziging_invoer.html" />
+    <Compile Include="geo-tools\toon_gio_wijziging.py" />
+    <Compile Include="geo-tools\maak_gio_wijziging.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="geo-tools\weergave_webpagina.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tests\geo_wijziging\geometrie-punten\verkeersborden.py" />
+    <Compile Include="tests\geo_wijziging\punten\verkeersborden.py" />
     <Compile Include="uitleveren\maak_release_artefacts.py" />
     <Compile Include="uitleveren\pas_configuratie_toe.py" />
   </ItemGroup>
@@ -68,7 +74,10 @@
     <Folder Include="geo-tools\" />
     <Folder Include="tests\" />
     <Folder Include="tests\geo_wijziging\" />
-    <Folder Include="tests\geo_wijziging\geometrie-punten\" />
+    <Folder Include="tests\geo_wijziging\punten\" />
+    <Folder Include="tests\geo_wijziging\punten\geometrie\" />
+    <Folder Include="tests\geo_wijziging\punten\GIO-delen\" />
+    <Folder Include="tests\geo_wijziging\punten\normwaarden\" />
     <Folder Include="uitleveren\" />
     <Folder Include="uitleveren\download\" />
     <Folder Include="uitleveren\wiki_extra\" />

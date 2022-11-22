@@ -4,8 +4,8 @@
 #
 #======================================================================
 #
-# Webpagina om een *.sld bestand voor een STOP symbolisatie te maken.
-# Functionaliteit wordt geïmplementeerd via client-side javascript.
+# Script om een GIO-wijziging samen te stellen uit een was- en 
+# een wordt-versie van een GIO.
 #
 #======================================================================
 
@@ -21,7 +21,7 @@ class GIOWijzigingMaker:
 #======================================================================
     @staticmethod
     def InvoerHtml():
-        generator = WebpaginaGenerator ("GIO-wijziging - invoer")
+        generator = WebpaginaGenerator ("Bepaling van een GIO-wijziging")
         generator.LeesHtmlTemplate ('invoer')
         generator.LeesCssTemplate ('invoer')
         generator.LeesJSTemplate ('invoer')
@@ -30,12 +30,12 @@ class GIOWijzigingMaker:
     @staticmethod
     def ResultaatHtml(request : Parameters):
         log = Meldingen (False)
-        log.Informatie ("GIO-wijziging maker, versie @@@VERSIE@@@.")
+        log.Informatie ("Bepaling van een GIO-wijziging, versie @@@VERSIE@@@.")
         try:
-            generator = WebpaginaGenerator ("GIO-wijziging - resultaat")
-            generator.LeesHtmlTemplate ('')
-            generator.LeesCssTemplate ('')
-            generator.LeesJSTemplate ('')
+            generator = WebpaginaGenerator ("GIO-wijziging")
+            generator.LeesHtmlTemplate ('resultaat')
+            generator.LeesCssTemplate ('resultaat')
+            generator.LeesJSTemplate ('resultaat')
 
             generator.VoegHtmlToe ("<h2>Verslag van de bepaling</h2>")
             log.MaakHtml (generator, None)

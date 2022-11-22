@@ -112,7 +112,7 @@ with zipfile.ZipFile (downloadPad, 'w') as zip:
             if file.startswith ('Geo-Tools.Web'):
                 # Visual Studio bestanden
                 pass
-            elif file == 'index.py' or file.startswith ('gfs_maker') or file.startswith ('sld_maker') or file == 'requirements.txt' or file == 'vercel.json':
+            elif file.startswith ('index') or file.startswith ('gfs_maker') or file.startswith ('sld_maker') or file == 'requirements.txt' or file == 'vercel.json':
                 # Web bestanden
                 pass
             else:

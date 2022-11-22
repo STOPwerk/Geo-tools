@@ -13,7 +13,8 @@ from weergave_webpagina import WebpaginaGenerator
 
 from gfs_maker import GFSMaker
 from sld_maker import SLDMaker
-from gio_wijziging_maker import GIOWijzigingMaker
+from maak_gio_wijziging import GIOWijzigingMaker
+from toon_gio_wijziging import GIOWijzigingViewer
 
 
 #----------------------------------------------------------------------
@@ -51,6 +52,15 @@ def gio_wijziging():
 @app.route('/gio_wijziging_resultaat', methods = ['POST'])
 def gio_wijziging_resultaat():
     return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None))
+
+
+@app.route('/toon_gio_wijziging')
+def toon_gio_wijziging():
+    return GIOWijzigingViewer.InvoerHtml ()
+
+@app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
+def toon_gio_wijziging_resultaat():
+    return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None))
 
 #----------------------------------------------------------------------
 #

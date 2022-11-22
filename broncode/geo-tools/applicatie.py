@@ -74,7 +74,7 @@ from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
 from weergave_webpagina import WebpaginaGenerator
 
-from gio_wijziging_maker import GIOWijzigingMaker
+from maak_gio_wijziging import GIOWijzigingMaker
 
 log = Meldingen (True)
 
@@ -137,6 +137,6 @@ def __VoerTestUit (directory_pad, operatieNaam, methode):
 
 
 for directory_pad in directory_paden:
-    __VoerTestUit (directory_pad, 'gio_wijziging_maker', GIOWijzigingMaker.ResultaatHtml)
+    __VoerTestUit (directory_pad, 'maak_gio_wijziging', GIOWijzigingMaker.ResultaatHtml)
 
 log.ToonHtml (meldingen_pad)

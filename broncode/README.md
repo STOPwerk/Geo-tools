@@ -1,29 +1,34 @@
 # Ontwikkeling van geo-tools
 
 ## Indeling
-Dit is de root directory voor de ontwikkeling van de STOPwerk Versiebeheer-simulator. Hierin staat de Python code en alle testen.
+Dit is de root directory voor de ontwikkeling van de STOPwerk Geo-tools. Hierin staat de Python code en alle testen.
 
-De ondersteunende scripts (en deze readme) gaan ervan uit dat er twee lokale klonen zijn:
+De ondersteunende scripts (en deze readme) gaan ervan uit dat:
 
-* `root-directory/Versiebeheer-simulator` is een kloon van de public repository [Versiebeheer-simulator](https://github.com/STOPwerk/Versiebeheer-simulator) met de code voor de simulator.
+* Deze `broncode` directory onderdeel is van een kloon van de public repository [Geo-tools](@@@GeoTools_Url@@@) met de code voor de geo-tools.
 
-* `root-directory/Versiebeheer-simulator-STOP-voorbeelden` is een kloon van [STOP ontwikkeling](https://gitlab.com/koop/STOP/ontwikkeling), de private repository voor de ontwikkeling van STOP. STOP gebruikt de Versiebeheer-simulator voor een reeks voorbeelden. Die voorbeelden worden als testscenario overgenomen naar Versiebeheer-simulator-ontwikkeling als een vorm van acceptatietest.
+* Voor de doorontwikkeling van de geo-tools gebruik wordt gemaakt van de branch `development`.
 
+* Vanuit deze branch wordt een uitlevering gedaan die op de `main` branch van deze kloon terecht komt en uiteindelijk gepushd wordt naar de public repository.
+
+* Dat een online versie van de geo-tools gehost wordt pp [vercel.com](https://vercel.com/).
 
 ## Werkwijze
 
-* Gebruik dit deel van de repository om de Versiebeheer-simulator door te ontwikkelen of te onderhouden. Doe dat op de _development_ branch (of een feature branch).
+* Gebruik dit deel van de repository om de Geo-tools door te ontwikkelen of te onderhouden. Doe dat op de _development_ branch (of een feature branch).
 
-* Zorg dat zowel alle code-unit tests als alle testscenario's correct uitgevoerd worden. De testscenario's zijn uit te voeren door `voer_alle_unit_tests_uit.bat` of `voer_alle_unit_tests_uit.sh` in [tests/scenarios](tests/scenarios) uit te voeren. Voor het maken van testscenario's en het uitvoeren van de applicatie: zie de [documentatie](../../../wiki).
+* De documentatie wordt bijgehouden in [wiki](wiki); deze wordt naar de wiki van de publiceke repository uitgeleverd. 
 
-* Als er nieuwe STOP voorbeelden zijn, ga naar `root-directory/Versiebeheer-simulator-STOP-voorbeelden` en haal met de git tooling de laatste versie op. Voer dan `kopieer_STOP_voorbeelden.bat` uit in [tests/scenarios](tests/scenarios) om de voorbeelden over te nemen als testscenario. Voer de tests uit (via `voer_alle_unit_tests_uit.bat` of `voer_alle_unit_tests_uit.sh`). Als de resultaten voor een nieuw voorbeeld correct zijn, hernoem de `*_actual.json` bestanden in de voorbeeldmap naar `*_verwacht.json`.
+* Er zijn geen unit tests in code. Wel zijn er testen in [tests](tests) die controleren of de scripts voor gegeven invoerbestanden nog steeds dezelfde HTML output maakt. Voor het maken van invoerbestanden en het uitvoeren van de applicatie: zie de [documentatie](wiki).
 
-* Als er voor de Versiebeheer-simulator een nieuw voorbeeld is, voer dan `kopieer_voorbeelden.bat` uit in [tests/scenarios](tests/scenarios) om de voorbeelden over te nemen als testscenario. Verder gelijk aan een nieuw STOP voorbeeld.
+* Simmige testen gebruiken voorbeelden uit [voorbeelden](..\voorbeelden). De brondata voor de voorbeelden staat in de [tests](tests) directories.
 
 ^ Om codewijzigingen uit te leveren: ga naar [uitleveren](uitleveren) en volg de instructies in de README.md..
 
+* Zowel in de wiki als in de broncode kunnen parameters `@@@naam@@@` opgenomen worden die bij uitlevering worden vervangen door de waarde in [configuratie.json](uitleveren/configuratie.json) voordat de uitlevering naar de `main` branch wordt gecommit.
+
 ## Ontwikkelomgeving
-De code is ontwikkeld met Python 3.9 en Visual Studio 2022 met extensies `Markdown Editor v2` en `Smart Command Line Arguments for 2022`. De .bat scripts zijn getest met Python 3.8.10, de .sh scripts met Windows 10 WSL/Ubuntu 20.04 en de meegeleverde python3.
+De code is ontwikkeld met Python 3.9 en Visual Studio 2022 met extensies `Markdown Editor v2` en `Smart Command Line Arguments for 2022`. De .bat scripts zijn getest met Python 3.8.10.
 
 Voor het uitvoeren van de scripts moet git en python in het PATH staan. Als dat niet zo is voor Windows, zet dan de environment variabelen:
 

@@ -12,9 +12,10 @@
 
 from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
+from geo_manipulatie import GeoManipulatie
 from weergave_webpagina import WebpaginaGenerator
 
-class GIOWijzigingViewer:
+class GIOWijzigingViewer (GeoManipulatie):
 #======================================================================
 #
 # Webpagina's
@@ -29,21 +30,16 @@ class GIOWijzigingViewer:
         return generator.Html ()
 
     @staticmethod
-    def ResultaatHtml(request : Parameters):
-        log = Meldingen (False)
-        log.Informatie ("Tonen van een GIO-wijziging, versie 2022-11-23 00:25:27.")
-        try:
-            generator = WebpaginaGenerator ("GIO-wijziging in beeld")
-            generator.LeesHtmlTemplate ('resultaat')
-            generator.LeesCssTemplate ('resultaat')
-            generator.LeesJSTemplate ('resultaat')
+    def ResultaatHtml(request : Parameters, log: Meldingen = None):
+        return GIOWijzigingViewer (request, log).VoerUit ()
 
-            generator.VoegHtmlToe ("<h2>Verslag van het maken van de viewer</h2>")
-            log.MaakHtml (generator, None)
-            return generator.Html ()
-        except Exception as e:
-            log.Fout ("Oeps, deze fout is niet verwacht: " + str(e))
-            generator = WebpaginaGenerator ("GIO-wijziging - geen beeld")
-            log.MaakHtml (generator, None, "Het maken van de viewer voor de GIO-wijziging is afgebroken.")
-            return generator.Html ()
+#======================================================================
+#
+# Implementatie
+#
+#======================================================================
+    def __init__(self, request : Parameters, log: Meldingen):
+        super ().__init__ ("GIO-wijziging in beeld", "GIO-wijziging - geen beeld", request, log)
 
+    def _VoerUit (self):
+        pass

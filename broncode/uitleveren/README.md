@@ -30,6 +30,7 @@ Wat het `publiceer.bat` script doet:
 - Switcht naar de _main_ branch en voert een pull uit
 - Merget de inhoud van de _development_ branch in _main_
 - Verwijdert de inhoud van de [wiki](../wiki) documentatiebron
+- Voert de geo-tools uit voor de [voorbeelden](../../voorbeelden)
 - Commit de wijzigingen naar _main_ onder het `STOPwerk` account
 - Switcht naar de _development_ branch
 - Vraagt of alles gepusht mag worden, en doet dat bij een positief antwoord

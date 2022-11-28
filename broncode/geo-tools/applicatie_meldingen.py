@@ -10,6 +10,8 @@
 #
 #======================================================================
 
+from typing import List
+
 import time
 
 from weergave_webpagina import WebpaginaGenerator
@@ -73,7 +75,7 @@ class Meldingen:
         # Het total aantal waarschuwingen dat onderdeel is van deze verzameling
         self.Waarschuwingen = 0
         # De lijst met instanties van Melding
-        self.Meldingen = []
+        self.Meldingen : List[Melding] = []
         # De tijd dat de verzameling is aangemaakt / None als geen tijd bijgehouden hoeft te worden
         self._Start = time.perf_counter () if metTijd else None
 
@@ -165,6 +167,13 @@ class Meldingen:
     def MaakTekst (self):
         """Retourneer een platte tekst van de meldingen"""
         return "Fouten: " + str(self.Fouten) + ", waarschuwingen: " + str (self.Waarschuwingen) + "\n" + "\n".join (m.Ernst + " " + m.Tekst for m in self.Meldingen)
+
+    def HeeftFouten (self):
+        """Geeft aan of er fouten onder de meldingen zijn"""
+        for m in self.Meldingen:
+            if m.Ernst == "FOUT":
+                return True
+        return False
 
     def FoutenWaarschuwingen (self):
         """Geef alleen de fouten en waarschuwingen onder de meldingen"""

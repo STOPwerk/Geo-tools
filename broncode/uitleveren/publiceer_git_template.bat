@@ -43,6 +43,8 @@ python.exe pas_configuratie_toe.py . ..\..
 @if errorlevel 1 goto Pause
 python.exe pas_configuratie_toe.py . ..\geo-tools
 @if errorlevel 1 goto Pause
+call ..\..\voorbeelden\voer_tools_uit.bat
+@if errorlevel 1 goto Pause
 rd /s /q ..\wiki
 git add -A
 @if errorlevel 1 goto Pause

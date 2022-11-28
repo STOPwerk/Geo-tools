@@ -9,6 +9,8 @@
 #
 #======================================================================
 
+from typing import Dict
+
 import inspect
 import os
 import tempfile
@@ -37,9 +39,9 @@ class WebpaginaGenerator:
         # CSS dat die aan de <style> toegevoegd moet worden 
         self._Css = set()
         # Scripts die aan de <head> toegevoegd moeten worden 
-        self._HeadScript = set()
+        self._HeadScript : Dict[str,int] = {}
         # Scripts die aan het einde van de pagina toegevoegd moeten worden 
-        self._SlotScript = set()
+        self._SlotScript : Dict[str,int] = {}
         # Index voor het uniek maken van repeterende HTML fragmenten
         self._Index = 0
 
@@ -52,7 +54,9 @@ class WebpaginaGenerator:
 #----------------------------------------------------------------------
     def Html (self):
         """Geef de HTML van de webpagina"""
-        return self._Start.replace ("/*EXTRASTYLE*/", "\n".join (sorted(self._Css))).replace ("/*EXTRASCRIPT*/", "\n".join (sorted(self._HeadScript))) + self._Html + self._Einde.replace ("/*EXTRASCRIPT*/", "\n".join (sorted(self._SlotScript)))
+        def __JoinScript (script: Dict[str,int]):
+            return "\n".join (s[0] for s in sorted(script.items (), key = lambda s: s[1]))
+        return self._Start.replace ("/*EXTRASTYLE*/", "\n".join (sorted(self._Css))).replace ("/*EXTRASCRIPT*/", __JoinScript(self._HeadScript)) + self._Html + self._Einde.replace ("/*EXTRASCRIPT*/", __JoinScript(self._SlotScript))
 
     def SchrijfHtml (self, pad, toonInBrowser = False, genereerNaam = False):
         """Schrijf de webpagina naar een bestand
@@ -128,9 +132,9 @@ class WebpaginaGenerator:
         js = self._LeesTemplate (pad)
         if voegToeAanPagina and js:
             if voegToeInHead:
-                self._HeadScript.add (js)
+                self.VoegHeadScriptToe (js)
             else:
-                self._SlotScript.add (js)
+                self.VoegSlotScriptToe (js)
         return js
 
     def _LeesTemplate (self, pad):
@@ -194,14 +198,6 @@ class WebpaginaGenerator:
         self._Index += 1
         return self._Index
 
-    def GebruikSvgScript (self):
-        """Voeg de scripting toe nodig om SVG diagrammen op te nemen in de webpagina
-        """
-        if not hasattr (self, '_svgScript'):
-            setattr (self, '_svgScript', True)
-            svgScript = self.LeesJSTemplate ("svg-pan-zoom", True, True)
-            self._HeadScript.add (svgScript)
-
     def VoegCssToe (self, css):
         """Voeg CSSstyle toe
         
@@ -212,18 +208,23 @@ class WebpaginaGenerator:
 
 
     def VoegHeadScriptToe (self, js):
-        """Voeg Javascript toe aan de head van de pagina
+        """Voeg Javascript toe aan de head van de pagina. De scripts komen op volgorde 
+        van toevoegen in de pagina terecht.
         
         Argumenten
         js string  Javascript uit te voeren bij het laden van de pagina
         """
-        self._HeadScript.add (js)
+        if self._HeadScript.get (js) is None:
+            self._HeadScript[js] = len (self._HeadScript)
+
 
     def VoegSlotScriptToe (self, js):
-        """Voeg Javascript toe aan het einde van de pagina
+        """Voeg Javascript toe aan het einde van de pagina. De scripts komen op volgorde 
+        van toevoegen in de pagina terecht.
         
         Argumenten
         js string  Javascript uit te voeren nadat de pagina gemaakt is
         """
-        self._SlotScript.add (js)
+        if self._SlotScript.get (js) is None:
+            self._SlotScript[js] = len (self._SlotScript)
 

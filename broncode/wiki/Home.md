@@ -12,24 +12,10 @@ Deze documentatie betreft een aantal [Python scripts](../broncode/geo-tools) die
 De scripts sluiten aan bij de [beschrijving in STOP](@@@STOP_Documentatie_Url@@@404.html).
 
 ## Offline / eigen computer
-De scripts zijn ook te [downloaden](..) en op de eigen computer uit te voeren. De invoerbestanden moeten dan 
-een map op de eigen computer staan:
+De scripts zijn ook te [downloaden](..) en op de eigen computer uit te voeren. De invoerbestanden moeten dan in een map op de eigen computer staan:
 
 - [Invoerspecificatie](Invoerspecificatie) voor de scripts op de eigen computer.
 
 In het download pakketje zit `voer_tools_uit_voor_mijn_voorbeelden.bat` om Python compontenten te installeren en geo-tools te draaien op Windows.
 
-Op Unix en MacOS moet dat handmatig gedaan worden. Eenmalig:
-```
-python3 -m venv %~dp0venv
-source venv/bin/activate
-python3 -m pip install --upgrade pip
-python3 -m pip install geopandas
-```
-Daarna voor het draaien van de geo-tools:
-```
-source venv/bin/activate
-python3 applicatie.py ... opties ...
-```
-
-Zie verder het overzicht van de [command line opties](Geo-tools-uitvoeren).
+Op Unix en MacOS moet dat handmatig gedaan worden. Zie verder het overzicht van de [command line opties](Geo-tools-uitvoeren).

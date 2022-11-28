@@ -1,0 +1,35 @@
+<p>
+    Toon een STOP geo-informatieobject (<a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html">vaststelling</a>
+    of <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html">versie</a> maar geen GIO-wijziging),
+    <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html">gebiedsmarkering</a> of
+    <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html">effectgebied</a> op de kaart.
+</p>
+<h3>Bestanden</h3>
+<p id="bestanden">
+</p>
+<form id="upload_form" action="toon_geo_resultaat" method="post" enctype="multipart/form-data">
+    <div class="box" id="geometrie_box">
+        <label>
+            <span class="link">Selecteer het geo-informatieobject, de gebiedsmarkering of het effectgebied</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <input class="box__file" type="file" name="geometrie" id="geometrie" accept="application/gml+xml,application/xml" />
+        </label>
+    </div>
+    <p id="symbolisatie_invoer">
+	<b>Voor deze GIO is een symbolisatie nodig.</b>
+    </p>
+	<p>
+		Voor een geo-informatieobject met GIO-delen of met normwaarden is een symbolisatie conform
+		<a href="@@@STOP_Documentatie_Url@@@">STOP</a> vereist. Als die niet wordt meegegeven worden de
+		GIO-delen en normwaarden niet gevisualiseerd, maar ze zijn wel opvraagbaar door op een positie in
+		de kaart te klikken. Voor een GIO met alleen geometrie of voor een gebiedsmarkering/effectgebied mag een symbolisatie worden meegegeven maar dat hoeft niet.
+	</p>
+	<div class="box" id="symbolisatie_box">
+		<label>
+			<span class="link">Selecteer de symbolisatie voor het geo-informatieobject</span>
+			<span>of sleep het bestand hier naar toe.</span>
+			<input class="box__file" type="file" name="symbolisatie" id="symbolisatie" accept="application/xml" />
+		</label>
+	</div>
+    <button id="startknop">Toon geo-informatie</button>
+</form>

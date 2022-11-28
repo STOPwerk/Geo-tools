@@ -10,9 +10,9 @@
     <OutputPath>.</OutputPath>
     <Name>Geo-Tools</Name>
     <RootNamespace>Geo-Tools</RootNamespace>
-    <InterpreterId>Global|PythonCore|3.9</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests\gebieden</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -27,16 +27,22 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="geo-tools\geo_manipulatie_kaart.js" />
+    <Content Include="geo-tools\geo_manipulatie_ol.css" />
+    <Content Include="geo-tools\geo_manipulatie_ol.js" />
+    <Content Include="geo-tools\geo_manipulatie_sldreader.js" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.html" />
+    <Content Include="geo-tools\requirements.txt" />
+    <Content Include="geo-tools\toon_geo_invoer.css" />
+    <Content Include="geo-tools\toon_geo_invoer.js" />
+    <Content Include="geo-tools\toon_geo_invoer.html" />
+    <Content Include="geo-tools\voer_tools_uit.bat" />
     <Content Include="README.md" />
     <Content Include="geo-tools\applicatie_meldingen_einde.html" />
     <Content Include="geo-tools\applicatie_meldingen_start.html" />
     <Content Include="geo-tools\weergave_webpagina_einde.html" />
     <Content Include="geo-tools\weergave_webpagina_start.html" />
     <Content Include="Geo-Tools.pyproj.vsspell" />
-    <Content Include="tests\geo_wijziging\punten\geometrie\maak_gio_wijziging.json" />
-    <Content Include="tests\geo_wijziging\punten\GIO-delen\maak_gio_wijziging.json" />
-    <Content Include="tests\geo_wijziging\punten\normwaarden\maak_gio_wijziging.json" />
     <Content Include="tests\geo_wijziging\punten\puntsymbolen.json" />
     <Content Include="tests\geo_wijziging\punten\verkeersborden_STOP.json" />
     <Content Include="uitleveren\configuratie.json" />
@@ -58,6 +64,9 @@
     <Compile Include="geo-tools\applicatie_request.py" />
     <Compile Include="geo-tools\applicatie.py" />
     <Compile Include="geo-tools\applicatie_meldingen.py" />
+    <Compile Include="geo-tools\geo_manipulatie.py" />
+    <Compile Include="geo-tools\toon_geo_resultaat.css" />
+    <Compile Include="geo-tools\toon_geo.py" />
     <Compile Include="geo-tools\toon_gio_wijziging_invoer.html" />
     <Compile Include="geo-tools\toon_gio_wijziging.py" />
     <Compile Include="geo-tools\maak_gio_wijziging.py">
@@ -75,17 +84,21 @@
     <Folder Include="tests\" />
     <Folder Include="tests\geo_wijziging\" />
     <Folder Include="tests\geo_wijziging\punten\" />
-    <Folder Include="tests\geo_wijziging\punten\geometrie\" />
-    <Folder Include="tests\geo_wijziging\punten\GIO-delen\" />
-    <Folder Include="tests\geo_wijziging\punten\normwaarden\" />
     <Folder Include="uitleveren\" />
     <Folder Include="uitleveren\download\" />
     <Folder Include="uitleveren\wiki_extra\" />
     <Folder Include="wiki\" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.9" />
-    <InterpreterReference Include="Global|VisualStudio|Python" />
+    <Interpreter Include="env\">
+      <Id>env</Id>
+      <Version>3.9</Version>
+      <Description>env (Python 3.9 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -14,7 +14,7 @@ window.addEventListener('load', function () {
                 if (einde !== null) {
                     this._Line.innerText = file.name + ': ';
 
-                    sld = `<?xml version="1.0" encoding="UTF-8"?>
+                    var sld = `<?xml version="1.0" encoding="UTF-8"?>
 <StyledLayerDescriptor xmlns="http://www.opengis.net/sld"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd"
 	version="1.1.0">
@@ -58,7 +58,7 @@ window.addEventListener('load', function () {
 
         const This = this;
         const reader = new FileReader();
-        this.VoerUit = function(){
+        this.VoerUit = function () {
             reader.addEventListener("load", () => {
                 This._InterpreteerXML(reader.result);
             }, false);

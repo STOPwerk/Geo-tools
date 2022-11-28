@@ -1,2 +1,2 @@
-Dit bestand is gedownload van https://github.com/STOPwerk/Geo-tools
+Dit bestand is gedownload van @@@GeoTools_Url@@@
 Zie aldaar voor documentatie, licentievoorwaarden en dergelijke.

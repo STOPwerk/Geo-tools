@@ -1,0 +1,10 @@
+[
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Alleen RD coördinaten (urn:ogc:def:crs:EPSG::28992) zijn toegestaan"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
+    }
+]

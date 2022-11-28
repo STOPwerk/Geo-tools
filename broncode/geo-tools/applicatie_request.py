@@ -36,20 +36,24 @@ class Parameters:
         if not waarde is None:
             return str(waarde)
 
-    def LeesBestand (self, log : Meldingen, key: str):
+    def LeesBestand (self, log : Meldingen, key: str, verplicht: bool):
         """Lees de inhoud van een bestand aan de hand van de specificatie key / input type="file" control naam.
 
         Argumenten:
 
-        log Meldingen Verzameling meldingen voor de uitvoering van dit request
-        key str       Key waarvoor de data opgehaald moet worden
+        log Meldingen  Verzameling meldingen voor de uitvoering van dit request
+        key str        Key waarvoor de data opgehaald moet worden
+        verplicht bool Geeft aan dat het bestand aanwezig moet zijn (dus niet optioneel is)
 
         Geeft de inhoud van het bestand terug, of None als er geen bestand/data is
         """
-        if self._Pad is None:
+        if not self._Pad is None:
             filenaam = self._FormData.get (key)
             if filenaam is None:
-                log.Detail ('Geen bestand gespecificeerd voor "' + key + '"')
+                if verplicht:
+                    log.Fout ('Geen bestand gespecificeerd voor "' + key + '"')
+                else:
+                    log.Detail ('Geen bestand gespecificeerd voor "' + key + '"')
                 return None
             pad = os.path.join (self._Pad, filenaam)
             if not os.path.isfile (pad):

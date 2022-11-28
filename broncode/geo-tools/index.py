@@ -13,6 +13,7 @@ from weergave_webpagina import WebpaginaGenerator
 
 from gfs_maker import GFSMaker
 from sld_maker import SLDMaker
+from toon_geo import GeoViewer
 from maak_gio_wijziging import GIOWijzigingMaker
 from toon_gio_wijziging import GIOWijzigingViewer
 
@@ -44,6 +45,14 @@ def gfs_maker():
 @app.route('/sld_maker')
 def sld_maker():
     return SLDMaker.Html ()
+
+@app.route('/toon_geo')
+def toon_geo():
+    return GeoViewer.InvoerHtml ()
+
+@app.route('/toon_geo_resultaat', methods = ['POST'])
+def toon_geo_resultaat():
+    return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None))
 
 @app.route('/gio_wijziging')
 def gio_wijziging():

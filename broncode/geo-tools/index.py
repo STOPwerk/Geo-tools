@@ -16,6 +16,7 @@ from sld_maker import SLDMaker
 from toon_geo import GeoViewer
 from maak_gio_wijziging import GIOWijzigingMaker
 from toon_gio_wijziging import GIOWijzigingViewer
+from voorbeeld import Voorbeeld
 
 
 #----------------------------------------------------------------------
@@ -70,6 +71,15 @@ def toon_gio_wijziging():
 @app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
 def toon_gio_wijziging_resultaat():
     return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None))
+
+@app.route('/voorbeeld')
+def voorbeeld():
+    return Voorbeeld.SelectieHtml ()
+
+@app.route('/start_voorbeeld')
+def start_voorbeeld():
+    return Voorbeeld.VoerUit (Parameters (request.args, None, None))
+
 
 #----------------------------------------------------------------------
 #

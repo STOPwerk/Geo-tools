@@ -3681,10 +3681,14 @@ class Kaart {
 
 <table id="meldingen_tabel">
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geo-tools (@@@GeoTools_Url@@@) versie @@@VERSIE@@@.</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand "testdata_gebiedsmarkering.gml" voor "geometrie" ingelezen</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Gebiedsmarkering ingelezen</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak de kaartweergave</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees de symbolisatie (indien aanwezig)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Geen bestand gespecificeerd voor "symbolisatie"</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Maak de kaartweergave</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak de pagina af</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">De verwerking is voltooid.</td></tr>
 </table>
@@ -3753,26 +3757,26 @@ Kaartgegevens.Instantie.VoegDataToe ("gio",
 
 
 Kaartgegevens.Instantie.VoegSymbolisatieToe ("@dimensie=2",`<FeatureTypeStyle version="1.1.0"
-	xmlns="http://www.opengis.net/se"
-	xmlns:ogc="http://www.opengis.net/ogc">
-	<FeatureTypeName>geo:Locatie</FeatureTypeName>
-	<SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
-	<Rule>
-		<Name>Vlak</Name>
-		<PolygonSymbolizer>
-			<Name>vsg120</Name>
-			<Fill>
-				<SvgParameter name="fill">#0000ff</SvgParameter>
-				<SvgParameter name="fill-opacity">0.8</SvgParameter>
-			</Fill>
-			<Stroke>
-				<SvgParameter name="stroke">#0000cd</SvgParameter>
-				<SvgParameter name="stroke-opacity">1</SvgParameter>
-				<SvgParameter name="stroke-width">3</SvgParameter>
-				<SvgParameter name="stroke-linejoin">round</SvgParameter>
-			</Stroke>
-		</PolygonSymbolizer>
-	</Rule>
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+    <Rule>
+        <Name>Vlak</Name>
+        <PolygonSymbolizer>
+            <Name>vsg120</Name>
+            <Fill>
+                <SvgParameter name="fill">#0000ff</SvgParameter>
+                <SvgParameter name="fill-opacity">0.8</SvgParameter>
+            </Fill>
+            <Stroke>
+                <SvgParameter name="stroke">#0000cd</SvgParameter>
+                <SvgParameter name="stroke-opacity">1</SvgParameter>
+                <SvgParameter name="stroke-width">3</SvgParameter>
+                <SvgParameter name="stroke-linejoin">round</SvgParameter>
+            </Stroke>
+        </PolygonSymbolizer>
+    </Rule>
 </FeatureTypeStyle>`);
 
 

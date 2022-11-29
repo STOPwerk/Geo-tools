@@ -22,6 +22,8 @@ class Parameters:
         self._FormData = formdata
         self._FileData = filedata
         self._Pad = directory_pad
+        # Geeft aan of resultaatbestanden weggeschreven kunnen worden
+        self.KanBestandenSchrijven = not directory_pad is None
 
     def LeesString (self, key : str):
         """Lees de waarde van een parameter aan de hand van de specificatie key / input control naam.

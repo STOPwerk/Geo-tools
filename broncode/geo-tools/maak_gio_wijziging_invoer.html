@@ -1,1 +1,33 @@
-Deze functionaliteit is nog niet beschikbaar
+<p>
+    Maak een GIO-wijziging: een <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html">vaststelling</a>
+	met daarin een <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectMutatie.html">mutatie</a> van een STOP geo-informatieobject. De GIO-Wijziging wordt gemaakt op basis van twee 
+	<a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html">versies</a>: de originele (was-)versie en de gewijzigde (wordt-)versie.
+</p>
+<h3>Bestanden</h3>
+<p id="bestanden">
+</p>
+<form id="upload_form" action="gio_wijziging_resultaat" method="post" enctype="multipart/form-data">
+    <div id="was_box" class="box">
+        <label>
+            <span class="link">Selecteer de originele (was-)versie van het geo-informatieobject</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <input class="box__file" type="file" name="was" id="was" accept="application/gml+xml,application/xml" />
+        </label>
+    </div>
+    <div id="wordt_box" class="box">
+        <label>
+            <span class="link">Selecteer de gewijzigde (wordt-)versie van het geo-informatieobject</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <input class="box__file" type="file" name="wordt" id="wordt" accept="application/gml+xml,application/xml" />
+        </label>
+    </div>
+	<p>
+	<input type="checkbox" name="persistente_id" id="persistente_id" checked="checked" value="false"></input>&nbsp;<label for="persistente_id"><b>Basisgeometrie-ids van geometrieën zijn willekeurig</b></label><br>
+	Vink dit aan als de basisgeometrie-ids in de wordt-versie bij het samenstellen van de wordt-versie opnieuw zijn toegekend. Als dezelfde geometrie in zowel de was- als de wordt-versie voorkomt, dan kan die toch een ander basisgeometrie-id hebben. Vink deze optie uit als een ongewijzigde geometrie in de was- en wordt-versie dezelfde basisgeometrie-id heeft.
+	</p>
+	<p>
+	<label for="nauwkeurigheid"><b>Juridische nauwkeurigheid</b></label>&nbsp;<input type="number" name="nauwkeurigheid" id="nauwkeurigheid" value="1" min="1"></input>&nbsp;<label for="nauwkeurigheid"><b>decimeter</b></label><br>
+	De juridische nauwkeurigheid van de geometrieën in de GIO. Een geometrie in de was-versie en een geometrie in de wordt-versie worden juridisch als dezelfde geometrie gezien als ze minder dan deze nauwkeurigheid van elkaar af liggen. De nauwkeurigheid wordt niet gebruikt als de GIO punten bevat en een ongewijzigde geometrie in was- en wordt-versie dezelfde basisgeometrie-id heeft.
+	</p>
+    <button id="startknop">Maak GIO-wijziging</button>
+</form>

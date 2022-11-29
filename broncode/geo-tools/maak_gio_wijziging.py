@@ -42,13 +42,47 @@ class GIOWijzigingMaker (GeoManipulatie):
 
     def _VoerUit (self):
         """Voer het request uit"""
-        self.Log.Informatie ("Lees de GIO bestanden")
-        was = self.Request.LeesBestand (self.Log, 'Was')
-        if not was is None:
-            was = self.LeesGeoData (was)
-        wordt = self.Request.LeesBestand (self.Log, 'Wordt')
-        if not wordt is None:
-            wordt = self.LeesGeoData (wordt)
-        if was is None or wordt is None:
+        if not self._LeesBestandenEnSpecificatie  ():
             return False
         return True
+
+
+    def _LeesBestandenEnSpecificatie (self):
+        """Lees de specificatie en GIO's en valideeer de invoer"""
+        succes = True
+        self.Log.Informatie ("Lees de was-versie van de GIO")
+
+        valideerGIOs = True
+        self._Was = self.LeesGeoBestand ('was', True)
+        if self._Was is None:
+            return False
+        if self._Was.Soort != 'GIO':
+            self.Log.Fout ("Het bestand bevat geen GIO maar: " + self._Was.Soort)
+            succes = False
+            valideerGIOs = False
+
+        self.Log.Informatie ("Lees de wordt-versie van de GIO")
+        self._Wordt = self.LeesGeoBestand ('wordt', True)
+        if self._Wordt is None:
+            return False
+        if self._Wordt.Soort != 'GIO':
+            self.Log.Fout ("Het bestand bevat geen GIO maar: " + self._Wordt.Soort)
+            succes = False
+            valideerGIOs = False
+
+        if valideerGIOs:
+            if self._Was.Dimensie != self._Wordt.Dimensie:
+                self.Log.Fout ("De was- en wordt-versie moeten allebei uitsluitend vlakken, lijnen of punten hebben")
+                succes = False
+            if self._Was.AttribuutNaam != self._Wordt.AttribuutNaam:
+                self.Log.Fout ("De was- en wordt-versie moeten allebei uitsluitend geometrie, GIO-delen of normwaarden hebben")
+                succes = False
+
+        self._PersistenteId = not self.Request.LeesString ('persistente_id') == 'false'
+        self._Nauwkeurigheid = self.Request.LeesString ('nauwkeurigheid')
+        if valideerGIOs and self._Nauwkeurigheid is None:
+            if not self._PersistenteId or self._Was.Dimensie > 0:
+                self.Log.Fout ("De nauwkeurigheid is niet opgegeven in de specificatie")
+                succes = False
+
+        return succes

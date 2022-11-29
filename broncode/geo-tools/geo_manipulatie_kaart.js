@@ -41,6 +41,7 @@ class Kaart {
         this._NieuwLagen = [];
         this._Onderlagen = [];
         this._BBox = false;
+        this._LagenMetProperties = 0;
     }
     static EPSG28992 = new ol.proj.Projection('urn:ogc:def:crs:EPSG::28992');
 
@@ -75,6 +76,12 @@ class Kaart {
             style: Kaartgegevens.Instantie._Symbolisaties[symbolisatieNaam]
         });
         collectie.push(layer);
+
+        if (geoJson.properties !== undefined) {
+            this._LagenMetProperties++;
+            layer._PopupNaam = naam;
+            layer._PopupProperties = geoJson.properties;
+        }
         return layer;
     }
 
@@ -119,9 +126,33 @@ class Kaart {
             mapLayers.push(this._Onderlagen[i]);
         }
 
+        // Tot slot de overlays
+        var mapOverlays = []
+        const popup_content = document.getElementById(kaartElementId + '_popup-content');
+        const popup_closer = document.getElementById(kaartElementId + '_popup-closer');
+        var popup_overlay = false;
+        if (this._LagenMetProperties > 0) {
+            // Popup wordt als overlay op de kaart getoond
+            popup_overlay = new ol.Overlay({
+                element: document.getElementById(kaartElementId + '_popup'),
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250
+                }
+            });
+            mapOverlays.push(popup_overlay);
+
+            popup_closer.onclick = function () {
+                popup_overlay.setPosition(undefined);
+                closer.blur();
+                return false;
+            };
+        }
+
         // Maak het kaartbeeld
         var map = new ol.Map({
             layers: mapLayers,
+            overlays: mapOverlays,
             target: kaartElementId,
             view: new ol.View({
                 center: ol.extent.getCenter(this._BBox),
@@ -129,6 +160,32 @@ class Kaart {
             })
         });
         map.render();
+
+        if (this._LagenMetProperties > 0) {
+            // Vulling van de popup
+            const toonNamen = (this._LagenMetProperties > 1);
+            map.on('click', function (e) {
+                var content = false;
+                map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+                    if (layer._PopupNaam !== undefined) {
+                        var attr = feature.getProperties();
+                        if (content === false) {
+                            content = '';
+                        }
+                        if (toonNamen) {
+                            content += '<div><b>' + layer._PopupNaam + '</b></div>';
+                        }
+                        for (var prop in layer._PopupProperties) {
+                            content += '<div>' + layer._PopupProperties[prop] + ': ' + attr[prop] + '</div>';
+                        }
+                    }
+                });
+                if (content !== false) {
+                    popup_content.innerHTML = content;
+                    popup_overlay.setPosition(e.coordinate);
+                }
+            });
+        }
     }
 
     static _BGT_BBox = [-285401.92, 22598.08, 595401.9199999999, 903401.9199999999];

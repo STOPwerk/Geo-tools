@@ -27,6 +27,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="geo-tools\geo_manipulatie_kaart.html" />
+    <Content Include="geo-tools\geo_manipulatie_kaart.css" />
     <Content Include="geo-tools\geo_manipulatie_kaart.js" />
     <Content Include="geo-tools\geo_manipulatie_ol.css" />
     <Content Include="geo-tools\geo_manipulatie_ol.js" />
@@ -99,6 +101,9 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.11" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

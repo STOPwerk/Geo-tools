@@ -70,7 +70,7 @@ class GeoViewer (GeoManipulatie):
 
 
         self.Log.Informatie ('Maak de kaartweergave')
-        self.VoegGeoDataToe ('gio', gio.Locaties)
+        self.VoegGeoDataToe ('gio', gio)
         if not symbolisatie is None:
             symbolisatieNaam = "sym"
             self.VoegSymbolisatieToe (symbolisatieNaam, symbolisatie)

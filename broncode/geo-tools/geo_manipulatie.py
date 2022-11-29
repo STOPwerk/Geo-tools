@@ -78,6 +78,8 @@ class GeoManipulatie:
             #----------------------------------------------------------
             # De work-identificatie van de GIO
             self.WorkId : str = None
+            # Geeft aan of de basisgeomatrie-id uit een bepaling komen
+            self.BerekendeID = False
             #----------------------------------------------------------
             # Voor een GIO-versie
             #----------------------------------------------------------
@@ -387,22 +389,22 @@ class GeoManipulatie:
             locatie['_shape'] = shape (locatie['geometry'])
         return locatie['_shape']
 
-    def VoegGeoDataToe (self, naam: str, locaties):
+    def VoegGeoDataToe (self, naam: str, geoData : GeoData):
         """Voeg de geo-gegevens uit een GIO of gebied toe aan de data beschikbaar in de resultaatpagina;
 
         Argumenten:
 
         naam str  De naam can de gegevens die gebruikt wordt om de gegevens aan een kaart te koppelen
-        locaties []  Een array van locaties zoals die zijn ingelezen
+        geoData GeoData  Een geo-data object waarvan de locaties op de kaart weergegeven moeten worden
         """
         collectie = {
             'type' : 'FeatureCollection',
             'crs': { 'type': 'name', 'properties': { 'name': 'urn:ogc:def:crs:EPSG::28992' } },
-            'features' : locaties
+            'features' : geoData.Locaties
         }
         # Bepaal de bounding box van de hele collectie
         bbox = False
-        for locatie in locaties:
+        for locatie in geoData.Locaties:
             locatieBBox = GeoManipulatie.MaakShapelyShape (locatie).bounds
             if bbox:
                 bbox = [
@@ -415,6 +417,19 @@ class GeoManipulatie:
                 bbox = list (locatieBBox)
         if bbox:
             collectie['bbox'] = bbox
+
+        # Bepaal de properties die op de kaart getoond kan worden
+        properties = {}
+        if not geoData.BerekendeID:
+            properties['id'] = 'ID'
+        if not geoData.LabelNaam is None:
+            properties[geoData.LabelNaam] = 'Naam';
+        if geoData.AttribuutNaam == 'groepID':
+            properties[geoData.AttribuutNaam] = 'Gio-deel';
+        elif not geoData.AttribuutNaam is None:
+            properties[geoData.AttribuutNaam] = 'Normwaarde';
+        if len (properties) > 0:
+            collectie['properties'] = properties 
 
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
@@ -528,10 +543,7 @@ class GeoManipulatie:
         jsInitialisatie str  Javascript om de kaartlagen aan de kaart toe te voegen. De kaart is beschikbaar als 'kaart' variabele,
         """
         self._InitialiseerWebpagina ()
-        self.Generator.VoegHtmlToe ('<div id="' + kaartElementId + '"')
-        if kaartClass:
-            self.Generator.VoegHtmlToe (' class="' + kaartClass + '"')
-        self.Generator.VoegHtmlToe ('></div>')
+        self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId).replace ('<!--Class-->', 'kaart' if kaartClass else kaartClass))
         self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '");\n});')
 
     def _InitialiseerWebpagina (self):
@@ -542,6 +554,7 @@ class GeoManipulatie:
             self.Generator.LeesCssTemplate ('ol')
             self.Generator.LeesJSTemplate ("ol", True, True)
             self.Generator.LeesJSTemplate ("sldreader", True, True)
+            self.Generator.LeesCssTemplate ("kaart")
             self.Generator.LeesJSTemplate ("kaart", True, True)
 
 class _JsonGeoEncoder (json.JSONEncoder):

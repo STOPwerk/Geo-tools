@@ -1,18 +1,25 @@
-.kaart_juxtapose {
-    position: relative;
-    top: -402px;
-    width: 600px;
-    height: 400px;
+.kaart {
     border: 1px solid #888888;
-    margin-bottom: 0;
-    z-index: 100;
+    position: relative;
 }
 
-.kaart {
-    width: 600px;
-    height: 400px;
-    margin-bottom: 0;
+.kaart-slider {
+    position: absolute;
+    z-index: 9;
+    cursor: ew-resize;
+    background-color: #2196F3;
+    opacity: 0.7;
 }
+
+    .kaart-slider.knop {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .kaart-slider.lijn {
+        width: 4px;
+    }
 
 .ol-popup {
     position: absolute;

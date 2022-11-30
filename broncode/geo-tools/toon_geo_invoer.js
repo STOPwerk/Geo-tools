@@ -72,8 +72,10 @@ window.addEventListener('load', function () {
 
     function UpdateControlStatus(geometrieGewijzigd) {
 
-        var container = document.getElementById('bestanden');
+        const container = document.getElementById('bestanden');
         container.innerHTML = '';
+		const titel = document.getElementById('titel');
+		titel.value = '';
 
         if (geometrieGewijzigd) {
             geoFileType = '';
@@ -91,9 +93,11 @@ window.addEventListener('load', function () {
             if (i > 0) {
                 teveelFiles = true;
                 line.innerText = 'Extra bestand geselecteerd! ' + file.name;
+				titel.value = '';
             } else {
                 line.innerText = geoFileType + ': ' + file.name;
                 analyseline = line;
+				titel.value = file.name;
             }
             heeftGeometrie = file;
         }

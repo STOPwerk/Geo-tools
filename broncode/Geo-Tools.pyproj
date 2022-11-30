@@ -27,8 +27,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="geo-tools\geo_manipulatie_juxtapose.js" />
-    <Content Include="geo-tools\geo_manipulatie_juxtapose.css" />
     <Content Include="geo-tools\geo_manipulatie_kaart.html" />
     <Content Include="geo-tools\geo_manipulatie_kaart.css" />
     <Content Include="geo-tools\geo_manipulatie_kaart.js" />

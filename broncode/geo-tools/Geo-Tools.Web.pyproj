@@ -17,6 +17,7 @@
     <Name>FlaskWebProject1</Name>
     <RootNamespace>FlaskWebProject1</RootNamespace>
     <InterpreterId>MSBuild|env|C:\Projects\KOOP\STOP\STOPwerk Geo-tools\broncode\Geo-Tools.pyproj</InterpreterId>
+    <WebBrowserPort>8888</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

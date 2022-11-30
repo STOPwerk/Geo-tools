@@ -14,6 +14,8 @@ window.addEventListener('load', function () {
 
         var container = document.getElementById('bestanden');
         container.innerHTML = '';
+		const titel = document.getElementById('titel');
+		titel.value = '&Delta;(';
 
         for (var i = 0; i < wasFile.files.length; i++) {
             var file = wasFile.files[i];
@@ -21,6 +23,9 @@ window.addEventListener('load', function () {
             container.appendChild(line);
             line.innerText = 'Was-versie: ' + file.name;
             heeftWas++;
+			if (i == 0){
+				titel.value += file.name;
+			}
         }
         for (var i = 0; i < wordtFile.files.length; i++) {
             var file = wordtFile.files[i];
@@ -28,6 +33,9 @@ window.addEventListener('load', function () {
             container.appendChild(line);
             line.innerText = 'Wordt-versie: ' + file.name;
             heeftWordt++;
+			if (i == 0){
+				titel.value += ',' + file.name + ')';
+			}
         }
         if (heeftWas > 1 || heeftWordt > 1) {
             var line = document.createElement('div');

@@ -45,7 +45,7 @@ class GIOWijzigingMaker (GeoManipulatie):
         if not self._LeesBestandenEnSpecificatie  ():
             return False
 
-        einde = self.Generator.StartSectie ("Bepaling GIO wijziging")
+        einde = self.Generator.StartSectie ("<h3>Bepaling GIO wijziging</h3>", True)
 
         self._ToonWasWordtKaart ()
 
@@ -115,3 +115,4 @@ class GIOWijzigingMaker (GeoManipulatie):
 
         self.Generator.VoegHtmlToe ('<p>Links de was-versie, rechts de wordt-versie van de GIO. Beweeg de schuif om meer of minder van elke versie te zien.</p>\n')
         self.ToonKaart ("was_wordt_ruw", 'kaart.VoegOudLaagToe ("Was-versie", "was", "' + symbolisatieNaam + '").VoegNieuwLaagToe ("Wordt-versie", "wordt", "' + symbolisatieNaam + '");')
+

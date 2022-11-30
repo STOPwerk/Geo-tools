@@ -24,12 +24,12 @@ class GeoManipulatie:
 # Maken van een webpagina
 #
 #======================================================================
-    def __init__ (self, titel, titelBijFout, request : Parameters, log: Meldingen = None):
+    def __init__ (self, defaultTitel, titelBijFout, request : Parameters, log: Meldingen = None):
         """Maak een instantie van de geo-operatie aan
 
         Argumenten:
 
-        titel str  Titel van de webpagina
+        defaultTitel str  Titel van de webpagina als de titel niet is meegegeven bij de invoer
         titelBijFout str  Titel van de webpagina als er een fout optreedt en alleen de log getoond wordt
         request Parameters  De parameters vor het web request
         """
@@ -37,9 +37,10 @@ class GeoManipulatie:
         self.Request = request
         # Meldingen voor de uitvoering van het request
         self.Log = Meldingen (False) if log is None else log
+        # Titel als doorgegeven in het request
+        self.Titel = request.LeesString ('titel')
         # Generator om de resultaat-pagina te maken
-        titelArgument = request.LeesString ('titel')
-        self.Generator = WebpaginaGenerator (titel if titelArgument is None else titelArgument)
+        self.Generator = WebpaginaGenerator (defaultTitel if self.Titel is None else self.Titel)
         # Status attribuut voor het opnemen van de nodige scripts/css
         # self._WebpaginaKanKaartTonen
         # Status van het toevoegen van de default symbolen
@@ -55,8 +56,9 @@ class GeoManipulatie:
             else:
                 self.Log.Fout ("De verwerking is afgebroken.")
 
-            self.Generator.VoegHtmlToe ("<h2>Verslag van de verwerking</h2>")
+            einde = self.Generator.StartSectie ("<h3>Verslag van de verwerking</h3>")
             self.Log.MaakHtml (self.Generator, None)
+            self.Generator.VoegHtmlToe (einde)
             return self.Generator.Html ()
         except Exception as e:
             self.Log.Fout ("Oeps, deze fout is niet verwacht: " + str(e))
@@ -549,7 +551,7 @@ class GeoManipulatie:
         """
         self._InitialiseerWebpagina ()
         self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId))
-        self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '");\n});')
+        self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '", 600, 400);\n});')
 
     def _InitialiseerWebpagina (self):
         """Voeg de bestanden toe nodig om OpenLayers kaarten op te nemen in de webpagina

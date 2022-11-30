@@ -53,7 +53,7 @@ class Kaart {
     VoegOudLaagToe(naam, dataNaam, symbolisatieNaam) {
         var layer = this._MaakKaartlaag(this._OudLagen, naam, dataNaam, symbolisatieNaam);
         var self = this;
-        layer.on('precompose', function (event) {
+        layer.on('prerender', function (event) {
             var ctx = event.context;
             ctx.save();
             ctx.beginPath();
@@ -61,7 +61,7 @@ class Kaart {
             ctx.clip();
         });
 
-        layer.on('postcompose', function (event) {
+        layer.on('postrender', function (event) {
             var ctx = event.context;
             ctx.restore();
         });
@@ -70,15 +70,15 @@ class Kaart {
     VoegNieuwLaagToe(naam, dataNaam, symbolisatieNaam) {
         var layer = this._MaakKaartlaag(this._NieuwLagen, naam, dataNaam, symbolisatieNaam);
         var self = this;
-        layer.on('precompose', function (event) {
+        layer.on('prerender', function (event) {
             var ctx = event.context;
             ctx.save();
             ctx.beginPath();
-            ctx.rect(ctx.canvas.width - self._SliderPositie, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.rect(self._SliderPositie, 0, ctx.canvas.width, ctx.canvas.height);
             ctx.clip();
         });
 
-        layer.on('postcompose', function (event) {
+        layer.on('postrender', function (event) {
             var ctx = event.context;
             ctx.restore();
         });
@@ -114,18 +114,18 @@ class Kaart {
         return layer;
     }
 
-    Toon(kaartElementId) {
+    Toon(kaartElementId, kaartElementWidth, kaartElementHeight) {
         // Bepaal eerst welk deel van Nederland getoond moet worden
+        var kaartElement = document.getElementById(kaartElementId);
+        kaartElement.style.width = kaartElementWidth + "px"
+        kaartElement.style.height = kaartElementHeight + "px"
         var legeRuimteOmGeometrie = 0.5;
         if (this._BBox === false) {
             this._BBox = Kaart._BGT_BBox;
             legeRuimteOmGeometrie = 0;
         }
         var zoomLevel = 20 - Kaart._BGT_Resolutions.length;
-        const defaultSize = 500;
-        var kaartElementWidth = document.getElementById(kaartElementId).offsetWidth; if (kaartElementWidth <= 0) { kaartElementWidth = defaultSize; }
         var zoomLevelX = Math.max(Math.floor(Math.log2((kaartElementWidth * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[2] - this._BBox[0]))), 0);
-        var kaartElementHeight = document.getElementById(kaartElementId).offsetHeight; if (kaartElementHeight <= 0) { kaartElementHeight = defaultSize; }
         var zoomLevelY = Math.max(Math.floor(Math.log2((kaartElementHeight * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[3] - this._BBox[1]))), 0);
         zoomLevel += (zoomLevelX < zoomLevelY ? zoomLevelX : zoomLevelY);
 
@@ -184,9 +184,14 @@ class Kaart {
 
             popup_closer.onclick = function () {
                 popup_overlay.setPosition(undefined);
-                closer.blur();
+                popup_closer.blur();
                 return false;
             };
+        } else {
+            var popup = document.getElementById(kaartElementId + '_popup');
+            if (popup) {
+                popup.remove();
+            }
         }
 
         // Maak het kaartbeeld
@@ -226,15 +231,71 @@ class Kaart {
                 }
             });
         }
-        if (this._OudLagen.length > 0) {
-            window.juxtapose.makeSlider(document.getElementById(kaartElementId + "_juxtapose"), kaartElementWidth, kaartElementHeight, function (positie) {
-                this._SliderPositie = positie;
+        if (this._OudLagen.length > 0 || this._NieuwLagen.length > 0) {
+            var self = this;
+            new Slider(kaartElement, function (positie) {
+                self._SliderPositie = positie;
                 map.render();
-            });
+            })
         }
     }
 
     static _BGT_BBox = [-285401.92, 22598.08, 595401.9199999999, 903401.9199999999];
     static _BGT_Resolutions = [3440.64, 1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68, 0.84, 0.42];
+}
+
+class Slider {
+    // Inspiratie: https://www.w3schools.com/howto/howto_js_image_comparison.asp
+    constructor(kaartElement, onSlide) {
+        this._Kaartelement = kaartElement;
+        var kaartRect = kaartElement.getBoundingClientRect();
+        this._Left = kaartRect.left;
+        this._Width = kaartRect.right - kaartRect.left;
+        this._OnSlide = onSlide;
+        this._Clicked = false;
+
+        this._Sliders = [document.createElement("DIV"), document.createElement("DIV")];
+        this._Sliders[0].setAttribute("class", "kaart-slider knop");
+        this._Sliders[1].setAttribute("class", "kaart-slider lijn");
+        this._Sliders[1].style.height = (kaartRect.bottom - kaartRect.top) + "px";
+        var self = this;
+        for (var i = 0; i < this._Sliders.length; i++) {
+            var slider = this._Sliders[i]
+            kaartElement.parentElement.insertBefore(slider, kaartElement);
+            slider.style.top = ((kaartRect.top + kaartRect.bottom) / 2 - slider.offsetHeight / 2) + "px";
+            slider.style.left = (this._Left + this._Width / 2 - slider.offsetWidth / 2) + "px";
+            slider.addEventListener("mousedown", (e) => self._SlideReady(e));
+            window.addEventListener("mouseup", (e) => self._SlideFinish(e));
+            slider.addEventListener("touchstart", (e) => self._SlideReady(e));
+        }
+    }
+    _SlideReady(e) {
+        e.preventDefault();
+        this._Clicked = true;
+        var self = this;
+        window.addEventListener("mousemove", (e) => self._SlideMove(e));
+        window.addEventListener("touchmove", (e) => self._SlideMove(e));
+    }
+    _SlideFinish() {
+        this._Clicked = false;
+    }
+    _SlideMove(e) {
+        if (!this._Clicked) return false;
+        var pos = this._GetCursorPos(e)
+        if (pos < 0) pos = 0;
+        if (pos > this._Width) pos = this._Width;
+        for (var i = 0; i < this._Sliders.length; i++) {
+            var slider = this._Sliders[i]
+            slider.style.left = this._Left + (pos - (slider.offsetWidth / 2)) + "px";
+        }
+        this._OnSlide(pos)
+    }
+    _GetCursorPos(e) {
+        e = (e.changedTouches) ? e.changedTouches[0] : e;
+        var a = this._Kaartelement.getBoundingClientRect();
+        var x = e.pageX - a.left;
+        x = x - window.pageXOffset;
+        return x;
+    }
 }
 

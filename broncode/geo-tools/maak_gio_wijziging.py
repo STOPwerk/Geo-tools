@@ -44,6 +44,13 @@ class GIOWijzigingMaker (GeoManipulatie):
         """Voer het request uit"""
         if not self._LeesBestandenEnSpecificatie  ():
             return False
+
+        einde = self.Generator.StartSectie ("Bepaling GIO wijziging")
+
+        self._ToonWasWordtKaart ()
+
+        self.Generator.VoegHtmlToe (einde)
+
         return True
 
 
@@ -78,6 +85,11 @@ class GIOWijzigingMaker (GeoManipulatie):
                 self.Log.Fout ("De was- en wordt-versie moeten allebei uitsluitend geometrie, GIO-delen of normwaarden hebben")
                 succes = False
 
+        self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
+        self._Symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
+        if not self._Symbolisatie is None:
+            self.Log.Detail ('Symbolisatie ingelezen')
+
         self._PersistenteId = not self.Request.LeesString ('persistente_id') == 'false'
         self._Nauwkeurigheid = self.Request.LeesString ('nauwkeurigheid')
         if valideerGIOs and self._Nauwkeurigheid is None:
@@ -86,3 +98,20 @@ class GIOWijzigingMaker (GeoManipulatie):
                 succes = False
 
         return succes
+
+    def _ToonWasWordtKaart (self):
+        """Toon de was en de wordt in één kaart als startpunt van de afleiding"""
+        self.Log.Informatie ('Laat de was- en wordt-versie als aangeleverd zien in één kaart')
+        self._InitialiseerWebpagina ()
+        self.Generator.LeesCssTemplate ('resultaat')
+
+        if not self._Symbolisatie is None:
+            self._SymbolisatieNaam = "was-wordt"
+            self.VoegSymbolisatieToe (symbolisatieNaam, self._Symbolisatie)
+        else:
+            self._SymbolisatieNaam = symbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was)
+        self.VoegGeoDataToe ("was", self._Was)
+        self.VoegGeoDataToe ("wordt", self._Wordt)
+
+        self.Generator.VoegHtmlToe ('<p>Links de was-versie, rechts de wordt-versie van de GIO. Beweeg de schuif om meer of minder van elke versie te zien.</p>\n')
+        self.ToonKaart ("was_wordt_ruw", 'kaart.VoegOudLaagToe ("Was-versie", "was", "' + symbolisatieNaam + '").VoegNieuwLaagToe ("Wordt-versie", "wordt", "' + symbolisatieNaam + '");')

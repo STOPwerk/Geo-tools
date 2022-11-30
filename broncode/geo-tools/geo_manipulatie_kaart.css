@@ -1,3 +1,19 @@
+.kaart_juxtapose {
+    position: relative;
+    top: -402px;
+    width: 600px;
+    height: 400px;
+    border: 1px solid #888888;
+    margin-bottom: 0;
+    z-index: 100;
+}
+
+.kaart {
+    width: 600px;
+    height: 400px;
+    margin-bottom: 0;
+}
+
 .ol-popup {
     position: absolute;
     background-color: white;

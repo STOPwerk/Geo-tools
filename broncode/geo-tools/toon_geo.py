@@ -76,7 +76,7 @@ class GeoViewer (GeoManipulatie):
             self.VoegSymbolisatieToe (symbolisatieNaam, symbolisatie)
         else:
             symbolisatieNaam = self.VoegDefaultSymbolisatieToe (gio)
-        self.ToonKaart ("kaart", "kaart", 'kaart.VoegOnderlaagToe ("' + gio.Soort + '", "gio", "' + symbolisatieNaam + '");')
+        self.ToonKaart ("kaart", 'kaart.VoegOnderlaagToe ("' + gio.Soort + '", "gio", "' + symbolisatieNaam + '");')
 
         self.Log.Detail ('Maak de pagina af')
         self.Generator.LeesCssTemplate ('resultaat')

@@ -49,6 +49,7 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
     "wordt": "GIO_wordt_versie.gml",
     "persistente_id": true | false,
     "nauwkeurigheid": 1,
+    "symbolisatie": "style.xml",
     "wijziging": "GIO_wijziging.gml"
 }
 ```
@@ -60,6 +61,7 @@ met:
 | `wordt` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de nieuwe (wordt-)versie van de GIO bevat.|
 | `persistente_id` | Geeft aan of een ongewijzigde geometrie in de was- en wordt-versie met dezelfde [basisgeometrie-id](@@@Basisgeometrie_Url@@@) heeft. Als hiervoor `true` wordt ingevuld, dan ziet de geo-tool een verandering van basisgeometrie-id automatisch als een verandering van geometrie. Als hiervoor `false` wordt ingevuld, dan zal de geo-tool aan de hand van de `nauwkeurigheid` bepalen of er sprake is van een verandering in geometrie. Optioneel, `true` wordt gebruikt als `persistente_id` niet is opgegeven. |
 | `nauwkeurigheid` | De juridische nauwkeurigheid in decimeter van de geometrieën in de GIO. Een geometrie in de was-versie en een geometrie in de wordt-versie worden juridisch als dezelfde geometrie gezien als ze minder dan `nauwkeurigheid` van elkaar af liggen. De `nauwkeurigheid` mag weggelaten worden als de GIO punten bevat en `persistente_id` is `true`. |
+| `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
 | `wijziging` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) met de GIO-wijziging. Dit bestand kan als invoer gebruikt worden voor de [Toon GIO wijziging](#toon-gio-wijziging) geo-tool. |
 
 

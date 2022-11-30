@@ -27,6 +27,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="geo-tools\geo_manipulatie_juxtapose.js" />
+    <Content Include="geo-tools\geo_manipulatie_juxtapose.css" />
     <Content Include="geo-tools\geo_manipulatie_kaart.html" />
     <Content Include="geo-tools\geo_manipulatie_kaart.css" />
     <Content Include="geo-tools\geo_manipulatie_kaart.js" />
@@ -40,6 +42,7 @@
     <Content Include="geo-tools\toon_geo_invoer.css" />
     <Content Include="geo-tools\toon_geo_invoer.js" />
     <Content Include="geo-tools\toon_geo_invoer.html" />
+    <Content Include="geo-tools\maak_gio_wijziging_resultaat.css" />
     <Content Include="geo-tools\voer_tools_uit.bat" />
     <Content Include="README.md" />
     <Content Include="geo-tools\applicatie_meldingen_einde.html" />

@@ -397,6 +397,9 @@ class GeoManipulatie:
         naam str  De naam can de gegevens die gebruikt wordt om de gegevens aan een kaart te koppelen
         geoData GeoData  Een geo-data object waarvan de locaties op de kaart weergegeven moeten worden
         """
+        if geoData is None:
+            self.Log.Detail ('Geen geo-data beschikbaar dus niet toegevoegd aan de kaartgegevens: "' + naam + '"')
+            return
         collectie = {
             'type' : 'FeatureCollection',
             'crs': { 'type': 'name', 'properties': { 'name': 'urn:ogc:def:crs:EPSG::28992' } },
@@ -519,6 +522,9 @@ class GeoManipulatie:
     def VoegSymbolisatieToe (self, naam : str, symbolisatie : str):
 
         # Verwijder <?xml ?> regel indien aanwezig
+        if symbolisatie is None:
+            self.Log.Detail ('Geen symbolisatie beschikbaar dus niet toegevoegd aan de kaartgegevens: "' + naam + '"')
+            return
         symbolisatie = GeoManipulatie._StripHeader.sub ('', symbolisatie)
 
         # Voeg toe aan de scripts van de pagina
@@ -533,17 +539,16 @@ class GeoManipulatie:
 # Weergave op een kaart
 #
 #======================================================================
-    def ToonKaart (self, kaartElementId : str, kaartClass : str, jsInitialisatie : str):
+    def ToonKaart (self, kaartElementId : str, jsInitialisatie : str):
         """Toon een kaart op de huidige plaats in de webpagina
 
         Argumenten:
 
         kaartElementId str  Naam van het (in dese methode te maken) HTML element waarin de kaart getoond wordt 
-        kaartClass str De naam van de klasse van de kaart. Zorg er in de style voor dat het element een breedte en hoogte heeft.
         jsInitialisatie str  Javascript om de kaartlagen aan de kaart toe te voegen. De kaart is beschikbaar als 'kaart' variabele,
         """
         self._InitialiseerWebpagina ()
-        self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId).replace ('<!--Class-->', 'kaart' if kaartClass else kaartClass))
+        self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId))
         self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '");\n});')
 
     def _InitialiseerWebpagina (self):
@@ -554,6 +559,8 @@ class GeoManipulatie:
             self.Generator.LeesCssTemplate ('ol')
             self.Generator.LeesJSTemplate ("ol", True, True)
             self.Generator.LeesJSTemplate ("sldreader", True, True)
+            self.Generator.LeesCssTemplate ("juxtapose")
+            self.Generator.LeesJSTemplate ("juxtapose", True, True)
             self.Generator.LeesCssTemplate ("kaart")
             self.Generator.LeesJSTemplate ("kaart", True, True)
 

@@ -50,9 +50,38 @@ class Kaart {
         return this;
     }
 
-    VoegOudNieuwLaagToe(naam, oudeDataNaam, nieuweDataNaam, symbolisatieNaam) {
-        this._MaakKaartlaag(this._OudLagen, naam + ' (was)', oudeDataNaam, symbolisatieNaam);
-        this._MaakKaartlaag(this._NieuwLagen, naam + ' (wordt)', nieuweDataNaam, symbolisatieNaam);
+    VoegOudLaagToe(naam, dataNaam, symbolisatieNaam) {
+        var layer = this._MaakKaartlaag(this._OudLagen, naam, dataNaam, symbolisatieNaam);
+        var self = this;
+        layer.on('precompose', function (event) {
+            var ctx = event.context;
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(0, 0, self._SliderPositie, ctx.canvas.height);
+            ctx.clip();
+        });
+
+        layer.on('postcompose', function (event) {
+            var ctx = event.context;
+            ctx.restore();
+        });
+        return this;
+    }
+    VoegNieuwLaagToe(naam, dataNaam, symbolisatieNaam) {
+        var layer = this._MaakKaartlaag(this._NieuwLagen, naam, dataNaam, symbolisatieNaam);
+        var self = this;
+        layer.on('precompose', function (event) {
+            var ctx = event.context;
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(ctx.canvas.width - self._SliderPositie, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.clip();
+        });
+
+        layer.on('postcompose', function (event) {
+            var ctx = event.context;
+            ctx.restore();
+        });
         return this;
     }
 
@@ -93,11 +122,11 @@ class Kaart {
             legeRuimteOmGeometrie = 0;
         }
         var zoomLevel = 20 - Kaart._BGT_Resolutions.length;
-        const defaultSize = 500 * (1 - legeRuimteOmGeometrie);
-        var elementSize = document.getElementById(kaartElementId).offsetWidth * (1 - legeRuimteOmGeometrie); if (elementSize <= 0) { elementSize = defaultSize; }
-        var zoomLevelX = Math.max(Math.floor(Math.log2((elementSize * Kaart._BGT_Resolutions[0]) / (this._BBox[2] - this._BBox[0]))), 0);
-        elementSize = document.getElementById(kaartElementId).offsetHeight * (1 - legeRuimteOmGeometrie); if (elementSize <= 0) { elementSize = defaultSize; }
-        var zoomLevelY = Math.max(Math.floor(Math.log2((elementSize * Kaart._BGT_Resolutions[0]) / (this._BBox[3] - this._BBox[1]))), 0);
+        const defaultSize = 500;
+        var kaartElementWidth = document.getElementById(kaartElementId).offsetWidth; if (kaartElementWidth <= 0) { kaartElementWidth = defaultSize; }
+        var zoomLevelX = Math.max(Math.floor(Math.log2((kaartElementWidth * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[2] - this._BBox[0]))), 0);
+        var kaartElementHeight = document.getElementById(kaartElementId).offsetHeight; if (kaartElementHeight <= 0) { kaartElementHeight = defaultSize; }
+        var zoomLevelY = Math.max(Math.floor(Math.log2((kaartElementHeight * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[3] - this._BBox[1]))), 0);
         zoomLevel += (zoomLevelX < zoomLevelY ? zoomLevelX : zoomLevelY);
 
         // Achtergrondkaart
@@ -126,7 +155,18 @@ class Kaart {
             mapLayers.push(this._Onderlagen[i]);
         }
 
-        // Tot slot de overlays
+        // Dan de oud/nieuw lagen
+        if (this._OudLagen.length > 0 || this._NieuwLagen.length > 0) {
+            this._SliderPositie = kaartElementWidth / 2;
+            for (var i = 0; i < this._OudLagen.length; i++) {
+                mapLayers.push(this._OudLagen[i]);
+            }
+            for (var i = 0; i < this._NieuwLagen.length; i++) {
+                mapLayers.push(this._NieuwLagen[i]);
+            }
+        }
+
+        // Tot slot de overlays / popup
         var mapOverlays = []
         const popup_content = document.getElementById(kaartElementId + '_popup-content');
         const popup_closer = document.getElementById(kaartElementId + '_popup-closer');
@@ -184,6 +224,12 @@ class Kaart {
                     popup_content.innerHTML = content;
                     popup_overlay.setPosition(e.coordinate);
                 }
+            });
+        }
+        if (this._OudLagen.length > 0) {
+            window.juxtapose.makeSlider(document.getElementById(kaartElementId + "_juxtapose"), kaartElementWidth, kaartElementHeight, function (positie) {
+                this._SliderPositie = positie;
+                map.render();
             });
         }
     }

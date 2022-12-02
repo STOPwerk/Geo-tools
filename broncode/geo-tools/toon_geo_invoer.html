@@ -16,21 +16,27 @@
         </label>
     </div>
     <p id="symbolisatie_invoer">
-	<b>Voor deze GIO is een symbolisatie nodig.</b>
+        <b>Voor deze GIO is een symbolisatie nodig.</b>
     </p>
+    <p>
+        Voor een geo-informatieobject met GIO-delen of met normwaarden is een symbolisatie conform
+        <a href="@@@STOP_Documentatie_Url@@@">STOP</a> vereist. Als die niet wordt meegegeven worden de
+        GIO-delen en normwaarden niet gevisualiseerd, maar ze zijn wel opvraagbaar door op een positie in
+        de kaart te klikken. Voor een GIO met alleen geometrie of voor een gebiedsmarkering/effectgebied mag een symbolisatie worden meegegeven maar dat hoeft niet.
+    </p>
+    <div class="box" id="symbolisatie_box">
+        <label>
+            <span class="link">Selecteer de symbolisatie voor het geo-informatieobject</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <input class="box__file" type="file" name="symbolisatie" id="symbolisatie" accept="application/xml" />
+        </label>
+    </div>
+    <div id="nauwkeurigheid_box">
 	<p>
-		Voor een geo-informatieobject met GIO-delen of met normwaarden is een symbolisatie conform
-		<a href="@@@STOP_Documentatie_Url@@@">STOP</a> vereist. Als die niet wordt meegegeven worden de
-		GIO-delen en normwaarden niet gevisualiseerd, maar ze zijn wel opvraagbaar door op een positie in
-		de kaart te klikken. Voor een GIO met alleen geometrie of voor een gebiedsmarkering/effectgebied mag een symbolisatie worden meegegeven maar dat hoeft niet.
+	<label for="nauwkeurigheid"><b>Tekennauwkeurigheid</b></label>&nbsp;<input type="number" name="nauwkeurigheid" id="nauwkeurigheid" value="1" min="1"></input>&nbsp;<label for="nauwkeurigheid"><b>decimeter</b></label><br>
+	De juridische/tekennauwkeurigheid van de geometrieën in de GIO ([zie documentatie](@@@GeoTools_Url@@@wiki/Toon-controleer-gio)). Vul dit in om het GIO te controleren op geschiktheid voor het bepalen van een GIO-wijziging. Laat het veld leeg als de controle niet uitgevoerd hoeft te worden.
 	</p>
-	<div class="box" id="symbolisatie_box">
-		<label>
-			<span class="link">Selecteer de symbolisatie voor het geo-informatieobject</span>
-			<span>of sleep het bestand hier naar toe.</span>
-			<input class="box__file" type="file" name="symbolisatie" id="symbolisatie" accept="application/xml" />
-		</label>
-	</div>
+    </div>
     <button id="startknop">Toon geo-informatie</button>
-	<input type="hidden" name="titel" id="titel">
+    <input type="hidden" name="titel" id="titel">
 </form>

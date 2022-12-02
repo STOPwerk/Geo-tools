@@ -6,6 +6,7 @@ De huidige versie is: `@@@VERSIE@@@`.
 
 Deze documentatie betreft een aantal [Python scripts](../broncode/geo-tools) die aan software leveranciers demonstreren hoe een GIO-wijziging bepaald en getoond kan worden. De scripts zijn online uit te voeren:
 
+- [Tonen/controleren van geo-informatie](@@@GeoTools_Online_Url@@@toon_geo) om te controleren of een GIO geschikt is voor het geautomatiseerd bepalen van wijzingen.
 - [Bepaling van een GIO-wijziging](@@@GeoTools_Online_Url@@@gio_wijziging) uit twee versies van een GIO.
 - [Tonen van een GIO-wijziging](@@@GeoTools_Online_Url@@@toon_gio_wijziging) die de geo-renvooi voor een GIO-wijziging toont.
 

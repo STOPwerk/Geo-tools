@@ -3,12 +3,30 @@
 # Helper om met request/test parameters om te gaan
 #
 #======================================================================
-from typing import Dict
+from typing import Dict, List
 
 import os
 from applicatie_meldingen import Meldingen
 
 class Parameters:
+
+    def Maak (formdata : Dict[str,str], filedata, directory_pad: str) -> List['Parameters']:
+        """Maak een array van de parameters op basis van de specificatie
+
+        Argumenten:
+
+        formdata {}        Key = value parameters die invoer zijn voor de operatie
+        filedata           Bestanden die in een web request zijn meegegeven; None voor een test
+        directory_pad str  Voor een test: pad waarin de bestanden staan; None voor een web request
+        """
+        if not formdata is None and isinstance (formdata, list):
+            if len (formdata) == 0:
+                return [Parameters (None, filedata, directory_pad)]
+            else:
+                return [Parameters (fd, filedata, directory_pad) for fd in formdata]
+        else:
+            return [Parameters (formdata, filedata, directory_pad)]
+
 
     def __init__ (self, formdata : Dict[str,str], filedata, directory_pad: str):
         """Maak een instantie van de parameters aan

@@ -48,8 +48,8 @@
     <Content Include="geo-tools\weergave_webpagina_einde.html" />
     <Content Include="geo-tools\weergave_webpagina_start.html" />
     <Content Include="Geo-Tools.pyproj.vsspell" />
-    <Content Include="tests\geo_wijziging\punten\puntsymbolen.json" />
-    <Content Include="tests\geo_wijziging\punten\verkeersborden_STOP.json" />
+    <Content Include="tests\data\verkeersborden_puntsymbolen.json" />
+    <Content Include="tests\data\verkeersborden_STOP.json" />
     <Content Include="uitleveren\configuratie.json" />
     <Content Include="uitleveren\download\LEESMIJ.txt" />
     <Content Include="uitleveren\download\voer_tools_uit_voor_mijn_voorbeelden.bat" />
@@ -58,11 +58,13 @@
     <Content Include="uitleveren\README.md" />
     <Content Include="uitleveren\wiki_extra\Maak STOPwerk git user.bat" />
     <Content Include="uitleveren\wiki_extra\__LEESMIJ.txt" />
-    <Content Include="wiki\Code-gio-wijziging.md" />
-    <Content Include="wiki\Code-toon-gio-wijziging.md" />
+    <Content Include="wiki\Toon-controleer-gio.md" />
+    <Content Include="wiki\Maak-gio-wijziging.md" />
+    <Content Include="wiki\Toon-gio-wijziging.md" />
     <Content Include="wiki\Geo-tools-uitvoeren.md" />
     <Content Include="wiki\Home.md" />
     <Content Include="wiki\Invoerspecificatie.md" />
+    <Content Include="wiki\Tekennauwkeurigheid.png" />
     <Content Include="wiki\_Sidebar.md" />
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +82,7 @@
     <Compile Include="geo-tools\weergave_webpagina.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tests\geo_wijziging\punten\verkeersborden.py" />
+    <Compile Include="tests\data\verkeersborden.py" />
     <Compile Include="uitleveren\maak_release_artefacts.py" />
     <Compile Include="uitleveren\pas_configuratie_toe.py" />
   </ItemGroup>
@@ -88,7 +90,7 @@
     <Folder Include="geo-tools\" />
     <Folder Include="tests\" />
     <Folder Include="tests\geo_wijziging\" />
-    <Folder Include="tests\geo_wijziging\punten\" />
+    <Folder Include="tests\data\" />
     <Folder Include="uitleveren\" />
     <Folder Include="uitleveren\download\" />
     <Folder Include="uitleveren\wiki_extra\" />
@@ -104,9 +106,6 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
-  </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.11" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

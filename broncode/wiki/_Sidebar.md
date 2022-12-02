@@ -5,5 +5,6 @@
 - [Invoerspecificatie](Invoerspecificatie)
 
 **Interne werking**
-- [Gio-wijziging](Code-gio-wijziging)
-- [Toon-gio-wijziging](Code-toon-gio-wijziging)
+- [Toon/controleer GIO](Toon-controleer-gio)
+- [Maak Gio-wijziging](Maak-gio-wijziging)
+- [Toon Gio-wijziging](Toon-gio-wijziging)

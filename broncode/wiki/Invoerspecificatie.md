@@ -31,8 +31,24 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
 ```
 {
     "geometrie": "geometrische_data.gml",
-    "symbolisatie": "style.xml"
+    "symbolisatie": "style.xml",
+    "nauwkeurigheid": 1
 }
+```
+of meerdere in één resultaatpagina:
+```
+[{
+        "geometrie": "geometrische_data_1.gml",
+        "symbolisatie": "style_1.xml",
+        "nauwkeurigheid": 1
+    },
+    {
+        "geometrie": "geometrische_data_2.gml",
+        "symbolisatie": "style_2.xml",
+        "nauwkeurigheid": 2
+    },
+    ....
+]
 ```
 met:
 
@@ -40,6 +56,8 @@ met:
 | --------- | ------------ |
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html). Optioneel; als dit niet gegeven is worden alle gebieden/lijnen/punten op een standaard manier weergegeven. |
+| `nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
+
 
 ## Maak GIO wijziging
 Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-tool die van twee geo-informatieobjecten een GIO-wijziging maakt.
@@ -60,7 +78,7 @@ met:
 | `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van de GIO bevat.|
 | `wordt` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de nieuwe (wordt-)versie van de GIO bevat.|
 | `persistente_id` | Geeft aan of een ongewijzigde geometrie in de was- en wordt-versie met dezelfde [basisgeometrie-id](@@@Basisgeometrie_Url@@@) heeft. Als hiervoor `true` wordt ingevuld, dan ziet de geo-tool een verandering van basisgeometrie-id automatisch als een verandering van geometrie. Als hiervoor `false` wordt ingevuld, dan zal de geo-tool aan de hand van de `nauwkeurigheid` bepalen of er sprake is van een verandering in geometrie. Optioneel, `true` wordt gebruikt als `persistente_id` niet is opgegeven. |
-| `nauwkeurigheid` | De juridische nauwkeurigheid in decimeter van de geometrieën in de GIO. Een geometrie in de was-versie en een geometrie in de wordt-versie worden juridisch als dezelfde geometrie gezien als ze minder dan `nauwkeurigheid` van elkaar af liggen. De `nauwkeurigheid` mag weggelaten worden als de GIO punten bevat en `persistente_id` is `true`. |
+| `nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
 | `wijziging` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) met de GIO-wijziging. Dit bestand kan als invoer gebruikt worden voor de [Toon GIO wijziging](#toon-gio-wijziging) geo-tool. |
 

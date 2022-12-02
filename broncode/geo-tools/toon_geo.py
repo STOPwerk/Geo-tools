@@ -40,7 +40,7 @@ class GeoViewer (GeoManipulatie):
 #
 #======================================================================
     def __init__(self, request : Parameters, log: Meldingen):
-        super ().__init__ ("Geo-informatie in beeld", "Geo-informatie - geen beeld", request, log)
+        super ().__init__ ("Geo-informatie in beeld", "Geo-informatie - geen beeld", request, log, True)
 
     def _VoerUit (self):
         """Voer het request uit"""
@@ -68,17 +68,32 @@ class GeoViewer (GeoManipulatie):
         else:
             self.Log.Detail ('Symbolisatie ingelezen')
 
+        einde = None
+        if not self.RequestIndex is None:
+            einde = self.Generator.StartSectie ('<h3>Bestand #1</h3>', True)
 
         self.Log.Informatie ('Maak de kaartweergave')
-        self.VoegGeoDataToe ('gio', gio)
-        if not symbolisatie is None:
-            symbolisatieNaam = "sym"
-            self.VoegSymbolisatieToe (symbolisatieNaam, symbolisatie)
-        else:
-            symbolisatieNaam = self.VoegDefaultSymbolisatieToe (gio)
-        self.ToonKaart ("kaart", 'kaart.VoegOnderlaagToe ("' + gio.Soort + '", "gio", "' + symbolisatieNaam + '");')
+        dataNaam = self.VoegGeoDataToe (gio)
+        symbolisatieNaam = self.VoegDefaultSymbolisatieToe (gio) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
+        self.ToonKaart ('kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + dataNaam + '", "' + symbolisatieNaam + '");')
+
+        if gio.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
+            self.Log.Informatie ('Valideer de GIO')
+            lijst = self.MaakLijstVanGeometrieen (gio)
+            problemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie)
+            if problemen is None:
+                self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij tekennauwkeurigheid ' + self.Request.LeesString ("nauwkeurigheid") + '</p>')
+            else:
+                self.Generator.VoegHtmlToe ('<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij tekennauwkeurigheid ' + self.Request.LeesString ("nauwkeurigheid") + ". ")
+                if not tekennauwkeurigheid is None:
+                    self.Generator.VoegHtmlToe ('Het GIO kan wel> gebruikt worden met een tekennauwkeurigheid van ' + str(tekennauwkeurigheid))
+                self.Generator.VoegHtmlToe ('</p><p>De plaatsen waar geometrieën voor problemen zorgen:')
+                geomNaam = self.VoegGeometrieToeAlsData (problemen)
+                geomSym = self.VoegUniformeSymbolisatieToe (1 if gio.Dimensie == 1 else 2, "#ff0000", "#800000")
+                self.ToonKaart ('kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + dataNaam + '", "' + symbolisatieNaam + '");kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + geomNaam + '", "' + geomSym + '");')
 
         self.Log.Detail ('Maak de pagina af')
+        self.Generator.VoegHtmlToe (einde)
         self.Generator.LeesCssTemplate ('resultaat')
         return True
 

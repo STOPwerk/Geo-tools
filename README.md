@@ -11,14 +11,12 @@ Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd wor
 
 Een aantal [Python scripts](broncode/geo-tools) die aan software leveranciers demonstreren hoe een GIO-wijziging bepaald en getoond kan worden. De scripts zijn online uit te voeren:
 
+- [Tonen van een GIO-versie, gebiedsmarkering of effectgebied](@@@GeoTools_Online_Url@@@toon_geo) die geo-informatie toont en controle van een GIO ppde geschiktheid voor het bepalen van een GIO-wijziging..
 - [Bepaling van een GIO-wijziging](@@@GeoTools_Online_Url@@@gio_wijziging) uit twee versies van een GIO.
 - [Tonen van een GIO-wijziging](@@@GeoTools_Online_Url@@@toon_gio_wijziging) die de geo-renvooi voor een GIO-wijziging toont.
 - Er zijn [voorbeelden](@@@GeoTools_Online_Url@@@voorbeeld) online beschikbaar om deze scripts uit te voeren. 
 
 De scripts sluiten aan bij de [beschrijving in STOP](@@@STOP_Documentatie_Url@@@404.html).
-
-Als bijvangst is beschikbaar:
-- [Tonen van een GIO-versie, gebiedsmarkering of effectgebied](@@@GeoTools_Online_Url@@@toon_geo) die geo-informatie toont.
 
 Verder twee webpagina's om aanvullende bestanden te maken die kunnen helpen om een GIO in GIS software (onder andere [QGIS](https://www.qgis.org/)) te tonen:
 - [GFS bestand voor een GIO](@@@GeoTools_Online_Url@@@gfs_maker)

@@ -5,7 +5,7 @@
 #
 #======================================================================
 
-from typing import List
+from typing import Dict, List, Tuple
 
 import pygml
 from shapely.geometry import shape
@@ -24,7 +24,7 @@ class GeoManipulatie:
 # Maken van een webpagina
 #
 #======================================================================
-    def __init__ (self, defaultTitel, titelBijFout, request : Parameters, log: Meldingen = None):
+    def __init__ (self, defaultTitel, titelBijFout, request : Parameters, log: Meldingen = None, meervoudigeSpecificatie : bool = False):
         """Maak een instantie van de geo-operatie aan
 
         Argumenten:
@@ -32,29 +32,46 @@ class GeoManipulatie:
         defaultTitel str  Titel van de webpagina als de titel niet is meegegeven bij de invoer
         titelBijFout str  Titel van de webpagina als er een fout optreedt en alleen de log getoond wordt
         request Parameters  De parameters vor het web request
+        meervoudigeSpecificatie bool Geeft aan dat de specifivatie een array kan zijns
         """
         self._TitelBijFout = titelBijFout
-        self.Request = request
+        self._MeervoudigeSpecificatie = meervoudigeSpecificatie
+        self._AlleRequests = request if isinstance (request, list) else [request]
+        # Request waarvoor de operatie uitgevoerd wordt
+        self.Request : Parameters = None
+        # Index van het request in het array; None als er maar 1 is
+        self.RequestIndex : int = None
         # Meldingen voor de uitvoering van het request
         self.Log = Meldingen (False) if log is None else log
         # Titel als doorgegeven in het request
-        self.Titel = request.LeesString ('titel')
+        self.Titel = self._AlleRequests[0].LeesString ('titel')
         # Generator om de resultaat-pagina te maken
         self.Generator = WebpaginaGenerator (defaultTitel if self.Titel is None else self.Titel)
         # Status attribuut voor het opnemen van de nodige scripts/css
         # self._WebpaginaKanKaartTonen
         # Status van het toevoegen van de default symbolen
         self._DefaultSymbolenToegevoegd = set ()
+        # Index voor het uitdelen van unieke namen
+        self._NaamIndex = 0
 
     def VoerUit(self):
         """Maak de webpagina aan"""
         self.Log.Informatie ("Geo-tools (@@@GeoTools_Url@@@) versie @@@VERSIE@@@.")
         try:
-            # _VoerUit moet in een afgeleide klasse worden geïmplementeerd
-            if self._VoerUit ():
-                self.Log.Informatie ("De verwerking is voltooid.")
-            else:
-                self.Log.Fout ("De verwerking is afgebroken.")
+            for idx, request in enumerate (self._AlleRequests):
+                # _VoerUit moet in een afgeleide klasse worden geïmplementeerd
+                if len (self._AlleRequests) > 1 and self._MeervoudigeSpecificatie:
+                    self.Log.Informatie ("Start de verwerking van #" + str(idx))
+                self.Request = request
+                self.RequestIndex = idx if len (self._AlleRequests) > 1 else None
+                if self._VoerUit ():
+                    self.Log.Informatie ("De verwerking is voltooid.")
+                else:
+                    self.Log.Fout ("De verwerking is afgebroken.")
+
+                if len (self._AlleRequests) > 1 and not self._MeervoudigeSpecificatie:
+                    self.Log.Waarschuwing ("Deze operatie kan maar voor één specificatie uitgevoerd worden; de overige worden genegeerd.")
+                    break
 
             einde = self.Generator.StartSectie ("<h3>Verslag van de verwerking</h3>")
             self.Log.MaakHtml (self.Generator, None)
@@ -112,6 +129,15 @@ class GeoManipulatie:
             # De wijzig-markering indien aanwezig
             self.WijzigMarkering : GeoManipulatie.GeoData = None
 
+        def GeometrieNaam (self, meervoud: bool) -> str:
+            """Geeft de gewone naam voor de geometrieën in de geo-data, in enkel- of meervoud."""
+            if self.Dimensie == 0:
+                return "punten" if meervoud else "punt"
+            if self.Dimensie == 1:
+                return "lijnen" if meervoud else "lijn"
+            if self.Dimensie == 2:
+                return "vlakken" if meervoud else "vlak"
+
     def LeesGeoBestand (self, key : str, verplicht : str) -> GeoData:
         """Lees de inhoud van een GIO, effectgebied of gebiedsmarkering.
         Het bestand wordt gevonden aan de hand van de specificatie key / input type="file" control naam.
@@ -127,7 +153,6 @@ class GeoManipulatie:
         gml = self.Request.LeesBestand (self.Log, key, verplicht)
         if not gml is None:
             return self._LeesGeoData (gml)
-
 
     def _LeesGeoData (self, gml) -> GeoData:
         """Lees de GML in als een GIO"""
@@ -285,10 +310,11 @@ class GeoManipulatie:
         if succes:
             return data
 
-    def _LeesLocaties (self, data : GeoData, geoXml: Element, locatieElement, labelNamm, attribuutNamen : List[str] = []):
+    def _LeesLocaties (self, data : GeoData, geoXml: Element, locatieElement, labelNaam, attribuutNamen : List[str] = []):
         succes = True
         # Foutmeldigen worden maar één keer gedaan
         foutmeldingen = set ()
+        heeftAttribuut = None
         for locatie in [] if geoXml is None else geoXml.findall (locatieElement):
             # Lees de geometrie van een locatie
             geometrie = locatie.find (GeoManipulatie._GeoNS + 'geometrie')
@@ -339,16 +365,26 @@ class GeoManipulatie:
             data.Locaties.append (geoLocatie)
 
             # Kijk naar het type geometrie
-            if geoLocatie['geometry']['type'] in ['Polygon', 'MultiPolygon']:
-                dimensie = 2
-            elif geoLocatie['geometry']['type'] in ['Point', 'MultiPoint']:
-                dimensie = 0
-            elif geoLocatie['geometry']['type'] in ['LineString', 'MultiLineString']:
-                dimensie = 1
+            if geoLocatie['geometry']['type'] == 'MultiGeometry':
+                dimensie = None
+                for geom in geoLocatie['geometry']['geometries']:
+                    geomDimensie = GeoManipulatie._GeometryDimension.get (geom['type'])
+                    if geomDimensie is None:
+                        foutmeldingen.add ('Deze geo-tools kunnen niet omgaan met een geometrie van type ' + geoLocatie['geometry']['type'] + ' in een MultiGeometry')
+                        succes = False
+                        continue
+                    elif dimensie is None:
+                        dimensie = geomDimensie
+                    elif dimensie != geomDimensie:
+                        foutmeldingen.add ('Deze geo-tools kunnen niet omgaan met een mengsel van punten, lijnen en vlakken')
+                        succes = False
+                        continue
             else:
-                foutmeldingen.add ('STOP staat geen geometrie van type ' + geoLocatie['geometry']['type'] + ' toe')
-                succes = False
-                continue
+                dimensie = GeoManipulatie._GeometryDimension.get (geoLocatie['geometry']['type'])
+                if dimensie is None:
+                    foutmeldingen.add ('Deze geo-tools kunnen niet omgaan met een geometrie van type ' + geoLocatie['geometry']['type'])
+                    succes = False
+                    continue
 
             if data.Dimensie is None:
                 data.Dimensie = dimensie
@@ -357,20 +393,36 @@ class GeoManipulatie:
                 succes = False
 
             # Kijk welke attributen er bij de locatie aanwezig zijn
-            elt = locatie.find (GeoManipulatie._GeoNS + labelNamm)
+            elt = locatie.find (GeoManipulatie._GeoNS + labelNaam)
             if not elt is None:
-                geoLocatie['properties'][labelNamm] = elt.text
-                data.LabelNaam = labelNamm
-            elt = locatie.find (GeoManipulatie._GeoNS + labelNamm)
+                geoLocatie['properties'][labelNaam] = elt.text
+                data.LabelNaam = labelNaam
+            elt = locatie.find (GeoManipulatie._GeoNS + labelNaam)
             if not elt is None:
-                geoLocatie['properties'][labelNamm] = elt.text
-                data.LabelNaam = labelNamm
-            for naam in attribuutNamen:
-                elt = locatie.find (GeoManipulatie._GeoNS + naam)
-                if not elt is None:
-                    geoLocatie['properties'][naam] = elt.text
-                    data.AttribuutNaam = naam
-                    attribuutNamen = [naam]
+                geoLocatie['properties'][labelNaam] = elt.text
+                data.LabelNaam = labelNaam
+            if heeftAttribuut is None:
+                heeftAttribuut = False
+                for naam in attribuutNamen:
+                    elt = locatie.find (GeoManipulatie._GeoNS + naam)
+                    if not elt is None:
+                        geoLocatie['properties'][naam] = elt.text
+                        data.AttribuutNaam = naam
+                        heeftAttribuut = True
+            elif heeftAttribuut:
+                elt = locatie.find (GeoManipulatie._GeoNS + data.AttribuutNaam)
+                if elt is None:
+                    foutmeldingen.add ('Alle locaties moeten een waarde voor "' + data.AttribuutNaam + '" hebben')
+                    succes = False
+                else:
+                    geoLocatie['properties'][data.AttribuutNaam] = elt.text
+            else:
+                for naam in attribuutNamen:
+                    elt = locatie.find (GeoManipulatie._GeoNS + naam)
+                    if not elt is None:
+                        foutmeldingen.add ('Alle locaties moeten een waarde voor "' + naam + '" hebben')
+                        succes = False
+                        break
 
         for foutmelding in foutmeldingen:
             self.Log.Fout (foutmelding)
@@ -378,6 +430,11 @@ class GeoManipulatie:
 
     _GeoNS = '{https://standaarden.overheid.nl/stop/imop/geo/}'
     _BasisgeoNS = '{http://www.geostandaarden.nl/basisgeometrie/1.0}'
+    _GeometryDimension = {
+            'Point': 0, 'MultiPoint': 0, 
+            'LineString': 1, 'MultiLineString': 1,
+            'Polygon': 2, 'MultiPolygon': 2
+        }
 
     @staticmethod
     def MaakShapelyShape (locatie):
@@ -391,16 +448,17 @@ class GeoManipulatie:
             locatie['_shape'] = shape (locatie['geometry'])
         return locatie['_shape']
 
-    def VoegGeoDataToe (self, naam: str, geoData : GeoData):
+    def VoegGeoDataToe (self, geoData : GeoData):
         """Voeg de geo-gegevens uit een GIO of gebied toe aan de data beschikbaar in de resultaatpagina;
 
         Argumenten:
 
-        naam str  De naam can de gegevens die gebruikt wordt om de gegevens aan een kaart te koppelen
         geoData GeoData  Een geo-data object waarvan de locaties op de kaart weergegeven moeten worden
+
+        Geeft de naam terug die gebruikt moet worden om de gegevens aan een kaart te koppelen
         """
         if geoData is None:
-            self.Log.Detail ('Geen geo-data beschikbaar dus niet toegevoegd aan de kaartgegevens: "' + naam + '"')
+            self.Log.Detail ('Geen geo-data beschikbaar dus niet toegevoegd aan de kaartgegevens')
             return
         collectie = {
             'type' : 'FeatureCollection',
@@ -438,38 +496,62 @@ class GeoManipulatie:
 
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
-        self.Generator.VoegSlotScriptToe ('\nKaartgegevens.Instantie.VoegDataToe ("' + naam + '",\n' + json.dumps (collectie, cls=_JsonGeoEncoder, ensure_ascii=False) + '\n);\n')
+        self._NaamIndex += 1
+        naam = 'data' + str(self._NaamIndex)
+        self.Generator.VoegSlotScriptToe ('\nKaartgegevens.Instantie.VoegDataToe ("' + naam + '",\n' + json.dumps (collectie, cls=GeoManipulatie._JsonGeoEncoder, ensure_ascii=False) + '\n);\n')
+        return naam
+
+    class _JsonGeoEncoder (json.JSONEncoder):
+        def default(self, o):
+            """Objecten worden niet meegenomen"""
+            return None
 
 #======================================================================
 #
-# Symbolisatie
+# Weergave op de kaart
 #
 #======================================================================
     def VoegDefaultSymbolisatieToe (self, geoData : GeoData) -> str:
-        """Voeg de default symbolisatie toe voor de geodata en geef de naam ervan terug
+        """Voeg de default symbolisatie toe voor de geodata
         
         Argumenten:
 
         geoData GeoData  Eerdef ingelezen data
+
+        Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
         naam = '@dimensie=' + str(geoData.Dimensie)
         if not naam in self._DefaultSymbolenToegevoegd:
             self._DefaultSymbolenToegevoegd.add (naam)
-            if geoData.Dimensie == 0:
-                rule = '''
+            self.VoegUniformeSymbolisatieToe (geoData.Dimensie, "#0000FF", "#0000CD")
+        return naam
+
+
+    def VoegUniformeSymbolisatieToe (self, dimensie : int, vulkleur: str, randkleur: str) -> str:
+        """Voeg een STOP symbolisatie toe voor gebruik in kaarten.
+
+        Argumenten:
+
+        dimensie int  De dimensie van de geodata
+        vulkleur str  De #hexcode van de te gebruiken kleur voor de opvulling van een symbool.
+        randkleur str  De #hexcode van de te gebruiken kleur voor de rand van een symbool.
+
+        Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
+        """
+        if dimensie == 0:
+            rule = '''
     <Rule>
         <Name>Punt</Name>
         <PointSymbolizer>
-            <Name>pv221</Name>
             <Graphic>
                 <Mark>
                     <WellKnownName>square</WellKnownName>
                     <Fill>
-                        <SvgParameter name="fill">#0000ff</SvgParameter>
+                        <SvgParameter name="fill">''' + vulkleur + '''</SvgParameter>
                         <SvgParameter name="fill-opacity">1</SvgParameter>
                     </Fill>
                     <Stroke>
-                        <SvgParameter name="stroke">#999999</SvgParameter>
+                        <SvgParameter name="stroke">''' + randkleur + '''</SvgParameter>
                         <SvgParameter name="stroke-opacity">0</SvgParameter>
                         <SvgParameter name="stroke-width">1</SvgParameter>
                     </Stroke>
@@ -479,32 +561,30 @@ class GeoManipulatie:
             </Graphic>
         </PointSymbolizer>
     </Rule>'''
-            elif geoData.Dimensie == 1:
-                rule = '''
+        elif dimensie == 1:
+            rule = '''
     <Rule>
         <Name>Lijn</Name>
         <LineSymbolizer>
-            <Name>lm021</Name>
             <Stroke>
-                <SvgParameter name="stroke">#0000ff</SvgParameter>
+                <SvgParameter name="stroke">''' + vulkleur + '''</SvgParameter>
                 <SvgParameter name="stroke-opacity">1</SvgParameter>
                 <SvgParameter name="stroke-width">3</SvgParameter>
                 <SvgParameter name="stroke-linecap">butt</SvgParameter>
             </Stroke>
         </LineSymbolizer>
     </Rule>'''
-            elif geoData.Dimensie == 2:
-                rule = '''
+        elif dimensie == 2:
+            rule = '''
     <Rule>
         <Name>Vlak</Name>
         <PolygonSymbolizer>
-            <Name>vsg120</Name>
             <Fill>
-                <SvgParameter name="fill">#0000ff</SvgParameter>
+                <SvgParameter name="fill">''' + vulkleur + '''</SvgParameter>
                 <SvgParameter name="fill-opacity">0.8</SvgParameter>
             </Fill>
             <Stroke>
-                <SvgParameter name="stroke">#0000cd</SvgParameter>
+                <SvgParameter name="stroke">''' + randkleur + '''</SvgParameter>
                 <SvgParameter name="stroke-opacity">1</SvgParameter>
                 <SvgParameter name="stroke-width">3</SvgParameter>
                 <SvgParameter name="stroke-linejoin">round</SvgParameter>
@@ -512,16 +592,37 @@ class GeoManipulatie:
         </PolygonSymbolizer>
     </Rule>'''
 
-            self.VoegSymbolisatieToe (naam, '''<FeatureTypeStyle version="1.1.0"
+        return self.VoegSymbolisatieToe ('''<FeatureTypeStyle version="1.1.0"
     xmlns="http://www.opengis.net/se"
     xmlns:ogc="http://www.opengis.net/ogc">
     <FeatureTypeName>geo:Locatie</FeatureTypeName>
     <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>''' + rule + '''
 </FeatureTypeStyle>''')
-        return naam
 
 
-    def VoegSymbolisatieToe (self, naam : str, symbolisatie : str):
+    def VoegSymbolisatieToe (self, symbolisatie : str):
+        """Voeg een STOP symbolisatie toe voor gebruik in kaarten.
+
+        Argumenten:
+
+        naam str  De naam die gebruikt moet worden om de symbolisatie toe te passen
+        symbolisatie str  De XML van een STOP symbolisatie module.
+
+        Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
+        """
+        self._NaamIndex += 1
+        return self._VoegSymbolisatieToe ('sym' + str(self._NaamIndex), symbolisatie)
+
+    def _VoegSymbolisatieToe (self, naam : str, symbolisatie : str):
+        """Voeg een STOP symbolisatie toe voor gebruik in kaarten.
+
+        Argumenten:
+
+        naam str  De naam die gebruikt moet worden om de symbolisatie toe te passen
+        symbolisatie str  De XML van een STOP symbolisatie module.
+
+        Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
+        """
 
         # Verwijder <?xml ?> regel indien aanwezig
         if symbolisatie is None:
@@ -532,26 +633,27 @@ class GeoManipulatie:
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
         self.Generator.VoegSlotScriptToe ('\nKaartgegevens.Instantie.VoegSymbolisatieToe ("' + naam + '",`' + symbolisatie + '`);\n')
+        return naam
 
     _StripHeader = re.compile ("^\s*<\?\s*[^>]+>\s*\n")
 
-
-#======================================================================
-#
-# Weergave op een kaart
-#
-#======================================================================
-    def ToonKaart (self, kaartElementId : str, jsInitialisatie : str):
+    def ToonKaart (self, jsInitialisatie : str, kaartElementId : str = None):
         """Toon een kaart op de huidige plaats in de webpagina
 
         Argumenten:
 
-        kaartElementId str  Naam van het (in dese methode te maken) HTML element waarin de kaart getoond wordt 
         jsInitialisatie str  Javascript om de kaartlagen aan de kaart toe te voegen. De kaart is beschikbaar als 'kaart' variabele,
+        kaartElementId str  Naam van het (in dese methode te maken) HTML element waarin de kaart getoond wordt  Geef None door om een elementnaam te genereren.
+
+        Geeft kaartElementId terug.
         """
         self._InitialiseerWebpagina ()
+        if kaartElementId is None:
+            self._NaamIndex += 1
+            kaartElementId = 'kaart_' + str(self._NaamIndex)
         self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId))
         self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '", 600, 400);\n});')
+        return kaartElementId
 
     def _InitialiseerWebpagina (self):
         """Voeg de bestanden toe nodig om OpenLayers kaarten op te nemen in de webpagina
@@ -566,8 +668,163 @@ class GeoManipulatie:
             self.Generator.LeesCssTemplate ("kaart")
             self.Generator.LeesJSTemplate ("kaart", True, True)
 
-class _JsonGeoEncoder (json.JSONEncoder):
-    def default(self, o):
-        """Objecten worden niet meegenomen"""
-        return None
+#======================================================================
+#
+# Ondersteuning GIO-wijziging
+#
+#======================================================================
+    def NauwkeurigheidInMeter (self) -> float:
+        """Haal de nauwkeurigheid als float uit de request parameters"""
+        if self.Request.LeesString ("nauwkeurigheid") is None:
+            self.Log.Waarschuwing ("Geen nauwkeurigheid doorgegeven - kan de GIO niet valideren")
+            return None
+        try:
+            nauwkeurigheid = float (self.Request.LeesString ("nauwkeurigheid"))
+        except:
+            self.Log.Fout ('De opgegvven nauwkeurigheid is geen getal: "' + self.Request.LeesString ("nauwkeurigheid") + '"')
+            return None
+        return nauwkeurigheid * 0.1
 
+
+    class EnkeleGeometrie:
+        def __init__ (self, locatie, geometrie, attribuutwaarde : str):
+            """Een Point, LineString of Polygon geometrie die onderdeel is van de (multi-)geometrie van de locatie.
+            
+            Argumenten:
+
+            locatie object  Locatie zoals ingelezen voor GeoData
+            geometrie object  Een Point, LineString of Polygon
+            attribuutwaarde str  Als het GIO normwaarden bevat: de normwaarde van de locatie.
+                                 Als het GIO GIO-delen bevat: de groepID van de locatie.
+            """
+            self.Locatie = locatie
+            self.Geometrie = geometrie
+            self.Attribuutwaarde = attribuutwaarde
+
+    def MaakLijstVanGeometrieen (self, geoData : GeoData) -> List[EnkeleGeometrie]:
+        """Zet de informatie in de locaties om in een lijst met objecten die elk slechts één geometrie (punt, lijn of vlak) hebben.
+
+        Argumenten:
+
+        geoData GeoData  Het ingelezen GIO
+
+        Geeft de lijst terug
+        """
+        lijst = []
+        for locatie in geoData.Locaties:
+            attribuutwaarde = None if geoData.AttribuutNaam is None else locatie['properties'][geoData.AttribuutNaam]
+            if locatie['geometry']['type'] == 'MultiPoint':
+                for coords in locatie['geometry']['coordinates']:
+                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie,
+                    {
+                        'type': 'feature',
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': coords
+                        }
+                    }, attribuutwaarde))
+            elif locatie['geometry']['type'] == 'MultiLineString':
+                for coords in locatie['geometry']['coordinates']:
+                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, 
+                    {
+                        'type': 'feature',
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': coords
+                        }
+                    }, attribuutwaarde))
+            elif locatie['geometry']['type'] == 'MultiPolygon':
+                for coords in locatie['geometry']['coordinates']:
+                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, 
+                    {
+                        'type': 'feature',
+                        'geometry': {
+                            'type': 'Polygon',
+                            'coordinates': coords
+                        }
+                    }, attribuutwaarde))
+            elif locatie['geometry']['type'] == 'GeometryCollection':
+                for geom in locatie['geometry']['geometries']:
+                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, geom, attribuutwaarde))
+            else:
+                lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, locatie, attribuutwaarde))
+
+        return lijst
+
+    def VoegGeometrieToeAlsData (self, geometrie: List[EnkeleGeometrie]):
+        """Voeg de geometrieën toe aan de data beschikbaar in de resultaatpagina;
+
+        Argumenten:
+
+        geometrie EnkeleGeometrie[]  De geometrieën uit de GIO, gemaakt via MaakLijstVanGeometrieen,
+                                     of ontstaan door een van de geo-operaties.
+
+        Geeft de naam terug die gebruikt moet worden om de gegevens aan een kaart te koppelen
+        """
+        data = GeoManipulatie.GeoData ()
+        data.BerekendeID = True
+        data.Locaties = [g.Geometrie for g in geometrie]
+        return self.VoegGeoDataToe (data)
+
+    def ValideerGIO (self, geometrie: List[EnkeleGeometrie], dimensie : int) -> Tuple[List[EnkeleGeometrie],float]:
+        """Valideer dat de enkele locaties binnen een GIO onderling disjunct zijn
+
+        Argumenten:
+
+        geometrie EnkeleGeometrie[]  De geometrieën uit de GIO, gemaakt via MaakLijstVanGeometrieen
+        dimensie int  Dimensie van de geometrieën in de GIO
+
+        Geeft een lijst met punten (dimensie = 0) of vlakken (dimensie > 0) terug waar de geometrieën
+        niet disjunct zijn, of None als de GIO valide is. Geeft daarnaast (indien mogelijk) terug bij 
+        welke tekennauwkeurigheid (in decimeter) de GIO wel valide is.
+        """
+        if self.NauwkeurigheidInMeter () is None:
+            return (None, None)
+        if dimensie == 0:
+            return self._ValideerGIOPunten (geometrie)
+        elif dimensie == 1:
+            return self._ValideerGIOLijnen (geometrie)
+        elif dimensie == 2:
+            return (self._ValideerGIOVlakken (geometrie), None)
+        raise 'dimensie = ' + str(dimensie)
+
+    def _ValideerGIOPunten (self, punten: List[EnkeleGeometrie]) -> Tuple[List[EnkeleGeometrie],float]:
+        drempel = self.NauwkeurigheidInMeter ()
+        drempel *= drempel
+        minimaleAfstand = None
+        probleem = set ()
+        # Vind alle punten die te dicht bij een ander punt liggen
+        for i in range (0, len (punten)):
+            coord_i = punten[i].Geometrie['geometry']['coordinates']
+            for j in range (i+1, len (punten)):
+                coord_j = punten[j].Geometrie['geometry']['coordinates']
+                afstand = (coord_i[0] - coord_j[0]) * (coord_i[0] - coord_j[0]) + (coord_i[1] - coord_j[1]) * (coord_i[1] - coord_j[1])
+                if afstand < drempel:
+                    probleem.add (i)
+                    probleem.add (j)
+                    if minimaleAfstand is None or afstand < minimaleAfstand:
+                        minimaleAfstand  = afstand
+        # Is er een probleem?
+        if minimaleAfstand is None:
+            self.Log.Informatie ('Alle punten liggen tenminste ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af')
+            return (None, None)
+        else:
+            minimaleAfstand /= 10
+            self.Log.Fout ('Er zijn ' + str(len (probleem)) + ' punten die minder dan ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
+            return ([punten[i] for i in probleem], minimaleAfstand)
+
+
+    class WijzigingBepaling:
+
+        def __init__(self):
+            # 
+            self.PersistenteID : Dict[str,object] = {}
+            # De enkele geometrieën uit de was waarvoor een equivalente geometrie uit de wordt bestaat.
+            self.Onveranderd : List[GeoManipulatie.EnkeleGeometrie] = []
+            # De enkele geometrieën uit de was die niet ongewijzigd zijn qua geometrie
+            self.Was : List[GeoManipulatie.EnkeleGeometrie] = []
+            # De enkele geometrieën uit de was die niet ongewijzigd zijn qua geometrie
+            self.Wordt : List[GeoManipulatie.EnkeleGeometrie] = []
+
+    def VindOngewijzigdeGemoetrieen (was : List[EnkeleGeometrie], wordt: List[EnkeleGeometrie], dimensie : int, gebruikIDs : bool):
+        pass

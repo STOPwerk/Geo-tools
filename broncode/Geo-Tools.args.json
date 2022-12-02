@@ -17,6 +17,10 @@
     {
       "Id": "3dc35de6-362e-485b-a12b-b5f1daae7fa0",
       "Command": "-t tests\\validaties"
+    },
+    {
+      "Id": "80771f5f-0641-4b09-b9ac-adb87469347a",
+      "Command": "-t tests\\toon-geo\\Punten"
     }
   ]
 }

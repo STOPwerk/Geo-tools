@@ -105,7 +105,7 @@ def __VoerTestUit (directory_pad, operatieNaam, methode):
         except Exception as e:
             log.Fout ('Kan voorgaand resultaat (' + actueelPad + ') niet weggooien: ' + str(e))
         try:
-            actueel = methode (Parameters (specificatie, None, directory_pad), testlog)
+            actueel = methode (Parameters.Maak (specificatie, None, directory_pad), testlog)
         except Exception as e:
             log.Fout ('Oeps, dat ging niet goed: ' + str(e))
             if not testlog is None:

@@ -50,7 +50,7 @@ class GeoManipulatie:
         # Status attribuut voor het opnemen van de nodige scripts/css
         # self._WebpaginaKanKaartTonen
         # Status van het toevoegen van de default symbolen
-        self._DefaultSymbolenToegevoegd = set ()
+        self._DefaultSymbolenToegevoegd : Dict[int,str] = {}
         # Index voor het uitdelen van unieke namen
         self._NaamIndex = 0
 
@@ -520,10 +520,9 @@ class GeoManipulatie:
 
         Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
-        naam = '@dimensie=' + str(geoData.Dimensie)
-        if not naam in self._DefaultSymbolenToegevoegd:
-            self._DefaultSymbolenToegevoegd.add (naam)
-            self.VoegUniformeSymbolisatieToe (geoData.Dimensie, "#0000FF", "#0000CD")
+        naam = self._DefaultSymbolenToegevoegd.get (geoData.Dimensie)
+        if naam is None:
+            self._DefaultSymbolenToegevoegd[geoData.Dimensie] = naam = self.VoegUniformeSymbolisatieToe (geoData.Dimensie, "#0000FF", "#0000CD")
         return naam
 
 

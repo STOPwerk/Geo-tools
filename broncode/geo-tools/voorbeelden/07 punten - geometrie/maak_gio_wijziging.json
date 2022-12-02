@@ -1,7 +1,6 @@
 {
   "was": "verkeersborden_STOP_was.gml",
   "wordt": "verkeersborden_STOP_wordt.gml",
-  "persistente_id": false,
   "nauwkeurigheid": 1.0,
   "wijziging": "verkeersborden_STOP_was_wordt.gml"
 }

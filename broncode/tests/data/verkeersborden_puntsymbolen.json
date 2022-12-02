@@ -1,0 +1,34 @@
+[
+  {
+    "code": 0,
+    "symbol": "<PointSymbolizer>\n    <Name>pc241</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#0080C0</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  },
+  {
+    "code": 1,
+    "symbol": "<PointSymbolizer>\n    <Name>pc231</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#C02040</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  },
+  {
+    "code": 2,
+    "symbol": "<PointSymbolizer>\n    <Name>pc215</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#009b00</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  },
+  {
+    "code": 3,
+    "symbol": "<PointSymbolizer>\n    <Name>pc200</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#000000</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  },
+  {
+    "code": 4,
+    "symbol": "<PointSymbolizer>\n    <Name>pc204</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#64aa2d</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  },
+  {
+    "code": 5,
+    "symbol": "<PointSymbolizer>\n    <Name>pc206</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#ff3c82</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  },
+  {
+    "code": 6,
+    "symbol": "<PointSymbolizer>\n    <Name>pc222</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#00ffff</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  },
+  {
+    "code": 7,
+    "symbol": "<PointSymbolizer>\n    <Name>pc235</Name>\n    <Graphic>\n    <Mark>\n    <WellKnownName>circle</WellKnownName>\n    <Fill>\n    <SvgParameter name=\"fill\">#FFC040</SvgParameter>\n    <SvgParameter name=\"fill-opacity\">1</SvgParameter>\n    </Fill>\n    <Stroke>\n    <SvgParameter name=\"stroke\">#999999</SvgParameter>\n    <SvgParameter name=\"stroke-opacity\">0</SvgParameter>\n    <SvgParameter name=\"stroke-width\">1</SvgParameter>\n    </Stroke>\n    </Mark>\n    <Size>12</Size>\n    <Rotation>0</Rotation>\n    </Graphic>\n    </PointSymbolizer>"
+  }
+]

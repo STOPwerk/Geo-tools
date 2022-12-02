@@ -1,18 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <FeatureTypeStyle version="1.1.0" 
-        xmlns="http://www.opengis.net/se"
-        xmlns:ogc="http://www.opengis.net/ogc">
-        <FeatureTypeName>geo:Locatie</FeatureTypeName>
-        <SemanticTypeIdentifier>geo:groepID</SemanticTypeIdentifier>
-        <Rule>
-            <Name>2115</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2115</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
+        <FeatureTypeStyle version="1.1.0" 
+            xmlns="http://www.opengis.net/se"
+            xmlns:ogc="http://www.opengis.net/ogc">
+            <FeatureTypeName>geo:Locatie</FeatureTypeName>
+            <SemanticTypeIdentifier>geo:groepID</SemanticTypeIdentifier>
+            <Rule>
+                <Name>2115</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2115</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
+    <Name>pc241</Name>
+    <Graphic>
+    <Mark>
+    <WellKnownName>circle</WellKnownName>
+    <Fill>
+    <SvgParameter name="fill">#0080C0</SvgParameter>
+    <SvgParameter name="fill-opacity">1</SvgParameter>
+    </Fill>
+    <Stroke>
+    <SvgParameter name="stroke">#999999</SvgParameter>
+    <SvgParameter name="stroke-opacity">0</SvgParameter>
+    <SvgParameter name="stroke-width">1</SvgParameter>
+    </Stroke>
+    </Mark>
+    <Size>12</Size>
+    <Rotation>0</Rotation>
+    </Graphic>
+    </PointSymbolizer>
+            </Rule>
+            <Rule>
+                <Name>2116</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2116</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
+    <Name>pc231</Name>
+    <Graphic>
+    <Mark>
+    <WellKnownName>circle</WellKnownName>
+    <Fill>
+    <SvgParameter name="fill">#C02040</SvgParameter>
+    <SvgParameter name="fill-opacity">1</SvgParameter>
+    </Fill>
+    <Stroke>
+    <SvgParameter name="stroke">#999999</SvgParameter>
+    <SvgParameter name="stroke-opacity">0</SvgParameter>
+    <SvgParameter name="stroke-width">1</SvgParameter>
+    </Stroke>
+    </Mark>
+    <Size>12</Size>
+    <Rotation>0</Rotation>
+    </Graphic>
+    </PointSymbolizer>
+            </Rule>
+            <Rule>
+                <Name>2117</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2117</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
+    <Name>pc215</Name>
+    <Graphic>
+    <Mark>
+    <WellKnownName>circle</WellKnownName>
+    <Fill>
+    <SvgParameter name="fill">#009b00</SvgParameter>
+    <SvgParameter name="fill-opacity">1</SvgParameter>
+    </Fill>
+    <Stroke>
+    <SvgParameter name="stroke">#999999</SvgParameter>
+    <SvgParameter name="stroke-opacity">0</SvgParameter>
+    <SvgParameter name="stroke-width">1</SvgParameter>
+    </Stroke>
+    </Mark>
+    <Size>12</Size>
+    <Rotation>0</Rotation>
+    </Graphic>
+    </PointSymbolizer>
+            </Rule>
+            <Rule>
+                <Name>2118</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2118</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
     <Name>pc200</Name>
     <Graphic>
     <Mark>
@@ -31,100 +115,16 @@
     <Rotation>0</Rotation>
     </Graphic>
     </PointSymbolizer>
-        </Rule>
-        <Rule>
-            <Name>2116</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2116</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
-    <Name>pc201</Name>
-    <Graphic>
-    <Mark>
-    <WellKnownName>circle</WellKnownName>
-    <Fill>
-    <SvgParameter name="fill">#ebf0d2</SvgParameter>
-    <SvgParameter name="fill-opacity">1</SvgParameter>
-    </Fill>
-    <Stroke>
-    <SvgParameter name="stroke">#999999</SvgParameter>
-    <SvgParameter name="stroke-opacity">0</SvgParameter>
-    <SvgParameter name="stroke-width">1</SvgParameter>
-    </Stroke>
-    </Mark>
-    <Size>12</Size>
-    <Rotation>0</Rotation>
-    </Graphic>
-    </PointSymbolizer>
-        </Rule>
-        <Rule>
-            <Name>2117</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2117</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
-    <Name>pc202</Name>
-    <Graphic>
-    <Mark>
-    <WellKnownName>circle</WellKnownName>
-    <Fill>
-    <SvgParameter name="fill">#d2ffa5</SvgParameter>
-    <SvgParameter name="fill-opacity">1</SvgParameter>
-    </Fill>
-    <Stroke>
-    <SvgParameter name="stroke">#999999</SvgParameter>
-    <SvgParameter name="stroke-opacity">0</SvgParameter>
-    <SvgParameter name="stroke-width">1</SvgParameter>
-    </Stroke>
-    </Mark>
-    <Size>12</Size>
-    <Rotation>0</Rotation>
-    </Graphic>
-    </PointSymbolizer>
-        </Rule>
-        <Rule>
-            <Name>2118</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2118</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
-    <Name>pc203</Name>
-    <Graphic>
-    <Mark>
-    <WellKnownName>circle</WellKnownName>
-    <Fill>
-    <SvgParameter name="fill">#b45fd2</SvgParameter>
-    <SvgParameter name="fill-opacity">1</SvgParameter>
-    </Fill>
-    <Stroke>
-    <SvgParameter name="stroke">#999999</SvgParameter>
-    <SvgParameter name="stroke-opacity">0</SvgParameter>
-    <SvgParameter name="stroke-width">1</SvgParameter>
-    </Stroke>
-    </Mark>
-    <Size>12</Size>
-    <Rotation>0</Rotation>
-    </Graphic>
-    </PointSymbolizer>
-        </Rule>
-        <Rule>
-            <Name>2119</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2119</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
+            </Rule>
+            <Rule>
+                <Name>2119</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2119</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
     <Name>pc204</Name>
     <Graphic>
     <Mark>
@@ -143,44 +143,16 @@
     <Rotation>0</Rotation>
     </Graphic>
     </PointSymbolizer>
-        </Rule>
-        <Rule>
-            <Name>2120</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2120</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
-    <Name>pc205</Name>
-    <Graphic>
-    <Mark>
-    <WellKnownName>circle</WellKnownName>
-    <Fill>
-    <SvgParameter name="fill">#ffc8be</SvgParameter>
-    <SvgParameter name="fill-opacity">1</SvgParameter>
-    </Fill>
-    <Stroke>
-    <SvgParameter name="stroke">#999999</SvgParameter>
-    <SvgParameter name="stroke-opacity">0</SvgParameter>
-    <SvgParameter name="stroke-width">1</SvgParameter>
-    </Stroke>
-    </Mark>
-    <Size>12</Size>
-    <Rotation>0</Rotation>
-    </Graphic>
-    </PointSymbolizer>
-        </Rule>
-        <Rule>
-            <Name>2121</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2121</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
+            </Rule>
+            <Rule>
+                <Name>2120</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2120</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
     <Name>pc206</Name>
     <Graphic>
     <Mark>
@@ -199,22 +171,22 @@
     <Rotation>0</Rotation>
     </Graphic>
     </PointSymbolizer>
-        </Rule>
-        <Rule>
-            <Name>2122</Name>
-            <ogc:Filter>
-                <ogc:PropertyIsEqualTo>
-                    <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                    <ogc:Literal>2122</ogc:Literal>
-                </ogc:PropertyIsEqualTo>
-            </ogc:Filter>
-<PointSymbolizer>
-    <Name>pc207</Name>
+            </Rule>
+            <Rule>
+                <Name>2121</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2121</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
+    <Name>pc222</Name>
     <Graphic>
     <Mark>
     <WellKnownName>circle</WellKnownName>
     <Fill>
-    <SvgParameter name="fill">#ffa096</SvgParameter>
+    <SvgParameter name="fill">#00ffff</SvgParameter>
     <SvgParameter name="fill-opacity">1</SvgParameter>
     </Fill>
     <Stroke>
@@ -227,5 +199,33 @@
     <Rotation>0</Rotation>
     </Graphic>
     </PointSymbolizer>
-        </Rule>
-    </FeatureTypeStyle>
+            </Rule>
+            <Rule>
+                <Name>2122</Name>
+                <ogc:Filter>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                        <ogc:Literal>2122</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:Filter>
+    <PointSymbolizer>
+    <Name>pc235</Name>
+    <Graphic>
+    <Mark>
+    <WellKnownName>circle</WellKnownName>
+    <Fill>
+    <SvgParameter name="fill">#FFC040</SvgParameter>
+    <SvgParameter name="fill-opacity">1</SvgParameter>
+    </Fill>
+    <Stroke>
+    <SvgParameter name="stroke">#999999</SvgParameter>
+    <SvgParameter name="stroke-opacity">0</SvgParameter>
+    <SvgParameter name="stroke-width">1</SvgParameter>
+    </Stroke>
+    </Mark>
+    <Size>12</Size>
+    <Rotation>0</Rotation>
+    </Graphic>
+    </PointSymbolizer>
+            </Rule>
+        </FeatureTypeStyle>

@@ -1,0 +1,9 @@
+[{
+  "geometrie": "verkeersborden_STOP_was.gml",
+  "nauwkeurigheid": 1.0,
+  "symbolisatie": "verkeersborden_STOP_was.xml"
+},{
+  "geometrie": "verkeersborden_STOP_wordt.gml",
+  "nauwkeurigheid": 1.0,
+  "symbolisatie": "verkeersborden_STOP_wordt.xml"
+}]

@@ -45,13 +45,13 @@ class Kaart {
     }
     static EPSG28992 = new ol.proj.Projection('urn:ogc:def:crs:EPSG::28992');
 
-    VoegOnderlaagToe(naam, dataNaam, symbolisatieNaam) {
-        this._MaakKaartlaag(this._Onderlagen, naam, dataNaam, symbolisatieNaam);
+    VoegOnderlaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
+        this._MaakKaartlaag(this._Onderlagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         return this;
     }
 
-    VoegOudLaagToe(naam, dataNaam, symbolisatieNaam) {
-        var layer = this._MaakKaartlaag(this._OudLagen, naam, dataNaam, symbolisatieNaam);
+    VoegOudLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
+        var layer = this._MaakKaartlaag(this._OudLagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         var self = this;
         layer.on('prerender', function (event) {
             var ctx = event.context;
@@ -67,8 +67,8 @@ class Kaart {
         });
         return this;
     }
-    VoegNieuwLaagToe(naam, dataNaam, symbolisatieNaam) {
-        var layer = this._MaakKaartlaag(this._NieuwLagen, naam, dataNaam, symbolisatieNaam);
+    VoegNieuwLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
+        var layer = this._MaakKaartlaag(this._NieuwLagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         var self = this;
         layer.on('prerender', function (event) {
             var ctx = event.context;
@@ -85,7 +85,7 @@ class Kaart {
         return this;
     }
 
-    _MaakKaartlaag(collectie, naam, dataNaam, symbolisatieNaam) {
+    _MaakKaartlaag(collectie, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel) {
         var geoJson = Kaartgegevens.Instantie._GeoJSON[dataNaam];
         if (this._BBox === false) {
             this._BBox = geoJson.bbox;
@@ -111,10 +111,19 @@ class Kaart {
             layer._PopupNaam = naam;
             layer._PopupProperties = geoJson.properties;
         }
+
+        if (inControls) {
+            layer._AanUit = naam;
+            layer.setVisible(toonInitieel);
+        } else {
+            layer._AanUit = false
+        }
+
         return layer;
     }
 
     Toon(kaartElementId, kaartElementWidth, kaartElementHeight) {
+        var self = this;
         // Bepaal eerst welk deel van Nederland getoond moet worden
         var kaartElement = document.getElementById(kaartElementId);
         kaartElement.style.width = kaartElementWidth + "px"
@@ -221,7 +230,8 @@ class Kaart {
                             content += '<div><b>' + layer._PopupNaam + '</b></div>';
                         }
                         for (var prop in layer._PopupProperties) {
-                            content += '<div>' + layer._PopupProperties[prop] + ': ' + attr[prop] + '</div>';
+                            var info = layer._PopupProperties[prop]
+                            content += '<div>' + info[0] + ': ' + attr[prop] + (info[1] ? ' ' + info[1] : '') + '</div>';
                         }
                     }
                 });
@@ -237,6 +247,33 @@ class Kaart {
                 self._SliderPositie = positie;
                 map.render();
             })
+        }
+
+        this._AanUitLagen = {};
+        var aanUitLagenElt = null;
+        for (var i = mapLayers.length - 1; i >= 0; i--) {
+            if (mapLayers[i]._AanUit) {
+                if (aanUitLagenElt === null) {
+                    aanUitLagenElt = document.createElement('p');
+                    aanUitLagenElt.innerHTML = 'Gegevens in de kaart die wel/niet zichtbaar gemaakt kunnen worden:</br>'
+                    kaartElement.insertAdjacentElement('afterend', aanUitLagenElt);
+                } else {
+                    aanUitLagenElt.append(document.createElement('br'));
+                }
+                var ctrl = document.createElement('input');
+                ctrl.type = 'checkbox';
+                ctrl.id = kaartElementId + '_laag_' + i;
+                ctrl.checked = mapLayers[i].getVisible();
+                aanUitLagenElt.append(ctrl);
+                var label = document.createElement('label');
+                label.htmlFor = ctrl.id;
+                label.innerText = mapLayers[i]._AanUit
+                aanUitLagenElt.append(label);
+                this._AanUitLagen[ctrl.id] = mapLayers[i];
+                ctrl.addEventListener('click', (e) =>
+                    self._AanUitLagen[e.srcElement.id].setVisible(e.srcElement.checked)
+                );
+            }
         }
     }
 

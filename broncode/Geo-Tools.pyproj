@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>geo-tools\applicatie.py</StartupFile>
+    <StartupFile>tests\data\verkeersborden.py</StartupFile>
     <SearchPath>tests\code</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests\gebieden</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests\toon-geo\Punten</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>

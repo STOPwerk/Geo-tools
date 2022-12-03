@@ -82,15 +82,15 @@ class GeoViewer (GeoManipulatie):
             lijst = self.MaakLijstVanGeometrieen (gio)
             problemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie)
             if problemen is None:
-                self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij tekennauwkeurigheid ' + self.Request.LeesString ("nauwkeurigheid") + '</p>')
+                self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter</p>')
             else:
-                self.Generator.VoegHtmlToe ('<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij tekennauwkeurigheid ' + self.Request.LeesString ("nauwkeurigheid") + ". ")
+                self.Generator.VoegHtmlToe ('<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + " decimeter. ")
                 if not tekennauwkeurigheid is None:
-                    self.Generator.VoegHtmlToe ('Het GIO kan wel> gebruikt worden met een tekennauwkeurigheid van ' + str(tekennauwkeurigheid))
+                    self.Generator.VoegHtmlToe ('Het GIO kan wel gebruikt worden met een tekennauwkeurigheid van ' + str(tekennauwkeurigheid) + ' decimeter')
                 self.Generator.VoegHtmlToe ('</p><p>De plaatsen waar geometrieën voor problemen zorgen:')
-                geomNaam = self.VoegGeometrieToeAlsData (problemen)
-                geomSym = self.VoegUniformeSymbolisatieToe (1 if gio.Dimensie == 1 else 2, "#ff0000", "#800000")
-                self.ToonKaart ('kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + dataNaam + '", "' + symbolisatieNaam + '");kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + geomNaam + '", "' + geomSym + '");')
+                geomNaam = self.VoegGeoDataToe (problemen)
+                geomSym = self.VoegWijzigMarkeringToe ()
+                self.ToonKaart ('kaart.VoegOnderlaagToe ("Geo-informatieobject", "' + dataNaam + '", "' + symbolisatieNaam + '", true, true);kaart.VoegOnderlaagToe ("Problematische geometrie", "' + geomNaam + '", "' + geomSym + '", true, true);')
 
         self.Log.Detail ('Maak de pagina af')
         self.Generator.VoegHtmlToe (einde)

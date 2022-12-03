@@ -45,7 +45,7 @@ of meerdere in één resultaatpagina:
     {
         "geometrie": "geometrische_data_2.gml",
         "symbolisatie": "style_2.xml",
-        "nauwkeurigheid": 2
+        "nauwkeurigheid": 10
     },
     ....
 ]

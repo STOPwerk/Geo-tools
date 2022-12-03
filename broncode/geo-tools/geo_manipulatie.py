@@ -10,6 +10,7 @@ from typing import Dict, List, Tuple
 import pygml
 from shapely.geometry import shape
 import json
+import math
 import re
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
@@ -88,6 +89,20 @@ class GeoManipulatie:
 # Geo-data
 #
 #======================================================================
+    class Attribuut:
+        def __init__(self, tag : str, label: str = None, eenheid : str = None):
+            """Maak een instantie van de informatie over een attribuut
+            
+            Argumenten:
+
+            tag str  Naam voor de eigenschap in de json data en evt in de GML-data
+            label str  Naam van het attribuut, te gebruiken als prefix voor een waarde van het attribuut
+            eenheid str  Eenheid voor de waarde van het attribuut
+            """
+            self.Tag = tag
+            self.Label = tag if label is None else label
+            self.Eenheid = eenheid
+
     class GeoData:
         def __init__(self):
             # Geeft de bron aan: Gebied, GIO of GIO-wijziging
@@ -97,8 +112,9 @@ class GeoManipulatie:
             #----------------------------------------------------------
             # De work-identificatie van de GIO
             self.WorkId : str = None
-            # Geeft aan of de basisgeomatrie-id uit een bepaling komen
-            self.BerekendeID = False
+            # Geeft aan of er een waarde met de locatie geassocieerd is (groepID, normwaarde).
+            # Zo nee, dan is dit None. Zo ja, dan staat er de naam van het waarde-element
+            self.AttribuutNaam : str = None
             #----------------------------------------------------------
             # Voor een GIO-versie
             #----------------------------------------------------------
@@ -112,13 +128,12 @@ class GeoManipulatie:
             # Geeft aan of er Locaties/Gebieden zijn met een naam.
             # Zo nee, dan is dit None. Zo ja, dan staat er de naam van het element met het label/naam
             self.LabelNaam : str = None
-            # Geeft aan of er een waarde met de locatie geassocieerd is (groepID, normwaarde).
-            # Zo nee, dan is dit None. Zo ja, dan staat er de naam van het waarde-element
-            self.AttribuutNaam : str = None
             # De locaties/gebieden in in-memory format
             self.Locaties = []
             # De dimensie van de geometrie: 0 = punt, 1 = lijn, 2  = vlak
             self.Dimensie : int = None
+            # De attributen voor de data; key = tag naam
+            self.Attributen : Dict[str,GeoManipulatie.Attribuut] = {}
             #----------------------------------------------------------
             # Voor een GIO-wijziging
             #----------------------------------------------------------
@@ -163,6 +178,7 @@ class GeoManipulatie:
             self.Log.Fout ("GML is geen valide XML: " + str(e))
             return
         data = GeoManipulatie.GeoData ()
+        data.Attributen['id'] = GeoManipulatie.Attribuut ('id', "ID")
         succes = True
 
         # Vertaal naar GeoData afhankelijk van het bronformaat
@@ -198,6 +214,15 @@ class GeoManipulatie:
             else:
                 self.Log.Fout ("GIO-versie bevat geen FRBRWork")
                 succes = False
+            normLabel = None
+            elt = geoXml.find (GeoManipulatie._GeoNS + 'normlabel')
+            if not elt is None:
+                normLabel = elt.text
+            eenheidLabel = None
+            elt = geoXml.find (GeoManipulatie._GeoNS + 'eenheidlabel')
+            if not elt is None:
+                eenheidLabel = elt.text
+
             if mutatie is None:
                 # Het is een GIO-versie
                 data.Soort = 'GIO'
@@ -212,7 +237,6 @@ class GeoManipulatie:
                 elif len (data.Locaties) == 0:
                     self.Log.Fout ("GIO bevat geen locaties")
                     succes = False
-                
             else:
                 # Het is een GIO-wijziging
                 data.Soort = 'GIO-wijziging'
@@ -306,6 +330,14 @@ class GeoManipulatie:
                         elif not data.WijzigMarkering.Dimensie is None and data.WijzigMarkering.Dimensie != 2:
                             self.Log.Fout ("wijzigmarkering mag alleen vlakken bevatten")
                             succes = False
+
+            if data.AttribuutNaam == 'groepID':
+                data.Attributen[data.AttribuutNaam] = GeoManipulatie.Attribuut (data.AttribuutNaam, 'GIO-deel')
+            elif not data.AttribuutNaam  is None:
+                data.Attributen[data.AttribuutNaam] = GeoManipulatie.Attribuut (data.AttribuutNaam, 'Normwaarde' if normLabel is None else normLabel, eenheidLabel)
+
+        if not data.LabelNaam is None:
+            data.Attributen[data.LabelNaam] = GeoManipulatie.Attribuut (data.LabelNaam, 'Naam')
 
         if succes:
             return data
@@ -482,17 +514,8 @@ class GeoManipulatie:
             collectie['bbox'] = bbox
 
         # Bepaal de properties die op de kaart getoond kan worden
-        properties = {}
-        if not geoData.BerekendeID:
-            properties['id'] = 'ID'
-        if not geoData.LabelNaam is None:
-            properties[geoData.LabelNaam] = 'Naam';
-        if geoData.AttribuutNaam == 'groepID':
-            properties[geoData.AttribuutNaam] = 'Gio-deel';
-        elif not geoData.AttribuutNaam is None:
-            properties[geoData.AttribuutNaam] = 'Normwaarde';
-        if len (properties) > 0:
-            collectie['properties'] = properties 
+        if len (geoData.Attributen) > 0:
+            collectie['properties'] = {a.Tag : [a.Label, '' if a.Eenheid is None else a.Eenheid] for a in geoData.Attributen.values ()} 
 
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
@@ -590,13 +613,7 @@ class GeoManipulatie:
             </Stroke>
         </PolygonSymbolizer>
     </Rule>'''
-
-        return self.VoegSymbolisatieToe ('''<FeatureTypeStyle version="1.1.0"
-    xmlns="http://www.opengis.net/se"
-    xmlns:ogc="http://www.opengis.net/ogc">
-    <FeatureTypeName>geo:Locatie</FeatureTypeName>
-    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>''' + rule + '''
-</FeatureTypeStyle>''')
+        return self.VoegSymbolisatieToe (GeoManipulatie._MaakFeatureTypeStyle ([rule]))
 
 
     def VoegSymbolisatieToe (self, symbolisatie : str):
@@ -609,32 +626,87 @@ class GeoManipulatie:
 
         Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
-        self._NaamIndex += 1
-        return self._VoegSymbolisatieToe ('sym' + str(self._NaamIndex), symbolisatie)
-
-    def _VoegSymbolisatieToe (self, naam : str, symbolisatie : str):
-        """Voeg een STOP symbolisatie toe voor gebruik in kaarten.
-
-        Argumenten:
-
-        naam str  De naam die gebruikt moet worden om de symbolisatie toe te passen
-        symbolisatie str  De XML van een STOP symbolisatie module.
-
-        Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
-        """
-
         # Verwijder <?xml ?> regel indien aanwezig
         if symbolisatie is None:
-            self.Log.Detail ('Geen symbolisatie beschikbaar dus niet toegevoegd aan de kaartgegevens: "' + naam + '"')
+            self.Log.Detail ('Geen symbolisatie beschikbaar dus niet toegevoegd aan de kaartgegevens')
             return
         symbolisatie = GeoManipulatie._StripHeader.sub ('', symbolisatie)
 
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
+        self._NaamIndex += 1
+        naam = 'sym' + str(self._NaamIndex)
         self.Generator.VoegSlotScriptToe ('\nKaartgegevens.Instantie.VoegSymbolisatieToe ("' + naam + '",`' + symbolisatie + '`);\n')
         return naam
 
     _StripHeader = re.compile ("^\s*<\?\s*[^>]+>\s*\n")
+
+    @staticmethod
+    def _MaakFeatureTypeStyle (rules : List[str]):
+        """Verpak de rules in een FeatureTypeStyle, dus als STOP module"""
+        return '''<FeatureTypeStyle version="1.1.0"
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>''' + '''
+'''.join (rules) + '''
+</FeatureTypeStyle>'''
+
+    def VoegWijzigMarkeringToe (self):
+        """Voeg de symbolisatie voor de speciale wijzigmarkeringen toe en geef de naam terug"""
+        naam = self._DefaultSymbolenToegevoegd.get ('WM')
+        if naam is None:
+            self._DefaultSymbolenToegevoegd['WM'] = naam = self.VoegSymbolisatieToe (GeoManipulatie.WijzigMarkeringSymbolisatie ())
+        return naam
+
+    @staticmethod
+    def WijzigMarkeringSymbolisatie ():
+        """Geef de symbolisatie voor de speciale wijzigmarkeringen"""
+        return GeoManipulatie._MaakFeatureTypeStyle ([GeoManipulatie._WijzigMarkeringSymbolisatie])
+
+    _WijzigMarkeringSymbolisatie = '''
+    <Rule>
+        <Name>Punt</Name>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>star</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#000000</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>35</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>star</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#F8CECC</SvgParameter><!--#B85450-->
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>29</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>circle</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#82B366</SvgParameter><!--#D5E8D4-->
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>10</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+    </Rule>'''
 
     def ToonKaart (self, jsInitialisatie : str, kaartElementId : str = None):
         """Toon een kaart op de huidige plaats in de webpagina
@@ -761,7 +833,6 @@ class GeoManipulatie:
         Geeft de naam terug die gebruikt moet worden om de gegevens aan een kaart te koppelen
         """
         data = GeoManipulatie.GeoData ()
-        data.BerekendeID = True
         data.Locaties = [g.Geometrie for g in geometrie]
         return self.VoegGeoDataToe (data)
 
@@ -773,7 +844,7 @@ class GeoManipulatie:
         geometrie EnkeleGeometrie[]  De geometrieën uit de GIO, gemaakt via MaakLijstVanGeometrieen
         dimensie int  Dimensie van de geometrieën in de GIO
 
-        Geeft een lijst met punten (dimensie = 0) of vlakken (dimensie > 0) terug waar de geometrieën
+        Geeft een GeoData met punten (dimensie = 0) of vlakken (dimensie > 0) terug waar de geometrieën
         niet disjunct zijn, of None als de GIO valide is. Geeft daarnaast (indien mogelijk) terug bij 
         welke tekennauwkeurigheid (in decimeter) de GIO wel valide is.
         """
@@ -787,11 +858,21 @@ class GeoManipulatie:
             return (self._ValideerGIOVlakken (geometrie), None)
         raise 'dimensie = ' + str(dimensie)
 
-    def _ValideerGIOPunten (self, punten: List[EnkeleGeometrie]) -> Tuple[List[EnkeleGeometrie],float]:
+    def _ValideerGIOPunten (self, punten: List[EnkeleGeometrie]) -> Tuple[GeoData,float]:
+        """Implementatie van ValideerGIO voor punt-geometrieën"""
         drempel = self.NauwkeurigheidInMeter ()
         drempel *= drempel
         minimaleAfstand = None
-        probleem = set ()
+        afstanden = {}
+        aantal = {}
+        def __Afstand (i, afstand):
+            afstand_i = afstanden.get (i)
+            if afstand_i is None or afstand < afstand_i:
+                afstanden[i] = afstand
+            aantal_i = aantal.get (i)
+            aantal[i] = (0 if aantal_i is None else aantal_i) + 1
+
+
         # Vind alle punten die te dicht bij een ander punt liggen
         for i in range (0, len (punten)):
             coord_i = punten[i].Geometrie['geometry']['coordinates']
@@ -799,8 +880,8 @@ class GeoManipulatie:
                 coord_j = punten[j].Geometrie['geometry']['coordinates']
                 afstand = (coord_i[0] - coord_j[0]) * (coord_i[0] - coord_j[0]) + (coord_i[1] - coord_j[1]) * (coord_i[1] - coord_j[1])
                 if afstand < drempel:
-                    probleem.add (i)
-                    probleem.add (j)
+                    __Afstand (i, afstand)
+                    __Afstand (j, afstand)
                     if minimaleAfstand is None or afstand < minimaleAfstand:
                         minimaleAfstand  = afstand
         # Is er een probleem?
@@ -808,9 +889,19 @@ class GeoManipulatie:
             self.Log.Informatie ('Alle punten liggen tenminste ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af')
             return (None, None)
         else:
-            minimaleAfstand /= 10
-            self.Log.Fout ('Er zijn ' + str(len (probleem)) + ' punten die minder dan ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
-            return ([punten[i] for i in probleem], minimaleAfstand)
+            self.Log.Fout ('Er zijn ' + str(len (afstanden)) + ' punten die minder dan ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
+            problemen = GeoManipulatie.GeoData ()
+            problemen.Attributen['d'] = GeoManipulatie.Attribuut ('d', 'Minimale afstand', 'decimeter')
+            problemen.Attributen['n'] = GeoManipulatie.Attribuut ('n', 'Te nabije buren')
+            problemen.AttribuutNaam = 'afstand'
+            problemen.BerekendeID = True
+            problemen.Dimensie = 1
+            problemen.Locaties = []
+            for i, afstand in afstanden.items ():
+                punt = punten[i].Geometrie
+                punt['properties'] = { 'd': round (math.sqrt (100*afstand), 2), 'n': aantal[i] }
+                problemen.Locaties.append (punt);
+            return (problemen, round(math.sqrt (100 * minimaleAfstand), 2))
 
 
     class WijzigingBepaling:

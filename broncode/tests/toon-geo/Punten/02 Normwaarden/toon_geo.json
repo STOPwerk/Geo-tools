@@ -1,4 +1,4 @@
 {
   "geometrie": "testdata_punten.gml",
-  "nauwkeurigheid": 1.0
+  "nauwkeurigheid": 10
 }

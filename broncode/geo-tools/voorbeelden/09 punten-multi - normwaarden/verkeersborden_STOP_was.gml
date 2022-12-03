@@ -961,9 +961,6 @@
                             <gml:MultiPoint srsName="urn:ogc:def:crs:EPSG::28992">
                                 <gml:pointMembers>
                                     <gml:Point>
-                                        <gml:pos>242941.493 488764.802</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
                                         <gml:pos>239282.342 485676.367</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
@@ -10065,9 +10062,6 @@
                                         <gml:pos>30873.606 387432.389</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
-                                        <gml:pos>30113.527 388363.735</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
                                         <gml:pos>27800.141 386202.189</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
@@ -13133,16 +13127,9 @@
                     <basisgeo:Geometrie>
                         <basisgeo:id>37b0a09f-36a0-4e69-80c1-00000001884</basisgeo:id>
                         <basisgeo:geometrie>
-                            <gml:MultiPoint srsName="urn:ogc:def:crs:EPSG::28992">
-                                <gml:pointMembers>
-                                    <gml:Point>
-                                        <gml:pos>180082.637 331456.48</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
-                                        <gml:pos>180082.498 331456.645</gml:pos>
-                                    </gml:Point>
-                                </gml:pointMembers>
-                            </gml:MultiPoint>
+                            <gml:Point srsName="urn:ogc:def:crs:EPSG::28992">
+                                <gml:pos>180082.637 331456.48</gml:pos>
+                            </gml:Point>
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
@@ -16031,13 +16018,7 @@
                                         <gml:pos>75367.493 449929.251</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
-                                        <gml:pos>75367.409 449929.181</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
                                         <gml:pos>75378.95 449917.359</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
-                                        <gml:pos>75378.937 449917.346</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
                                         <gml:pos>75422.032 441180.027</gml:pos>
@@ -16824,9 +16805,6 @@
                                     </gml:Point>
                                     <gml:Point>
                                         <gml:pos>186491.741 314351.143</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
-                                        <gml:pos>178795.604 311297.32</gml:pos>
                                     </gml:Point>
                                 </gml:pointMembers>
                             </gml:MultiPoint>

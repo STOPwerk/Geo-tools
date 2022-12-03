@@ -330,7 +330,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -400,7 +400,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -461,7 +461,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -660,7 +660,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -745,7 +745,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -754,9 +754,6 @@
                         <basisgeo:geometrie>
                             <gml:MultiPoint srsName="urn:ogc:def:crs:EPSG::28992">
                                 <gml:pointMembers>
-                                    <gml:Point>
-                                        <gml:pos>242941.493 488764.802</gml:pos>
-                                    </gml:Point>
                                     <gml:Point>
                                         <gml:pos>239282.342 485676.367</gml:pos>
                                     </gml:Point>
@@ -794,7 +791,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -1146,7 +1143,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -1261,7 +1258,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -1346,7 +1343,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -1767,7 +1764,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -1861,7 +1858,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -2069,7 +2066,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -2313,7 +2310,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -2389,7 +2386,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -2453,7 +2450,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -2670,7 +2667,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -2737,7 +2734,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -2843,7 +2840,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -3096,7 +3093,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -3151,7 +3148,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -3263,7 +3260,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -3450,7 +3447,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -3526,7 +3523,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -3664,7 +3661,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -3797,7 +3794,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -4044,7 +4041,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -4099,7 +4096,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -4340,7 +4337,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -4593,7 +4590,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -4696,7 +4693,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -4838,7 +4835,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5010,7 +5007,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5050,7 +5047,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5239,7 +5236,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5299,7 +5296,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5378,7 +5375,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5657,7 +5654,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5727,7 +5724,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5769,7 +5766,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -5986,7 +5983,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -6275,7 +6272,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -6344,7 +6341,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -6566,7 +6563,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -6609,7 +6606,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -6658,7 +6655,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7013,7 +7010,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7110,7 +7107,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7231,7 +7228,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7466,7 +7463,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7512,7 +7509,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7648,7 +7645,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7927,7 +7924,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -7987,7 +7984,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -8004,9 +8001,6 @@
                                     </gml:Point>
                                     <gml:Point>
                                         <gml:pos>30873.606 387432.389</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
-                                        <gml:pos>30113.527 388363.735</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
                                         <gml:pos>27800.141 386202.189</gml:pos>
@@ -8096,7 +8090,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -8240,7 +8234,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -8373,7 +8367,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -8440,7 +8434,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -8756,7 +8750,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -8898,7 +8892,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -9031,7 +9025,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -9260,7 +9254,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -9360,7 +9354,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -9424,7 +9418,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -9713,7 +9707,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -9755,7 +9749,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -9846,7 +9840,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -10108,7 +10102,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -10222,7 +10216,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -10415,7 +10409,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -10533,15 +10527,12 @@
                                     <gml:Point>
                                         <gml:pos>180082.637 331456.48</gml:pos>
                                     </gml:Point>
-                                    <gml:Point>
-                                        <gml:pos>180082.498 331456.645</gml:pos>
-                                    </gml:Point>
                                 </gml:pointMembers>
                             </gml:MultiPoint>
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -10767,7 +10758,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -10855,7 +10846,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11079,7 +11070,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11137,7 +11128,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11222,7 +11213,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11397,7 +11388,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11467,7 +11458,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11633,7 +11624,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11766,7 +11757,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11851,7 +11842,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -11927,7 +11918,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -12185,7 +12176,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -12225,7 +12216,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -12400,7 +12391,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -12623,7 +12614,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -12684,7 +12675,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -12843,13 +12834,7 @@
                                         <gml:pos>75367.493 449929.251</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
-                                        <gml:pos>75367.409 449929.181</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
                                         <gml:pos>75378.95 449917.359</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
-                                        <gml:pos>75378.937 449917.346</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
                                         <gml:pos>78106.204 448686.444</gml:pos>
@@ -12904,7 +12889,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -13232,7 +13217,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -13374,7 +13359,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -13528,7 +13513,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -13569,9 +13554,6 @@
                                     </gml:Point>
                                     <gml:Point>
                                         <gml:pos>181276.7 312752.515</gml:pos>
-                                    </gml:Point>
-                                    <gml:Point>
-                                        <gml:pos>178795.604 311297.32</gml:pos>
                                     </gml:Point>
                                     <gml:Point>
                                         <gml:pos>185829.348 315074.401</gml:pos>
@@ -13811,7 +13793,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -13890,7 +13872,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -14014,7 +13996,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -14327,7 +14309,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -14472,7 +14454,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -14569,7 +14551,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -14912,7 +14894,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g6</geo:groepID>
+                <geo:groepID>g1</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -15015,7 +14997,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g8</geo:groepID>
+                <geo:groepID>g3</geo:groepID>
             </geo:Locatie>
             <geo:Locatie>
                 <geo:geometrie>
@@ -15220,7 +15202,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:groepID>g10</geo:groepID>
+                <geo:groepID>g5</geo:groepID>
             </geo:Locatie>
     </geo:locaties>
 </geo:GeoInformatieObjectVersie>

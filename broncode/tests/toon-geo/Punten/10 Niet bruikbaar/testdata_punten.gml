@@ -6,7 +6,6 @@
       xmlns:gml="http://www.opengis.net/gml/3.2">
     <geo:FRBRWork>/join/id/regdata/mnre9999/2022/stopborden</geo:FRBRWork>
     <geo:FRBRExpression>/join/id/regdata/mnre9999/2022/stopborden/nld@2022;wordt</geo:FRBRExpression>
-    <geo:eenheidlabel>Jaar</geo:eenheidlabel>
     <geo:normlabel>Te vervangen voor</geo:normlabel>
     <geo:locaties>
             <geo:Locatie>

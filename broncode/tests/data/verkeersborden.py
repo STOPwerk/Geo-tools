@@ -34,7 +34,7 @@ borden = [{
 
 gio_delen = ['Standaardbeheer', 'Gemeentelijk beheer', 'Centraal beheer', 'Tijdelijk beheer', 'Decentraal beheer']
 gemeenteIndex = { g: i % 10 for i, g in enumerate (sorted (list(set (b["gemeente"] for b in borden))))}
-gemeenteFilter = [lambda idx: None, lambda idx: None if idx == 0 else 4-idx if idx in [1,3] else 9-idx if idx in [6,8] else idx, lambda idx: None if idx == 9 else idx % 5]
+gemeenteFilter = [lambda idx: None, lambda idx: None if idx == 0 else 4-idx if idx in [1,3] else 9-idx if idx in [6,8] else idx % 5, lambda idx: None if idx == 9 else idx % 5]
 
 levensduur = 100
 jaren = list (sorted (list(set (b["jaar"] for b in borden))))

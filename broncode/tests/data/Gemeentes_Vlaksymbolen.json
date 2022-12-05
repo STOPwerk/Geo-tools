@@ -1,0 +1,164 @@
+[{
+        "Code": "01",
+        "Symbolizer": "<PolygonSymbolizer><Name>01</Name><Fill><SvgParameter name=\"fill\">#ebf0d2</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "02",
+        "Symbolizer": "<PolygonSymbolizer><Name>02</Name><Fill><SvgParameter name=\"fill\">#d2ffa5</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "03",
+        "Symbolizer": "<PolygonSymbolizer><Name>03</Name><Fill><SvgParameter name=\"fill\">#b45fd2</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "04",
+        "Symbolizer": "<PolygonSymbolizer><Name>04</Name><Fill><SvgParameter name=\"fill\">#64aa2d</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "05",
+        "Symbolizer": "<PolygonSymbolizer><Name>05</Name><Fill><SvgParameter name=\"fill\">#ffc8be</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "06",
+        "Symbolizer": "<PolygonSymbolizer><Name>06</Name><Fill><SvgParameter name=\"fill\">#ff3c82</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "07",
+        "Symbolizer": "<PolygonSymbolizer><Name>07</Name><Fill><SvgParameter name=\"fill\">#ffa096</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "08",
+        "Symbolizer": "<PolygonSymbolizer><Name>08</Name><Fill><SvgParameter name=\"fill\">#f091be</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "09",
+        "Symbolizer": "<PolygonSymbolizer><Name>09</Name><Fill><SvgParameter name=\"fill\">#ff9b00</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "10",
+        "Symbolizer": "<PolygonSymbolizer><Name>10</Name><Fill><SvgParameter name=\"fill\">#28c846</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "11",
+        "Symbolizer": "<PolygonSymbolizer><Name>11</Name><Fill><SvgParameter name=\"fill\">#ff6923</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "12",
+        "Symbolizer": "<PolygonSymbolizer><Name>12</Name><Fill><SvgParameter name=\"fill\">#ebc3d7</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "13",
+        "Symbolizer": "<PolygonSymbolizer><Name>13</Name><Fill><SvgParameter name=\"fill\">#9b32cd</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "14",
+        "Symbolizer": "<PolygonSymbolizer><Name>14</Name><Fill><SvgParameter name=\"fill\">#dc9b78</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "15",
+        "Symbolizer": "<PolygonSymbolizer><Name>15</Name><Fill><SvgParameter name=\"fill\">#009b00</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "16",
+        "Symbolizer": "<PolygonSymbolizer><Name>16</Name><Fill><SvgParameter name=\"fill\">#82a591</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "17",
+        "Symbolizer": "<PolygonSymbolizer><Name>17</Name><Fill><SvgParameter name=\"fill\">#ff78a0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "18",
+        "Symbolizer": "<PolygonSymbolizer><Name>18</Name><Fill><SvgParameter name=\"fill\">#b9d746</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "19",
+        "Symbolizer": "<PolygonSymbolizer><Name>19</Name><Fill><SvgParameter name=\"fill\">#82c846</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "20",
+        "Symbolizer": "<PolygonSymbolizer><Name>20</Name><Fill><SvgParameter name=\"fill\">#0000ff</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "21",
+        "Symbolizer": "<PolygonSymbolizer><Name>21</Name><Fill><SvgParameter name=\"fill\">#cdcdcd</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "22",
+        "Symbolizer": "<PolygonSymbolizer><Name>22</Name><Fill><SvgParameter name=\"fill\">#00ffff</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "23",
+        "Symbolizer": "<PolygonSymbolizer><Name>23</Name><Fill><SvgParameter name=\"fill\">#afcde1</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "24",
+        "Symbolizer": "<PolygonSymbolizer><Name>24</Name><Fill><SvgParameter name=\"fill\">#5757ff</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "25",
+        "Symbolizer": "<PolygonSymbolizer><Name>25</Name><Fill><SvgParameter name=\"fill\">#ff0000</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "26",
+        "Symbolizer": "<PolygonSymbolizer><Name>26</Name><Fill><SvgParameter name=\"fill\">#ffff00</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "27",
+        "Symbolizer": "<PolygonSymbolizer><Name>27</Name><Fill><SvgParameter name=\"fill\">#ffffb4</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "28",
+        "Symbolizer": "<PolygonSymbolizer><Name>28</Name><Fill><SvgParameter name=\"fill\">#c8a0d7</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "29",
+        "Symbolizer": "<PolygonSymbolizer><Name>29</Name><Fill><SvgParameter name=\"fill\">#fad2ff</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "30",
+        "Symbolizer": "<PolygonSymbolizer><Name>30</Name><Fill><SvgParameter name=\"fill\">#ebe1eb</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "31",
+        "Symbolizer": "<PolygonSymbolizer><Name>31</Name><Fill><SvgParameter name=\"fill\">#C02040</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "32",
+        "Symbolizer": "<PolygonSymbolizer><Name>32</Name><Fill><SvgParameter name=\"fill\">#E04040</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "33",
+        "Symbolizer": "<PolygonSymbolizer><Name>33</Name><Fill><SvgParameter name=\"fill\">#E06060</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "34",
+        "Symbolizer": "<PolygonSymbolizer><Name>34</Name><Fill><SvgParameter name=\"fill\">#FF6060</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "35",
+        "Symbolizer": "<PolygonSymbolizer><Name>35</Name><Fill><SvgParameter name=\"fill\">#FFC040</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "36",
+        "Symbolizer": "<PolygonSymbolizer><Name>36</Name><Fill><SvgParameter name=\"fill\">#FFE000</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "37",
+        "Symbolizer": "<PolygonSymbolizer><Name>37</Name><Fill><SvgParameter name=\"fill\">#E0C0A0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "38",
+        "Symbolizer": "<PolygonSymbolizer><Name>38</Name><Fill><SvgParameter name=\"fill\">#C0A000</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "39",
+        "Symbolizer": "<PolygonSymbolizer><Name>39</Name><Fill><SvgParameter name=\"fill\">#C0C000</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "40",
+        "Symbolizer": "<PolygonSymbolizer><Name>40</Name><Fill><SvgParameter name=\"fill\">#E0E080</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "41",
+        "Symbolizer": "<PolygonSymbolizer><Name>41</Name><Fill><SvgParameter name=\"fill\">#0080C0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "42",
+        "Symbolizer": "<PolygonSymbolizer><Name>42</Name><Fill><SvgParameter name=\"fill\">#0080FF</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "43",
+        "Symbolizer": "<PolygonSymbolizer><Name>43</Name><Fill><SvgParameter name=\"fill\">#40E0FF</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "44",
+        "Symbolizer": "<PolygonSymbolizer><Name>44</Name><Fill><SvgParameter name=\"fill\">#40E0E0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "45",
+        "Symbolizer": "<PolygonSymbolizer><Name>45</Name><Fill><SvgParameter name=\"fill\">#8080C0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "46",
+        "Symbolizer": "<PolygonSymbolizer><Name>46</Name><Fill><SvgParameter name=\"fill\">#8080FF</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "47",
+        "Symbolizer": "<PolygonSymbolizer><Name>47</Name><Fill><SvgParameter name=\"fill\">#C0C0FF</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "48",
+        "Symbolizer": "<PolygonSymbolizer><Name>48</Name><Fill><SvgParameter name=\"fill\">#00C0C0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "49",
+        "Symbolizer": "<PolygonSymbolizer><Name>49</Name><Fill><SvgParameter name=\"fill\">#40E0C0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "50",
+        "Symbolizer": "<PolygonSymbolizer><Name>50</Name><Fill><SvgParameter name=\"fill\">#60E0A0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "51",
+        "Symbolizer": "<PolygonSymbolizer><Name>51</Name><Fill><SvgParameter name=\"fill\">#00C000</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "52",
+        "Symbolizer": "<PolygonSymbolizer><Name>52</Name><Fill><SvgParameter name=\"fill\">#00FF00</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "53",
+        "Symbolizer": "<PolygonSymbolizer><Name>53</Name><Fill><SvgParameter name=\"fill\">#80FF80</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }, {
+        "Code": "54",
+        "Symbolizer": "<PolygonSymbolizer><Name>54</Name><Fill><SvgParameter name=\"fill\">#B0B0B0</SvgParameter><SvgParameter name=\"fill-opacity\">0.5</SvgParameter></Fill><Stroke><SvgParameter name=\"stroke\">#000001</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">1</SvgParameter><SvgParameter name=\"stroke-linejoin\">round</SvgParameter></Stroke></PolygonSymbolizer>"
+    }
+]

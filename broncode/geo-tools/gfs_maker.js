@@ -299,7 +299,7 @@ window.addEventListener('load', function () {
             if (gml.match(/"urn:ogc:def:crs:EPSG::4258"/)) {
                 maker.SRS = 'urn:ogc:def:crs:EPSG::4258';
             }
-            else if (gml.match(/"urn:ogc:def:crs:EPSG::28992"/)) {
+            else if (gml.match(/"urn:ogc:def:crs:EPSG::28992"/) || gml.match(/"EPSG:28992"/)) {
                 maker.SRS = 'urn:ogc:def:crs:EPSG::28992';
             }
             else {
@@ -361,7 +361,7 @@ window.addEventListener('load', function () {
 
         const This = this;
         const reader = new FileReader();
-        this.VoerUit = function(){
+        this.VoerUit = function () {
             reader.addEventListener("load", () => {
                 This._InterpreteerGML(reader.result);
             }, false);

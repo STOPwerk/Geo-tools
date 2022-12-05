@@ -69,8 +69,13 @@ class GeoViewer (GeoManipulatie):
             self.Log.Detail ('Symbolisatie ingelezen')
 
         einde = None
-        if not self.RequestIndex is None:
-            einde = self.Generator.StartSectie ('<h3>Bestand #1</h3>', True)
+        if self.RequestIndex is None:
+            self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
+        else:
+            einde = self.Generator.StartSectie ('<h3>Bestand: ' + self.Request.Bestandsnaam ('geometrie') + '</h3>', True)
+        beschrijving = self.Request.LeesString ('beschrijving')
+        if beschrijving:
+            self.Generator.VoegHtmlToe ('<p>' + beschrijving + '</p>')
 
         self.Log.Informatie ('Maak de kaartweergave')
         dataNaam = self.VoegGeoDataToe (gio)

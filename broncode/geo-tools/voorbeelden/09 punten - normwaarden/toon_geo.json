@@ -1,9 +1,1 @@
-[{
-  "geometrie": "verkeersborden_STOP_was.gml",
-  "nauwkeurigheid": 1.0,
-  "symbolisatie": "verkeersborden_STOP_was.xml"
-},{
-  "geometrie": "verkeersborden_STOP_wordt.gml",
-  "nauwkeurigheid": 1.0,
-  "symbolisatie": "verkeersborden_STOP_wordt.xml"
-}]
+[{"geometrie": "verkeersborden_STOP_was.gml", "symbolisatie": "C:\\Projects\\KOOP\\STOP\\STOPwerk Geo-tools\\broncode\\tests\\data\\..\\..\\geo-tools\\voorbeelden\\09 punten - normwaarden\\verkeersborden_STOP_was_wordt_symbolisatie.xml", "nauwkeurigheid": "10", "beschrijving": "Originele versie van de GIO met normwaarden. Elk punt is een aparte GIO-Locatie."}, {"geometrie": "verkeersborden_STOP_wordt.gml", "symbolisatie": "C:\\Projects\\KOOP\\STOP\\STOPwerk Geo-tools\\broncode\\tests\\data\\..\\..\\geo-tools\\voorbeelden\\09 punten - normwaarden\\verkeersborden_STOP_was_wordt_symbolisatie.xml", "nauwkeurigheid": "10", "beschrijving": "Nieuwe versie van de GIO met normwaarden. Elk punt is een aparte GIO-Locatie."}]

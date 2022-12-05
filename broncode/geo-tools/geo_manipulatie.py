@@ -371,7 +371,7 @@ class GeoManipulatie:
                 succes = False
                 continue
             try:
-                geoLocatie = pygml.parse (ElementTree.tostring(geometrie[0]))
+                geoLocatie = pygml.parse (ElementTree.tostring(geometrie[0], encoding='unicode'))
             except Exception as e:
                 foutmeldingen.add ('GML-geometrie kan niet gebruikt worden: ' + str(e))
                 succes = False
@@ -383,10 +383,10 @@ class GeoManipulatie:
                 prop = prop.get ('properties')
                 if not prop is None:
                     prop = prop.get ('name')
-                    isRD = (prop == 'urn:ogc:def:crs:EPSG::28992')
+                    isRD = (prop == 'urn:ogc:def:crs:EPSG::28992') or (prop == 'EPSG:28992')
                 geoLocatie.geometry.pop ('crs') # Wordt later op feature collectie niveau toegevoegd
             if not isRD:
-                foutmeldingen.add ('Alleen RD coördinaten (urn:ogc:def:crs:EPSG::28992) zijn toegestaan')
+                foutmeldingen.add ('Alleen RD coördinaten (urn:ogc:def:crs:EPSG::28992 of EPSG:28992) zijn toegestaan')
                 succes = False
 
             geoLocatie = {
@@ -902,6 +902,16 @@ class GeoManipulatie:
                 punt['properties'] = { 'd': round (math.sqrt (100*afstand), 2), 'n': aantal[i] }
                 problemen.Locaties.append (punt);
             return (problemen, round(math.sqrt (100 * minimaleAfstand), 2))
+
+    def _ValideerGIOLijnen (self, punten: List[EnkeleGeometrie]) -> Tuple[GeoData,float]:
+        """Implementatie van ValideerGIO voor lijn-geometrieën"""
+        self.Log.Fout ("Validatie van lijnen in een GIO is nog niet gecodeerd")
+        return (None, None)
+
+    def _ValideerGIOVlakken (self, punten: List[EnkeleGeometrie]) -> Tuple[GeoData,float]:
+        """Implementatie van ValideerGIO voor vlak-geometrieën"""
+        self.Log.Fout ("Validatie van vlakken in een GIO is nog niet gecodeerd")
+        return None
 
 
     class WijzigingBepaling:

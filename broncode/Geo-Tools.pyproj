@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>tests\data\verkeersborden.py</StartupFile>
+    <StartupFile>tests\data\Gemeentes.py</StartupFile>
     <SearchPath>tests\code</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -48,6 +48,26 @@
     <Content Include="geo-tools\weergave_webpagina_einde.html" />
     <Content Include="geo-tools\weergave_webpagina_start.html" />
     <Content Include="Geo-Tools.pyproj.vsspell" />
+    <Content Include="tests\data\Gemeentegrenzen_2017.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2018.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2019.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2020.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2021.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2022.gml" />
+    <Content Include="tests\data\Gemeentes_Vlaksymbolen.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2017.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2018.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2019.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2020.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2021.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2022.json" />
+    <Content Include="tests\data\MIRT_2017.gml" />
+    <Content Include="tests\data\MIRT_2018.gml" />
+    <Content Include="tests\data\MIRT_2019.gml" />
+    <Content Include="tests\data\MIRT_2020.gml" />
+    <Content Include="tests\data\MIRT_2021.gml" />
+    <Content Include="tests\data\MIRT_2022.gml" />
+    <Content Include="tests\data\MIRT_Lijnsymbolen.json" />
     <Content Include="tests\data\verkeersborden_puntsymbolen.json" />
     <Content Include="tests\data\verkeersborden_STOP.json" />
     <Content Include="uitleveren\configuratie.json" />
@@ -82,6 +102,9 @@
     <Compile Include="geo-tools\weergave_webpagina.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tests\data\MIRT.py" />
+    <Compile Include="tests\data\Gemeentes.py" />
+    <Compile Include="tests\data\symbolisatie.py" />
     <Compile Include="tests\data\verkeersborden.py" />
     <Compile Include="uitleveren\maak_release_artefacts.py" />
     <Compile Include="uitleveren\pas_configuratie_toe.py" />

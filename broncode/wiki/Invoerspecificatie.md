@@ -8,7 +8,7 @@ Als de geo-tools [uitgevoerd](Geo-tools-uitvoeren) worden als Python script, dan
     * [maak_gio_wijziging.json](#maak-gio-wijziging)
     * [toon_gio_wijziging.json](#toon-gio-wijziging)
 
-    De specificaties worden in deze volgorde ingelezen en door de bibehorende geo-tool uitgvoerd. De geo-tools herkennen een map als een map met invoerbestanden als een van de specificaties gevonden wordt.
+    De specificaties worden in deze volgorde ingelezen en door de bijbehorende geo-tool uitgvoerd. De geo-tools herkennen een map als een map met invoerbestanden als een van de specificaties gevonden wordt. Elke specificatie bestaat uit ofwel een enkel JSON-object met de specificatie van een enkele operatie, ofwel een lijst/array van dergelijke objecten waarvan de resultaten in dezelfde resultaatpagina gecombineerd worden weergegeven.
 
 * GML en symbolisatiebestanden die in de specificatie genoemd zijn, gecodeerd volgens de voorschriften van de STOP modules:
     * [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html)
@@ -21,7 +21,6 @@ Als de geo-tools [uitgevoerd](Geo-tools-uitvoeren) worden als Python script, dan
 
     De geo-tools ondersteunen alleen RD coördinaten (urn:ogc:def:crs:EPSG::28992). In een GIO mogen uitsluitend geometrieën van dezelfde soort (punten, lijnen of vlakken) voorkomen.
 
-
 * Als de invoerbestanden voor een test bedoeld zijn, dan moeten ook de verwachte uitkomsten aangegeven worden:
     * ***_specificatie_zonder_json*_log_verwacht.json** bevat de verwachte foutmeldingen en waarschuwingen die uit de test komen. Als het bestand leeg is wordt niet gecontroleerd of de actuele meldingen aan de verwachtingen voldoen. Als de inhoud `[]` is worden geen foutmeldingen of waarschuwingen verwacht.
     * ***_specificatie_zonder_json*_verwacht.html** bevat de verwachte resultaatpagina van de geo-tool. Als het bestand leeg is wordt niet gecontroleerd of het actuele resultaat aan de verwachtingen voldoen. Het bestand kan weggelaten worden als er foutmeldingen zijn.
@@ -32,24 +31,11 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
 {
     "geometrie": "geometrische_data.gml",
     "symbolisatie": "style.xml",
-    "nauwkeurigheid": 1
+    "nauwkeurigheid": 1,
+    "beschrijving": "Optionele beschrijving"
 }
 ```
-of meerdere in één resultaatpagina:
-```
-[{
-        "geometrie": "geometrische_data_1.gml",
-        "symbolisatie": "style_1.xml",
-        "nauwkeurigheid": 1
-    },
-    {
-        "geometrie": "geometrische_data_2.gml",
-        "symbolisatie": "style_2.xml",
-        "nauwkeurigheid": 10
-    },
-    ....
-]
-```
+(of een lijst met dergelijke specificaties)
 met:
 
 | Parameter | Beschrijving |
@@ -57,6 +43,7 @@ met:
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html). Optioneel; als dit niet gegeven is worden alle gebieden/lijnen/punten op een standaard manier weergegeven. |
 | `nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
+| `beschrijving` | Optioneel: een beschrijving van de GIO die in de resultaatpagina wordt opgenomen |
 
 
 ## Maak GIO wijziging
@@ -71,6 +58,7 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
     "wijziging": "GIO_wijziging.gml"
 }
 ```
+(of een lijst met dergelijke specificaties)
 met:
 
 | Parameter | Beschrijving |
@@ -93,6 +81,7 @@ Het specificatiebestand `toon_gio_wijziging.json` geeft de invoer voor de geo-to
     "wordt": "GIO_wordt_versie.gml"
 }
 ```
+(of een lijst met dergelijke specificaties)
 met:
 
 | Parameter | Beschrijving |

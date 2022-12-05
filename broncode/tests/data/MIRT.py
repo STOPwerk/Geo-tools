@@ -106,7 +106,7 @@ gio_delen = { gd: idx for idx, gd in enumerate (sorted (gio_delen)) }
 # Schrijf GIO's
 #
 #==============================================================================
-def __GIO (subdir, jaar, multiLijnen, attribuut, beschrijving):
+def __GIO (subdir, jaar, multiLijnen, attribuut):
     gioPad = os.path.join (voorbeelden_dir, subdir, 'mirt_' + str(jaar) + '.gml')
     os.makedirs (os.path.dirname (gioPad), exist_ok=True)
     with open (gioPad, 'w', encoding='utf-8') as gml_file:
@@ -119,7 +119,7 @@ def __GIO (subdir, jaar, multiLijnen, attribuut, beschrijving):
     <geo:FRBRWork>/join/id/regdata/mnre9999/1839/mirt</geo:FRBRWork>
     <geo:FRBRExpression>/join/id/regdata/mnre9999/1839/mirt/nld@''' + str(jaar) + '''</geo:FRBRExpression>''')
 
-        symbolisatie.StartGio (gioPad, 'groepID' if attribuut == 1 else 'kwantitatieveNormwaarde' if attribuut == 2 else None, beschrijving)
+        symbolisatie.StartGio (gioPad, 'groepID' if attribuut == 1 else 'kwantitatieveNormwaarde' if attribuut == 2 else None)
 
         if attribuut == 1:
             gml_file.write ('''
@@ -208,15 +208,64 @@ def __GIO (subdir, jaar, multiLijnen, attribuut, beschrijving):
 </geo:GeoInformatieObjectVersie>
     ''')
 
+symbolisatie.MaakReadme ([voorbeelden_dir, '05 lijnen - geometrie'], '''#GIO met alleen geometrie
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit lijnen.
+
+De geometrieën bestaan uit lijnen. Elke lijn is een aparte GIO-Locatie.
+Ook als de geometrie van een lijn niet wijzigt in een volgende versie, dan heeft de lijn toch een andere basisgeometrie-ID.
+''')
+symbolisatie.MaakReadme ([voorbeelden_dir, '05 lijnen - geometrie - multi-geometrie'], '''#GIO met alleen geometrie
+
+Dit is een technisch voorbeeld om voor een GIO met alleen geometrie te demonstreren dat het combineren van alle geometrie
+in een enkele multi-geometrie tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit lijnen. Alle lijnen zijn ondergebracht in een enkele GIO-Locatie.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
 for jaar in jaren:
-    __GIO ('04 lijnen - geometrie', jaar, False, 0, 'GIO met alleen geometrie voor het jaar ' + str(jaar) + '. Elke lijn heeft een eigen GIO-Locatie, en elk jaar worden de basisgeo-IDs opnieuw toegekend..')
-    __GIO ('04 lijnen - geometrie - multi-geometrie', jaar, True, 0, 'GIO met alleen geometrie voor het jaar ' + str(jaar) + '. Alle lijnen worden in één GIO-Locatie gecombineerd die elk jaar een nieuwe basisgeo-ID krijgt.')
+    __GIO ('05 lijnen - geometrie', jaar, False, 0)
+    __GIO ('05 lijnen - geometrie - multi-geometrie', jaar, True, 0)
 
-    __GIO ('05 lijnen - GIO-delen', jaar, False, 1, 'GIO met HIO-delen voor het jaar ' + str(jaar) + '. Elke lijn heeft een eigen GIO-Locatie, en elk jaar worden de basisgeo-IDs opnieuw toegekend..')
-    __GIO ('05 lijnen - GIO-delen - multi-geometrie', jaar, True, 1, 'GIO met GIO-delen voor het jaar ' + str(jaar) + '. Elk GIO-deel correspondeert met één GIO-Locatie, met één of meer lijnen, die elk jaar een nieuwe basisgeo-ID krijgt.')
 
-    __GIO ('06 lijnen - normwaarden', jaar, False, 2, 'GIO met normwaarden voor het jaar ' + str(jaar) + '. Elke lijn heeft een eigen GIO-Locatie, en elk jaar worden de basisgeo-IDs opnieuw toegekend..')
-    __GIO ('06 lijnen - normwaarden - multi-geometrie', jaar, True, 2, 'GIO met normwaarden voor het jaar ' + str(jaar) + '. Elke normwaarde correspondeert met één GIO-Locatie, met één of meer lijnen, die elk jaar een nieuwe basisgeo-ID krijgt.')
+symbolisatie.MaakReadme ([voorbeelden_dir, '05 lijnen - GIO-delen'], '''#GIO met GIO-delen
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met GIO-delen bestaande uit lijnen.
+
+De geometrieën bestaan uit lijnen. Elke lijn is een aparte GIO-Locatie.
+Ook als de geometrie van een lijn niet wijzigt in een volgende versie, dan heeft de lijn toch een andere basisgeometrie-ID.
+''')
+symbolisatie.MaakReadme ([voorbeelden_dir, '05 lijnen - GIO-delen - multi-geometrie'], '''#GIO met GIO-delen
+
+Dit is een technisch voorbeeld om voor een GIO met GIO-delen te demonstreren dat het combineren van alle geometrie
+in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit lijnen. Alle lijnen zijn ondergebracht in een enkele GIO-Locatie per GIO-deel.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+for jaar in jaren:
+    __GIO ('05 lijnen - GIO-delen', jaar, False, 1)
+    __GIO ('05 lijnen - GIO-delen - multi-geometrie', jaar, True, 1)
+
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '07 lijnen - normwaarden'], '''#GIO met normwaarden
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor lijnen.
+
+De geometrieën bestaan uit lijnen. Elke lijn is een aparte GIO-Locatie.
+Ook als de geometrie van een lijn niet wijzigt in een volgende versie, dan heeft de lijn toch een andere basisgeometrie-ID.
+''')
+symbolisatie.MaakReadme ([voorbeelden_dir, '07 lijnen - normwaarden - multi-geometrie'], '''#GIO met normwaarden
+
+Dit is een technisch voorbeeld om voor een GIO met normwaarden te demonstreren dat het combineren van alle geometrie
+in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit lijnen. Alle lijnen zijn ondergebracht in een enkele GIO-Locatie per normwaarde.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+for jaar in jaren:
+    __GIO ('07 lijnen - normwaarden', jaar, False, 2)
+    __GIO ('07 lijnen - normwaarden - multi-geometrie', jaar, True, 2)
 
 #==============================================================================
 #
@@ -225,32 +274,42 @@ for jaar in jaren:
 #==============================================================================
 symbolisatie.MaakSymbolisaties ('mirt_alle_jaren_symbolisatie.xml')
 
-symbolisatie.MaakToonGeoSpecificaties (10)
+nauwkeurigheid = 10
 
 for mapPad in symbolisatie.GIOMappen ():
-    with open (os.path.join (mapPad, 'maak_gio_wijziging.json'), 'w', encoding='utf-8') as json_file:
-        json.dump ([*[{
-            'was': 'mirt_' + str(jaar-1) + '.gml', 
-            'wordt': 'mirt_' + str(jaar) + '.gml', 
-            'nauwkeurigheid': '10',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad),
-            'wijziging': 'mirt_' + str(jaar-1) + '_' + str(jaar) + '.gml'
-        } for jaar in jaren if jaar != jaren[0]],
-        {
-            'was': 'mirt_' + str(jaren[0]) + '.gml', 
-            'wordt': 'mirt_' + str(jaren[-1]) + '.gml', 
-            'nauwkeurigheid': '10',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad),
-            'wijziging': 'mirt_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml'
-        }], json_file)
-    with open (os.path.join (mapPad, 'toon_gio_wijziging.json'), 'w', encoding='utf-8') as json_file:
-        json.dump ([*[{
-            'was': 'mirt_' + str(jaar-1) + '.gml', 
-            'wijziging': 'mirt_' + str(jaar-1) + '_' + str(jaar) + '.gml',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad),
-        } for jaar in jaren if jaar != jaren[0]],
-        {
-            'was': 'mirt_' + str(jaren[0]) + '.gml', 
-            'wijziging': 'mirt_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad)
-        }], json_file)
+    for specPad, relPad in [(mapPad, '../'), 
+                            (os.path.join ('tests', 'voorbeelden', os.path.basename (mapPad)), 
+                             os.path.join ('..','..', '..', '..', 'geo-tools', 'voorbeelden', os.path.basename (mapPad)) + '/')]:
+        symbolisatiePad = symbolisatie.SymbolisatiePad (mapPad, relPad)
+        for jaar in jaren:
+            symbolisatie.MaakSpecificatie (specPad, [str(jaar), 'toon_geo.json'], {
+                    'geometrie': relPad + 'mirt_' + str(jaar) + '.gml', 
+                    'symbolisatie': None if symbolisatiePad is None else relPad + 'mirt_' + str(jaar) + '_symbolisatie.xml',
+                    'nauwkeurigheid': nauwkeurigheid
+                })
+            if jaar == jaren[0]:
+                continue
+            symbolisatie.MaakSpecificatie (specPad, [str(jaar), 'maak_gio_wijziging.json'], {
+                'was': relPad + 'mirt_' + str(jaar-1) + '.gml', 
+                'wordt': relPad + 'mirt_' + str(jaar) + '.gml', 
+                'nauwkeurigheid': nauwkeurigheid,
+                'symbolisatie': symbolisatiePad,
+                'wijziging': relPad + 'mirt_' + str(jaar-1) + '_' + str(jaar) + '.gml'
+            })
+            symbolisatie.MaakSpecificatie (specPad, [str(jaar), 'toon_gio_wijziging.json'], {
+                'was': relPad + 'mirt_' + str(jaar-1) + '.gml', 
+                'wijziging': relPad + 'mirt_' + str(jaar-1) + '_' + str(jaar) + '.gml',
+                'symbolisatie': symbolisatiePad
+            })
+        symbolisatie.MaakSpecificatie (specPad, [str(jaren[-1]) + '_' + str(jaren[0]), 'maak_gio_wijziging.json'], {
+            'was': relPad + 'mirt_' + str(jaren[0]) + '.gml', 
+            'wordt': relPad + 'mirt_' + str(jaren[-1]) + '.gml', 
+            'nauwkeurigheid': nauwkeurigheid,
+            'symbolisatie': symbolisatiePad,
+            'wijziging': relPad + 'mirt_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml'
+        })
+        symbolisatie.MaakSpecificatie (specPad, [str(jaren[-1]) + '_' + str(jaren[0]), 'toon_gio_wijziging.json'], {
+            'was': relPad + 'mirt_' + str(jaren[0]) + '.gml', 
+            'wijziging': relPad + 'mirt_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml',
+            'symbolisatie': symbolisatiePad
+        })

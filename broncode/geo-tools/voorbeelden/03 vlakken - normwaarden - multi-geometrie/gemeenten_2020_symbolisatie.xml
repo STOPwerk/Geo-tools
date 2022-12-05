@@ -5,116 +5,6 @@
     <FeatureTypeName>geo:Locatie</FeatureTypeName>
     <SemanticTypeIdentifier>geo:kwantitatieveNormwaarde</SemanticTypeIdentifier>
     <Rule>
-        <Name>38</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>38</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>33</Name><Fill><SvgParameter name="fill">#E06060</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>28</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>28</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>22</Name><Fill><SvgParameter name="fill">#00ffff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>4</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>4</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>35</Name><Fill><SvgParameter name="fill">#FFC040</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>47</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>47</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>43</Name><Fill><SvgParameter name="fill">#40E0FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>3</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>3</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>24</Name><Fill><SvgParameter name="fill">#5757ff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>8</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>8</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>53</Name><Fill><SvgParameter name="fill">#80FF80</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>44</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>44</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>40</Name><Fill><SvgParameter name="fill">#E0E080</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>17</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>17</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>10</Name><Fill><SvgParameter name="fill">#28c846</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>25</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>25</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>19</Name><Fill><SvgParameter name="fill">#82c846</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>32</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>32</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>27</Name><Fill><SvgParameter name="fill">#ffffb4</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>42</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>42</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>38</Name><Fill><SvgParameter name="fill">#C0A000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
         <Name>22</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
@@ -123,226 +13,6 @@
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
         <PolygonSymbolizer><Name>16</Name><Fill><SvgParameter name="fill">#82a591</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>50</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>50</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>47</Name><Fill><SvgParameter name="fill">#C0C0FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>0</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>0</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>01</Name><Fill><SvgParameter name="fill">#ebf0d2</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>2</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>2</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>13</Name><Fill><SvgParameter name="fill">#9b32cd</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>53</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>53</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>50</Name><Fill><SvgParameter name="fill">#60E0A0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>7</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>7</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>52</Name><Fill><SvgParameter name="fill">#00FF00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>35</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>35</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>30</Name><Fill><SvgParameter name="fill">#ebe1eb</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>29</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>29</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>23</Name><Fill><SvgParameter name="fill">#afcde1</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>34</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>34</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>29</Name><Fill><SvgParameter name="fill">#fad2ff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>48</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>48</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>44</Name><Fill><SvgParameter name="fill">#40E0E0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>43</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>43</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>39</Name><Fill><SvgParameter name="fill">#C0C000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>36</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>36</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>31</Name><Fill><SvgParameter name="fill">#C02040</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>16</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>16</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>09</Name><Fill><SvgParameter name="fill">#ff9b00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>6</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>6</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>51</Name><Fill><SvgParameter name="fill">#00C000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>20</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>20</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>14</Name><Fill><SvgParameter name="fill">#dc9b78</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>27</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>27</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>21</Name><Fill><SvgParameter name="fill">#cdcdcd</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>5</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>5</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>46</Name><Fill><SvgParameter name="fill">#8080FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>49</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>49</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>45</Name><Fill><SvgParameter name="fill">#8080C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>9</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>9</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>54</Name><Fill><SvgParameter name="fill">#B0B0B0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>39</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>39</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>34</Name><Fill><SvgParameter name="fill">#FF6060</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>10</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>10</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>03</Name><Fill><SvgParameter name="fill">#b45fd2</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>41</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>41</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>37</Name><Fill><SvgParameter name="fill">#E0C0A0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>21</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>21</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>15</Name><Fill><SvgParameter name="fill">#009b00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
         <Name>19</Name>
@@ -355,14 +25,104 @@
         <PolygonSymbolizer><Name>12</Name><Fill><SvgParameter name="fill">#ebc3d7</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>45</Name>
+        <Name>7</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>45</ogc:Literal>
+                <ogc:Literal>7</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>41</Name><Fill><SvgParameter name="fill">#0080C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>52</Name><Fill><SvgParameter name="fill">#00FF00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>5</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>5</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>46</Name><Fill><SvgParameter name="fill">#8080FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>52</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>52</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>49</Name><Fill><SvgParameter name="fill">#40E0C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>38</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>38</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>33</Name><Fill><SvgParameter name="fill">#E06060</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>24</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>24</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>18</Name><Fill><SvgParameter name="fill">#b9d746</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>36</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>36</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>31</Name><Fill><SvgParameter name="fill">#C02040</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>43</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>43</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>39</Name><Fill><SvgParameter name="fill">#C0C000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>30</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>30</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>25</Name><Fill><SvgParameter name="fill">#ff0000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>44</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>44</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>40</Name><Fill><SvgParameter name="fill">#E0E080</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>6</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>6</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>51</Name><Fill><SvgParameter name="fill">#00C000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
         <Name>40</Name>
@@ -375,14 +135,34 @@
         <PolygonSymbolizer><Name>36</Name><Fill><SvgParameter name="fill">#FFE000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>13</Name>
+        <Name>49</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>13</ogc:Literal>
+                <ogc:Literal>49</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>06</Name><Fill><SvgParameter name="fill">#ff3c82</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>45</Name><Fill><SvgParameter name="fill">#8080C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>21</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>21</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>15</Name><Fill><SvgParameter name="fill">#009b00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>26</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>26</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>20</Name><Fill><SvgParameter name="fill">#0000ff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
         <Name>23</Name>
@@ -395,14 +175,134 @@
         <PolygonSymbolizer><Name>17</Name><Fill><SvgParameter name="fill">#ff78a0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>51</Name>
+        <Name>0</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>51</ogc:Literal>
+                <ogc:Literal>0</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>48</Name><Fill><SvgParameter name="fill">#00C0C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>01</Name><Fill><SvgParameter name="fill">#ebf0d2</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>3</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>3</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>24</Name><Fill><SvgParameter name="fill">#5757ff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>13</Name><Fill><SvgParameter name="fill">#9b32cd</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>42</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>42</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>38</Name><Fill><SvgParameter name="fill">#C0A000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>46</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>46</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>42</Name><Fill><SvgParameter name="fill">#0080FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>15</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>15</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>08</Name><Fill><SvgParameter name="fill">#f091be</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>27</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>27</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>21</Name><Fill><SvgParameter name="fill">#cdcdcd</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>13</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>13</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>06</Name><Fill><SvgParameter name="fill">#ff3c82</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>8</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>8</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>53</Name><Fill><SvgParameter name="fill">#80FF80</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>17</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>17</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>10</Name><Fill><SvgParameter name="fill">#28c846</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>35</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>35</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>30</Name><Fill><SvgParameter name="fill">#ebe1eb</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>41</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>41</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>37</Name><Fill><SvgParameter name="fill">#E0C0A0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>48</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>48</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>44</Name><Fill><SvgParameter name="fill">#40E0E0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
         <Name>12</Name>
@@ -425,26 +325,6 @@
         <PolygonSymbolizer><Name>11</Name><Fill><SvgParameter name="fill">#ff6923</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>26</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>26</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>20</Name><Fill><SvgParameter name="fill">#0000ff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>11</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>11</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <PolygonSymbolizer><Name>04</Name><Fill><SvgParameter name="fill">#64aa2d</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
-    </Rule>
-    <Rule>
         <Name>14</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
@@ -455,54 +335,54 @@
         <PolygonSymbolizer><Name>07</Name><Fill><SvgParameter name="fill">#ffa096</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>30</Name>
+        <Name>32</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>30</ogc:Literal>
+                <ogc:Literal>32</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>25</Name><Fill><SvgParameter name="fill">#ff0000</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>27</Name><Fill><SvgParameter name="fill">#ffffb4</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>15</Name>
+        <Name>51</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>15</ogc:Literal>
+                <ogc:Literal>51</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>08</Name><Fill><SvgParameter name="fill">#f091be</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>48</Name><Fill><SvgParameter name="fill">#00C0C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>46</Name>
+        <Name>47</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>46</ogc:Literal>
+                <ogc:Literal>47</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>42</Name><Fill><SvgParameter name="fill">#0080FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>43</Name><Fill><SvgParameter name="fill">#40E0FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>33</Name>
+        <Name>50</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>33</ogc:Literal>
+                <ogc:Literal>50</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>28</Name><Fill><SvgParameter name="fill">#c8a0d7</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>47</Name><Fill><SvgParameter name="fill">#C0C0FF</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>31</Name>
+        <Name>25</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>31</ogc:Literal>
+                <ogc:Literal>25</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>26</Name><Fill><SvgParameter name="fill">#ffff00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>19</Name><Fill><SvgParameter name="fill">#82c846</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
         <Name>37</Name>
@@ -515,14 +395,44 @@
         <PolygonSymbolizer><Name>32</Name><Fill><SvgParameter name="fill">#E04040</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>52</Name>
+        <Name>45</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>52</ogc:Literal>
+                <ogc:Literal>45</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>49</Name><Fill><SvgParameter name="fill">#40E0C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>41</Name><Fill><SvgParameter name="fill">#0080C0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>31</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>31</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>26</Name><Fill><SvgParameter name="fill">#ffff00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>9</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>9</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>54</Name><Fill><SvgParameter name="fill">#B0B0B0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>10</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>10</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>03</Name><Fill><SvgParameter name="fill">#b45fd2</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
         <Name>1</Name>
@@ -535,13 +445,103 @@
         <PolygonSymbolizer><Name>02</Name><Fill><SvgParameter name="fill">#d2ffa5</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
     <Rule>
-        <Name>24</Name>
+        <Name>53</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
-                <ogc:Literal>24</ogc:Literal>
+                <ogc:Literal>53</ogc:Literal>
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
-        <PolygonSymbolizer><Name>18</Name><Fill><SvgParameter name="fill">#b9d746</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+        <PolygonSymbolizer><Name>50</Name><Fill><SvgParameter name="fill">#60E0A0</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>29</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>29</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>23</Name><Fill><SvgParameter name="fill">#afcde1</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>4</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>4</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>35</Name><Fill><SvgParameter name="fill">#FFC040</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>20</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>20</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>14</Name><Fill><SvgParameter name="fill">#dc9b78</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>28</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>28</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>22</Name><Fill><SvgParameter name="fill">#00ffff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>34</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>34</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>29</Name><Fill><SvgParameter name="fill">#fad2ff</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>33</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>33</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>28</Name><Fill><SvgParameter name="fill">#c8a0d7</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>11</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>11</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>04</Name><Fill><SvgParameter name="fill">#64aa2d</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>16</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>16</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>09</Name><Fill><SvgParameter name="fill">#ff9b00</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>39</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>39</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>34</Name><Fill><SvgParameter name="fill">#FF6060</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
     </Rule>
 </FeatureTypeStyle>

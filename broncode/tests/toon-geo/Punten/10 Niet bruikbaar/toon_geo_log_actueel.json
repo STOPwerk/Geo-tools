@@ -1,0 +1,10 @@
+[
+    {
+        "Ernst": "LET OP",
+        "Tekst": "Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Er zijn 2 punten die minder dan 10 decimeter van elkaar af liggen, met een minimum van 0.08999999999301508 decimeter"
+    }
+]

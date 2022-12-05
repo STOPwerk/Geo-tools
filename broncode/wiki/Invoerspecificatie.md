@@ -8,7 +8,7 @@ Als de geo-tools [uitgevoerd](Geo-tools-uitvoeren) worden als Python script, dan
     * [maak_gio_wijziging.json](#maak-gio-wijziging)
     * [toon_gio_wijziging.json](#toon-gio-wijziging)
 
-    De specificaties worden in deze volgorde ingelezen en door de bijbehorende geo-tool uitgvoerd. De geo-tools herkennen een map als een map met invoerbestanden als een van de specificaties gevonden wordt. Elke specificatie bestaat uit ofwel een enkel JSON-object met de specificatie van een enkele operatie, ofwel een lijst/array van dergelijke objecten waarvan de resultaten in dezelfde resultaatpagina gecombineerd worden weergegeven.
+    De specificaties worden in deze volgorde ingelezen en door de bijbehorende geo-tool uitgvoerd. De geo-tools herkennen een map als een map met invoerbestanden als een van de specificaties gevonden wordt.
 
 * GML en symbolisatiebestanden die in de specificatie genoemd zijn, gecodeerd volgens de voorschriften van de STOP modules:
     * [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html)
@@ -35,7 +35,6 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
     "beschrijving": "Optionele beschrijving"
 }
 ```
-(of een lijst met dergelijke specificaties)
 met:
 
 | Parameter | Beschrijving |
@@ -58,7 +57,6 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
     "wijziging": "GIO_wijziging.gml"
 }
 ```
-(of een lijst met dergelijke specificaties)
 met:
 
 | Parameter | Beschrijving |
@@ -81,7 +79,6 @@ Het specificatiebestand `toon_gio_wijziging.json` geeft de invoer voor de geo-to
     "wordt": "GIO_wordt_versie.gml"
 }
 ```
-(of een lijst met dergelijke specificaties)
 met:
 
 | Parameter | Beschrijving |

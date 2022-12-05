@@ -51,7 +51,7 @@ symbolisatie = Symbolisatie (os.path.join (datadir, 'verkeersborden_puntsymbolen
 # Schrijf GIO's
 #
 #==============================================================================
-def __GIO (subdir, multi, gemeente, jaar, beschrijving, filename, version, filter, idprefix = '0'):
+def __GIO (subdir, multi, gemeente, jaar, filename, version, filter, idprefix = '0'):
     gioPad = os.path.join (voorbeelden_dir, subdir, filename)
     os.makedirs (os.path.dirname (gioPad), exist_ok=True)
     with open (gioPad, 'w', encoding='utf-8') as gml_file:
@@ -64,7 +64,7 @@ def __GIO (subdir, multi, gemeente, jaar, beschrijving, filename, version, filte
     <geo:FRBRWork>/join/id/regdata/mnre9999/2022/stopborden</geo:FRBRWork>
     <geo:FRBRExpression>/join/id/regdata/mnre9999/2022/stopborden/nld@''' + version + '''</geo:FRBRExpression>''')
 
-        symbolisatie.StartGio (gioPad, 'groepID' if gemeente > 0 else 'kwantitatieveNormwaarde' if jaar else None, beschrijving)
+        symbolisatie.StartGio (gioPad, 'groepID' if gemeente > 0 else 'kwantitatieveNormwaarde' if jaar else None)
 
         if gemeente > 0:
             gml_file.write ('''
@@ -154,26 +154,112 @@ def __GIO (subdir, multi, gemeente, jaar, beschrijving, filename, version, filte
 </geo:GeoInformatieObjectVersie>
     ''')
 
-__GIO ('07 punten - geometrie', False, 0, False, 'Originele versie van de GIO met alleen geometrie. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
-__GIO ('07 punten - geometrie', False, 0, False, 'Nieuwe versie van de GIO met alleen geometrie. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
-__GIO ('07 punten - multi-geometrie', True, 0, False, 'Originele versie van de GIO met alleen geometrie. Alle punt zijn ondergebracht in een enkele GIO-Locatie.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
-__GIO ('07 punten - multi-geometrie', True, 0, False, 'Nieuwe versie van de GIO met alleen geometrie. Alle punten zijn ondergebracht in een enkele GIO-Locatie.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
-__GIO ('07 punten - geometrie - nieuwe id', False, 0, False, 'Originele versie van de GIO met alleen geometrie. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter, '1')
-__GIO ('07 punten - geometrie - nieuwe id', False, 0, False, 'Nieuwe versie van de GIO met alleen geometrie. Elk punt is een aparte GIO-Locatie met een nieuwe basisgeo-ID die verschilt van de originele GIO, ook al is de locatie van het punt niet gewijzigd.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
+symbolisatie.MaakReadme ([voorbeelden_dir, '08 punten - geometrie - id behouden'], '''#GIO met alleen geometrie
 
-__GIO ('08 punten - GIO-delen', False, 1, False, 'Originele versie van de GIO met GIO-delen. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
-__GIO ('08 punten - GIO-delen', False, 2, False, 'Nieuwe versie van de GIO met GIO-delen. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
-__GIO ('08 punten - GIO-delen - multi-geometrie', True, 1, False, 'Originele versie van de GIO met GIO-delen. Elk GIO-deel is een aparte GIO-Locatie met één of meer punten.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
-__GIO ('08 punten - GIO-delen - multi-geometrie', True, 2, False, 'Nieuwe versie van de GIO met GIO-delen. Elk GIO-deel is een aparte GIO-Locatie met één of meer punten.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
-__GIO ('08 punten - GIO-delen - nieuwe id', False, 1, False, 'Originele versie van de GIO met GIO-delen. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter, '1')
-__GIO ('08 punten - GIO-delen - nieuwe id', False, 2, False, 'Nieuwe versie van de GIO met GIO-delen. Elk punt is een aparte GIO-Locatie met een nieuwe basisgeo-ID die verschilt van de originele GIO, ook al is de locatie van het punt niet gewijzigd.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit punten.
+Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
+en als de basisgeometrie-ID van ongewijzigde geometrieën behouden blijft in verschillende versies van de GIO,
+het bepalen van de geo-renvooi sneller verloopt omdat de ongewijzigde geometrieën niet meegenomen hoeven te worden
+in de geo-operaties.
 
-__GIO ('09 punten - normwaarden', False, 0, True, 'Originele versie van de GIO met normwaarden. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
-__GIO ('09 punten - normwaarden', False, 0, True, 'Nieuwe versie van de GIO met normwaarden. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
-__GIO ('09 punten-multi - normwaarden', True, 0, True, 'Originele versie van de GIO met normwaarden. De punten zijn per normwaarde gecombineerd in één GIO-Locatie met één of meer punten.', 'verkeersborden_STOP_was', '2019;was', wasFilter)
-__GIO ('09 punten-multi - normwaarden', True, 0, True, 'Nieuwe versie van de GIO met normwaarden. De punten zijn per normwaarde gecombineerd in één GIO-Locatie met één of meer punten.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
-__GIO ('09 punten-multi - normwaarden - nieuwe id', False, 0, True, 'Originele versie van de GIO met normwaarden. Elk punt is een aparte GIO-Locatie.', 'verkeersborden_STOP_was.gml', '2019;was', wasFilter, '1')
-__GIO ('09 punten-multi - normwaarden - nieuwe id', False, 0, True, 'Nieuwe versie van de GIO met normwaarden. Elk punt is een aparte GIO-Locatie met een nieuwe basisgeo-ID die verschilt van de originele GIO, ook al is de locatie van het punt niet gewijzigd.', 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
+De geometrieën bestaan uit punten. Elk punt is een aparte GIO-Locatie.
+Als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat punt nog dezelfde basisgeometrie-ID.
+''')
+__GIO ('08 punten - geometrie - id behouden', False, 0, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
+__GIO ('08 punten - geometrie - id behouden', False, 0, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '08 punten - multi-geometrie'], '''#GIO met alleen geometrie
+
+Dit is een technisch voorbeeld om voor een GIO met alleen geometrie te demonstreren dat het combineren van alle geometrie
+in een enkele multi-geometrie tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit punten. Alle punten zijn ondergebracht in een enkele GIO-Locatie.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+__GIO ('08 punten - multi-geometrie', True, 0, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
+__GIO ('08 punten - multi-geometrie', True, 0, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '08 punten - geometrie'], '''#GIO met alleen geometrie
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit punten.
+
+De geometrieën bestaan uit punten. Elk punt is een aparte GIO-Locatie.
+Ook als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat punt toch een andere basisgeometrie-ID.
+''')
+__GIO ('08 punten - geometrie', False, 0, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter, '1')
+__GIO ('08 punten - geometrie', False, 0, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
+
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '09 punten - GIO-delen - id behouden'], '''#GIO met GIO-delen
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met met GIO-delen bestaande uit punten.
+Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
+en als de basisgeometrie-ID van ongewijzigde geometrieën behouden blijft in verschillende versies van de GIO,
+het bepalen van de geo-renvooi sneller verloopt omdat de ongewijzigde geometrieën niet meegenomen hoeven te worden
+in de geo-operaties.
+
+De geometrieën bestaan uit punten. Elk punt is een aparte GIO-Locatie.
+Als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat punt nog dezelfde basisgeometrie-ID.
+''')
+__GIO ('09 punten - GIO-delen - id behouden', False, 1, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
+__GIO ('09 punten - GIO-delen - id behouden', False, 2, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '09 punten - GIO-delen - multi-geometrie'], '''#GIO met GIO-delen
+
+Dit is een technisch voorbeeld om voor een GIO met alleen geometrie te demonstreren dat het combineren van alle geometrie
+in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit punten. Alle punten zijn ondergebracht in één GIO-Locatie per GIO-deel.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+__GIO ('09 punten - GIO-delen - multi-geometrie', True, 1, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
+__GIO ('09 punten - GIO-delen - multi-geometrie', True, 2, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '09 punten - GIO-delen'], '''#GIO met GIO-delen
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met met GIO-delen bestaande uit punten.
+
+De geometrieën bestaan uit punten. Elk punt is een aparte GIO-Locatie.
+Ook als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat punt toch een andere basisgeometrie-ID.
+''')
+__GIO ('09 punten - GIO-delen', False, 1, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter, '1')
+__GIO ('09 punten - GIO-delen', False, 2, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
+
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '10 punten - normwaarden - id behouden'], '''#GIO met normwaarden
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor punten.
+Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
+en als de basisgeometrie-ID van ongewijzigde geometrieën behouden blijft in verschillende versies van de GIO,
+het bepalen van de geo-renvooi sneller verloopt omdat de ongewijzigde geometrieën niet meegenomen hoeven te worden
+in de geo-operaties.
+
+De geometrieën bestaan uit punten. Elk punt is een aparte GIO-Locatie.
+Als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat punt nog dezelfde basisgeometrie-ID.
+''')
+__GIO ('10 punten - normwaarden - id behouden', False, 0, True, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
+__GIO ('10 punten - normwaarden - id behouden', False, 0, True, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '10 punten - normwaarden - multi-geometrie'], '''#GIO met normwaarden
+
+Dit is een technisch voorbeeld om voor een GIO met normwaarden te demonstreren dat het combineren van alle geometrie
+in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit punten. Alle punten zijn ondergebracht in één GIO-Locatie per normwaarde.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+__GIO ('10 punten - normwaarden - multi-geometrie', True, 0, True, 'verkeersborden_STOP_was', '2019;was', wasFilter)
+__GIO ('10 punten - normwaarden - multi-geometrie', True, 0, True, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '10 punten - normwaarden'], '''#GIO met normwaarden
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor punten.
+
+De geometrieën bestaan uit punten. Elk punt is een aparte GIO-Locatie.
+Ook als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat punt toch een andere basisgeometrie-ID.
+''')
+__GIO ('10 punten - normwaarden', False, 0, True, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter, '1')
+__GIO ('10 punten - normwaarden', False, 0, True, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
 
 #==============================================================================
 #
@@ -182,20 +268,32 @@ __GIO ('09 punten-multi - normwaarden - nieuwe id', False, 0, True, 'Nieuwe vers
 #==============================================================================
 symbolisatie.MaakSymbolisaties ('verkeersborden_STOP_was_wordt_symbolisatie.xml')
 
-symbolisatie.MaakToonGeoSpecificaties (10)
+nauwkeurigheid = 10
 
 for mapPad in symbolisatie.GIOMappen ():
-    with open (os.path.join (mapPad, 'maak_gio_wijziging.json'), 'w', encoding='utf-8') as json_file:
-        json.dump ({
-            'was': 'verkeersborden_STOP_was.gml', 
-            'wordt': 'verkeersborden_STOP_was.gml', 
-            'nauwkeurigheid': '10',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad),
-            'wijziging': 'verkeersborden_STOP_was_wordt.gml'
-        }, json_file)
-    with open (os.path.join (mapPad, 'toon_gio_wijziging.json'), 'w', encoding='utf-8') as json_file:
-        json.dump ({
-            'was': 'verkeersborden_STOP_was.gml', 
-            'wijziging': 'verkeersborden_STOP_was_wordt.gml',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad)
-        }, json_file)
+    for specPad, relPad in [(mapPad, '../'), 
+                            (os.path.join ('tests', 'voorbeelden', os.path.basename (mapPad)), 
+                             os.path.join ('..','..', '..', '..', 'geo-tools', 'voorbeelden', os.path.basename (mapPad)) + '/')]:
+        symbolisatiePad = symbolisatie.SymbolisatiePad (mapPad, relPad)
+        symbolisatie.MaakSpecificatie (specPad, ['was', 'toon_geo.json'], {
+                'geometrie': relPad + 'verkeersborden_STOP_was.gml', 
+                'symbolisatie': None if symbolisatiePad is None else relPad + 'verkeersborden_STOP_was_symbolisatie.xml',
+                'nauwkeurigheid': nauwkeurigheid
+            })
+        symbolisatie.MaakSpecificatie (specPad, ['wordt', 'toon_geo.json'], {
+                'geometrie': relPad + 'verkeersborden_STOP_wordt.gml', 
+                'symbolisatie': None if symbolisatiePad is None else relPad + 'verkeersborden_STOP_wordt_symbolisatie.xml',
+                'nauwkeurigheid': nauwkeurigheid
+            })
+        symbolisatie.MaakSpecificatie (specPad, ['wordt', 'maak_gio_wijziging.json'], {
+                'was': relPad + 'verkeersborden_STOP_was.gml', 
+                'wordt': relPad + 'verkeersborden_STOP_wordt.gml', 
+                'nauwkeurigheid': nauwkeurigheid,
+                'symbolisatie': symbolisatiePad,
+                'wijziging': 'verkeersborden_STOP_was_wordt.gml'
+            })
+        symbolisatie.MaakSpecificatie (specPad, ['wordt', 'toon_gio_wijziging.json'], {
+                'was': relPad + 'verkeersborden_STOP_was.gml', 
+                'wijziging': 'verkeersborden_STOP_was_wordt.gml',
+                'symbolisatie': symbolisatiePad
+            })

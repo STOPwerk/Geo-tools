@@ -16,18 +16,18 @@ class Symbolisatie:
         self._AlleWaarden = { }
         self._GIOPerMap = { }
         # Per map met GIO's: het gemeenschappelijke symbolisatiebestand (na MaakSymbolisaties)
-        self.MapSymbolisatie = {}
+        self._MapSymbolisatie = {}
 
     def GIOMappen (self):
         return self._GIOPerMap.keys ()
 
-    def MapGIOs (self, mapPad):
-        gios = self._GIOPerMap.get (mapPad)
-        if not gios is None:
-            return [p for p,b in gios]
-        return []
+    def SymbolisatiePad (self, mapPad, padPrefix):
+        pad = self._MapSymbolisatie.get (mapPad)
+        if not pad is None:
+            return padPrefix + pad
+        return None
 
-    def StartGio (self, gioPad, propertyNaam, beschrijving):
+    def StartGio (self, gioPad, propertyNaam):
         self._HuidigeGIO = None
         self._HuidigePropNaam = propertyNaam
         mapPad = os.path.dirname (gioPad)
@@ -44,9 +44,9 @@ class Symbolisatie:
 
         gios = self._GIOPerMap.get (mapPad)
         if gios is None:
-            self._GIOPerMap[mapPad] = [(gioPad, beschrijving)]
+            self._GIOPerMap[mapPad] = [gioPad]
         else:
-            gios.append ((gioPad, beschrijving))
+            gios.append (gioPad)
 
     def GIOWaarde (self, waarde):
         if not isinstance (waarde, str):
@@ -60,8 +60,8 @@ class Symbolisatie:
         symboolIndex = {}
         for mapPad, waarden in self._AlleWaarden.items ():
             symboolIndex[mapPad] = { w: idx % len (self._Symbolen) for idx, w in enumerate (sorted (waarden[1])) }
-            self.MapSymbolisatie[mapPad] = os.path.join (mapPad, waswordtSymbolisatieFilenaam)
-            self._Symbolisaties[self.MapSymbolisatie[mapPad]] = waarden
+            self._MapSymbolisatie[mapPad] = os.path.join (mapPad, waswordtSymbolisatieFilenaam)
+            self._Symbolisaties[self._MapSymbolisatie[mapPad]] = waarden
 
         for symbolisatiePad, selectie in self._Symbolisaties.items():
             symIndex = symboolIndex[os.path.dirname (symbolisatiePad)]
@@ -89,13 +89,14 @@ class Symbolisatie:
                 xml_file.write ('''
 </FeatureTypeStyle>''')
 
-    def MaakToonGeoSpecificaties (self, nauwkeurigheid):
-        for mapPad, gioPadenEnBeschrijving in self._GIOPerMap.items ():
-            symbolisatiePad = self.MapSymbolisatie.get (mapPad)
-            with open (os.path.join (mapPad, 'toon_geo.json'), 'w', encoding='utf-8') as json_file:
-                json.dump ([{
-                    'geometrie': os.path.basename (pad),
-                    'symbolisatie': symbolisatiePad,
-                    'nauwkeurigheid': str(nauwkeurigheid),
-                    'beschrijving' : beschrijving
-                } for pad, beschrijving in gioPadenEnBeschrijving], json_file)
+    def MaakReadme (self, mapPad, tekst):
+        mdPad = os.path.join (*mapPad, "README.md")
+        os.makedirs (os.path.dirname (mdPad), exist_ok=True)
+        with open (mdPad, 'w', encoding='utf-8') as md_file:
+            md_file.write (tekst)
+
+    def MaakSpecificatie (self, mapPad, relatiefPad, jsonSpec):
+        specPad = os.path.join (mapPad, *relatiefPad)
+        os.makedirs (os.path.dirname (specPad), exist_ok=True)
+        with open (specPad, 'w', encoding='utf-8') as json_file:
+            json.dump (jsonSpec, json_file, indent=4, ensure_ascii=False)

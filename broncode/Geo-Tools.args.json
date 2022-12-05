@@ -19,6 +19,10 @@
       "Command": "-t tests\\validaties"
     },
     {
+      "Id": "6d2a89c5-65cb-4671-9026-2526b519cfa4",
+      "Command": "-t tests\\voorbeelden"
+    },
+    {
       "Id": "80771f5f-0641-4b09-b9ac-adb87469347a",
       "Command": "-t tests\\toon-geo\\Punten"
     }

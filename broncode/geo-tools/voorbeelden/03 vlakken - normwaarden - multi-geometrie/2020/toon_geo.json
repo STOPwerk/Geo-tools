@@ -1,0 +1,5 @@
+{
+    "geometrie": "../gemeenten_2020.gml",
+    "symbolisatie": "../gemeenten_2020_symbolisatie.xml",
+    "nauwkeurigheid": 10
+}

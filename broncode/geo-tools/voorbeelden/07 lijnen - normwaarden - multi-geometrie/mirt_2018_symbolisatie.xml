@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FeatureTypeStyle version="1.1.0" 
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:kwantitatieveNormwaarde</SemanticTypeIdentifier>
+    <Rule>
+        <Name>2013</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2013</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ff6923</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2020</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2020</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#b9d746</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2022</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2022</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#cdcdcd</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2021</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2021</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#82c846</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2009</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2009</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ffa096</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2005</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2005</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#64aa2d</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2008</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2008</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ff3c82</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2014</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2014</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ebc3d7</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2004</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2004</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#b45fd2</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>1997</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>1997</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#000000</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2006</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2006</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ffc8be</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2003</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2003</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#d2ffa5</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2010</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2010</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#f091be</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2019</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2019</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ff78a0</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2002</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2002</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ebf0d2</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2015</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2015</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#9b32cd</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2012</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2012</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#28c846</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2017</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2017</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#009b00</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2018</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2018</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#82a591</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>2016</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>2016</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#dc9b78</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+</FeatureTypeStyle>

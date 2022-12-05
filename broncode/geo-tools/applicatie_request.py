@@ -5,28 +5,33 @@
 #======================================================================
 from typing import Dict, List
 
+import json
 import os
 from applicatie_meldingen import Meldingen
 
 class Parameters:
 
-    def Maak (formdata : Dict[str,str], filedata, directory_pad: str) -> List['Parameters']:
-        """Maak een array van de parameters op basis van de specificatie
+    @staticmethod
+    def Lees (log : Meldingen, specificatiePad : str) -> 'Parameters':
+        """Probeer een specificatie te lezen en maak daar parameters van
 
         Argumenten:
 
-        formdata {}        Key = value parameters die invoer zijn voor de operatie
-        filedata           Bestanden die in een web request zijn meegegeven; None voor een test
-        directory_pad str  Voor een test: pad waarin de bestanden staan; None voor een web request
-        """
-        if not formdata is None and isinstance (formdata, list):
-            if len (formdata) == 0:
-                return [Parameters (None, filedata, directory_pad)]
-            else:
-                return [Parameters (fd, filedata, directory_pad) for fd in formdata]
-        else:
-            return [Parameters (formdata, filedata, directory_pad)]
+        log Meldingen  Verzameling meldingen van de uitvoerende applicatie
+        specificatiePad str  Volledig pad naar het specificatiebestand
 
+        Geeft parameters terug, of None als het bestand niet gelezen kan worden
+        """
+        try:
+            with open (specificatiePad, 'r') as json_file:
+                specificatie = json.load (json_file)
+        except Exception as e:
+            log.Fout ('Bestand "' + specificatiePad + '" is geen JSON bestand: ' + str(e))
+            return
+        if not isinstance (specificatie, dict):
+            log.Fout ('Bestand "' + specificatiePad + '" is geen specificatie want de inhoud is geen JSON object')
+            return
+        return Parameters (specificatie, None, os.path.dirname (specificatiePad))
 
     def __init__ (self, formdata : Dict[str,str], filedata, directory_pad: str):
         """Maak een instantie van de parameters aan

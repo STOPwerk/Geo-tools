@@ -26,13 +26,14 @@ script_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 sys.path.append (script_dir)
 
 helptekst = '''
-applicatie_test.py [--help|-h] [--alle|-a] [--meldingen|-m meldingen_pad] directory_pad [directory_pad ..]
+applicatie_test.py [--help|-h] [--alle|-a] [--performantie|-p] [--meldingen|-m meldingen_pad] directory_pad [directory_pad ..]
 
-directory_pad     Pad naar een directory met een test waarvoor de applicatie uitgevoerd moet worden
--h of --help      Toon deze tekst
--a of --alle      Kijk ook in subdirectories voor testen
--t of --testen    De scenario's zijn unit testen. Sla resultaten op als json en vergelijk ze met de verwachte resultaten.
--m of --meldingen Bewaar de log van de uitvoering van de applicatie in de meldingen_pad directory, niet in de systeem-tempdirectory
+directory_pad        Pad naar een directory met een test waarvoor de applicatie uitgevoerd moet worden
+-h of --help         Toon deze tekst
+-a of --alle         Kijk ook in subdirectories voor testen
+-t of --testen       De scenario's zijn unit testen. Sla resultaten op als json en vergelijk ze met de verwachte resultaten.
+-m of --meldingen    Bewaar de log van de uitvoering van de applicatie in de meldingen_pad directory, niet in de systeem-tempdirectory
+-p of --performantie Neem de verstreken tijd sinds de start van de applicatie op bij de meldingen in de resultaatpagina; genegeerd bij testen
 '''
 # De paden naar de directories
 directory_paden = []
@@ -42,8 +43,10 @@ testen = False
 recursie = False
 # Pad waar de meldingen terecht moeten komen; None is tempdir
 meldingen_pad = None
+# Tijd opnemen in de meldingen?
+tijdInMeldingen = False
 try:
-    (opts, args) = getopt.getopt(sys.argv[1:], "ahm:t", ["alle", "help", "meldingen=", "testen"])
+    (opts, args) = getopt.getopt(sys.argv[1:], "ahm:pt", ["alle", "help", "meldingen=", "performantie", "testen"])
 except getopt.GetoptError:
     print (helptekst)
     sys.exit(2)
@@ -58,6 +61,8 @@ for opt, arg in opts:
         recursie = True
     elif opt in ('-m', '--meldingen'):
         meldingen_pad = arg
+    elif opt in ('-p', '--performantie'):
+        tijdInMeldingen = True
 for arg in args:
     if not os.path.isdir (arg):
         print ("Geen directory: " + arg)
@@ -85,14 +90,8 @@ def __VoerTestUit (directory_pad, operatieNaam, methode):
     specificatiePad = os.path.join (directory_pad, operatieNaam + '.json')
     if os.path.exists (specificatiePad):
         # Potentiële test gevonden; lees specificatie
-        try:
-            with open (specificatiePad, 'r') as json_file:
-                specificatie = json.load (json_file)
-        except Exception as e:
-            log.Fout ('Bestand "' + specificatiePad + '" is geen JSON bestand: ' + str(e))
-            return
-        if not isinstance (specificatie, dict):
-            log.Fout ('Bestand "' + specificatiePad + '" is geen specificatie want de inhoud is geen JSON object')
+        request = Parameters.Lees (log, specificatiePad)
+        if request is None:
             return
 
         # Voer de operatie uit
@@ -105,7 +104,7 @@ def __VoerTestUit (directory_pad, operatieNaam, methode):
         except Exception as e:
             log.Fout ('Kan voorgaand resultaat (' + actueelPad + ') niet weggooien: ' + str(e))
         try:
-            actueel = methode (Parameters.Maak (specificatie, None, directory_pad), testlog)
+            actueel = methode (request, tijdInMeldingen if testlog is None else testlog)
         except Exception as e:
             log.Fout ('Oeps, dat ging niet goed: ' + str(e))
             if not testlog is None:

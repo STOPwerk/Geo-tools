@@ -25,7 +25,7 @@ class GeoManipulatie:
 # Maken van een webpagina
 #
 #======================================================================
-    def __init__ (self, defaultTitel, titelBijFout, request : Parameters, log: Meldingen = None, meervoudigeSpecificatie : bool = False):
+    def __init__ (self, defaultTitel, titelBijFout, request : Parameters, log: Meldingen = None):
         """Maak een instantie van de geo-operatie aan
 
         Argumenten:
@@ -33,19 +33,15 @@ class GeoManipulatie:
         defaultTitel str  Titel van de webpagina als de titel niet is meegegeven bij de invoer
         titelBijFout str  Titel van de webpagina als er een fout optreedt en alleen de log getoond wordt
         request Parameters  De parameters vor het web request
-        meervoudigeSpecificatie bool Geeft aan dat de specifivatie een array kan zijns
+        log Meldingen of bool  Geeft de meldingen die voor deze operatie gebruikt moeten worden. Als het een bool is, dan geeft het aan of de tijd opgenomen moet worden in de meldingen.
         """
         self._TitelBijFout = titelBijFout
-        self._MeervoudigeSpecificatie = meervoudigeSpecificatie
-        self._AlleRequests = request if isinstance (request, list) else [request]
         # Request waarvoor de operatie uitgevoerd wordt
-        self.Request : Parameters = None
-        # Index van het request in het array; None als er maar 1 is
-        self.RequestIndex : int = None
+        self.Request = request
         # Meldingen voor de uitvoering van het request
-        self.Log = Meldingen (False) if log is None else log
+        self.Log = Meldingen (False) if log is None else Meldingen (log) if isinstance (log, bool) else log
         # Titel als doorgegeven in het request
-        self.Titel = self._AlleRequests[0].LeesString ('titel')
+        self.Titel = request.LeesString ('titel')
         # Generator om de resultaat-pagina te maken
         self.Generator = WebpaginaGenerator (defaultTitel if self.Titel is None else self.Titel)
         # Status attribuut voor het opnemen van de nodige scripts/css
@@ -59,20 +55,11 @@ class GeoManipulatie:
         """Maak de webpagina aan"""
         self.Log.Informatie ("Geo-tools (@@@GeoTools_Url@@@) versie @@@VERSIE@@@.")
         try:
-            for idx, request in enumerate (self._AlleRequests):
-                # _VoerUit moet in een afgeleide klasse worden geïmplementeerd
-                if len (self._AlleRequests) > 1 and self._MeervoudigeSpecificatie:
-                    self.Log.Informatie ("Start de verwerking van #" + str(idx))
-                self.Request = request
-                self.RequestIndex = idx if len (self._AlleRequests) > 1 else None
-                if self._VoerUit ():
-                    self.Log.Informatie ("De verwerking is voltooid.")
-                else:
-                    self.Log.Fout ("De verwerking is afgebroken.")
-
-                if len (self._AlleRequests) > 1 and not self._MeervoudigeSpecificatie:
-                    self.Log.Waarschuwing ("Deze operatie kan maar voor één specificatie uitgevoerd worden; de overige worden genegeerd.")
-                    break
+            # _VoerUit moet in een afgeleide klasse worden geïmplementeerd
+            if self._VoerUit ():
+                self.Log.Informatie ("De verwerking is voltooid.")
+            else:
+                self.Log.Fout ("De verwerking is afgebroken.")
 
             einde = self.Generator.StartSectie ("<h3>Verslag van de verwerking</h3>")
             self.Log.MaakHtml (self.Generator, None)

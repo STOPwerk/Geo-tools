@@ -40,7 +40,7 @@ class GeoViewer (GeoManipulatie):
 #
 #======================================================================
     def __init__(self, request : Parameters, log: Meldingen):
-        super ().__init__ ("Geo-informatie in beeld", "Geo-informatie - geen beeld", request, log, True)
+        super ().__init__ ("Geo-informatie in beeld", "Geo-informatie - geen beeld", request, log)
 
     def _VoerUit (self):
         """Voer het request uit"""
@@ -68,14 +68,7 @@ class GeoViewer (GeoManipulatie):
         else:
             self.Log.Detail ('Symbolisatie ingelezen')
 
-        einde = None
-        if self.RequestIndex is None:
-            self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
-        else:
-            einde = self.Generator.StartSectie ('<h3>Bestand: ' + self.Request.Bestandsnaam ('geometrie') + '</h3>', True)
-        beschrijving = self.Request.LeesString ('beschrijving')
-        if beschrijving:
-            self.Generator.VoegHtmlToe ('<p>' + beschrijving + '</p>')
+        self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
 
         self.Log.Informatie ('Maak de kaartweergave')
         dataNaam = self.VoegGeoDataToe (gio)
@@ -98,7 +91,6 @@ class GeoViewer (GeoManipulatie):
                 self.ToonKaart ('kaart.VoegOnderlaagToe ("Geo-informatieobject", "' + dataNaam + '", "' + symbolisatieNaam + '", true, true);kaart.VoegOnderlaagToe ("Problematische geometrie", "' + geomNaam + '", "' + geomSym + '", true, true);')
 
         self.Log.Detail ('Maak de pagina af')
-        self.Generator.VoegHtmlToe (einde)
         self.Generator.LeesCssTemplate ('resultaat')
         return True
 

@@ -91,7 +91,7 @@ for jaar in jaren:
             xml_file.write (xml)
         raise str(e)
 
-    ditJaar = {}
+    ditJaar = []
     index = 0
     for gem in gml.findall (ns_kad + 'Gemeenten'):
         code = int (gem.find (ns_kad + 'Code').text)
@@ -99,9 +99,6 @@ for jaar in jaren:
         normwaarde = code % len (symbolisatie._Symbolen)
         gmcode = 'GM' + str(code).zfill(4)
         pvcode = gemeente_provincie[code]
-        lijst = ditJaar.get (pvcode)
-        if lijst is None:
-            ditJaar[pvcode] = lijst = []
 
         geo = gem.find (ns_gml + 'MultiSurface')
         members = geo.findall (ns_gml + 'surfaceMember')
@@ -120,9 +117,10 @@ for jaar in jaren:
                 parse (polXml)
             except Exception as e:
                 raise jaar + '/' + gmcode + ' gml: ' + str (e)
-            lijst.append ({
+            ditJaar.append ({
                 'ID': index,
-                'Code': gmcode,
+                'GM': gmcode,
+                'PV': pvcode,
                 'Naam': naam,
                 'Geometrie': polXml,
                 'Normwaarde': normwaarde
@@ -137,7 +135,7 @@ for jaar in jaren:
 #==============================================================================
 symbolisaties = {}
 
-def __GIO (subdir, jaar, multiVlakken, attribuut, beschrijving):
+def __GIO (subdir, jaar, multiVlakken, attribuut):
     gioPad = os.path.join (voorbeelden_dir, subdir, 'gemeenten_' + str(jaar) + '.gml')
     os.makedirs (os.path.dirname (gioPad), exist_ok=True)
     with open (gioPad, 'w', encoding='utf-8') as gml_file:
@@ -150,7 +148,7 @@ def __GIO (subdir, jaar, multiVlakken, attribuut, beschrijving):
     <geo:FRBRWork>/join/id/regdata/mnre9999/1851/gemeenten</geo:FRBRWork>
     <geo:FRBRExpression>/join/id/regdata/mnre9999/1851/gemeenten/nld@''' + str(jaar) + '''</geo:FRBRExpression>''')
 
-        symbolisatie.StartGio (gioPad, 'groepID' if attribuut == 1 else 'kwantitatieveNormwaarde' if attribuut == 2 else None, beschrijving)
+        symbolisatie.StartGio (gioPad, 'groepID' if attribuut in [1,3] else 'kwantitatieveNormwaarde' if attribuut == 2 else None)
 
         if attribuut == 1:
             gml_file.write ('''
@@ -169,79 +167,164 @@ def __GIO (subdir, jaar, multiVlakken, attribuut, beschrijving):
     <geo:eenheidlabel>%</geo:eenheidlabel>
     <geo:normlabel>Norm GM</geo:normlabel>''')
 
+        elif attribuut == 3:
+            gemeente_groepen = { gem["GM"]: gem["Naam"] for gem in gemeenten[jaar] }
+            gml_file.write ('''
+    <geo:groepen>''')
+            for code, naam in gemeente_groepen.items ():
+                gml_file.write ('''
+        <geo:Groep>
+            <geo:groepID>''' + str(code) + '''</geo:groepID>
+            <geo:label>''' + naam + '''</geo:label>
+        </geo:Groep>''')
+            gml_file.write ('''
+    </geo:groepen>''')
+
         gml_file.write ('''
     <geo:locaties>''')
 
-        def __Locatie (pvcode, gemeenten):
+
+        def __Locatie (gioDeelCode, samengevoegdeGemeenten):
             gml_file.write ('''
             <geo:Locatie>''')
             if not multiVlakken:
                 gml_file.write ('''
-                <geo:naam>''' + gemeenten[0]['Naam'] + '</geo:naam>')
+                <geo:naam>''' + samengevoegdeGemeenten[0]['Naam'] + '</geo:naam>')
             gml_file.write ('''
                 <geo:geometrie>
                     <basisgeo:Geometrie>
-                        <basisgeo:id>37b0a09f-36a0-4e69-80c2-''' + str(jaar).zfill(6) + str(gemeenten[0]['ID']).zfill(6) + '''</basisgeo:id>
+                        <basisgeo:id>37b0a09f-36a0-4e69-80c2-''' + str(jaar).zfill(6) + str(samengevoegdeGemeenten[0]['ID']).zfill(6) + '''</basisgeo:id>
                         <basisgeo:geometrie>''')
-            if len(gemeenten) > 1:
+            if len(samengevoegdeGemeenten) > 1:
                 geometrie = ET.fromstring ('<MultiSurface srsName="urn:ogc:def:crs:EPSG::28992" xmlns="http://www.opengis.net/gml/3.2"><surfaceMembers></surfaceMembers></MultiSurface>')
                 members = geometrie.find (ns_gml + 'surfaceMembers')
-                for gem in gemeenten:
+                for gem in samengevoegdeGemeenten:
                     members.append (ET.fromstring (gem['Geometrie']))
                 geometrie = ET.tostring (geometrie, encoding='unicode')
             else:
-                geometrie = gemeenten[0]['Geometrie']
+                geometrie = samengevoegdeGemeenten[0]['Geometrie']
             gml_file.write (geometrie)
             gml_file.write ('''
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>''')
             if attribuut == 1:
-                gml_file.write (symbolisatie.GIOWaarde ('PV' + str(pvcode)))
+                gml_file.write (symbolisatie.GIOWaarde ('PV' + str(gioDeelCode)))
             elif attribuut == 2:
-                gml_file.write (symbolisatie.GIOWaarde (gemeenten[0]['Normwaarde']))
+                gml_file.write (symbolisatie.GIOWaarde (samengevoegdeGemeenten[0]['Normwaarde']))
+            elif attribuut == 3:
+                gml_file.write (symbolisatie.GIOWaarde (gioDeelCode))
             gml_file.write ('''
             </geo:Locatie>''')
 
         if multiVlakken:
             if attribuut == 0:
-                alle = []
-                for gems in gemeenten[jaar].values ():
-                    alle.extend (gems)
-                __Locatie (1, alle)
+                __Locatie (1, gemeenten[jaar])
             elif attribuut == 1:
-                for pvcode, gems in gemeenten[jaar].items ():
-                    __Locatie (pvcode, gems)
-            else:
+                gemeentenPerProvincie = {}
+                for gem in gemeenten[jaar]:
+                    lijst = gemeentenPerProvincie.get (gem["PV"])
+                    if lijst is None:
+                        gemeentenPerProvincie[gem["PV"]] = [gem]
+                    else:
+                        lijst.append (gem)
+                for gems in gemeentenPerProvincie.values ():
+                    __Locatie (gems[0]["PV"], gems)
+            elif attribuut == 2:
                 gemeentenPerNormwaarde = {}
-                for pvcode, gems in gemeenten[jaar].items ():
-                    for gem in gems:
-                        lijst = gemeentenPerNormwaarde.get (gem["Normwaarde"])
-                        if lijst is None:
-                            gemeentenPerNormwaarde[gem["Normwaarde"]] = [gem]
-                        else:
-                            lijst.append (gem)
+                for gem in gemeenten[jaar]:
+                    lijst = gemeentenPerNormwaarde.get (gem["Normwaarde"])
+                    if lijst is None:
+                        gemeentenPerNormwaarde[gem["Normwaarde"]] = [gem]
+                    else:
+                        lijst.append (gem)
                 for gems in gemeentenPerNormwaarde.values ():
                     __Locatie (None, gems)
+            else:
+                raise 'Oeps'
         else:
-            for pvcode, gems in gemeenten[jaar].items ():
-                for gem in gems:
-                    __Locatie (pvcode, [gem])
+            if attribuut == 3:
+                for gem in gemeenten[jaar]:
+                    __Locatie (gem["GM"], [gem])
+            else:
+                for gem in gemeenten[jaar]:
+                    __Locatie (gem["PV"], [gem])
 
         gml_file.write ('''
     </geo:locaties>
 </geo:GeoInformatieObjectVersie>
     ''')
 
+symbolisatie.MaakReadme ([voorbeelden_dir, '01 demo - gemeentegrenzen'], '''#GIO met de gemeentegrenzen
+
+Demonstratie van het nut van GIO-wijzigingen/geo-renvooi. Als er relatief kleine wijzigingen in een 
+GIO worden vastgesteld, dan is het voor eenieder lastig te doorgronden wat er gewijzigd is. Door
+in een besluit de wijziging in de GIO (naast de wijziging van de tekst) in renvooi weer te geven
+wordt wel duidelijk wat de wijziging inhoudt.
+
+De gekozen manier van opstellen en presenteren van de GIO-wijziging is (net als renvooi voor te tekst)
+geschikt om geautomatiseerd te worden uitgevoerd. De GIO kan (op dezelfde manier als tekst van een regeling)
+geconsolideerd worden.
+''')
 for jaar in jaren:
-    __GIO ('01 vlakken - geometrie', jaar, False, 0, 'GIO met alleen geometrie voor het jaar ' + str(jaar) + '. Elk vlak heeft een eigen GIO-Locatie, en elk jaar worden de basisgeo-IDs opnieuw toegekend..')
-    __GIO ('01 vlakken - geometrie - multi-geometrie', jaar, True, 0, 'GIO met alleen geometrie voor het jaar ' + str(jaar) + '. Alle vlakken worden in één GIO-Locatie gecombineerd die elk jaar een nieuwe basisgeo-ID krijgt.')
+    __GIO ('01 demo - gemeentegrenzen', jaar, False, 3)
 
-    __GIO ('02 vlakken - GIO-delen', jaar, False, 1, 'GIO met HIO-delen voor het jaar ' + str(jaar) + '. Elk vlak heeft een eigen GIO-Locatie, en elk jaar worden de basisgeo-IDs opnieuw toegekend..')
-    __GIO ('02 vlakken - GIO-delen - multi-geometrie', jaar, True, 1, 'GIO met GIO-delen voor het jaar ' + str(jaar) + '. Elk GIO-deel correspondeert met één GIO-Locatie, met één of meer vlakken, die elk jaar een nieuwe basisgeo-ID krijgt.')
+symbolisatie.MaakReadme ([voorbeelden_dir, '02 vlakken - geometrie'], '''#GIO met alleen geometrie
 
-    __GIO ('03 vlakken - normwaarden', jaar, False, 2, 'GIO met normwaarden voor het jaar ' + str(jaar) + '. Elk vlak heeft een eigen GIO-Locatie, en elk jaar worden de basisgeo-IDs opnieuw toegekend..')
-    __GIO ('03 vlakken - normwaarden - multi-geometrie', jaar, True, 2, 'GIO met normwaarden voor het jaar ' + str(jaar) + '. Elke normwaarde correspondeert met één GIO-Locatie, met één of meer vlakken, die elk jaar een nieuwe basisgeo-ID krijgt.')
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit gebieden.
+
+De geometrieën bestaan uit gebieden. Elk gebied is een aparte GIO-Locatie.
+Ook als de geometrie van een gebied niet wijzigt in een volgende versie, dan heeft het gebied toch een andere basisgeometrie-ID.
+''')
+symbolisatie.MaakReadme ([voorbeelden_dir, '02 vlakken - geometrie - multi-geometrie'], '''#GIO met alleen geometrie
+
+Dit is een technisch voorbeeld om voor een GIO met alleen geometrie te demonstreren dat het combineren van alle geometrie
+in een enkele multi-geometrie tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit gebieden. Alle gebieden zijn ondergebracht in een enkele GIO-Locatie.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+for jaar in jaren:
+    __GIO ('02 vlakken - geometrie', jaar, False, 0)
+    __GIO ('02 vlakken - geometrie - multi-geometrie', jaar, True, 0)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '03 vlakken - GIO-delen'], '''#GIO met GIO-delen
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met GIO-delen bestaande uit gebieden.
+
+De geometrieën bestaan uit gebieden. Elk gebied is een aparte GIO-Locatie.
+Ook als de geometrie van een gebied niet wijzigt in een volgende versie, dan heeft het gebied toch een andere basisgeometrie-ID.
+''')
+symbolisatie.MaakReadme ([voorbeelden_dir, '03 vlakken - GIO-delen - multi-geometrie'], '''#GIO met GIO-delen
+
+Dit is een technisch voorbeeld om voor een GIO met GIO-delen te demonstreren dat het combineren van alle geometrie
+in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit gebied. Alle gebieden zijn ondergebracht in een enkele GIO-Locatie per GIO-deel.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+for jaar in jaren:
+    __GIO ('03 vlakken - GIO-delen', jaar, False, 1)
+    __GIO ('03 vlakken - GIO-delen - multi-geometrie', jaar, True, 1)
+
+symbolisatie.MaakReadme ([voorbeelden_dir, '04 vlakken - normwaarden'], '''#GIO met normwaarden
+
+Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor uit gebieden.
+
+De geometrieën bestaan uit gebieden. Elk gebied is een aparte GIO-Locatie.
+Ook als de geometrie van een gebied niet wijzigt in een volgende versie, dan heeft het gebied toch een andere basisgeometrie-ID.
+''')
+symbolisatie.MaakReadme ([voorbeelden_dir, '04 vlakken - normwaarden - multi-geometrie'], '''#GIO met normwaarden
+
+Dit is een technisch voorbeeld om voor een GIO met normwaarden te demonstreren dat het combineren van alle geometrie
+in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
+
+De geometrieën bestaan uit gebieden. Alle gebieden zijn ondergebracht in een enkele GIO-Locatie per normwaarde.
+De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
+''')
+for jaar in jaren:
+    __GIO ('03 vlakken - normwaarden', jaar, False, 2)
+    __GIO ('03 vlakken - normwaarden - multi-geometrie', jaar, True, 2)
 
 #==============================================================================
 #
@@ -250,32 +333,42 @@ for jaar in jaren:
 #==============================================================================
 symbolisatie.MaakSymbolisaties ('gemeenten_alle_jaren_symbolisatie.xml')
 
-symbolisatie.MaakToonGeoSpecificaties (10)
+nauwkeurigheid = 10
 
 for mapPad in symbolisatie.GIOMappen ():
-    with open (os.path.join (mapPad, 'maak_gio_wijziging.json'), 'w', encoding='utf-8') as json_file:
-        json.dump ([*[{
-            'was': 'gemeenten_' + str(jaar-1) + '.gml', 
-            'wordt': 'gemeenten_' + str(jaar) + '.gml', 
-            'nauwkeurigheid': '10',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad),
-            'wijziging': 'gemeenten_' + str(jaar-1) + '_' + str(jaar) + '.gml'
-        } for jaar in jaren if jaar != jaren[0]],
-        {
-            'was': 'gemeenten_' + str(jaren[0]) + '.gml', 
-            'wordt': 'gemeenten_' + str(jaren[-1]) + '.gml', 
-            'nauwkeurigheid': '10',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad),
-            'wijziging': 'gemeenten_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml'
-        }], json_file)
-    with open (os.path.join (mapPad, 'toon_gio_wijziging.json'), 'w', encoding='utf-8') as json_file:
-        json.dump ([*[{
-            'was': 'gemeenten_' + str(jaar-1) + '.gml', 
-            'wijziging': 'gemeenten_' + str(jaar-1) + '_' + str(jaar) + '.gml',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad),
-        } for jaar in jaren if jaar != jaren[0]],
-        {
-            'was': 'gemeenten_' + str(jaren[0]) + '.gml', 
-            'wijziging': 'gemeenten_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml',
-            'symbolisatie': symbolisatie.MapSymbolisatie.get (mapPad)
-        }], json_file)
+    for specPad, relPad in [(mapPad, '../'), 
+                            (os.path.join ('tests', 'voorbeelden', os.path.basename (mapPad)), 
+                             os.path.join ('..','..', '..', '..', 'geo-tools', 'voorbeelden', os.path.basename (mapPad)) + '/')]:
+        symbolisatiePad = symbolisatie.SymbolisatiePad (mapPad, relPad)
+        for jaar in jaren:
+            symbolisatie.MaakSpecificatie (specPad, [str(jaar), 'toon_geo.json'], {
+                    'geometrie': relPad + 'gemeenten_' + str(jaar) + '.gml', 
+                    'symbolisatie': None if symbolisatiePad is None else relPad + 'gemeenten_' + str(jaar) + '_symbolisatie.xml',
+                    'nauwkeurigheid': nauwkeurigheid
+                })
+            if jaar == jaren[0]:
+                continue
+            symbolisatie.MaakSpecificatie (specPad, [str(jaar), 'maak_gio_wijziging.json'], {
+                'was': relPad + 'gemeenten_' + str(jaar-1) + '.gml', 
+                'wordt': relPad + 'gemeenten_' + str(jaar) + '.gml', 
+                'nauwkeurigheid': nauwkeurigheid,
+                'symbolisatie': symbolisatiePad,
+                'wijziging': relPad + 'gemeenten_' + str(jaar-1) + '_' + str(jaar) + '.gml'
+            })
+            symbolisatie.MaakSpecificatie (specPad, [str(jaar), 'toon_gio_wijziging.json'], {
+                'was': relPad + 'gemeenten_' + str(jaar-1) + '.gml', 
+                'wijziging': relPad + 'gemeenten_' + str(jaar-1) + '_' + str(jaar) + '.gml',
+                'symbolisatie': symbolisatiePad
+            })
+        symbolisatie.MaakSpecificatie (specPad, [str(jaren[-1]) + '_' + str(jaren[0]), 'maak_gio_wijziging.json'], {
+            'was': relPad + 'gemeenten_' + str(jaren[0]) + '.gml', 
+            'wordt': relPad + 'gemeenten_' + str(jaren[-1]) + '.gml', 
+            'nauwkeurigheid': nauwkeurigheid,
+            'symbolisatie': symbolisatiePad,
+            'wijziging': relPad + 'gemeenten_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml'
+        })
+        symbolisatie.MaakSpecificatie (specPad, [str(jaren[-1]) + '_' + str(jaren[0]), 'toon_gio_wijziging.json'], {
+            'was': relPad + 'gemeenten_' + str(jaren[0]) + '.gml', 
+            'wijziging': relPad + 'gemeenten_' + str(jaren[0]) + '_' + str(jaren[-1]) + '.gml',
+            'symbolisatie': symbolisatiePad
+        })

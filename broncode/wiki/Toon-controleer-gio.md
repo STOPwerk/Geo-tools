@@ -1,4 +1,4 @@
-# Cntrole op geschiktheid van een GIO
+# Controle op geschiktheid van een GIO
 
 ## Controle op geschiktheid van een GIO
 

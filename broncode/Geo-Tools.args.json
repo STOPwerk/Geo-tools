@@ -23,8 +23,16 @@
       "Command": "-t tests\\voorbeelden"
     },
     {
-      "Id": "80771f5f-0641-4b09-b9ac-adb87469347a",
+      "Id": "dcf0b537-4170-4602-abb4-e5d23d30b6dc",
       "Command": "-t tests\\toon-geo\\Punten"
+    },
+    {
+      "Id": "80771f5f-0641-4b09-b9ac-adb87469347a",
+      "Command": "-t tests\\toon-geo\\Vlakken"
+    },
+    {
+      "Id": "acfd96fb-d85e-4b3a-ad85-389c072b799d",
+      "Command": "-t \"tests\\toon-geo\\Vlakken\\30 Niet bruikbaar\""
     }
   ]
 }

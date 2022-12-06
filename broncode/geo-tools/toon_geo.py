@@ -77,19 +77,16 @@ class GeoViewer (GeoManipulatie):
 
         if gio.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
             self.Log.Informatie ('Valideer de GIO')
+            self.Generator.VoegHtmlToe ('<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elder beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>')
             lijst = self.MaakLijstVanGeometrieen (gio)
-            problemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie)
-            if problemen is None:
+            heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie, dataNaam)
+            if not heeftProblemen:
                 self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter</p>')
             else:
                 self.Generator.VoegHtmlToe ('<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + " decimeter. ")
                 if not tekennauwkeurigheid is None:
                     self.Generator.VoegHtmlToe ('Het GIO kan wel gebruikt worden met een tekennauwkeurigheid van ' + str(tekennauwkeurigheid) + ' decimeter')
-                self.Generator.VoegHtmlToe ('</p><p>De plaatsen waar geometrieën voor problemen zorgen:')
-                geomNaam = self.VoegGeoDataToe (problemen)
-                geomSym = self.VoegWijzigMarkeringToe ()
-                self.ToonKaart ('kaart.VoegOnderlaagToe ("Geo-informatieobject", "' + dataNaam + '", "' + symbolisatieNaam + '", true, true);kaart.VoegOnderlaagToe ("Problematische geometrie", "' + geomNaam + '", "' + geomSym + '", true, true);')
-
+                self.Generator.VoegHtmlToe ('</p>')
         self.Log.Detail ('Maak de pagina af')
         self.Generator.LeesCssTemplate ('resultaat')
         return True

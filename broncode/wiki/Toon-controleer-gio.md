@@ -1,6 +1,6 @@
 # Cntrole op geschiktheid van een GIO
 
-## Cntrole op geschiktheid van een GIO
+## Controle op geschiktheid van een GIO
 
 Controleert dat het GIO geen details bevat die het geautomatiseerd bepalen van de wijzigingen tussen twee GIO-versies in de weg staat. De grens aan de toegestane mate van detaillering wordt gegeven door de tekennauwkeurigheid. Als een GIO niet geschikt bevonden wordt hoeft dat niet aan de inhoud van het GIO te liggen, het kan ook zijn dat de tekennauwkeurigheid verkeerd ingeschat is.
 

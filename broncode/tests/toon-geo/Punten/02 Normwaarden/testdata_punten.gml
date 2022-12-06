@@ -46,7 +46,7 @@
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>
-                <geo:kwantitatieveNormwaarde>2116</geo:kwantitatieveNormwaarde>
+                <geo:kwantitatieveNormwaarde>2118</geo:kwantitatieveNormwaarde>
             </geo:Locatie>
     </geo:locaties>
 </geo:GeoInformatieObjectVersie>

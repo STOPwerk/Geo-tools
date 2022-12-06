@@ -6,7 +6,7 @@
 			<basisgeo:Geometrie>
 				<basisgeo:id>95c1f0b6-5e98-4efb-a0ac-812b6722c3fd</basisgeo:id>
 				<basisgeo:geometrie>
-					<gml:Polygon>
+					<gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992">
 						<gml:exterior>
 							<gml:LinearRing>
 								<gml:posList>229184.235 594945.037 229870.371 595432.325 231301.643 595410.473 231590.082 594473.045 231690.599 593618.652 231406.530 593474.432 231072.202 593601.171 230558.692 593417.619 230110.737 593498.469 229839.779 593719.169 229638.745 594066.607 229544.784 594538.599 229011.608 594593.228 228978.831 594962.518 229184.235 594945.037</gml:posList>
@@ -19,7 +19,7 @@
 	</geo:Gebied>
 	<geo:Gebied>
 		<geo:geometrie>
-			<basisgeo:Geometrie xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0">
+			<basisgeo:Geometrie>
 				<basisgeo:id>263c825c-af6d-4393-9482-f3e434e87e41</basisgeo:id>
 				<basisgeo:geometrie>
 					<gml:MultiSurface srsName="urn:ogc:def:crs:EPSG::28992" xmlns:gml="http://www.opengis.net/gml/3.2">

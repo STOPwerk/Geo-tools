@@ -1,4 +1,5 @@
 {
   "geometrie": "testdata_punten.gml",
+  "symbolisatie": "testdata_punten_symbolisatie.xml",
   "nauwkeurigheid": 10
 }

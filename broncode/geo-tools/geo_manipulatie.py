@@ -8,7 +8,7 @@
 from typing import Dict, List, Tuple
 
 import pygml
-from shapely.geometry import shape
+from shapely.geometry import shape, mapping
 import json
 import math
 import re
@@ -76,6 +76,12 @@ class GeoManipulatie:
 # Geo-data
 #
 #======================================================================
+
+#----------------------------------------------------------------------
+#
+# Interne representatie van een GIO/gebied
+#
+#----------------------------------------------------------------------
     class Attribuut:
         def __init__(self, tag : str, label: str = None, eenheid : str = None):
             """Maak een instantie van de informatie over een attribuut
@@ -140,6 +146,11 @@ class GeoManipulatie:
             if self.Dimensie == 2:
                 return "vlakken" if meervoud else "vlak"
 
+#----------------------------------------------------------------------
+#
+# Inlezen van GML
+#
+#----------------------------------------------------------------------
     def LeesGeoBestand (self, key : str, verplicht : str) -> GeoData:
         """Lees de inhoud van een GIO, effectgebied of gebiedsmarkering.
         Het bestand wordt gevonden aan de hand van de specificatie key / input type="file" control naam.
@@ -455,6 +466,11 @@ class GeoManipulatie:
             'Polygon': 2, 'MultiPolygon': 2
         }
 
+#----------------------------------------------------------------------
+#
+# Conversie naar Shapely objecten om mee te rekenen
+#
+#----------------------------------------------------------------------
     @staticmethod
     def MaakShapelyShape (locatie):
         """Maak een Shapely shape voor de locatie (als dat niet eerder gebeurd is) en geef die terug.
@@ -467,6 +483,11 @@ class GeoManipulatie:
             locatie['_shape'] = shape (locatie['geometry'])
         return locatie['_shape']
 
+#----------------------------------------------------------------------
+#
+# Wegschrijven als JSON voor kaart in de webpagina
+#
+#----------------------------------------------------------------------
     def VoegGeoDataToe (self, geoData : GeoData):
         """Voeg de geo-gegevens uit een GIO of gebied toe aan de data beschikbaar in de resultaatpagina;
 
@@ -487,16 +508,18 @@ class GeoManipulatie:
         # Bepaal de bounding box van de hele collectie
         bbox = False
         for locatie in geoData.Locaties:
-            locatieBBox = GeoManipulatie.MaakShapelyShape (locatie).bounds
-            if bbox:
-                bbox = [
-                        bbox[0] if bbox[0] < locatieBBox[0] else locatieBBox[0],
-                        bbox[1] if bbox[1] < locatieBBox[1] else locatieBBox[1],
-                        bbox[2] if bbox[2] > locatieBBox[2] else locatieBBox[2],
-                        bbox[3] if bbox[3] > locatieBBox[3] else locatieBBox[3]
-                    ]
-            else:
-                bbox = list (locatieBBox)
+            locatieShape = GeoManipulatie.MaakShapelyShape (locatie)
+            if not locatieShape.is_empty:
+                locatieBBox = locatieShape.bounds
+                if bbox:
+                    bbox = [
+                            bbox[0] if bbox[0] < locatieBBox[0] else locatieBBox[0],
+                            bbox[1] if bbox[1] < locatieBBox[1] else locatieBBox[1],
+                            bbox[2] if bbox[2] > locatieBBox[2] else locatieBBox[2],
+                            bbox[3] if bbox[3] > locatieBBox[3] else locatieBBox[3]
+                        ]
+                else:
+                    bbox = list (locatieBBox)
         if bbox:
             collectie['bbox'] = bbox
 
@@ -521,6 +544,12 @@ class GeoManipulatie:
 # Weergave op de kaart
 #
 #======================================================================
+
+#----------------------------------------------------------------------
+#
+# Symbolisatie
+#
+#----------------------------------------------------------------------
     def VoegDefaultSymbolisatieToe (self, geoData : GeoData) -> str:
         """Voeg de default symbolisatie toe voor de geodata
         
@@ -536,7 +565,7 @@ class GeoManipulatie:
         return naam
 
 
-    def VoegUniformeSymbolisatieToe (self, dimensie : int, vulkleur: str, randkleur: str) -> str:
+    def VoegUniformeSymbolisatieToe (self, dimensie : int, vulkleur: str, randkleur: str, opacity : str = '1') -> str:
         """Voeg een STOP symbolisatie toe voor gebruik in kaarten.
 
         Argumenten:
@@ -557,11 +586,11 @@ class GeoManipulatie:
                     <WellKnownName>square</WellKnownName>
                     <Fill>
                         <SvgParameter name="fill">''' + vulkleur + '''</SvgParameter>
-                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                        <SvgParameter name="fill-opacity">''' + opacity + '''</SvgParameter>
                     </Fill>
                     <Stroke>
                         <SvgParameter name="stroke">''' + randkleur + '''</SvgParameter>
-                        <SvgParameter name="stroke-opacity">0</SvgParameter>
+                        <SvgParameter name="stroke-opacity">1</SvgParameter>
                         <SvgParameter name="stroke-width">1</SvgParameter>
                     </Stroke>
                 </Mark>
@@ -695,6 +724,11 @@ class GeoManipulatie:
         </PointSymbolizer>
     </Rule>'''
 
+#----------------------------------------------------------------------
+#
+# Kaart in webpagina
+#
+#----------------------------------------------------------------------
     def ToonKaart (self, jsInitialisatie : str, kaartElementId : str = None):
         """Toon een kaart op de huidige plaats in de webpagina
 
@@ -731,6 +765,12 @@ class GeoManipulatie:
 # Ondersteuning GIO-wijziging
 #
 #======================================================================
+
+#----------------------------------------------------------------------
+#
+# Hulpklassen / methoden
+#
+#----------------------------------------------------------------------
     def NauwkeurigheidInMeter (self) -> float:
         """Haal de nauwkeurigheid als float uit de request parameters"""
         if self.Request.LeesString ("nauwkeurigheid") is None:
@@ -775,7 +815,7 @@ class GeoManipulatie:
                 for coords in locatie['geometry']['coordinates']:
                     lijst.append (GeoManipulatie.EnkeleGeometrie(locatie,
                     {
-                        'type': 'feature',
+                        'type': 'Feature',
                         'geometry': {
                             'type': 'Point',
                             'coordinates': coords
@@ -785,7 +825,7 @@ class GeoManipulatie:
                 for coords in locatie['geometry']['coordinates']:
                     lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, 
                     {
-                        'type': 'feature',
+                        'type': 'Feature',
                         'geometry': {
                             'type': 'LineString',
                             'coordinates': coords
@@ -795,7 +835,7 @@ class GeoManipulatie:
                 for coords in locatie['geometry']['coordinates']:
                     lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, 
                     {
-                        'type': 'feature',
+                        'type': 'Feature',
                         'geometry': {
                             'type': 'Polygon',
                             'coordinates': coords
@@ -809,44 +849,36 @@ class GeoManipulatie:
 
         return lijst
 
-    def VoegGeometrieToeAlsData (self, geometrie: List[EnkeleGeometrie]):
-        """Voeg de geometrieën toe aan de data beschikbaar in de resultaatpagina;
-
-        Argumenten:
-
-        geometrie EnkeleGeometrie[]  De geometrieën uit de GIO, gemaakt via MaakLijstVanGeometrieen,
-                                     of ontstaan door een van de geo-operaties.
-
-        Geeft de naam terug die gebruikt moet worden om de gegevens aan een kaart te koppelen
-        """
-        data = GeoManipulatie.GeoData ()
-        data.Locaties = [g.Geometrie for g in geometrie]
-        return self.VoegGeoDataToe (data)
-
-    def ValideerGIO (self, geometrie: List[EnkeleGeometrie], dimensie : int) -> Tuple[List[EnkeleGeometrie],float]:
+#----------------------------------------------------------------------
+#
+# Controleren of een GIO geschikt is voor bepaling van GIO-wijziging
+#
+#----------------------------------------------------------------------
+    def ValideerGIO (self, geometrie: List[EnkeleGeometrie], dimensie : int, dataNaam : str) -> Tuple[bool,float]:
         """Valideer dat de enkele locaties binnen een GIO onderling disjunct zijn
 
         Argumenten:
 
         geometrie EnkeleGeometrie[]  De geometrieën uit de GIO, gemaakt via MaakLijstVanGeometrieen
         dimensie int  Dimensie van de geometrieën in de GIO
+        dataNaam str  De naam van de dataset met data van de GIO
 
-        Geeft een GeoData met punten (dimensie = 0) of vlakken (dimensie > 0) terug waar de geometrieën
-        niet disjunct zijn, of None als de GIO valide is. Geeft daarnaast (indien mogelijk) terug bij 
+        Geeft een of de GIO valide is. Geeft daarnaast (indien mogelijk) terug bij 
         welke tekennauwkeurigheid (in decimeter) de GIO wel valide is.
         """
         if self.NauwkeurigheidInMeter () is None:
             return (None, None)
         if dimensie == 0:
-            return self._ValideerGIOPunten (geometrie)
+            return self._ValideerGIOPunten (geometrie, dataNaam)
         elif dimensie == 1:
-            return self._ValideerGIOLijnen (geometrie)
+            return self._ValideerGIOLijnen (geometrie, dataNaam)
         elif dimensie == 2:
-            return (self._ValideerGIOVlakken (geometrie), None)
+            return (self._ValideerGIOVlakken (geometrie, dataNaam), None)
         raise 'dimensie = ' + str(dimensie)
 
-    def _ValideerGIOPunten (self, punten: List[EnkeleGeometrie]) -> Tuple[GeoData,float]:
+    def _ValideerGIOPunten (self, punten: List[EnkeleGeometrie], dataNaam : str) -> Tuple[GeoData,float]:
         """Implementatie van ValideerGIO voor punt-geometrieën"""
+        self.Generator.VoegHtmlToe ('''Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de tekennauwkeurigheid.''')
         drempel = self.NauwkeurigheidInMeter ()
         drempel *= drempel
         minimaleAfstand = None
@@ -873,32 +905,115 @@ class GeoManipulatie:
                         minimaleAfstand  = afstand
         # Is er een probleem?
         if minimaleAfstand is None:
+            self.Generator.VoegHtmlToe ('Dat is het geval.')
             self.Log.Informatie ('Alle punten liggen tenminste ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af')
-            return (None, None)
+            return (False, None)
         else:
-            self.Log.Fout ('Er zijn ' + str(len (afstanden)) + ' punten die minder dan ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
+            self.Log.Waarschuwing ('Er zijn ' + str(len (afstanden)) + ' punten die minder dan ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
             problemen = GeoManipulatie.GeoData ()
             problemen.Attributen['d'] = GeoManipulatie.Attribuut ('d', 'Minimale afstand', 'decimeter')
             problemen.Attributen['n'] = GeoManipulatie.Attribuut ('n', 'Te nabije buren')
             problemen.AttribuutNaam = 'afstand'
-            problemen.BerekendeID = True
             problemen.Dimensie = 1
-            problemen.Locaties = []
             for i, afstand in afstanden.items ():
                 punt = punten[i].Geometrie
                 punt['properties'] = { 'd': round (math.sqrt (100*afstand), 2), 'n': aantal[i] }
                 problemen.Locaties.append (punt);
-            return (problemen, round(math.sqrt (100 * minimaleAfstand), 2))
 
-    def _ValideerGIOLijnen (self, punten: List[EnkeleGeometrie]) -> Tuple[GeoData,float]:
+            self.Generator.VoegHtmlToe ('Dat is niet het geval. De plaatsen waar punten te dicht bij elkaar staan:')
+            gioSym = self.VoegUniformeSymbolisatieToe (0, "#DAE8FC", "#6C8EBF", '0.5')
+            geomNaam = self.VoegGeoDataToe (problemen)
+            geomSym = self.VoegWijzigMarkeringToe ()
+            self.ToonKaart ('kaart.VoegOnderlaagToe ("Geo-informatieobject", "' + dataNaam + '", "' + gioSym + '", true, true);kaart.VoegOnderlaagToe ("Problematische geometrie", "' + geomNaam + '", "' + geomSym + '", true, true);')
+
+            return (True, round(math.sqrt (100 * minimaleAfstand), 2))
+
+    def _ValideerGIOLijnen (self, lijnen: List[EnkeleGeometrie], dataNaam : str) -> Tuple[GeoData,float]:
         """Implementatie van ValideerGIO voor lijn-geometrieën"""
         self.Log.Fout ("Validatie van lijnen in een GIO is nog niet gecodeerd")
         return (None, None)
 
-    def _ValideerGIOVlakken (self, punten: List[EnkeleGeometrie]) -> Tuple[GeoData,float]:
+    def _ValideerGIOVlakken (self, vlakken: List[EnkeleGeometrie], dataNaam : str) -> Tuple[GeoData,float]:
         """Implementatie van ValideerGIO voor vlak-geometrieën"""
-        self.Log.Fout ("Validatie van vlakken in een GIO is nog niet gecodeerd")
-        return None
+        self.Generator.VoegHtmlToe ('''<p>Voor een GIO met vlakken wordt nagegaan of vlakken niet teveel overlappen.
+Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt bepaald of de verkleinde vlakken elkaar overlappen.</p>''')
+        nauwkeurigheid = self.NauwkeurigheidInMeter ();
+        problemen = GeoManipulatie.GeoData ()
+        problemen.Dimensie = 2
+        problemen.Attributen['p'] = GeoManipulatie.Attribuut ('p', 'Geschiktheid voor GIO-wijziging')
+
+        # Maak de gebieden met een negatieve buffer van de helft van de nauwkeurigheid
+        kleinereVlakken = []
+        kleinereVlakkenData = GeoManipulatie.GeoData () # Voor weergave op een kaart
+        kleinereVlakkenData.Dimensie = 2
+        kleinereVlakkenData.Attributen['p'] = GeoManipulatie.Attribuut ('p', 'Geschiktheid voor GIO-wijziging')
+        nauwkeurigheidTeGroot = False
+        for vlak in vlakken:
+            kleinerVlak = self.MaakShapelyShape (vlak.Geometrie).buffer (-0.5*nauwkeurigheid)
+            if kleinerVlak is None or kleinerVlak.is_empty:
+                if not nauwkeurigheidTeGroot:
+                    self.Log.Waarschuwing ("De tekennauwkeurigheid is zo'n groot getal dat het groter is dan sommige vlakken")
+                    nauwkeurigheidTeGroot = True
+                kleinereVlakkenData.Locaties.append ({ 
+                    'type': 'Feature', 
+                    'properties' : {
+                        'p': 'nee; kleiner dan de tekennauwkeurigheid'
+                    }, 
+                    'geometry': mapping (kleinerVlak), 
+                    '_shape' : kleinerVlak
+                })
+                problemen.Locaties.append ({ 
+                    'type': 'Feature', 
+                    'properties' : {
+                        'p': 'nee; kleiner dan de tekennauwkeurigheid'
+                    }, 
+                    'geometry': vlak.Locatie['geometry'], 
+                    '_shape' :  self.MaakShapelyShape (vlak.Geometrie)
+                })
+            else:
+                kleinereVlakken.append (kleinerVlak)
+                kleinereVlakkenData.Locaties.append ({ 
+                    'type': 'Feature', 
+                    'properties' : {
+                        'p': 'ja'
+                    }, 
+                    'geometry': mapping (kleinerVlak), 
+                    '_shape' : kleinerVlak})
+
+        # Bepaal de onderlinge overlap
+        for i in range (0, len (kleinereVlakken)):
+            vlak_i = kleinereVlakken[i]
+            for j in range (i+1, len (kleinereVlakken)):
+                if kleinereVlakken[j].intersects (vlak_i):
+                    kleinereVlakkenData.Locaties[i]['properties']['p'] = 'nee; overlap met buur-vlak(ken)'
+                    kleinereVlakkenData.Locaties[j]['properties']['p'] = 'nee; overlap met buur-vlak(ken)'
+
+                    # Bereken de intersectie; dit is alleen nodig voor de weergave in het kaartje
+                    intersectie = kleinereVlakken[j].intersection (vlak_i)
+                    problemen.Locaties.append ({ 
+                        'type': 'Feature', 
+                        'geometry': mapping (intersectie), 
+                        '_shape' : intersectie
+                    })
+
+
+        # Toon de vlakken in een kaart
+        gioSym = self.VoegUniformeSymbolisatieToe (2, "#ffffff", "#0000ff", '0')
+        kvNaam = self.VoegGeoDataToe (kleinereVlakkenData)
+        kvSym = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
+        kaartScript = 'kaart.VoegOnderlaagToe ("Vlakken uit het GIO", "' + dataNaam + '", "' + gioSym + '", true, true);kaart.VoegOnderlaagToe ("Verkleinde vlakken", "' + kvNaam + '", "' + kvSym + '", true, true);'
+        if len (problemen.Locaties) > 0:
+            kleinereVlakkenData.Locaties = [l for l in kleinereVlakkenData.Locaties if l['properties']['p'] != 'ja']
+            kvNaam = self.VoegGeoDataToe (kleinereVlakkenData)
+            kvSym = self.VoegUniformeSymbolisatieToe (2, "#F8CECC", "#B85450", '0.5')
+            kaartScript += 'kaart.VoegOnderlaagToe ("Vlakken ongeschikt voor GIO-wijziging", "' + kvNaam + '", "' + kvSym + '", true, true);'
+
+            kvNaam = self.VoegGeoDataToe (problemen)
+            kvSym = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
+            kaartScript += 'kaart.VoegOnderlaagToe ("Probleemgebieden", "' + kvNaam + '", "' + kvSym + '", true, true);'
+        self.ToonKaart (kaartScript)
+
+        return len (problemen.Locaties) > 0
 
 
     class WijzigingBepaling:

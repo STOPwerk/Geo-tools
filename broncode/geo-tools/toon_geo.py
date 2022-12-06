@@ -85,7 +85,10 @@ class GeoViewer (GeoManipulatie):
             else:
                 self.Generator.VoegHtmlToe ('<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + " decimeter. ")
                 if not tekennauwkeurigheid is None:
-                    self.Generator.VoegHtmlToe ('Het GIO kan wel gebruikt worden met een tekennauwkeurigheid van ' + str(tekennauwkeurigheid) + ' decimeter')
+                    if tekennauwkeurigheid <= 0:
+                        self.Generator.VoegHtmlToe ('Het GIO kan nooit gebruikt worden omdat er sprake is van samenvallende geometrieën')
+                    else:
+                        self.Generator.VoegHtmlToe ('Het GIO kan wel gebruikt worden met een tekennauwkeurigheid van ' + str(tekennauwkeurigheid) + ' decimeter')
                 self.Generator.VoegHtmlToe ('</p>')
         self.Log.Detail ('Maak de pagina af')
         self.Generator.LeesCssTemplate ('resultaat')

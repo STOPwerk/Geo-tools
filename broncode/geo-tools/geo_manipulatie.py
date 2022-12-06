@@ -876,6 +876,9 @@ class GeoManipulatie:
             return (self._ValideerGIOVlakken (geometrie, dataNaam), None)
         raise 'dimensie = ' + str(dimensie)
 
+    #------------------------------------------------------------------
+    # Punten
+    #------------------------------------------------------------------
     def _ValideerGIOPunten (self, punten: List[EnkeleGeometrie], dataNaam : str) -> Tuple[GeoData,float]:
         """Implementatie van ValideerGIO voor punt-geometrieën"""
         self.Generator.VoegHtmlToe ('''Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de tekennauwkeurigheid.''')
@@ -928,11 +931,84 @@ class GeoManipulatie:
 
             return (True, round(math.sqrt (100 * minimaleAfstand), 2))
 
+    #------------------------------------------------------------------
+    # Lijnen
+    #------------------------------------------------------------------
     def _ValideerGIOLijnen (self, lijnen: List[EnkeleGeometrie], dataNaam : str) -> Tuple[GeoData,float]:
         """Implementatie van ValideerGIO voor lijn-geometrieën"""
-        self.Log.Fout ("Validatie van lijnen in een GIO is nog niet gecodeerd")
-        return (None, None)
+        self.Generator.VoegHtmlToe ('''<p>Voor een GIO met lijnen wordt nagegaan of lijnen niet te dicht bij elkaar komen.
+Dat kan op verschillende manieren. Bijvoorbeeld door de onderlinge afstanden van de lijnen te vergeleken met de tekennauwkeurigheid - dat 
+levert ook een inschatting op wat de tekennauwkeurigheid maximaal kan zijn. Of door de lijnen te verdikken tot de tekennauwkeurigheid
+en dan de overlap te bepalen - dat levert een beeld op waar de problemen zitten. Beide methodes worden hier toegepast.</p>''')
+        nauwkeurigheid = self.NauwkeurigheidInMeter ();
+        problemen = GeoManipulatie.GeoData ()
+        problemen.Dimensie = 2
+        problemen.Attributen['p'] = GeoManipulatie.Attribuut ('p', 'Geschiktheid voor GIO-wijziging')
 
+        # Maak de gebieden met een buffer van de nauwkeurigheid
+        dikkeLijnen = []
+        dikkeLijnenData = GeoManipulatie.GeoData () # Voor weergave op een kaart
+        dikkeLijnenData.Dimensie = 2
+        dikkeLijnenData.Attributen['p'] = GeoManipulatie.Attribuut ('p', 'Geschiktheid voor GIO-wijziging')
+        for lijn in lijnen:
+            dikkeLijn = self.MaakShapelyShape (lijn.Geometrie).buffer (0.5 * nauwkeurigheid)
+            dikkeLijnen.append (dikkeLijn)
+            dikkeLijnenData.Locaties.append ({ 
+                'type': 'Feature', 
+                'properties' : {
+                    'p': 'ja'
+                }, 
+                'geometry': mapping (dikkeLijn), 
+                '_shape' : dikkeLijn
+            })
+
+        # Bepaal de onderlinge overlap en afstand
+        minimaleAfstand = None
+        for i in range (0, len (dikkeLijnen)):
+            lijn_i = self.MaakShapelyShape (lijnen[i].Geometrie)
+            dikkeLijn_i = dikkeLijnen[i]
+            for j in range (i+1, len (dikkeLijnen)):
+                afstand = lijn_i.distance (self.MaakShapelyShape (lijnen[j].Geometrie))
+                if afstand < nauwkeurigheid:
+                    if minimaleAfstand is None or afstand < minimaleAfstand:
+                        minimaleAfstand = afstand
+
+                    # Bereken de intersectie; dit is alleen nodig voor de weergave in het kaartje
+                    # Alleen nodig zijn als de afstand kleiner is dan de nauwkeurigheid,
+                    # anders weten we al dat er niets uit komt
+                    intersectie = dikkeLijnen[j].intersection (dikkeLijn_i)
+                    if not intersectie is None and not intersectie.is_empty:
+                        dikkeLijnenData.Locaties[i]['properties']['p'] = 'nee'
+                        dikkeLijnenData.Locaties[j]['properties']['p'] = 'nee'
+                        problemen.Locaties.append ({ 
+                            'type': 'Feature', 
+                            'geometry': mapping (intersectie), 
+                            '_shape' : intersectie
+                        })
+
+
+        # Toon de vlakken in een kaart
+        kvNaam = self.VoegGeoDataToe (dikkeLijnenData)
+        kvSym = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
+        kaartScript = 'kaart.VoegOnderlaagToe ("Verdikte lijnen", "' + kvNaam + '", "' + kvSym + '", true, true);'
+        if len (problemen.Locaties) > 0:
+            dikkeLijnenData.Locaties = [l for l in dikkeLijnenData.Locaties if l['properties']['p'] != 'ja']
+            kvNaam = self.VoegGeoDataToe (dikkeLijnenData)
+            kvSym = self.VoegUniformeSymbolisatieToe (2, "#F8CECC", "#B85450", '0.5')
+            kaartScript += 'kaart.VoegOnderlaagToe ("(Verdikte) lijnen ongeschikt voor GIO-wijziging", "' + kvNaam + '", "' + kvSym + '", true, true);'
+
+            kvNaam = self.VoegGeoDataToe (problemen)
+            kvSym = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
+            kaartScript += 'kaart.VoegOnderlaagToe ("Probleemgebieden", "' + kvNaam + '", "' + kvSym + '", true, true);'
+        gioSym = self.VoegUniformeSymbolisatieToe (1, "#0000ff", "#0000ff")
+        kaartScript += 'kaart.VoegOnderlaagToe ("Lijnen uit het GIO", "' + dataNaam + '", "' + gioSym + '", true, true);'
+        self.ToonKaart (kaartScript)
+
+        return not minimaleAfstand is None, None if minimaleAfstand is None else round(10 * minimaleAfstand, 2)
+
+    #------------------------------------------------------------------
+    # Vlakken
+    #------------------------------------------------------------------
     def _ValideerGIOVlakken (self, vlakken: List[EnkeleGeometrie], dataNaam : str) -> Tuple[GeoData,float]:
         """Implementatie van ValideerGIO voor vlak-geometrieën"""
         self.Generator.VoegHtmlToe ('''<p>Voor een GIO met vlakken wordt nagegaan of vlakken niet teveel overlappen.

@@ -27,6 +27,7 @@ In woorden:
 * Vlak-locaties zijn toegestaan als de onderlinge afstand tussen de locaties groter is dan de tekennauwkeurigheid (bovenste rij).
 * Vlak-locaties die overlappen of naast elkaar liggen waarbij zowel de afmetingen van de overlap als de onderlinge afstand kleiner is dan de tekennauwkeurigheid (bovenste rij) worden geacht elkaar te raken en elkaar niet te overlappen. Dit is toegestaan.
 * Vlak-locaties die elkaar overlappen waarbij zowel de hoogte als breedte van de overlap groter is dan de tekennauwkeurigheid (onderste rij) zijn niet toegestaan.
+* Vlak-locaties die kleiner zijn dan de tekennauwkeurigheid (onderste rij) zijn niet toegestaan.
 
 Als een GIO voor een gegeven tekennauwkeurigheid niet voldoet aan deze voorwaarden, kan dat ook liggen aan een verkeerde inschatting van de tekennauwkeurigheid:
 
@@ -48,8 +49,15 @@ De ondersteunde geometrieën zijn _Point_, _LineString_ en _Polygon_ en de meerv
 In het geval van punten wordt van elk paar punten de afstand berekend. Punten die een onderlinge afstand kleiner dan de _tekennauwkeurigheid_ hebben, worden gerapporteerd en leiden tot ongeschiktheid van het GIO. Het kan dus gaan om punten van dezelfde _MultiPoint_ geometrie. Voor een ongeschikte GIO wordt daarne de minimale afstand van de puntparen bepaald. Mits groter dan nul is dit de tekennauwkeurigheid waarbij het GIO wel geldig is.
 
 ### Lijnen
-Om elke lijn wordt een buffer gelegd met afstand _tekennauwkeurigheid_. Daarna wordt voor elk paar gebufferde lijnen de intersectie bepaald. Als de intersectie een resultaatgebied oplevert, dan is het GIO ongeschikt. Voor een ongeschikte GIO wordt daarna de afstand tussen de lijnparen bepaald. Mits groter dan nul is dit de tekennauwkeurigheid waarbij het GIO wel geldig is.
+In geval van lijnen wordt vppr elk paar lijnstukken in de GIO de onderlinge afstand bepaald. Als die kleiner is dan de _tekennauwkeurigheid_ hebben, dan worden de lijnen gerapporteerd en leidt dat tot ongeschiktheid van het GIO. Voor een ongeschikte GIO wordt daarne de minimale afstand van de lijnparen bepaald. Mits groter dan nul is dit de tekennauwkeurigheid waarbij het GIO wel geldig is.
+
+Om inzicht te krijgen waar de afstand te klein is wordt om elke lijn een buffer gelegd met als afstand de halve _tekennauwkeurigheid_. Daarna wordt voor elk paar gebufferde lijnen de intersectie bepaald. Waar de intersectie een resultaatgebied oplevert bevinden de lijnen zich niet ver genoeg van elkaar.
 
 ![Controle lijnen](DetectieOverlappendeLijnen.svg)
 
 ### Vlakken
+In geval van vlakken is het niet relevant om te weten of twee vlakken elkaar een beetje overlappen. Elk vlak wordt verkleind met als afstand een halve  _tekennauwkeurigheid_ - er wordt dus een buffer om het vlak gelegd van (-_tekennauwkeurigheid_/2). Als er geen vlak overblijft is het vlak te klein en is de GIO ongeschikt.
+
+Vervolgens wordt van elk paar van de verkleinde vlakken bepaald of er een intersectie bestaat. Dat zal zo zijn als de oorspronkelijke vlakken meer dan de _tekennauwkeurigheid_ overlappen. In dat geval is de GIO ongeschikt. Om inzicht te krijgen waar dat het geval is, wordt ook de intersectie berekend en weergegeven.
+
+![Controle vlakken](DetectieOverlappendeVlakken.svg)

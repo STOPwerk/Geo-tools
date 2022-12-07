@@ -81,7 +81,7 @@ class GeoViewer (GeoManipulatie):
         if gio.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
             self.Log.Informatie ('Valideer de GIO')
             self.Generator.VoegHtmlToe ('<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>')
-            lijst = self.MaakLijstVanGeometrieen (gio)
+            lijst = self.MaakLijstVanGeometrieen (gio)[0]
             heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie)
             if not heeftProblemen:
                 self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij een teken-nauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter</p>')

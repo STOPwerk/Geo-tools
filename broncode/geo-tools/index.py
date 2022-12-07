@@ -8,6 +8,7 @@
 #
 #======================================================================
 
+from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
 from weergave_webpagina import WebpaginaGenerator
 
@@ -53,7 +54,7 @@ def toon_geo():
 
 @app.route('/toon_geo_resultaat', methods = ['POST'])
 def toon_geo_resultaat():
-    return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None))
+    return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
 
 @app.route('/maak_gio_wijziging')
 def gio_wijziging():
@@ -61,7 +62,7 @@ def gio_wijziging():
 
 @app.route('/maak_gio_wijziging_resultaat', methods = ['POST'])
 def gio_wijziging_resultaat():
-    return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None))
+    return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
 
 
 @app.route('/toon_gio_wijziging')
@@ -70,7 +71,7 @@ def toon_gio_wijziging():
 
 @app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
 def toon_gio_wijziging_resultaat():
-    return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None))
+    return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
 
 @app.route('/voorbeeld')
 def voorbeeld():

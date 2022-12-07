@@ -3873,7 +3873,7 @@ class Kaart {
                 label.innerText = mapLayers[i]._AanUit
                 aanUitLagenElt.append(label);
                 this._AanUitLagen[ctrl.id] = [];
-                for (var j = i; j >= 0; j--) {
+                for (var j = 0; j <= i; j++) {
                     if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
                         this._AanUitLagen[ctrl.id].push(mapLayers[j]);
                         mapLayers[j]._AanUit = false;

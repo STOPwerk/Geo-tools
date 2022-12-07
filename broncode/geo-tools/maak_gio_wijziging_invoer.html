@@ -1,12 +1,12 @@
 <p>
     Maak een GIO-wijziging: een <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html">vaststelling</a>
-	met daarin een <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectMutatie.html">mutatie</a> van een STOP geo-informatieobject. De GIO-Wijziging wordt gemaakt op basis van twee 
-	<a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html">versies</a>: de originele (was-)versie en de gewijzigde (wordt-)versie.
+    met daarin een <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectMutatie.html">mutatie</a> van een STOP geo-informatieobject. De GIO-Wijziging wordt gemaakt op basis van twee
+    <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html">versies</a>: de originele (was-)versie en de gewijzigde (wordt-)versie.
 </p>
 <h3>Bestanden</h3>
 <p id="bestanden">
 </p>
-<form id="upload_form" action="gio_wijziging_resultaat" method="post" enctype="multipart/form-data">
+<form id="upload_form" action="maak_gio_wijziging_resultaat" method="post" enctype="multipart/form-data">
     <div id="was_box" class="box">
         <label>
             <span class="link">Selecteer de originele (was-)versie van het geo-informatieobject</span>
@@ -21,14 +21,10 @@
             <input class="box__file" type="file" name="wordt" id="wordt" accept="application/gml+xml,application/xml" />
         </label>
     </div>
-	<p>
-	<input type="checkbox" name="persistente_id" id="persistente_id" checked="checked" value="false"></input>&nbsp;<label for="persistente_id"><b>Basisgeometrie-ids van geometrieën zijn willekeurig</b></label><br>
-	Vink dit aan als de basisgeometrie-ids in de wordt-versie bij het samenstellen van de wordt-versie opnieuw zijn toegekend. Als dezelfde geometrie in zowel de was- als de wordt-versie voorkomt, dan kan die toch een ander basisgeometrie-id hebben. Vink deze optie uit als een ongewijzigde geometrie in de was- en wordt-versie dezelfde basisgeometrie-id heeft.
-	</p>
-	<p>
-	<label for="nauwkeurigheid"><b>Tekennauwkeurigheid</b></label>&nbsp;<input type="number" name="nauwkeurigheid" id="nauwkeurigheid" value="1" min="1"></input>&nbsp;<label for="nauwkeurigheid"><b>decimeter</b></label><br>
-	De juridische/tekennauwkeurigheid van de geometrieën in de GIO ([zie documentatie](@@@GeoTools_Url@@@wiki/Toon-controleer-gio)).
-	</p>
+    <p>
+        <label for="nauwkeurigheid"><b>Tekennauwkeurigheid</b></label>&nbsp;<input type="number" name="nauwkeurigheid" id="nauwkeurigheid" value="1" min="1"></input>&nbsp;<label for="nauwkeurigheid"><b>decimeter</b></label><br>
+        De juridische/tekennauwkeurigheid van de geometrieën in de GIO ([zie documentatie](@@@GeoTools_Url@@@wiki/Toon-controleer-gio)).
+    </p>
     <button id="startknop">Maak GIO-wijziging</button>
-	<input type="hidden" name="titel" id="titel">
+    <input type="hidden" name="titel" id="titel">
 </form>

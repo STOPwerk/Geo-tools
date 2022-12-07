@@ -3653,6 +3653,11 @@ class Kaart {
         return this;
     }
 
+    VoegToplaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
+        this._MaakKaartlaag(this._Toplagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
+        return this;
+    }
+
     VoegOudLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
         var layer = this._MaakKaartlaag(this._OudLagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         var self = this;
@@ -3778,6 +3783,11 @@ class Kaart {
             }
         }
 
+        // Dan de bovenste lagen
+        for (var i = 0; i < this._Toplagen.length; i++) {
+            mapLayers.push(this._Toplagen[i]);
+        }
+
         // Tot slot de overlays / popup
         var mapOverlays = []
         const popup_content = document.getElementById(kaartElementId + '_popup-content');
@@ -3873,7 +3883,7 @@ class Kaart {
                 label.innerText = mapLayers[i]._AanUit
                 aanUitLagenElt.append(label);
                 this._AanUitLagen[ctrl.id] = [];
-                for (var j = i; j >= 0; j--) {
+                for (var j = 0; j <= i; j++) {
                     if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
                         this._AanUitLagen[ctrl.id].push(mapLayers[j]);
                         mapLayers[j]._AanUit = false;
@@ -3952,8 +3962,8 @@ class Slider {
     </script>
 </head>
 <body>
-<h1>GIO-wijziging</h1><button data-accordion="25" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
-<div data-accordion-paneel="25" class="accordion_h_paneel" style="display: block">
+<h1>GIO-wijziging</h1><button data-accordion="1" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
+<div data-accordion-paneel="1" class="accordion_h_paneel" style="display: block">
 <p>Voor de bepaling van een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Maak-gio-wijziging" target="_blank">procedure</a> gevolgd.
 In onderstaande kaart wordt links de was-versie, rechts de wordt-versie van de GIO getoond.
 Beweeg de schuif om meer of minder van elke versie te zien. Klik op een punt voor aanvullende details</p>
@@ -3973,17 +3983,48 @@ met een manifest ongewijzigde geometrie, dus locaties die in de was- en wordt-ve
 In onderstaande kaart zijn deze locaties opgenomen.
 </p>
 
-<div id="kaart_6" class="kaart">
+<div id="kaart_8" class="kaart">
 </div>
-<div id="kaart_6_popup" class="ol-popup">
-    <a href="#" id="kaart_6_popup-closer" class="ol-popup-closer"></a>
-    <div id="kaart_6_popup-content" class="ol-popup-content"></div>
+<div id="kaart_8_popup" class="ol-popup">
+    <a href="#" id="kaart_8_popup-closer" class="ol-popup-closer"></a>
+    <div id="kaart_8_popup-content" class="ol-popup-content"></div>
 </div>
+
+<p> Er zijn 3 plaatsengevonden 
+waar er iets is gewijzigd (geometrie, groepID, normwaarde en/of naam).
+In onderstaande kaart worden deze plaatsen getoond.</p>
+
+<div id="kaart_13" class="kaart">
+</div>
+<div id="kaart_13_popup" class="ol-popup">
+    <a href="#" id="kaart_13_popup-closer" class="ol-popup-closer"></a>
+    <div id="kaart_13_popup-content" class="ol-popup-content"></div>
+</div>
+
+<p>Alle locaties zijn hiermee verwerkt</p>
 
 </div>
 
-<button data-accordion="26" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
-<div data-accordion-paneel="26" class="accordion_h_paneel">
+<button data-accordion="2" class="accordion_h active"><h3>Basisgeometrie-IDs</h3></button>
+<div data-accordion-paneel="2" class="accordion_h_paneel" style="display: block">
+<p>De was-versie bevat geometrieën die binnen de marge van de teken-nauwkeurigheid overeenkomen
+met geometrieën in de wordt-versie. Het is bovendien zo dat alle geometrieën uit de was-versie overeenkomen met locaties die verder
+geen mutaties bevat, idem voor de geometrieën uit de wordt-versie. In onderstaand tekstvak staat per basisgeometrie-ID van de locaties in de wordt-versie
+aangegeven de basisgeometrie-ID van dw corresponderende locatie(s) uit de was-versie.</p>
+<textarea>
+
+{
+    "37b0a09f-36a0-4e69-80c1-10000000003": [
+        "37b0a09f-36a0-4e69-80c1-00000000003"
+    ]
+}
+
+</textarea>
+<p>Deze locaties zijn niet opgenomen in GIO-wijziging.</p>
+</div>
+
+<button data-accordion="3" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
+<div data-accordion-paneel="3" class="accordion_h_paneel">
 <p><b>Fouten: 0, waarschuwingen: 0</b></p>
 <!-- checkboxElement id moet overeenkomen "toon_" plus log-level waarde. -->
 <input id="toon_fout" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_fout">Toon FOUT meldingen </label>
@@ -4004,6 +4045,10 @@ In onderstaande kaart zijn deze locaties opgenomen.
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Geen bestand gespecificeerd voor "symbolisatie"</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Geen bestand gespecificeerd voor "symbolisatie"</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Onderzoek de locaties met manifest ongewijzigde geometrieën</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Presenteer de resultaten</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Onderzoek de overige punt-locaties</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Presenteer de resultaten</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Presenteer de basisgeometrie-ID bevindingen</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">De verwerking is voltooid.</td></tr>
 </table>
 </div>
@@ -4097,12 +4142,12 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym1",`<FeatureTypeStyle version="
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [197144.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [113836.728, 471457.236, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [107144.212, 473457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [107144.212, 471457.236, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data3",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [197144.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 471457.236], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [107144.212, 473457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 473457.236], "properties": {"id": ["ID", ""]}}
 );
 
 
@@ -4113,14 +4158,74 @@ kaart.Toon ("kaart_4", 600, 400);
 });
 
 Kaartgegevens.Instantie.VoegDataToe ("data5",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [197144.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001"}, "_shape": null}], "bbox": [197144.212, 471457.236, 197144.212, 471457.236], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [107144.212, 473457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001"}, "_shape": null}], "bbox": [107144.212, 473457.236, 107144.212, 473457.236], "properties": {"id": ["ID", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data6",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [113836.728, 471457.236, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data7",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 471457.236], "properties": {"id": ["ID", ""]}}
 );
 
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegOnderlaagToe ("Juridisch ongewijzigd", "data5", "sym1", true, true);
-kaart.Toon ("kaart_6", 600, 400);
+kaart.VoegOnderlaagToe ("Juridisch ongewijzigd", "data5", "sym1", true, true);kaart.VoegOudLaagToe ("Nog te analyseren geometrieën", "data6", "sym1", true, true).VoegNieuwLaagToe ("Nog te analyseren geometrieën", "data7", "sym1", true, true);
+kaart.Toon ("kaart_8", 600, 400);
+});
+
+Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym9",`<FeatureTypeStyle version="1.1.0"
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+    <Rule>
+        <Name>Punt</Name>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>square</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#D80073</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                    <Stroke>
+                        <SvgParameter name="stroke">#A50040</SvgParameter>
+                        <SvgParameter name="stroke-opacity">1</SvgParameter>
+                        <SvgParameter name="stroke-width">1</SvgParameter>
+                    </Stroke>
+                </Mark>
+                <Size>12</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+    </Rule>
+</FeatureTypeStyle>`);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data10",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "_shape": null}], "bbox": [87970.258, 452158.606, 113836.728, 475429.222]}
+);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data11",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [113836.728, 471457.236, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data12",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 471457.236], "properties": {"id": ["ID", ""]}}
+);
+
+
+window.addEventListener("load", function () {
+var kaart = new Kaart ();
+kaart.VoegToplaagToe ("Posities van wijzigingen", "data10", "sym9", true, true);kaart.VoegOudLaagToe ("Geanalyseerde geometrieën", "data11", "sym1", true, true).VoegNieuwLaagToe ("Geanalyseerde geometrieën", "data12", "sym1", true, true);
+kaart.Toon ("kaart_13", 600, 400);
 });
 </script>
 </body>

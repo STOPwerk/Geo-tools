@@ -5,7 +5,7 @@
 #
 #======================================================================
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import pygml
 from shapely.geometry import shape
@@ -789,25 +789,29 @@ class GeoManipulatie:
             attribuutwaarde str  Als het GIO normwaarden bevat: de normwaarde van de locatie.
                                  Als het GIO GIO-delen bevat: de groepID van de locatie.
             """
+            self.ID = locatie['properties']['id']
             self.Locatie = locatie
             self.Geometrie = geometrie
             self.Attribuutwaarde = attribuutwaarde
 
-    def MaakLijstVanGeometrieen (self, geoData : GeoData) -> List[EnkeleGeometrie]:
+    def MaakLijstVanGeometrieen (self, geoData : GeoData) -> Tuple[List[EnkeleGeometrie], bool]:
         """Zet de informatie in de locaties om in een lijst met objecten die elk slechts één geometrie (punt, lijn of vlak) hebben.
 
         Argumenten:
 
         geoData GeoData  Het ingelezen GIO
 
-        Geeft de lijst terug
+        Geeft de lijst terug, en een indicatie of er sprake is van multi-geometrie
         """
         lijst = []
+        isMulti = False
         for locatie in geoData.Locaties:
             attribuutwaarde = None if geoData.AttribuutNaam is None else locatie['properties'][geoData.AttribuutNaam]
             opgesplitst = self.SplitsMultiGeometrie (locatie)
+            if len (opgesplitst) > 0:
+                isMulti = True
             lijst.extend (GeoManipulatie.EnkeleGeometrie(locatie, geom, attribuutwaarde) for geom in opgesplitst)
-        return lijst
+        return lijst, isMulti
 
     def SplitsMultiGeometrie (self, locatie):
         """Zet de geometrie om in een geometrieen die elk slechts één geometrie (punt, lijn of vlak) hebben

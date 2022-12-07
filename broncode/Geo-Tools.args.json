@@ -27,16 +27,12 @@
       "Command": "-t tests\\toon-geo"
     },
     {
-      "Id": "dcf0b537-4170-4602-abb4-e5d23d30b6dc",
-      "Command": "-t tests\\toon-geo\\Lijnen"
-    },
-    {
-      "Id": "80771f5f-0641-4b09-b9ac-adb87469347a",
-      "Command": "-t tests\\toon-geo\\Vlakken"
-    },
-    {
       "Id": "f15fc574-3a37-4c5b-a80c-982adf5b86ee",
       "Command": "-t tests\\maak-gio-wijziging\\Punten"
+    },
+    {
+      "Id": "b94503cb-0f9a-4dfb-a3e9-4488613f90d0",
+      "Command": "-t \"tests\\maak-gio-wijziging\\Punten\\21 Geometrie wijzigingen\""
     }
   ]
 }

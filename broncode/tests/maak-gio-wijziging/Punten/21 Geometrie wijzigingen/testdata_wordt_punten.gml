@@ -13,7 +13,7 @@
                         <basisgeo:id>37b0a09f-36a0-4e69-80c1-00000000001</basisgeo:id>
                         <basisgeo:geometrie>
                             <gml:Point srsName="urn:ogc:def:crs:EPSG::28992">
-                                <gml:pos>197144.212 471457.236</gml:pos>
+                                <gml:pos>107144.212 473457.236</gml:pos>
                             </gml:Point>
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>

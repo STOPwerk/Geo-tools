@@ -50,6 +50,11 @@ class Kaart {
         return this;
     }
 
+    VoegToplaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
+        this._MaakKaartlaag(this._Toplagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
+        return this;
+    }
+
     VoegOudLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
         var layer = this._MaakKaartlaag(this._OudLagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         var self = this;
@@ -175,6 +180,11 @@ class Kaart {
             }
         }
 
+        // Dan de bovenste lagen
+        for (var i = 0; i < this._Toplagen.length; i++) {
+            mapLayers.push(this._Toplagen[i]);
+        }
+
         // Tot slot de overlays / popup
         var mapOverlays = []
         const popup_content = document.getElementById(kaartElementId + '_popup-content');
@@ -270,7 +280,7 @@ class Kaart {
                 label.innerText = mapLayers[i]._AanUit
                 aanUitLagenElt.append(label);
                 this._AanUitLagen[ctrl.id] = [];
-                for (var j = i; j >= 0; j--) {
+                for (var j = 0; j <= i; j++) {
                     if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
                         this._AanUitLagen[ctrl.id].push(mapLayers[j]);
                         mapLayers[j]._AanUit = false;

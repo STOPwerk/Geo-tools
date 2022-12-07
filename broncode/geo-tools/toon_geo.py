@@ -74,24 +74,24 @@ class GeoViewer (GeoManipulatie):
         self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
 
         self.Log.Informatie ('Maak de kaartweergave')
-        dataNaam = self.VoegGeoDataToe (gio)
+        self._DataNaam = self.VoegGeoDataToe (gio)
         symbolisatieNaam = self.VoegDefaultSymbolisatieToe (gio) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
-        self.ToonKaart ('kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + dataNaam + '", "' + symbolisatieNaam + '");')
+        self.ToonKaart ('kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + self._DataNaam + '", "' + symbolisatieNaam + '");')
 
         if gio.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
             self.Log.Informatie ('Valideer de GIO')
-            self.Generator.VoegHtmlToe ('<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elder beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>')
+            self.Generator.VoegHtmlToe ('<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>')
             lijst = self.MaakLijstVanGeometrieen (gio)
-            heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie, dataNaam)
+            heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie)
             if not heeftProblemen:
-                self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter</p>')
+                self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij een teken-nauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter</p>')
             else:
-                self.Generator.VoegHtmlToe ('<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + " decimeter. ")
+                self.Generator.VoegHtmlToe ('<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een teken-nauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + " decimeter. ")
                 if not tekennauwkeurigheid is None:
                     if tekennauwkeurigheid <= 0:
                         self.Generator.VoegHtmlToe ('Het GIO kan nooit gebruikt worden omdat er sprake is van samenvallende geometrieën')
                     else:
-                        self.Generator.VoegHtmlToe ('Het GIO kan wel gebruikt worden met een tekennauwkeurigheid van ' + str(tekennauwkeurigheid) + ' decimeter')
+                        self.Generator.VoegHtmlToe ('Het GIO kan wel gebruikt worden met een teken-nauwkeurigheid van ' + str(tekennauwkeurigheid) + ' decimeter')
                 self.Generator.VoegHtmlToe ('</p>')
         self.Log.Detail ('Maak de pagina af')
         self.Generator.LeesCssTemplate ('resultaat')
@@ -102,14 +102,13 @@ class GeoViewer (GeoManipulatie):
 # Controleren of een GIO geschikt is voor bepaling van GIO-wijziging
 #
 #======================================================================
-    def ValideerGIO (self, geometrie: List[GeoManipulatie.EnkeleGeometrie], dimensie : int, dataNaam : str) -> Tuple[bool,float]:
+    def ValideerGIO (self, geometrie: List[GeoManipulatie.EnkeleGeometrie], dimensie : int) -> Tuple[bool,float]:
         """Valideer dat de enkele locaties binnen een GIO onderling disjunct zijn
 
         Argumenten:
 
         geometrie EnkeleGeometrie[]  De geometrieën uit de GIO, gemaakt via MaakLijstVanGeometrieen
         dimensie int  Dimensie van de geometrieën in de GIO
-        dataNaam str  De naam van de dataset met data van de GIO
 
         Geeft een of de GIO valide is. Geeft daarnaast (indien mogelijk) terug bij 
         welke tekennauwkeurigheid (in decimeter) de GIO wel valide is.
@@ -117,19 +116,19 @@ class GeoViewer (GeoManipulatie):
         if self.NauwkeurigheidInMeter () is None:
             return (None, None)
         if dimensie == 0:
-            return self._ValideerGIOPunten (geometrie, dataNaam)
+            return self._ValideerGIOPunten (geometrie)
         elif dimensie == 1:
-            return self._ValideerGIOLijnen (geometrie, dataNaam)
+            return self._ValideerGIOLijnen (geometrie)
         elif dimensie == 2:
-            return (self._ValideerGIOVlakken (geometrie, dataNaam), None)
+            return (self._ValideerGIOVlakken (geometrie), None)
         raise 'dimensie = ' + str(dimensie)
 
     #------------------------------------------------------------------
     # Punten
     #------------------------------------------------------------------
-    def _ValideerGIOPunten (self, punten: List[GeoManipulatie.EnkeleGeometrie], dataNaam : str) -> Tuple[bool,float]:
+    def _ValideerGIOPunten (self, punten: List[GeoManipulatie.EnkeleGeometrie]) -> Tuple[bool,float]:
         """Implementatie van ValideerGIO voor punt-geometrieën"""
-        self.Generator.VoegHtmlToe ('''Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de tekennauwkeurigheid.''')
+        self.Generator.VoegHtmlToe ('''Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de teken-nauwkeurigheid.''')
         drempel = self.NauwkeurigheidInMeter ()
         drempel *= drempel
         minimaleAfstand = None
@@ -175,18 +174,18 @@ class GeoViewer (GeoManipulatie):
             gioSym = self.VoegUniformeSymbolisatieToe (0, "#DAE8FC", "#6C8EBF", '0.5')
             geomNaam = self.VoegGeoDataToe (problemen)
             geomSym = self.VoegWijzigMarkeringToe ()
-            self.ToonKaart ('kaart.VoegOnderlaagToe ("Geo-informatieobject", "' + dataNaam + '", "' + gioSym + '", true, true);kaart.VoegOnderlaagToe ("Problematische geometrie", "' + geomNaam + '", "' + geomSym + '", true, true);')
+            self.ToonKaart ('kaart.VoegOnderlaagToe ("Geo-informatieobject", "' + self._DataNaam + '", "' + gioSym + '", true, true);kaart.VoegOnderlaagToe ("Problematische geometrie", "' + geomNaam + '", "' + geomSym + '", true, true);')
 
             return (True, round(math.sqrt (100 * minimaleAfstand), 2))
 
     #------------------------------------------------------------------
     # Lijnen
     #------------------------------------------------------------------
-    def _ValideerGIOLijnen (self, lijnen: List[GeoManipulatie.EnkeleGeometrie], dataNaam : str) -> Tuple[bool,float]:
+    def _ValideerGIOLijnen (self, lijnen: List[GeoManipulatie.EnkeleGeometrie]) -> Tuple[bool,float]:
         """Implementatie van ValideerGIO voor lijn-geometrieën"""
         self.Generator.VoegHtmlToe ('''<p>Voor een GIO met lijnen wordt nagegaan of lijnen niet te dicht bij elkaar komen.
-Dat kan op verschillende manieren. Bijvoorbeeld door de onderlinge afstanden van de lijnen te vergeleken met de tekennauwkeurigheid - dat 
-levert ook een inschatting op wat de tekennauwkeurigheid maximaal kan zijn. Of door de lijnen te verdikken tot de tekennauwkeurigheid
+Dat kan op verschillende manieren. Bijvoorbeeld door de onderlinge afstanden van de lijnen te vergeleken met de teken-nauwkeurigheid - dat 
+levert ook een inschatting op wat de teken-nauwkeurigheid maximaal kan zijn. Of door de lijnen te verdikken tot de teken-nauwkeurigheid
 en dan de overlap te bepalen - dat levert een beeld op waar de problemen zitten. Beide methodes worden hier toegepast.</p>''')
         nauwkeurigheid = self.NauwkeurigheidInMeter ();
         problemen = GeoManipulatie.GeoData ()
@@ -249,7 +248,7 @@ en dan de overlap te bepalen - dat levert een beeld op waar de problemen zitten.
             kvSym = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
             kaartScript += 'kaart.VoegOnderlaagToe ("Probleemgebieden", "' + kvNaam + '", "' + kvSym + '", true, true);'
         gioSym = self.VoegUniformeSymbolisatieToe (1, "#0000ff", "#0000ff")
-        kaartScript += 'kaart.VoegOnderlaagToe ("Lijnen uit het GIO", "' + dataNaam + '", "' + gioSym + '", true, true);'
+        kaartScript += 'kaart.VoegOnderlaagToe ("Lijnen uit het GIO", "' + self._DataNaam + '", "' + gioSym + '", true, true);'
         self.ToonKaart (kaartScript)
 
         return not minimaleAfstand is None, None if minimaleAfstand is None else round(10 * minimaleAfstand, 2)
@@ -257,10 +256,10 @@ en dan de overlap te bepalen - dat levert een beeld op waar de problemen zitten.
     #------------------------------------------------------------------
     # Vlakken
     #------------------------------------------------------------------
-    def _ValideerGIOVlakken (self, vlakken: List[GeoManipulatie.EnkeleGeometrie], dataNaam : str) -> bool:
+    def _ValideerGIOVlakken (self, vlakken: List[GeoManipulatie.EnkeleGeometrie]) -> bool:
         """Implementatie van ValideerGIO voor vlak-geometrieën"""
         self.Generator.VoegHtmlToe ('''<p>Voor een GIO met vlakken wordt nagegaan of vlakken niet teveel overlappen.
-Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt bepaald of de verkleinde vlakken elkaar overlappen.</p>''')
+Daartoe worden de vlakken verkleind met de halve teken-nauwkeurigheid en wordt bepaald of de verkleinde vlakken elkaar overlappen.</p>''')
         nauwkeurigheid = self.NauwkeurigheidInMeter ();
         problemen = GeoManipulatie.GeoData ()
         problemen.Dimensie = 2
@@ -276,12 +275,12 @@ Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt be
             kleinerVlak = self.MaakShapelyShape (vlak.Geometrie).buffer (-0.5*nauwkeurigheid)
             if kleinerVlak is None or kleinerVlak.is_empty:
                 if not nauwkeurigheidTeGroot:
-                    self.Log.Waarschuwing ("De tekennauwkeurigheid is zo'n groot getal dat het groter is dan sommige vlakken")
+                    self.Log.Waarschuwing ("De teken-nauwkeurigheid is zo'n groot getal dat het groter is dan sommige vlakken")
                     nauwkeurigheidTeGroot = True
                 kleinereVlakkenData.Locaties.append ({ 
                     'type': 'Feature', 
                     'properties' : {
-                        'p': 'nee; kleiner dan de tekennauwkeurigheid'
+                        'p': 'nee; kleiner dan de teken-nauwkeurigheid'
                     }, 
                     'geometry': mapping (kleinerVlak), 
                     '_shape' : kleinerVlak
@@ -289,7 +288,7 @@ Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt be
                 problemen.Locaties.append ({ 
                     'type': 'Feature', 
                     'properties' : {
-                        'p': 'nee; kleiner dan de tekennauwkeurigheid'
+                        'p': 'nee; kleiner dan de teken-nauwkeurigheid'
                     }, 
                     'geometry': vlak.Locatie['geometry'], 
                     '_shape' :  self.MaakShapelyShape (vlak.Geometrie)
@@ -325,7 +324,7 @@ Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt be
         gioSym = self.VoegUniformeSymbolisatieToe (2, "#ffffff", "#0000ff", '0')
         kvNaam = self.VoegGeoDataToe (kleinereVlakkenData)
         kvSym = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
-        kaartScript = 'kaart.VoegOnderlaagToe ("Vlakken uit het GIO", "' + dataNaam + '", "' + gioSym + '", true, true);kaart.VoegOnderlaagToe ("Verkleinde vlakken", "' + kvNaam + '", "' + kvSym + '", true, true);'
+        kaartScript = 'kaart.VoegOnderlaagToe ("Vlakken uit het GIO", "' + self._DataNaam + '", "' + gioSym + '", true, true);kaart.VoegOnderlaagToe ("Verkleinde vlakken", "' + kvNaam + '", "' + kvSym + '", true, true);'
         if len (problemen.Locaties) > 0:
             kleinereVlakkenData.Locaties = [l for l in kleinereVlakkenData.Locaties if l['properties']['p'] != 'ja']
             kvNaam = self.VoegGeoDataToe (kleinereVlakkenData)

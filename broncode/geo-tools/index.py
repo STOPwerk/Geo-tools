@@ -55,11 +55,11 @@ def toon_geo():
 def toon_geo_resultaat():
     return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None))
 
-@app.route('/gio_wijziging')
+@app.route('/maak_gio_wijziging')
 def gio_wijziging():
     return GIOWijzigingMaker.InvoerHtml ()
 
-@app.route('/gio_wijziging_resultaat', methods = ['POST'])
+@app.route('/maak_gio_wijziging_resultaat', methods = ['POST'])
 def gio_wijziging_resultaat():
     return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None))
 

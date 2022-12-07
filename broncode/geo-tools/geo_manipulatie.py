@@ -765,20 +765,15 @@ class GeoManipulatie:
 #
 #======================================================================
 
-#----------------------------------------------------------------------
-#
-# Hulpklassen / methoden
-#
-#----------------------------------------------------------------------
     def NauwkeurigheidInMeter (self) -> float:
         """Haal de nauwkeurigheid als float uit de request parameters"""
         if self.Request.LeesString ("nauwkeurigheid") is None:
-            self.Log.Waarschuwing ("Geen nauwkeurigheid doorgegeven - kan de GIO niet valideren")
+            self.Log.Waarschuwing ("Geen teken-nauwkeurigheid doorgegeven - kan de GIO niet valideren")
             return None
         try:
             nauwkeurigheid = float (self.Request.LeesString ("nauwkeurigheid"))
         except:
-            self.Log.Fout ('De opgegvven nauwkeurigheid is geen getal: "' + self.Request.LeesString ("nauwkeurigheid") + '"')
+            self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("nauwkeurigheid") + '"')
             return None
         return nauwkeurigheid * 0.1
 
@@ -810,57 +805,52 @@ class GeoManipulatie:
         lijst = []
         for locatie in geoData.Locaties:
             attribuutwaarde = None if geoData.AttribuutNaam is None else locatie['properties'][geoData.AttribuutNaam]
-            if locatie['geometry']['type'] == 'MultiPoint':
-                for coords in locatie['geometry']['coordinates']:
-                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie,
-                    {
+            opgesplitst = self.SplitsMultiGeometrie (locatie)
+            lijst.extend (GeoManipulatie.EnkeleGeometrie(locatie, geom, attribuutwaarde) for geom in opgesplitst)
+        return lijst
+
+    def SplitsMultiGeometrie (self, locatie):
+        """Zet de geometrie om in een geometrieen die elk slechts één geometrie (punt, lijn of vlak) hebben
+        en die te gebruiken zijn als een locatie in GeoData.Locaties
+
+        Argumenten:
+
+        locatie object Een locatie uit een GeoData.Locaties
+
+        Geeft de lijst van geometrieën terug
+        """
+        locatieGeometrie = locatie['geometry']
+        if locatieGeometrie['type'] == 'MultiPoint':
+            return [{
                         'type': 'Feature',
                         'geometry': {
                             'type': 'Point',
                             'coordinates': coords
                         }
-                    }, attribuutwaarde))
-            elif locatie['geometry']['type'] == 'MultiLineString':
-                for coords in locatie['geometry']['coordinates']:
-                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, 
-                    {
+                    } for coords in locatieGeometrie['coordinates']]
+        elif locatieGeometrie['type'] == 'MultiLineString':
+            return [{
                         'type': 'Feature',
                         'geometry': {
                             'type': 'LineString',
                             'coordinates': coords
                         }
-                    }, attribuutwaarde))
-            elif locatie['geometry']['type'] == 'MultiPolygon':
-                for coords in locatie['geometry']['coordinates']:
-                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, 
-                    {
+                    } for coords in locatieGeometrie['coordinates']]
+        elif locatieGeometrie['type'] == 'MultiPolygon':
+            return [{
                         'type': 'Feature',
                         'geometry': {
                             'type': 'Polygon',
                             'coordinates': coords
                         }
-                    }, attribuutwaarde))
-            elif locatie['geometry']['type'] == 'GeometryCollection':
-                for geom in locatie['geometry']['geometries']:
-                    lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, geom, attribuutwaarde))
-            else:
-                lijst.append (GeoManipulatie.EnkeleGeometrie(locatie, locatie, attribuutwaarde))
-
-        return lijst
-
-
-
-    class WijzigingBepaling:
-
-        def __init__(self):
-            # 
-            self.PersistenteID : Dict[str,object] = {}
-            # De enkele geometrieën uit de was waarvoor een equivalente geometrie uit de wordt bestaat.
-            self.Onveranderd : List[GeoManipulatie.EnkeleGeometrie] = []
-            # De enkele geometrieën uit de was die niet ongewijzigd zijn qua geometrie
-            self.Was : List[GeoManipulatie.EnkeleGeometrie] = []
-            # De enkele geometrieën uit de was die niet ongewijzigd zijn qua geometrie
-            self.Wordt : List[GeoManipulatie.EnkeleGeometrie] = []
-
-    def VindOngewijzigdeGemoetrieen (was : List[EnkeleGeometrie], wordt: List[EnkeleGeometrie], dimensie : int, gebruikIDs : bool):
-        pass
+                    } for coords in locatieGeometrie['coordinates']]
+        elif locatieGeometrie['type'] == 'GeometryCollection':
+            return [{
+                        'type': 'Feature',
+                        'geometry': geom
+                    } for geom in locatieGeometrie['geometries']]
+        else:
+            return [{
+                        'type': 'Feature',
+                        'geometry': locatieGeometrie
+                    }]

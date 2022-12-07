@@ -33,6 +33,10 @@
     {
       "Id": "80771f5f-0641-4b09-b9ac-adb87469347a",
       "Command": "-t tests\\toon-geo\\Vlakken"
+    },
+    {
+      "Id": "f15fc574-3a37-4c5b-a80c-982adf5b86ee",
+      "Command": "-t tests\\maak-gio-wijziging\\Punten"
     }
   ]
 }

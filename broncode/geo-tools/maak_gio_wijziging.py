@@ -1,6 +1,6 @@
 #======================================================================
 #
-# /gio_wijziging
+# /maak_gio_wijziging
 #
 #======================================================================
 #
@@ -50,14 +50,14 @@ class GIOWijzigingMaker (GeoManipulatie):
         self._Wordt : GeoManipulatie.GeoData = None
         # Naam om de wordt-data in de kaart te tonen
         self._WordtDataNaam : str = None
-        # Symbolisatie voor zowel de was- als wordt-versie; kan None zijn
-        self._Symbolisatie : str = None
         # Maan waaronder de te gebruiken symbolisatie voor zowel de was- als wordt-versie is geregistreerd
         self._SymbolisatieNaam : str = None
         # Geeft aan of een ongewijzigde geometrie in zowel de was- als wordt-versie dezelfde id heeft
         self._PersistenteId = False
         # Geeft de juridische nauwkeurigheid van de geometrie aan
         self._Nauwkeurigheid = None
+        # Gegevens waaruit de GIO-wijziging wordt samengesteld
+        self._Wijzigingen = GIOWijzigingMaker.Wijzigingen ()
 
     def _VoerUit (self):
         """Voer het request uit"""
@@ -66,7 +66,12 @@ class GIOWijzigingMaker (GeoManipulatie):
 
         einde = self.Generator.StartSectie ("<h3>Bepaling GIO wijziging</h3>", True)
 
-        self._ToonWasWordtKaart ()
+        self._InitialiseerWebpagina ()
+        self.Generator.LeesCssTemplate ('resultaat')
+        symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
+        self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
+
+        self._BepaalWijzigingen ()
 
         self.Generator.VoegHtmlToe (einde)
 
@@ -109,32 +114,11 @@ class GIOWijzigingMaker (GeoManipulatie):
         if not self._Symbolisatie is None:
             self.Log.Detail ('Symbolisatie ingelezen')
 
-        self._PersistenteId = not self.Request.LeesString ('persistente_id') == 'false'
-        self._Nauwkeurigheid = self.Request.LeesString ('nauwkeurigheid')
-        if valideerGIOs:
-            if self._Nauwkeurigheid is None:
-                if not self._PersistenteId or self._Was.Dimensie > 0:
-                    self.Log.Fout ("De nauwkeurigheid is niet opgegeven in de specificatie")
-                    succes = False
-            else:
-                self._Nauwkeurigheid = float (self._Nauwkeurigheid)
+        if self.Request.LeesString ('nauwkeurigheid') is None:
+            self.Log.Fout ("De nauwkeurigheid is niet opgegeven in de specificatie")
+            succes = False
 
         return succes
-
-    def _ToonWasWordtKaart (self):
-        """Toon de was en de wordt in één kaart als startpunt van de afleiding"""
-        self.Log.Informatie ('Laat de was- en wordt-versie als aangeleverd zien in één kaart')
-        self._InitialiseerWebpagina ()
-        self.Generator.LeesCssTemplate ('resultaat')
-
-        if not self._SymbolisatieNaam is None:
-            self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if self._Symbolisatie is None else self.VoegSymbolisatieToe (self._Symbolisatie)
-        self._WasDataNaam = self.VoegGeoDataToe (self._Was)
-        self._WordtDataNaam = self.VoegGeoDataToe (self._Wordt)
-
-        self.Generator.VoegHtmlToe ('''<p>Links de was-versie, rechts de wordt-versie van de GIO.
-Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + self._Was.GeometrieNaam (False) + ' voor aanvullende details</p>\n')
-        self.ToonKaart ('kaart.VoegOudLaagToe ("Was-versie", "' + self._WasDataNaam + '", "' + self._SymbolisatieNaam + '").VoegNieuwLaagToe ("Wordt-versie", "' + self._WordtDataNaam + '", "' + self._SymbolisatieNaam + '");')
 
 #======================================================================
 #
@@ -144,98 +128,92 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + se
     class Wijzigingen:
 
         def __init__ (self):
-            """Maak een instantie van de rapportage van de verschillen"""
-            # De basisgeometrie-ID van de locaties die zowel in de was- als in de wordt-versie zitten,
-            # en die ongewijzigd wijn
-            self.PersistenteId : List[str] = []
-            # De basisgeometrie-ID van een locatie in de was-versie (key) die binnen de nauwkeurigheid gelijk is 
-            # aan de locatie in de wordt versie (basisgeometrie-ID is value).
-            # De persistenteId zijn hierin niet meegenomen
-            self.OngewijzigdeId : Dict[str,str] = []
-            # De basisgeometrie-ID van juridisch ongewijzigde locaties in de wordt-versie die een revisie 
-            # zijn van de locaties in de was-versie.
-            self.Revisies : List[str] = []
-            # De gedetecteerde wijzigingen. De key is de oude en nieuwe "waarde" van de locatie, 
-            # de value is een lijst met locaties met alleen geometrie en een UUID. De "waarde"
-            # is ofwel de normwaarde, ofwel de groepID, ofwel 1 voor alleen de geometrie. De waarde 
-            # is None als de was- of wordt-versie voor de locaties geen "waarde" heeft (dus in de was- 
-            # c.q. wordt-versie was er geen geometrie die de locatie bevatte, maar in de andere versie wel)..
-            self.Wijzigingen = Dict[Tuple[str,str],List[object]]
+            # De locaties uit de was-versie die in de GIO-wijziging opgenomen moet worden
+            self.WasLocaties = []
+            # De locaties uit de wordt-versie die in de GIO-wijziging opgenomen moet worden
+            self.WordtLocaties = []
+            # De basisgeometrie-ID van een locatie uit de wordt-versie (key) waarvan alle geometrieën met bijbehorende
+            # attribuutwaarde corresponderen met een onveranderde (binnen de nauwkeurigheid) geometrie van de 
+            # was-versie. De value zijn de basisgeometrie-ID van de locatie(s) uit de was-versie.
+            self.OngewijzigdeWordtLocatieId : Dict[str,List[str]]
+            # De juridisch ongewijzigde locaties in de wordt-versie die een revisie 
+            # zijn van de locaties in de was-versie, d.w.z. alleen van naam verschillen.
+            self.WordtRevisies = []
+            # De gedetecteerde wijzigingen. Dit zijn ofwel gebieden ofwel punten.
+            self.Markering = GeoManipulatie.GeoData ()
 
-    class _LocatieData:
-        def __init__(self, locatie, attribuutNaam, bepaalRevisie):
-            self.Locatie = locatie
-            self.Waarde = 1 if attribuutNaam is None else locatie.propreties[attribuutNaam],
-            self.Naam = locatie.propreties.get('naam') if bepaalRevisie else None
+    def _BepaalWijzigingen (self) -> Wijzigingen:
+        """Bepaal de wijzigingen tussen twee versies van een GIO"""
+        self.Generator.VoegHtmlToe ('''<p>Voor de bepaling van een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Maak-gio-wijziging" target="_blank">procedure</a> gevolgd.
+In onderstaande kaart wordt links de was-versie, rechts de wordt-versie van de GIO getoond.
+Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + self._Was.GeometrieNaam (False) + ' voor aanvullende details</p>\n')
+        self._WasDataNaam = self.VoegGeoDataToe (self._Was)
+        self._WordtDataNaam = self.VoegGeoDataToe (self._Wordt)
+        self.ToonKaart ('kaart.VoegOudLaagToe ("Was-versie", "' + self._WasDataNaam + '", "' + self._SymbolisatieNaam + '").VoegNieuwLaagToe ("Wordt-versie", "' + self._WordtDataNaam + '", "' + self._SymbolisatieNaam + '");')
 
-    def _BepaalWijzigingen (self, wasVersie : GeoManipulatie.GeoData, wordtVersie: GeoManipulatie.GeoData, persistenteId : bool, alleenGeometrie: bool, bepaalRevisie: bool) -> Wijzigingen:
-        """Bepaal de wijzigingen tussen twee versies van een GIO
+        self._ManifestOngewijzigdeGeometrieen ()
 
-        Argumenten:
+    #------------------------------------------------------------------
+    #
+    # Verwerk persistente ID: basisgeo-ID die zowel in de was-
+    # als wordt-versie voorkomen.
+    #
+    #------------------------------------------------------------------
+    def _ManifestOngewijzigdeGeometrieen (self):
+        self.Log.Informatie ('Onderzoek de locaties met manifest ongewijzigde geometrieën')
+        wasLocaties = { locatie['properties']['id'] : locatie for locatie in self._Was.Locaties}
+        wordtLocaties = { locatie['properties']['id'] : locatie for locatie in self._Wordt.Locaties}
 
-        wasVersie GeoData  De originele/was-versie van de GIO
-        wordtVersie GeoData  De gewijzigde/wordt-versie van de GIO
-        persistenteId bool  Ga ervan uit dat dezelfde geometrie in was- en wordt-versie dezelfde basisgeometrie-ID heeft, 
-                            dus dat een verschillende basisgeometrie-ID een wijziging van geometrie impliceert. De wijziging
-                            van oude naar nieuwe geometrie kan alsnog zo klein zijn de twee IDs in OngewijzigdeId terecht komen.
-        bepaalRevisie bool  Ga voor de ongewijzigde locaties na of de naam gewijzigd is in de wordt versie; dat is de enige
-                            revisie die op dit moment mogelijk is.
-        """
-        wijzigingen = GIOWijzigingMaker.Wijzigingen ()
-
-        # Selecteer de relevante data uit de was- en wordt-versie
-        attribuutNaam = None if alleenGeometrie else wasVersie.AttribuutNaam
-        wasData = {l.propreties['id'] : GIOWijzigingMaker._LocatieData (l, attribuutNaam, bepaalRevisie) for l in wasVersie.Locaties }
-        wordtData = {l.propreties['id'] : GIOWijzigingMaker._LocatieData (l, attribuutNaam, bepaalRevisie) for l in wordtVersie.Locaties }
-
-        # Zoek naar persistente IDs
-        wasGedaan = []
-        for wasId, wasLocatie in wasData.items ():
-            wordtLocatie = wordtData.get (wasId)
+        # Bepaal of en hoe de locaties met manifest ongewijzigde geometrie muteren
+        manifestOngewijzigdId = set ()
+        ongewijzigd = []
+        for wasId, wasLocatie in wasLocaties.items ():
+            wordtLocatie = wordtLocaties.get (wasId)
             if not wordtLocatie is None:
-                if wordtLocatie.waarde == wasLocatie.waarde:
-                    # Ongewijzigde geometrie en waarde
-                    wijzigingen.PersistenteId.append (wasId)
+                manifestOngewijzigdId.add (wasId)
+
+                isGewijzigd = False if self._Was.AttribuutNaam is None else bool (wasLocatie['properties'][self._Was.AttribuutNaam] != wordtLocatie['properties'][self._Was.AttribuutNaam])
+                if isGewijzigd:
+                    self._Wijzigingen.WasLocaties.append (wasLocatie)
+                    self._Wijzigingen.WordtLocaties.append (wordtLocatie)
+                    self._Wijzigingen.Markering.Locaties.extend (self.SplitsMultiGeometrie (wasLocatie))
+
+                elif wasLocatie['properties'].get ('naam') != wordtLocatie['properties'].get ('naam'):
+                    self._Wijzigingen.WordtRevisies.append (wordtLocatie)
                 else:
-                    # Ongewijzigde geometrie, gewijzigde waarde
-                    wijziging = (wasLocatie.waarde, wordtLocatie.waarde)
-                    lijst = wijzigingen.Wijzigingen.get (wijziging)
-                    if lijst == None:
-                        wijzigingen.Wijzigingen[wijziging] = lijst = []
-                    lijst.append (wordtLocatie.locatie)
-                # De wordt-geometrie hoeft niet meer meegenomen te worden
-                wordtData.pop (wasId)
-                # De was trouwens ook niet
-                wasGedaan.append (wasId)
-        for wasId in wasGedaan:
-            wasData.pop (wasId)
+                    ongewijzigd.append (wasLocatie)
 
-        # Gebruik nu de geo-operaties om verdere verschillen te vinden
-        if wasVersie.Dimensie == 0:
-            wijzigingen = self._BepaalWijzigingenVoorPunten (wijzigingen, wasVersie, wordtVersie, persistenteId)
-        elif wasVersie.Dimensie == 1:
-            wijzigingen = self._BepaalWijzigingenVoorLijnen (wijzigingen, wasVersie, wordtVersie, persistenteId)
-        elif wasVersie.Dimensie == 2:
-            wijzigingen = self._BepaalWijzigingenVoorVlakken (wijzigingen, wasVersie, wordtVersie, persistenteId)
+        # De overgebleven locaties zijn:
+        self._Was.Locaties = [l for l in self._Was.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
+        self._Wordt.Locaties = [l for l in self._Wordt.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
 
-        # Revisie: alle ongewijzigde locaties waarvan de naam verschilt tussen een was- en wordt-versie.
-        if not wijzigingen is None and bepaalRevisie:
-            for wordtId in wijzigingen.PersistenteId:
-                if wasData[wordtId].naam != wordtData[wordtId].naam:
-                    wijzigingen.Revisies.append (wordtId)
-            for wasId, wordtId in wijzigingen.OngewijzigdeId.items ():
-                if wasData[wasId].naam != wordtData[wordtId].naam:
-                    wijzigingen.Revisies.append (wordtId)
+        # Neem de resultaten van deze stap in de resultaatpagina
+        if len (manifestOngewijzigdId) == 0:
+            self.Generator.VoegHtmlToe ('''<p>Er zijn geen locaties gevonden met een manifest ongewijzigde geometrie, dus locaties die in de was- en wordt-versie dezelfde basisgeometrie-ID hebben.</p>''')
+        else:
+            self.Generator.VoegHtmlToe ('<p> Er ' + ('is één locatie' if len(manifestOngewijzigdId) == 1 else 'zijn ' + str(len(manifestOngewijzigdId)) + ' locaties') + '''gevonden 
+met een manifest ongewijzigde geometrie, dus locaties die in de was- en wordt-versie dezelfde basisgeometrie-ID hebben:
+<ul>''')
+            if not self._Was.AttribuutNaam is None:
+                self.Generator.VoegHtmlToe ('<li>' + str(len(self._Wijzigingen.WasLocaties)) + ' met een gewijzigde ' + self._Was.AttribuutNaam + ';</li>')
+            self.Generator.VoegHtmlToe ('<li>' + str(len(self._Wijzigingen.WordtRevisies)) + ''' met een gewijzigde naam;</li>
+<li>''' + str(len (ongewijzigd)) + ''' ongewijzigd</li></ul>
+In onderstaande kaart zijn deze locaties opgenomen.
+</p>\n''')
+            kaartScript = ''
+            if len (ongewijzigd) > 0:
+                dataSet = GeoManipulatie.GeoData () 
+                dataSet.Attributen = self._Was.Attributen
+                dataSet.Locaties = ongewijzigd
+                kaartScript += 'kaart.VoegOnderlaagToe ("Juridisch ongewijzigd", "' + self.VoegGeoDataToe (dataSet) + '", "' + self._SymbolisatieNaam + '", true, true);'
 
-        return wijzigingen
+            if len (self._Wijzigingen.Markering.Locaties) > 0:
+                kvSym = self.VoegUniformeSymbolisatieToe (self._Was.Dimensie, "#D80073", "#A50040")
+                kaartScript += 'kaart.VoegOnderlaagToe ("Gewijzigd (exclusief revisies)", "' + self.VoegGeoDataToe (self._Wijzigingen.Markering) + '", "' + kvSym + '", true, true);'
 
-
-    def _BepaalWijzigingenVoorPunten (self, wijzigingen: Wijzigingen, wasVersie : Dict[str,_LocatieData], wordtVersie: Dict[str,_LocatieData], persistenteId : bool):
-
-        pass
-
-    def _BepaalWijzigingenVoorLijnen (self, wijzigingen: Wijzigingen, wasVersie : Dict[str,_LocatieData], wordtVersie: Dict[str,_LocatieData], persistenteId : bool):
-        raise 'Niet geïmplementeerd'
-
-    def _BepaalWijzigingenVoorVlakken (self, wijzigingen: Wijzigingen, wasVersie : Dict[str,_LocatieData], wordtVersie: Dict[str,_LocatieData], persistenteId : bool):
-        raise 'Niet geïmplementeerd'
+            if len (self._Wijzigingen.WordtRevisies) > 0:
+                dataSet.Attributen = {}
+                dataSet.Locaties = self._Wijzigingen.WordtRevisies
+                kvSym = self.VoegUniformeSymbolisatieToe (self._Was.Dimensie, "#DAE8FC", "#6C8EBF")
+                kaartScript += 'kaart.VoegOnderlaagToe ("Revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + kvSym + '", true, true);'
+            self.ToonKaart (kaartScript)

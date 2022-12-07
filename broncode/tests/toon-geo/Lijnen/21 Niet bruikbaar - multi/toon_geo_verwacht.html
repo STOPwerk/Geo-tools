@@ -3872,10 +3872,19 @@ class Kaart {
                 label.htmlFor = ctrl.id;
                 label.innerText = mapLayers[i]._AanUit
                 aanUitLagenElt.append(label);
-                this._AanUitLagen[ctrl.id] = mapLayers[i];
-                ctrl.addEventListener('click', (e) =>
-                    self._AanUitLagen[e.srcElement.id].setVisible(e.srcElement.checked)
-                );
+                this._AanUitLagen[ctrl.id] = [];
+                for (var j = i; j >= 0; j--) {
+                    if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
+                        this._AanUitLagen[ctrl.id].push(mapLayers[j]);
+                        mapLayers[j]._AanUit = false;
+                    }
+                }
+                ctrl.addEventListener('click', (e) => {
+                    var layers = self._AanUitLagen[e.srcElement.id];
+                    for (var k = 0; k < layers.length; k++) {
+                        layers[k].setVisible(e.srcElement.checked);
+                    }
+                });
             }
         }
     }
@@ -3951,10 +3960,10 @@ class Slider {
     <div id="kaart_3_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elder beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>
+<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>
 <p>Voor een GIO met lijnen wordt nagegaan of lijnen niet te dicht bij elkaar komen.
-Dat kan op verschillende manieren. Bijvoorbeeld door de onderlinge afstanden van de lijnen te vergeleken met de tekennauwkeurigheid - dat 
-levert ook een inschatting op wat de tekennauwkeurigheid maximaal kan zijn. Of door de lijnen te verdikken tot de tekennauwkeurigheid
+Dat kan op verschillende manieren. Bijvoorbeeld door de onderlinge afstanden van de lijnen te vergeleken met de teken-nauwkeurigheid - dat 
+levert ook een inschatting op wat de teken-nauwkeurigheid maximaal kan zijn. Of door de lijnen te verdikken tot de teken-nauwkeurigheid
 en dan de overlap te bepalen - dat levert een beeld op waar de problemen zitten. Beide methodes worden hier toegepast.</p>
 <div id="kaart_11" class="kaart">
 </div>
@@ -3963,8 +3972,8 @@ en dan de overlap te bepalen - dat levert een beeld op waar de problemen zitten.
     <div id="kaart_11_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van 250 decimeter. 
-Het GIO kan wel gebruikt worden met een tekennauwkeurigheid van 200.0 decimeter
+<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een teken-nauwkeurigheid van 250 decimeter. 
+Het GIO kan wel gebruikt worden met een teken-nauwkeurigheid van 200.0 decimeter
 </p>
 <button data-accordion="7" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
 <div data-accordion-paneel="7" class="accordion_h_paneel">

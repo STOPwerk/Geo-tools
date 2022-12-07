@@ -3872,10 +3872,19 @@ class Kaart {
                 label.htmlFor = ctrl.id;
                 label.innerText = mapLayers[i]._AanUit
                 aanUitLagenElt.append(label);
-                this._AanUitLagen[ctrl.id] = mapLayers[i];
-                ctrl.addEventListener('click', (e) =>
-                    self._AanUitLagen[e.srcElement.id].setVisible(e.srcElement.checked)
-                );
+                this._AanUitLagen[ctrl.id] = [];
+                for (var j = i; j >= 0; j--) {
+                    if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
+                        this._AanUitLagen[ctrl.id].push(mapLayers[j]);
+                        mapLayers[j]._AanUit = false;
+                    }
+                }
+                ctrl.addEventListener('click', (e) => {
+                    var layers = self._AanUitLagen[e.srcElement.id];
+                    for (var k = 0; k < layers.length; k++) {
+                        layers[k].setVisible(e.srcElement.checked);
+                    }
+                });
             }
         }
     }
@@ -3951,9 +3960,9 @@ class Slider {
     <div id="kaart_3_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elder beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>
+<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>
 <p>Voor een GIO met vlakken wordt nagegaan of vlakken niet teveel overlappen.
-Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt bepaald of de verkleinde vlakken elkaar overlappen.</p>
+Daartoe worden de vlakken verkleind met de halve teken-nauwkeurigheid en wordt bepaald of de verkleinde vlakken elkaar overlappen.</p>
 <div id="kaart_11" class="kaart">
 </div>
 <div id="kaart_11_popup" class="ol-popup">
@@ -3961,7 +3970,7 @@ Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt be
     <div id="kaart_11_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van 30 decimeter. 
+<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een teken-nauwkeurigheid van 30 decimeter. 
 </p>
 <button data-accordion="20" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
 <div data-accordion-paneel="20" class="accordion_h_paneel">
@@ -3984,7 +3993,7 @@ Daartoe worden de vlakken verkleind met de halve tekennauwkeurigheid en wordt be
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Maak de kaartweergave</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Valideer de GIO</td></tr>
-<tr class="entry_LETOP"><td class="level_LETOP">LET OP</td><td class="message_LETOP main">De tekennauwkeurigheid is zo'n groot getal dat het groter is dan sommige vlakken</td></tr>
+<tr class="entry_LETOP"><td class="level_LETOP">LET OP</td><td class="message_LETOP main">De teken-nauwkeurigheid is zo'n groot getal dat het groter is dan sommige vlakken</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak de pagina af</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">De verwerking is voltooid.</td></tr>
 </table>
@@ -4107,7 +4116,7 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym4",`<FeatureTypeStyle version="
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data5",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231236.12132034358, 564321.0], [231244.0, 564328.8786796564], [231251.87867965642, 564321.0], [231244.0, 564313.1213203436], [231236.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231246.12132034358, 564321.0], [231254.0, 564328.8786796564], [231261.87867965642, 564321.0], [231254.0, 564313.1213203436], [231246.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "ja"}, "geometry": {"type": "Polygon", "coordinates": [[[231201.5, 564401.5], [231201.5, 564448.5], [231248.5, 564448.5], [231248.5, 564401.5], [231201.5, 564401.5]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; kleiner dan de tekennauwkeurigheid"}, "geometry": {"type": "Polygon", "coordinates": []}, "_shape": null}], "bbox": [231201.5, 564313.1213203436, 231261.87867965642, 564448.5], "properties": {"p": ["Geschiktheid voor GIO-wijziging", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231236.12132034358, 564321.0], [231244.0, 564328.8786796564], [231251.87867965642, 564321.0], [231244.0, 564313.1213203436], [231236.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231246.12132034358, 564321.0], [231254.0, 564328.8786796564], [231261.87867965642, 564321.0], [231254.0, 564313.1213203436], [231246.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "ja"}, "geometry": {"type": "Polygon", "coordinates": [[[231201.5, 564401.5], [231201.5, 564448.5], [231248.5, 564448.5], [231248.5, 564401.5], [231201.5, 564401.5]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; kleiner dan de teken-nauwkeurigheid"}, "geometry": {"type": "Polygon", "coordinates": []}, "_shape": null}], "bbox": [231201.5, 564313.1213203436, 231261.87867965642, 564448.5], "properties": {"p": ["Geschiktheid voor GIO-wijziging", ""]}}
 );
 
 
@@ -4135,7 +4144,7 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym6",`<FeatureTypeStyle version="
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data7",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231236.12132034358, 564321.0], [231244.0, 564328.8786796564], [231251.87867965642, 564321.0], [231244.0, 564313.1213203436], [231236.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231246.12132034358, 564321.0], [231254.0, 564328.8786796564], [231261.87867965642, 564321.0], [231254.0, 564313.1213203436], [231246.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; kleiner dan de tekennauwkeurigheid"}, "geometry": {"type": "Polygon", "coordinates": []}, "_shape": null}], "bbox": [231236.12132034358, 564313.1213203436, 231261.87867965642, 564328.8786796564], "properties": {"p": ["Geschiktheid voor GIO-wijziging", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231236.12132034358, 564321.0], [231244.0, 564328.8786796564], [231251.87867965642, 564321.0], [231244.0, 564313.1213203436], [231236.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; overlap met buur-vlak(ken)"}, "geometry": {"type": "Polygon", "coordinates": [[[231246.12132034358, 564321.0], [231254.0, 564328.8786796564], [231261.87867965642, 564321.0], [231254.0, 564313.1213203436], [231246.12132034358, 564321.0]]]}, "_shape": null}, {"type": "Feature", "properties": {"p": "nee; kleiner dan de teken-nauwkeurigheid"}, "geometry": {"type": "Polygon", "coordinates": []}, "_shape": null}], "bbox": [231236.12132034358, 564313.1213203436, 231261.87867965642, 564328.8786796564], "properties": {"p": ["Geschiktheid voor GIO-wijziging", ""]}}
 );
 
 
@@ -4163,7 +4172,7 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym8",`<FeatureTypeStyle version="
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data9",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"p": "nee; kleiner dan de tekennauwkeurigheid"}, "geometry": {"type": "Polygon", "coordinates": [[[231200.0, 564300.0], [231201.0, 564300.0], [231201.0, 564301.0], [231200.0, 564301.0], [231200.0, 564300.0]]]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[231249.0, 564323.8786796564], [231251.87867965642, 564321.0], [231249.0, 564318.1213203436], [231246.12132034358, 564321.0], [231249.0, 564323.8786796564]]]}, "_shape": null}], "bbox": [231200.0, 564300.0, 231251.87867965642, 564323.8786796564], "properties": {"p": ["Geschiktheid voor GIO-wijziging", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"p": "nee; kleiner dan de teken-nauwkeurigheid"}, "geometry": {"type": "Polygon", "coordinates": [[[231200.0, 564300.0], [231201.0, 564300.0], [231201.0, 564301.0], [231200.0, 564301.0], [231200.0, 564300.0]]]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[231249.0, 564323.8786796564], [231251.87867965642, 564321.0], [231249.0, 564318.1213203436], [231246.12132034358, 564321.0], [231249.0, 564323.8786796564]]]}, "_shape": null}], "bbox": [231200.0, 564300.0, 231251.87867965642, 564323.8786796564], "properties": {"p": ["Geschiktheid voor GIO-wijziging", ""]}}
 );
 
 

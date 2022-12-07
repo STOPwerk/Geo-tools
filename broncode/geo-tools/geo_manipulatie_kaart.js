@@ -269,10 +269,19 @@ class Kaart {
                 label.htmlFor = ctrl.id;
                 label.innerText = mapLayers[i]._AanUit
                 aanUitLagenElt.append(label);
-                this._AanUitLagen[ctrl.id] = mapLayers[i];
-                ctrl.addEventListener('click', (e) =>
-                    self._AanUitLagen[e.srcElement.id].setVisible(e.srcElement.checked)
-                );
+                this._AanUitLagen[ctrl.id] = [];
+                for (var j = i; j >= 0; j--) {
+                    if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
+                        this._AanUitLagen[ctrl.id].push(mapLayers[j]);
+                        mapLayers[j]._AanUit = false;
+                    }
+                }
+                ctrl.addEventListener('click', (e) => {
+                    var layers = self._AanUitLagen[e.srcElement.id];
+                    for (var k = 0; k < layers.length; k++) {
+                        layers[k].setVisible(e.srcElement.checked);
+                    }
+                });
             }
         }
     }

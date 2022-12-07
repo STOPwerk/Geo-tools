@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests\toon-geo</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests\maak-gio-wijziging\Punten</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>

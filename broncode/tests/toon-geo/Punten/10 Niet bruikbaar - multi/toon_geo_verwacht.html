@@ -3872,10 +3872,19 @@ class Kaart {
                 label.htmlFor = ctrl.id;
                 label.innerText = mapLayers[i]._AanUit
                 aanUitLagenElt.append(label);
-                this._AanUitLagen[ctrl.id] = mapLayers[i];
-                ctrl.addEventListener('click', (e) =>
-                    self._AanUitLagen[e.srcElement.id].setVisible(e.srcElement.checked)
-                );
+                this._AanUitLagen[ctrl.id] = [];
+                for (var j = i; j >= 0; j--) {
+                    if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
+                        this._AanUitLagen[ctrl.id].push(mapLayers[j]);
+                        mapLayers[j]._AanUit = false;
+                    }
+                }
+                ctrl.addEventListener('click', (e) => {
+                    var layers = self._AanUitLagen[e.srcElement.id];
+                    for (var k = 0; k < layers.length; k++) {
+                        layers[k].setVisible(e.srcElement.checked);
+                    }
+                });
             }
         }
     }
@@ -3951,8 +3960,8 @@ class Slider {
     <div id="kaart_3_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elder beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>
-Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de tekennauwkeurigheid.
+<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>
+Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de teken-nauwkeurigheid.
 Dat is niet het geval. De plaatsen waar punten te dicht bij elkaar staan:
 <div id="kaart_7" class="kaart">
 </div>
@@ -3961,8 +3970,8 @@ Dat is niet het geval. De plaatsen waar punten te dicht bij elkaar staan:
     <div id="kaart_7_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een tekennauwkeurigheid van 10 decimeter. 
-Het GIO kan wel gebruikt worden met een tekennauwkeurigheid van 5.0 decimeter
+<p>Het GIO kan <b>niet</b> gebruikt worden voor de bepaling van een GIO-wijziging bij een teken-nauwkeurigheid van 10 decimeter. 
+Het GIO kan wel gebruikt worden met een teken-nauwkeurigheid van 5.0 decimeter
 </p>
 <button data-accordion="12" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
 <div data-accordion-paneel="12" class="accordion_h_paneel">

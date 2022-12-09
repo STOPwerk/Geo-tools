@@ -1,0 +1,50 @@
+{
+    "geometrie": [
+        {
+            "pad": "mirt_2017.gml"
+        },
+        {
+            "pad": "mirt_2018.gml"
+        },
+        {
+            "pad": "mirt_2019.gml"
+        },
+        {
+            "pad": "mirt_2020.gml"
+        },
+        {
+            "pad": "mirt_2021.gml"
+        },
+        {
+            "pad": "mirt_2022.gml"
+        }
+    ],
+    "wijziging": [
+        {
+            "was": "mirt_2017.gml",
+            "wordt": "mirt_2018.gml"
+        },
+        {
+            "was": "mirt_2018.gml",
+            "wordt": "mirt_2019.gml"
+        },
+        {
+            "was": "mirt_2019.gml",
+            "wordt": "mirt_2020.gml"
+        },
+        {
+            "was": "mirt_2020.gml",
+            "wordt": "mirt_2021.gml"
+        },
+        {
+            "was": "mirt_2021.gml",
+            "wordt": "mirt_2022.gml"
+        },
+        {
+            "was": "mirt_2017.gml",
+            "wordt": "mirt_2022.gml"
+        }
+    ],
+    "symbolisatie": "C:\\Projects\\KOOP\\STOP\\STOPwerk Geo-tools\\broncode\\tests\\data\\..\\gio-wijziging\\05 lijnen - GIO-delen\\mirt_alle_jaren_symbolisatie.xml",
+    "nauwkeurigheid": 10
+}

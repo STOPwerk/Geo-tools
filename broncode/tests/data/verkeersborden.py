@@ -21,7 +21,7 @@ from symbolisatie import Symbolisatie
 #
 #==============================================================================
 datadir = os.path.dirname (os.path.realpath (__file__))
-voorbeelden_dir = os.path.join (datadir, "..", "..", "geo-tools", "voorbeelden")
+testscenario_dir = os.path.join (datadir, "..", "gio-wijziging")
 
 with open (os.path.join (datadir, 'verkeersborden_STOP.json'), 'r') as json_file:
     data = json.load (json_file)
@@ -52,7 +52,7 @@ symbolisatie = Symbolisatie (os.path.join (datadir, 'verkeersborden_puntsymbolen
 #
 #==============================================================================
 def __GIO (subdir, multi, gemeente, jaar, filename, version, filter, idprefix = '0'):
-    gioPad = os.path.join (voorbeelden_dir, subdir, filename)
+    gioPad = os.path.join (testscenario_dir, subdir, filename)
     os.makedirs (os.path.dirname (gioPad), exist_ok=True)
     with open (gioPad, 'w', encoding='utf-8') as gml_file:
         gml_file.write ('''<?xml version="1.0" encoding="UTF-8"?>
@@ -154,7 +154,7 @@ def __GIO (subdir, multi, gemeente, jaar, filename, version, filter, idprefix = 
 </geo:GeoInformatieObjectVersie>
     ''')
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '08 punten - geometrie - id behouden'], '''#GIO met alleen geometrie
+symbolisatie.MaakReadme ([testscenario_dir, '08 punten - geometrie - id behouden'], '''#GIO met alleen geometrie
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit punten.
 Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
@@ -168,7 +168,7 @@ Als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat p
 __GIO ('08 punten - geometrie - id behouden', False, 0, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
 __GIO ('08 punten - geometrie - id behouden', False, 0, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '08 punten - multi-geometrie'], '''#GIO met alleen geometrie
+symbolisatie.MaakReadme ([testscenario_dir, '08 punten - multi-geometrie'], '''#GIO met alleen geometrie
 
 Dit is een technisch voorbeeld om voor een GIO met alleen geometrie te demonstreren dat het combineren van alle geometrie
 in een enkele multi-geometrie tot een onnodig druk kaartbeeld leidt.
@@ -179,7 +179,7 @@ De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
 __GIO ('08 punten - multi-geometrie', True, 0, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
 __GIO ('08 punten - multi-geometrie', True, 0, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '08 punten - geometrie'], '''#GIO met alleen geometrie
+symbolisatie.MaakReadme ([testscenario_dir, '08 punten - geometrie'], '''#GIO met alleen geometrie
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit punten.
 
@@ -190,7 +190,7 @@ __GIO ('08 punten - geometrie', False, 0, False, 'verkeersborden_STOP_was.gml', 
 __GIO ('08 punten - geometrie', False, 0, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
 
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '09 punten - GIO-delen - id behouden'], '''#GIO met GIO-delen
+symbolisatie.MaakReadme ([testscenario_dir, '09 punten - GIO-delen - id behouden'], '''#GIO met GIO-delen
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met met GIO-delen bestaande uit punten.
 Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
@@ -204,7 +204,7 @@ Als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat p
 __GIO ('09 punten - GIO-delen - id behouden', False, 1, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
 __GIO ('09 punten - GIO-delen - id behouden', False, 2, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '09 punten - GIO-delen - multi-geometrie'], '''#GIO met GIO-delen
+symbolisatie.MaakReadme ([testscenario_dir, '09 punten - GIO-delen - multi-geometrie'], '''#GIO met GIO-delen
 
 Dit is een technisch voorbeeld om voor een GIO met alleen geometrie te demonstreren dat het combineren van alle geometrie
 in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
@@ -215,7 +215,7 @@ De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
 __GIO ('09 punten - GIO-delen - multi-geometrie', True, 1, False, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
 __GIO ('09 punten - GIO-delen - multi-geometrie', True, 2, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '09 punten - GIO-delen'], '''#GIO met GIO-delen
+symbolisatie.MaakReadme ([testscenario_dir, '09 punten - GIO-delen'], '''#GIO met GIO-delen
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met met GIO-delen bestaande uit punten.
 
@@ -226,7 +226,7 @@ __GIO ('09 punten - GIO-delen', False, 1, False, 'verkeersborden_STOP_was.gml', 
 __GIO ('09 punten - GIO-delen', False, 2, False, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter, '2')
 
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '10 punten - normwaarden - id behouden'], '''#GIO met normwaarden
+symbolisatie.MaakReadme ([testscenario_dir, '10 punten - normwaarden - id behouden'], '''#GIO met normwaarden
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor punten.
 Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
@@ -240,7 +240,7 @@ Als de positie van een punt niet wijzigt in een volgende versie, dan heeft dat p
 __GIO ('10 punten - normwaarden - id behouden', False, 0, True, 'verkeersborden_STOP_was.gml', '2019;was', wasFilter)
 __GIO ('10 punten - normwaarden - id behouden', False, 0, True, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '10 punten - normwaarden - multi-geometrie'], '''#GIO met normwaarden
+symbolisatie.MaakReadme ([testscenario_dir, '10 punten - normwaarden - multi-geometrie'], '''#GIO met normwaarden
 
 Dit is een technisch voorbeeld om voor een GIO met normwaarden te demonstreren dat het combineren van alle geometrie
 in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
@@ -251,7 +251,7 @@ De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
 __GIO ('10 punten - normwaarden - multi-geometrie', True, 0, True, 'verkeersborden_STOP_was', '2019;was', wasFilter)
 __GIO ('10 punten - normwaarden - multi-geometrie', True, 0, True, 'verkeersborden_STOP_wordt.gml', '2022;wordt', wordtFilter)
 
-symbolisatie.MaakReadme ([voorbeelden_dir, '10 punten - normwaarden'], '''#GIO met normwaarden
+symbolisatie.MaakReadme ([testscenario_dir, '10 punten - normwaarden'], '''#GIO met normwaarden
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor punten.
 
@@ -271,29 +271,14 @@ symbolisatie.MaakSymbolisaties ('verkeersborden_STOP_was_wordt_symbolisatie.xml'
 nauwkeurigheid = 10
 
 for mapPad in symbolisatie.GIOMappen ():
-    for specPad, relPad in [(mapPad, '../'), 
-                            (os.path.join ('tests', 'voorbeelden', os.path.basename (mapPad)), 
-                             os.path.join ('..','..', '..', '..', 'geo-tools', 'voorbeelden', os.path.basename (mapPad)) + '/')]:
-        symbolisatiePad = symbolisatie.SymbolisatiePad (mapPad, relPad)
-        symbolisatie.MaakSpecificatie (specPad, ['was', 'toon_geo.json'], {
-                'geometrie': relPad + 'verkeersborden_STOP_was.gml', 
-                'symbolisatie': None if symbolisatiePad is None else relPad + 'verkeersborden_STOP_was_symbolisatie.xml',
-                'nauwkeurigheid': nauwkeurigheid
-            })
-        symbolisatie.MaakSpecificatie (specPad, ['wordt', 'toon_geo.json'], {
-                'geometrie': relPad + 'verkeersborden_STOP_wordt.gml', 
-                'symbolisatie': None if symbolisatiePad is None else relPad + 'verkeersborden_STOP_wordt_symbolisatie.xml',
-                'nauwkeurigheid': nauwkeurigheid
-            })
-        symbolisatie.MaakSpecificatie (specPad, ['wordt', 'maak_gio_wijziging.json'], {
-                'was': relPad + 'verkeersborden_STOP_was.gml', 
-                'wordt': relPad + 'verkeersborden_STOP_wordt.gml', 
-                'nauwkeurigheid': nauwkeurigheid,
-                'symbolisatie': symbolisatiePad,
-                'wijziging': 'verkeersborden_STOP_was_wordt.gml'
-            })
-        symbolisatie.MaakSpecificatie (specPad, ['wordt', 'toon_gio_wijziging.json'], {
-                'was': relPad + 'verkeersborden_STOP_was.gml', 
-                'wijziging': 'verkeersborden_STOP_was_wordt.gml',
-                'symbolisatie': symbolisatiePad
-            })
+    symbolisatie.MaakSpecificatie (mapPad, ['gio_wijziging.json'], {
+            'geometrie': [
+                { "pad": 'verkeersborden_STOP_was.gml' },
+                { "pad": 'verkeersborden_STOP_wordt.gml' }
+            ],
+            "wijziging": [
+                { "was": 'verkeersborden_STOP_was.gml', "wordt": 'verkeersborden_STOP_wordt.gml' }
+            ],
+            'symbolisatie': symbolisatie.SymbolisatiePad (mapPad, ''),
+            'nauwkeurigheid': nauwkeurigheid
+        })

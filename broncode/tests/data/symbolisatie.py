@@ -24,7 +24,7 @@ class Symbolisatie:
     def SymbolisatiePad (self, mapPad, padPrefix):
         pad = self._MapSymbolisatie.get (mapPad)
         if not pad is None:
-            return padPrefix + pad
+            return padPrefix + os.path.basename (pad)
         return None
 
     def StartGio (self, gioPad, propertyNaam):

@@ -52,21 +52,33 @@ class GIOWijzigingMaker (GeoManipulatie):
         self._Wordt : GeoManipulatie.GeoData = None
         # Naam om de wordt-data in de kaart te tonen
         self._WordtDataNaam : str = None
-        # Maan waaronder de te gebruiken symbolisatie voor zowel de was- als wordt-versie is geregistreerd
+        # Naam waaronder de te gebruiken symbolisatie voor zowel de was- als wordt-versie is geregistreerd
         self._SymbolisatieNaam : str = None
-        # Geeft aan of een ongewijzigde geometrie in zowel de was- als wordt-versie dezelfde id heeft
-        self._PersistenteId = False
-        # Geeft de juridische nauwkeurigheid van de geometrie aan
-        self._Nauwkeurigheid = None
         # Gegevens waaruit de GIO-wijziging wordt samengesteld
         self._Wijzigingen = GIOWijzigingMaker.Wijzigingen ()
+        # Executietijd voor de analyse van manifest ongewijzigde geometrie-locaties
+        self._Tijd_ViaID = None
+        # Executietijd voor de analyse van de overige locaties
+        self._Tijd_GeoAnalyse = None
+        # Was-versie van de GIO minus de manifest ongewijzigde locaties
+        self._ResterendWas : GeoManipulatie.GeoData = None
+        # Naam om de resterend-was-data in de kaart te tonen
+        self._ResterendWasDataNaam : str = None
+        # Wordt-versie van de GIO minus de manifest ongewijzigde locaties
+        self._ResterendWordt : GeoManipulatie.GeoData = None
+        # Naam om de resterend-wordt-data in de kaart te tonen
+        self._ResterendWordtDataNaam : str = None
+        # De resulterende GIO-wijziging
+        self._Wijziging : GeoManipulatie.GeoData = None
 
-    def _VoerUit (self):
+    def _VoerUit (self, titelBepaling = "Bepaling GIO wijziging"):
         """Voer het request uit"""
         if not self._LeesBestandenEnSpecificatie  ():
             return False
 
-        einde = self.Generator.StartSectie ("<h3>Bepaling GIO wijziging</h3>", True)
+        einde = self.Generator.StartSectie ("<h3>" + titelBepaling + "</h3>", True)
+        if self.Request.LeesString ("beschrijving"):
+            self.Generator.VoegHtmlToe ('<p>' + self.Request.LeesString ("beschrijving") + '</p>') 
 
         self._InitialiseerWebpagina ()
         self.Generator.LeesCssTemplate ('resultaat')
@@ -78,11 +90,11 @@ class GIOWijzigingMaker (GeoManipulatie):
         self.Generator.VoegHtmlToe (einde)
 
         if len (self._Wijzigingen.OngewijzigdeGeometrie) > 0:
-            einde = self.Generator.StartSectie ("<h3>Basisgeometrie-IDs</h3>", True)
+            einde = self.Generator.StartSectie ("Basisgeometrie-IDs", True)
             self._ToonOngewijzigdeGeometrie ()
             self.Generator.VoegHtmlToe (einde)
             
-        einde = self.Generator.StartSectie ("<h3>GIO-Wijziging</h3>", True)
+        einde = self.Generator.StartSectie ("GIO-Wijziging", True)
         self.Generator.VoegHtmlToe ("... GML nog maken...")
         self.Generator.VoegHtmlToe (einde)
 
@@ -92,25 +104,27 @@ class GIOWijzigingMaker (GeoManipulatie):
     def _LeesBestandenEnSpecificatie (self):
         """Lees de specificatie en GIO's en valideeer de invoer"""
         succes = True
-        self.Log.Informatie ("Lees de was-versie van de GIO")
 
         valideerGIOs = True
-        self._Was = self.LeesGeoBestand ('was', True)
         if self._Was is None:
-            return False
-        if self._Was.Soort != 'GIO':
-            self.Log.Fout ("Het bestand bevat geen GIO maar: " + self._Was.Soort)
-            succes = False
-            valideerGIOs = False
+            self.Log.Informatie ("Lees de was-versie van de GIO")
+            self._Was = self.LeesGeoBestand ('was', True)
+            if self._Was is None:
+                return False
+            if self._Was.Soort != 'GIO':
+                self.Log.Fout ("Het bestand bevat geen GIO maar: " + self._Was.Soort)
+                succes = False
+                valideerGIOs = False
 
-        self.Log.Informatie ("Lees de wordt-versie van de GIO")
-        self._Wordt = self.LeesGeoBestand ('wordt', True)
         if self._Wordt is None:
-            return False
-        if self._Wordt.Soort != 'GIO':
-            self.Log.Fout ("Het bestand bevat geen GIO maar: " + self._Wordt.Soort)
-            succes = False
-            valideerGIOs = False
+            self.Log.Informatie ("Lees de wordt-versie van de GIO")
+            self._Wordt = self.LeesGeoBestand ('wordt', True)
+            if self._Wordt is None:
+                return False
+            if self._Wordt.Soort != 'GIO':
+                self.Log.Fout ("Het bestand bevat geen GIO maar: " + self._Wordt.Soort)
+                succes = False
+                valideerGIOs = False
 
         if valideerGIOs:
             if self._Was.Dimensie != self._Wordt.Dimensie:
@@ -120,10 +134,11 @@ class GIOWijzigingMaker (GeoManipulatie):
                 self.Log.Fout ("De was- en wordt-versie moeten allebei uitsluitend geometrie, GIO-delen of normwaarden hebben")
                 succes = False
 
-        self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
-        self._Symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
-        if not self._Symbolisatie is None:
-            self.Log.Detail ('Symbolisatie ingelezen')
+        if self._Symbolisatie is None:
+            self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
+            self._Symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
+            if not self._Symbolisatie is None:
+                self.Log.Detail ('Symbolisatie ingelezen')
 
         if self.Request.LeesString ('nauwkeurigheid') is None:
             self.Log.Fout ("De nauwkeurigheid is niet opgegeven in de specificatie")
@@ -165,15 +180,22 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + se
 
         self._WasLocaties = { locatie['properties']['id'] : locatie for locatie in self._Was.Locaties}
         self._WordtLocaties = { locatie['properties']['id'] : locatie for locatie in self._Wordt.Locaties}
+        numLocaties = len (self._WasLocaties) + len (self._WordtLocaties)
         self._ManifestOngewijzigdeGeometrieen ()
 
-        if len (self._Was.Locaties) > 0 or len (self._Wordt.Locaties) > 0:
-            wasGeometrieen, isMulti = self.MaakLijstVanGeometrieen (self._Was)
-            wordtGeometrieen, isMulti2 = self.MaakLijstVanGeometrieen (self._Wordt)
+        analyseLocaties = len (self._ResterendWas.Locaties) + len (self._ResterendWordt.Locaties)
+        if analyseLocaties > 0:
+            wasGeometrieen, isMulti = self.MaakLijstVanGeometrieen (self._ResterendWas)
+            wordtGeometrieen, isMulti2 = self.MaakLijstVanGeometrieen (self._ResterendWordt)
             if self._Was.Dimensie == 0:
                 self._AnalyseerPunten (wasGeometrieen, wordtGeometrieen, isMulti or isMulti2)
 
-        self.Generator.VoegHtmlToe ('<p>Alle locaties zijn hiermee verwerkt</p>\n')
+        self.Generator.VoegHtmlToe ('<p>Alle (' + str(numLocaties) + ') locaties zijn hiermee verwerkt. ')
+        if not self._Tijd_ViaID is None:
+            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van de basisgeometrie-IDs die in beide GIO-versies voorkomen nam ' + '{.3f}'.format (self._Tijd_ViaID) + 's voor ' + str(numLocaties - analyseLocaties) + ' locaties. ')
+        if not self._Tijd_GeoAnalyse is None:
+            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van een geo-analyse nam ' + '{.3f}'.format (self._Tijd_GeoAnalyse) + 's voor ' + str(analyseLocaties) + ' locaties.')
+        self.Generator.VoegHtmlToe ('</p>\n')
 
     #------------------------------------------------------------------
     #
@@ -183,6 +205,8 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + se
     #------------------------------------------------------------------
     def _ManifestOngewijzigdeGeometrieen (self):
         self.Log.Informatie ('Onderzoek de locaties met manifest ongewijzigde geometrieën')
+
+        tijd_start = self.Log.Tijd ()
 
         # Bepaal of en hoe de locaties met manifest ongewijzigde geometrie muteren
         manifestOngewijzigdId = set ()
@@ -204,8 +228,16 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + se
                     ongewijzigd.append (wasLocatie)
 
         # De overgebleven locaties zijn:
-        self._Was.Locaties = [l for l in self._Was.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
-        self._Wordt.Locaties = [l for l in self._Wordt.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
+        self._ResterendWas = GeoManipulatie.GeoData () 
+        self._ResterendWas.Attributen = self._Was.Attributen
+        self._ResterendWas.Locaties = [l for l in self._Was.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
+
+        self_ResterendWordt = GeoManipulatie.GeoData () 
+        self_ResterendWordt.Attributen = self._Was.Attributen
+        self_ResterendWordt.Locaties = [l for l in self._Wordt.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
+
+        if not tijd_start is None:
+            self._Tijd_ViaID = self.Log.Tijd () - tijd_start
 
         # Neem de resultaten van deze stap in de resultaatpagina
         self.Log.Informatie ('Presenteer de resultaten')
@@ -238,10 +270,10 @@ In onderstaande kaart zijn deze locaties opgenomen.
                 kvSym = self.VoegUniformeSymbolisatieToe (self._Was.Dimensie, "#DAE8FC", "#6C8EBF")
                 kaartScript += 'kaart.VoegOnderlaagToe ("Revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + kvSym + '", true, true);'
 
-            if len (self._Was.Locaties) > 0 or len (self._Wordt.Locaties) > 0:
-                self._WasDataNaam = self.VoegGeoDataToe (self._Was)
-                self._WordtDataNaam = self.VoegGeoDataToe (self._Wordt)
-                kaartScript += 'kaart.VoegOudLaagToe ("Nog te analyseren geometrieën", "' + self._WasDataNaam + '", "' + self._SymbolisatieNaam + '", true, true).VoegNieuwLaagToe ("Nog te analyseren geometrieën", "' + self._WordtDataNaam + '", "' + self._SymbolisatieNaam + '", true, true);'
+            if len (self._ResterendWas.Locaties) > 0 or len (self_ResterendWordt.Locaties) > 0:
+                self._ResterendWas = self.VoegGeoDataToe (self._ResterendWas)
+                self._ResterendWordtNaam = self.VoegGeoDataToe (self_ResterendWordt)
+                kaartScript += 'kaart.VoegOudLaagToe ("Nog te analyseren geometrieën", "' + self._ResterendWas + '", "' + self._SymbolisatieNaam + '", true, true).VoegNieuwLaagToe ("Nog te analyseren geometrieën", "' + self._ResterendWordtNaam + '", "' + self._SymbolisatieNaam + '", true, true);'
 
             self.ToonKaart (kaartScript)
 
@@ -256,6 +288,7 @@ In onderstaande kaart zijn deze locaties opgenomen.
         drempel = self.NauwkeurigheidInMeter ()
         drempel *= drempel
 
+        tijd_start = self.Log.Tijd ()
 
         # Vind alle punten die te dicht bij een ander punt liggen
         gewijzigdeWasId = set () # ID van was-locaties waarvan tenminste een punt wordt gemuteerd
@@ -312,6 +345,9 @@ In onderstaande kaart zijn deze locaties opgenomen.
         self._Wijzigingen.WordtLocaties.extend (self._WordtLocaties[i] for i in gewijzigdeWordtId)
         self._Wijzigingen.Markering.Locaties.extend (wijzigmarkeringen)
 
+        if not tijd_start is None:
+            self._Tijd_GeoAnalyse = self.Log.Tijd () - tijd_start
+
         # Toon het resultaat
         self._ToonGeoAnalyseResultaat (wijzigmarkeringen, 0)
 
@@ -362,11 +398,7 @@ In onderstaande kaart worden deze plaatsen getoond.</p>\n''')
             dataSet.Locaties = wijzigmarkeringen
             kvSym = self.VoegUniformeSymbolisatieToe (dimensieMarkeringen, "#D80073", "#A50040")
             kaartScript = 'kaart.VoegToplaagToe ("Posities van wijzigingen", "' + self.VoegGeoDataToe (dataSet) + '", "' + kvSym + '", true, true);'
-
-            if len (self._Was.Locaties) > 0 or len (self._Wordt.Locaties) > 0:
-                self._WasDataNaam = self.VoegGeoDataToe (self._Was)
-                self._WordtDataNaam = self.VoegGeoDataToe (self._Wordt)
-                kaartScript += 'kaart.VoegOudLaagToe ("Geanalyseerde geometrieën", "' + self._WasDataNaam + '", "' + self._SymbolisatieNaam + '", true, true).VoegNieuwLaagToe ("Geanalyseerde geometrieën", "' + self._WordtDataNaam + '", "' + self._SymbolisatieNaam + '", true, true);'
+            kaartScript += 'kaart.VoegOudLaagToe ("Geanalyseerde geometrieën", "' + self._ResterendWasDataNaam + '", "' + self._SymbolisatieNaam + '", true, true).VoegNieuwLaagToe ("Geanalyseerde geometrieën", "' + self._ResterendWordtDataNaam + '", "' + self._SymbolisatieNaam + '", true, true);'
 
             self.ToonKaart (kaartScript)
 

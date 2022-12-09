@@ -16,6 +16,7 @@ import os
 
 from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
+from gio_wijziging import GIOWijziging
 from maak_gio_wijziging import GIOWijzigingMaker
 from toon_geo import GeoViewer
 from toon_gio_wijziging import GIOWijzigingViewer
@@ -112,15 +113,20 @@ class Voorbeeld (GIOWijzigingMaker):
                         self.Specificaties.append (spec)
 
         _Specs = {
-                'toon_geo.json' : (1, 'Toon de GIO', GeoViewer.ResultaatHtml), 
-                'maak_gio_wijziging.json' : (2, 'Maak de GIO-wijziging', GIOWijzigingMaker.ResultaatHtml), 
-                'toon_gio_wijziging.json' : (3, 'Toon de GIO-wijziging', GIOWijzigingViewer.ResultaatHtml)
+                'gio_wijziging.json' : (1, "Toon de GIO;s, maak en toon de GIO-wijziging(en)", GIOWijziging.ResultaatHtml),
+                'toon_geo.json' : (2, 'Toon de GIO', GeoViewer.ResultaatHtml), 
+                'maak_gio_wijziging.json' : (3, 'Maak de GIO-wijziging', GIOWijzigingMaker.ResultaatHtml), 
+                'toon_gio_wijziging.json' : (4, 'Toon de GIO-wijziging', GIOWijzigingViewer.ResultaatHtml)
             } 
 
         def Html (self):
             html = ''
             if not self.Naam is None:
-                html += '<li>' + self.Naam
+                html += '<li>'
+                if len (self.Specificaties) == 1:
+                    html += '<a href="start_voorbeeld?index=' + str(self.Specificaties[0].Index) + '">' + self.Naam + '</a>'
+                else:
+                    html += self.Naam
                 if self.IsDataBron:
                     html += ' (zie <a href="' + self.BronUrl + '">bronbestanden</a> voor een beschrijving)'
             if len (self.Voorbeelden) > 0:
@@ -128,7 +134,7 @@ class Voorbeeld (GIOWijzigingMaker):
                 for sp in self.Voorbeelden:
                     html += sp.Html ()
                 html += '</ul>'
-            if len (self.Specificaties) > 0:
+            if len (self.Specificaties) > 1:
                 html += ': ' + ', '.join (sp.Html () for sp in sorted (self.Specificaties, key = lambda s: s.Volgorde))
             if not self.Naam is None:
                 html += '</li>'

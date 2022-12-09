@@ -45,8 +45,6 @@ class Parameters:
         self._FormData = formdata
         self._FileData = filedata
         self._Pad = directory_pad
-        # Cache van bestandsnaam per key, beschikbaar na het lezen van het bestand
-        self._Bestandsnamen = {}
         # Geeft aan of resultaatbestanden weggeschreven kunnen worden
         self.KanBestandenSchrijven = not directory_pad is None
 
@@ -82,7 +80,6 @@ class Parameters:
                 else:
                     log.Detail ('Geen bestand gespecificeerd voor "' + key + '"')
                 return None
-            self._Bestandsnamen[key] = filenaam
             pad = os.path.join (self._Pad, filenaam)
             if not os.path.isfile (pad):
                 log.Fout ('Bestand voor "' + key + '" niet gevonden: "' + filenaam + '"')
@@ -103,7 +100,6 @@ class Parameters:
                 return None
             for fileData in files:
                 if fileData.filename != '':
-                    self._Bestandsnamen[key] = fileData.filename
                     try:
                         data = fileData.stream.read ().decode("utf-8").strip ()
                         if len(data) == 0:
@@ -117,10 +113,22 @@ class Parameters:
             return None
 
     def Bestandsnaam (self, key: str):
-        """Geef de bestandnaam; beschikbaar na een aanroep van LeesBestand voor de key
+        """Geef de bestandnaam van een bestand aan de hand van de specificatie key / input type="file" control naam.  
         
         Argumenten:
         
-        key str  Key waarvoor eerder de LeesBestand is aangeroepen en waarvoor een bestand is gevonden
+        key str  Key waarmee het bestand wirdt/is gelezen.
         """
-        return self._Bestandsnamen.get (key)
+        filenaam = None
+        if not self._Pad is None:
+            filenaam = self._FormData.get (key)
+            filenaam = os.path.basename (filenaam)
+        else:
+            files = None if self._FileData is None or not key in self._FileData else self._FileData.getlist (key)
+            if not files is None:
+                for fileData in files:
+                    if fileData.filename != '':
+                        filenaam = fileData.filename
+                        break
+        if not filenaam is None:
+            return os.path.splitext (filenaam)[0]

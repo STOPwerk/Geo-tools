@@ -108,6 +108,11 @@ class Meldingen:
         self.Meldingen.append (melding)
         return melding
 
+    def Tijd (self):
+        """Geef de tot nu toe gespendeerde executietijd, mits die bijgehouden wordt"""
+        if not self._Start is None:
+            return time.perf_counter() - self._Start
+
 #----------------------------------------------------------------------
 # Bewaren/tonen van de meldingen
 # Roep deze methoden pas aan nadat de verzameling is afgesloten

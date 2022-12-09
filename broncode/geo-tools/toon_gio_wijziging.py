@@ -40,6 +40,18 @@ class GIOWijzigingViewer (GeoManipulatie):
 #======================================================================
     def __init__(self, request : Parameters, log: Meldingen):
         super ().__init__ ("GIO-wijziging in beeld", "GIO-wijziging - geen beeld", request, log)
+        # Was-versie van de GIO
+        self._Was : GeoManipulatie.GeoData = None
+        # Naam om de was-data in de kaart te tonen
+        self._WasDataNaam : str = None
+        # Naam waaronder de te gebruiken symbolisatie voor zowel de was- als wordt-versie is geregistreerd
+        self._SymbolisatieNaam : str = None
+        # De resulterende GIO-wijziging
+        self._Wijziging : GeoManipulatie.GeoData = None
+        # Wordt-versie van de GIO, gereconstrueerd uit de was en de GIO-wijziging
+        self._Wordt : GeoManipulatie.GeoData = None
+        # Naam om de wordt-data in de kaart te tonen
+        self._WordtDataNaam : str = None
 
     def _VoerUit (self):
         pass

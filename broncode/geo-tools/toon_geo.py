@@ -44,45 +44,57 @@ class GeoViewer (GeoManipulatie):
 #======================================================================
     def __init__(self, request : Parameters, log: Meldingen):
         super ().__init__ ("Geo-informatie in beeld", "Geo-informatie - geen beeld", request, log)
+        # Geometrie specificatie
+        self._Geometrie : GeoManipulatie.GeoData = None
+        # Naam van de geometrische data voor kaartweergave
+        self._DataNaam : str = None
+        # Naam waaronder de te gebruiken symbolisatie is geregistreerd
+        self._SymbolisatieNaam : str = None
 
     def _VoerUit (self):
         """Voer het request uit"""
-        self.Log.Informatie ("Lees het GIO, gebiedsmarkering of effectgebied")
-        gio = self.LeesGeoBestand ('geometrie', True)
-        if gio is None:
-            return False
-        if gio.Soort == 'GIO-wijziging':
-            self.Log.Fout ("Kan deze geo-informatie niet weergeven: " + gio.Soort)
-            return False
-        self.Log.Informatie (gio.Soort + ' ingelezen')
+        if self.Request.LeesString ("beschrijving"):
+            self.Generator.VoegHtmlToe ('<p>' + self.Request.LeesString ("beschrijving") + '</p>') 
+
+        if self._Geometrie is None:
+            self.Log.Informatie ("Lees het GIO, gebiedsmarkering of effectgebied")
+            self._Geometrie = self.LeesGeoBestand ('geometrie', True)
+            if self._Geometrie is None:
+                return False
+            if self._Geometrie.Soort == 'GIO-wijziging':
+                self.Log.Fout ("Kan deze geo-informatie niet weergeven: " + self._Geometrie.Soort)
+                return False
+            self.Log.Informatie (self._Geometrie.Soort + ' ingelezen')
 
         symbolisatieVereist = False
-        if gio.Soort == 'GIO' and not gio.AttribuutNaam is None:
-            self.Log.Informatie ('GIO heeft per locatie een ' + gio.AttribuutNaam + ' - een symbolisatie is nodig om dat weer te geven')
+        if self._Geometrie.Soort == 'GIO' and not self._Geometrie.AttribuutNaam is None:
+            self.Log.Informatie ('GIO heeft per locatie een ' + self._Geometrie.AttribuutNaam + ' - een symbolisatie is nodig om dat weer te geven')
             symbolisatieVereist = True
 
-        self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
-        symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
-        if symbolisatie is None:
-            if symbolisatieVereist:
-                self.Log.Waarschuwing ('Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën')
+        if self._SymbolisatieNaam is None:
+            self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
+            symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
+            if symbolisatie is None:
+                if symbolisatieVereist:
+                    self.Log.Waarschuwing ('Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën')
+                else:
+                    self.Log.Informatie ('Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën')
             else:
-                self.Log.Informatie ('Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën')
-        else:
-            self.Log.Detail ('Symbolisatie ingelezen')
+                self.Log.Detail ('Symbolisatie ingelezen')
+            self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Geometrie) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
 
         self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
 
         self.Log.Informatie ('Maak de kaartweergave')
-        self._DataNaam = self.VoegGeoDataToe (gio)
-        symbolisatieNaam = self.VoegDefaultSymbolisatieToe (gio) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
-        self.ToonKaart ('kaart.VoegOnderlaagToe ("' + gio.Soort + '", "' + self._DataNaam + '", "' + symbolisatieNaam + '");')
+        if self._DataNaam is None:
+            self._DataNaam = self.VoegGeoDataToe (self._Geometrie)
+        self.ToonKaart ('kaart.VoegOnderlaagToe ("' + self._Geometrie.Soort + '", "' + self._DataNaam + '", "' + self._SymbolisatieNaam + '");')
 
-        if gio.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
+        if self._Geometrie.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
             self.Log.Informatie ('Valideer de GIO')
             self.Generator.VoegHtmlToe ('<p>Om te zien of het GIO geschikt is om te gebruiken voor een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>')
-            lijst = self.MaakLijstVanGeometrieen (gio)[0]
-            heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, gio.Dimensie)
+            lijst = self.MaakLijstVanGeometrieen (self._Geometrie)[0]
+            heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, self._Geometrie.Dimensie)
             if not heeftProblemen:
                 self.Generator.VoegHtmlToe ('<p>Het GIO kan gebruikt worden voor de bepaling van een GIO-wijziging bij een teken-nauwkeurigheid van ' + self.Request.LeesString ("nauwkeurigheid") + ' decimeter</p>')
             else:

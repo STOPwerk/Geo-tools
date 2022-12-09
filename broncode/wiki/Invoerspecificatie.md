@@ -7,6 +7,7 @@ Als de geo-tools [uitgevoerd](Geo-tools-uitvoeren) worden als Python script, dan
     * [toon_geo.json](#toon-geo)
     * [maak_gio_wijziging.json](#maak-gio-wijziging)
     * [toon_gio_wijziging.json](#toon-gio-wijziging)
+    * [gio_wijziging.json](#gio_wijziging) combineert meerdere van de bovenstaande tot één operatie.
 
     De specificaties worden in deze volgorde ingelezen en door de bijbehorende geo-tool uitgvoerd. De geo-tools herkennen een map als een map met invoerbestanden als een van de specificaties gevonden wordt.
 
@@ -42,7 +43,7 @@ met:
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html). Optioneel; als dit niet gegeven is worden alle gebieden/lijnen/punten op een standaard manier weergegeven. |
 | `nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
-| `beschrijving` | Optioneel: een beschrijving van de GIO die in de resultaatpagina wordt opgenomen |
+| `beschrijving` | Optioneel: een beschrijving van het GIO die in de resultaatpagina wordt opgenomen |
 
 
 ## Maak GIO wijziging
@@ -53,7 +54,8 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
     "wordt": "GIO_wordt_versie.gml",
     "nauwkeurigheid": 1,
     "symbolisatie": "style.xml",
-    "wijziging": "GIO_wijziging.gml"
+    "wijziging": "GIO_wijziging.gml",
+    "beschrijving": "Optionele beschrijving"
 }
 ```
 met:
@@ -65,6 +67,7 @@ met:
 | `nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
 | `wijziging` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) met de GIO-wijziging. Dit bestand kan als invoer gebruikt worden voor de [Toon GIO wijziging](#toon-gio-wijziging) geo-tool. |
+| `beschrijving` | Optioneel: een beschrijving van de GIO-wijziging die in de resultaatpagina wordt opgenomen |
 
 
 ## Toon GIO wijziging
@@ -85,3 +88,46 @@ met:
 | `wijziging` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) dat de GIO-wijziging bevat.|
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. Verplicht voor een GIO met GIO-delen of normwaarden. Optioneel voor een GIO  met alleen geometrie; als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
 | `wordt` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) met de wordt-versie van de GIO. |
+
+
+## GIO wijziging
+Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecombineerde operatie die eerst de GIO's toont, daarna de GIO-wijzigingen bepaalt en deze vervolgens laat zien:.
+```
+{
+    "beschrijving": "Optionele beschrijving van de reden om deze operatie uit te voeren",
+    "geometrie": [ 
+        {"pad": "gio_1.gml", "beschrijving": "Optionele beschrijving van de GIO" }
+        {"pad": "gio_2.gml" }
+        {"pad": "gio_3.gml" }
+    ]
+    "symbolisatie": "style.xml",
+    "nauwkeurigheid": 1,
+    "wijziging": [
+        { "was": "gio_1.gml", "wordt": "gio_2.gml", "beschrijving": "Optionele beschrijving van de GIO-wijziging"},
+        { "was": "gio_2.gml", "wordt": "gio_3.gml"},
+        { "was": "gio_1.gml", "wordt": "gio_3.gml"}
+    ]
+}
+```
+Elk `geometrie` element wordt omgevormd naar een [toon_geo.json](#toon-geo) specificatie en uitgevoerd:
+
+| Parameter van operatie | In deze specificatie: |
+| ---------------------- | --------------------- |
+| [toon_geo.json](#toon-geo): `geometrie` | `geometrie`: `pad` |
+| [toon_geo.json](#toon-geo): `symbolisatie` | `symbolisatie` |
+| [toon_geo.json](#toon-geo): `nauwkeurigheid` | `nauwkeurigheid` |
+| [toon_geo.json](#toon-geo): `beschrijving` | `geometrie`: `beschrijving` |
+
+Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak-gio-wijziging) en een  [toon_gio_wijziging.json](#toon-gio-wijziging) specificatie en daarna opeenvolgend uitgevoerd:
+
+| Parameter van operatie | In deze specificatie: |
+| ---------------------- | --------------------- |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `was` | `wijziging`: `was` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `wordt` | `wijziging`: `wordt` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `nauwkeurigheid` | `nauwkeurigheid` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `symbolisatie` | `symbolisatie` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving` |
+| [toon_gio_wijziging.json](#toon-gio-wijziging): `was` | `wijziging`: `was` |
+| [toon_gio_wijziging.json](#toon-gio-wijziging): `symbolisatie` | `symbolisatie` |
+
+De GIO-wijziging uit de `maak_gio_wijziging` wordt in-memory doorgegeven aan de `toon_gio_wijziging` operatie.

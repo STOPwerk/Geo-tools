@@ -96,14 +96,23 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
 {
     "beschrijving": "Optionele beschrijving van de reden om deze operatie uit te voeren",
     "geometrie": [ 
-        {"pad": "gio_1.gml", "beschrijving": "Optionele beschrijving van de GIO" }
+        {
+            "pad": "gio_1.gml", 
+            "beschrijving": "Optionele beschrijving van de GIO",
+            "nauwkeurigheid": 10,
+            "symbolisatie": "afwijkende_style.xml"
+        },
         {"pad": "gio_2.gml" }
         {"pad": "gio_3.gml" }
     ]
     "symbolisatie": "style.xml",
     "nauwkeurigheid": 1,
     "wijziging": [
-        { "was": "gio_1.gml", "wordt": "gio_2.gml", "beschrijving": "Optionele beschrijving van de GIO-wijziging"},
+        {
+            "was": "gio_1.gml", 
+            "wordt": "gio_2.gml", 
+            "beschrijving": "Optionele beschrijving van de GIO-wijziging"
+        },
         { "was": "gio_2.gml", "wordt": "gio_3.gml"},
         { "was": "gio_1.gml", "wordt": "gio_3.gml"}
     ]
@@ -114,8 +123,8 @@ Elk `geometrie` element wordt omgevormd naar een [toon_geo.json](#toon-geo) spec
 | Parameter van operatie | In deze specificatie: |
 | ---------------------- | --------------------- |
 | [toon_geo.json](#toon-geo): `geometrie` | `geometrie`: `pad` |
-| [toon_geo.json](#toon-geo): `symbolisatie` | `symbolisatie` |
-| [toon_geo.json](#toon-geo): `nauwkeurigheid` | `nauwkeurigheid` |
+| [toon_geo.json](#toon-geo): `symbolisatie` | `geometrie`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
+| [toon_geo.json](#toon-geo): `nauwkeurigheid` | `geometrie`: `nauwkeurigheid` indien aanwezig, anderd `nauwkeurigheid` |
 | [toon_geo.json](#toon-geo): `beschrijving` | `geometrie`: `beschrijving` |
 
 Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak-gio-wijziging) en een  [toon_gio_wijziging.json](#toon-gio-wijziging) specificatie en daarna opeenvolgend uitgevoerd:
@@ -124,10 +133,10 @@ Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak
 | ---------------------- | --------------------- |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `was` | `wijziging`: `was` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `wordt` | `wijziging`: `wordt` |
-| [maak_gio_wijziging.json](#maak-gio-wijziging): `nauwkeurigheid` | `nauwkeurigheid` |
-| [maak_gio_wijziging.json](#maak-gio-wijziging): `symbolisatie` | `symbolisatie` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `nauwkeurigheid` | `wijziging`: `nauwkeurigheid` indien aanwezig, anders `nauwkeurigheid` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving` |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `was` | `wijziging`: `was` |
-| [toon_gio_wijziging.json](#toon-gio-wijziging): `symbolisatie` | `symbolisatie` |
+| [toon_gio_wijziging.json](#toon-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 
 De GIO-wijziging uit de `maak_gio_wijziging` wordt in-memory doorgegeven aan de `toon_gio_wijziging` operatie.

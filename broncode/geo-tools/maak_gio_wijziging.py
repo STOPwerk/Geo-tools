@@ -82,8 +82,10 @@ class GIOWijzigingMaker (GeoManipulatie):
 
         self._InitialiseerWebpagina ()
         self.Generator.LeesCssTemplate ('resultaat')
-        symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
-        self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
+        if self._SymbolisatieNaam is None:
+            self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
+            symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
+            self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
 
         self._BepaalWijzigingen ()
 
@@ -192,9 +194,9 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + se
 
         self.Generator.VoegHtmlToe ('<p>Alle (' + str(numLocaties) + ') locaties zijn hiermee verwerkt. ')
         if not self._Tijd_ViaID is None:
-            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van de basisgeometrie-IDs die in beide GIO-versies voorkomen nam ' + '{.3f}'.format (self._Tijd_ViaID) + 's voor ' + str(numLocaties - analyseLocaties) + ' locaties. ')
+            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van de basisgeometrie-IDs die in beide GIO-versies voorkomen nam ' + "{:.3f}".format(self.Tijd).format (self._Tijd_ViaID) + 's voor ' + str(numLocaties - analyseLocaties) + ' locaties. ')
         if not self._Tijd_GeoAnalyse is None:
-            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van een geo-analyse nam ' + '{.3f}'.format (self._Tijd_GeoAnalyse) + 's voor ' + str(analyseLocaties) + ' locaties.')
+            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van een geo-analyse nam ' + "{:.3f}".format(self.Tijd).format (self._Tijd_GeoAnalyse) + 's voor ' + str(analyseLocaties) + ' locaties.')
         self.Generator.VoegHtmlToe ('</p>\n')
 
     #------------------------------------------------------------------

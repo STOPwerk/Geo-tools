@@ -743,7 +743,7 @@ class GeoManipulatie:
             self._NaamIndex += 1
             kaartElementId = 'kaart_' + str(self._NaamIndex)
         self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId))
-        self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '", 600, 400);\n});')
+        self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '", "900", "600");\n});')
         return kaartElementId
 
     def _InitialiseerWebpagina (self):

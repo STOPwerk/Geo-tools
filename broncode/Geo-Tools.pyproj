@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>geo-tools\applicatie.py</StartupFile>
+    <StartupFile>tests\data\CirkelNaarPolygon.py</StartupFile>
     <SearchPath>tests\code</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -103,6 +103,7 @@
     <Compile Include="geo-tools\weergave_webpagina.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tests\data\CirkelNaarPolygon.py" />
     <Compile Include="tests\data\MIRT.py" />
     <Compile Include="tests\data\Gemeentes.py" />
     <Compile Include="tests\data\symbolisatie.py" />

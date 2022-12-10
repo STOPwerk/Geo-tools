@@ -55,7 +55,7 @@
         {
             "was": "gemeenten_2017.gml",
             "wordt": "gemeenten_2022.gml",
-			"beschrijving": "De gemeentelijke herindelingen per 2018 als GIO-wijziging."
+			"beschrijving": "Verandering van de gemeentelijke indeling tussen 2018 en eind 2022 als GIO-wijziging."
         }
     ],
     "symbolisatie": "gemeenten_alle_jaren_symbolisatie.xml",

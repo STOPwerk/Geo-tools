@@ -1,0 +1,15 @@
+{
+	"beschrijving": "Demonstratie van het gebruik van teken-nauwkeurigheid bij het opstellen en beoordelen van een GIO.",
+    "geometrie": [
+        {
+            "pad": "vlakken_technisch_nauwkeurig.gml",
+			"beschrijving": "Bij het samenstellen van een GIO bepaalt de technische nauwkeurigheid hoe gedetailleerd een GIO op een kaart weergegeven kan worden. Hoe nauwkeuriger een GIO is ingetekend of berekend, hoe verder de weergave ingezoomd kan worden. Deze GIO bevat twee cirkels die als veelhoek zijn getekend, links met een technische nauwkeurigheid van 1 decimeter (overeenkomstig de achtergrondkaart) en rechts 5 meter.",
+			"symbolisatie": "vlakken_symbolisatie.xml"
+        },
+        {
+            "pad": "vlakken_juridisch_nauwkeurig.gml",
+			"beschrijving": "De juridische betekenis van de inhoud van een GIO is niet gerelateerd aan de technische nauwkeurigheid of detaillering, maar aan de aard van de juridische regel. Als het bijvoorbeeld over iets grootschaligs als grondgebruik gaat, dan zal de grens ervan niet op de decimeter nauwkeurig zijn afgewogen. De opsteller van de regel heeft misschien wel een dikke stift gepakt en een grens getekend op een kaartschaal waarbij de stift een dikte van meters heeft - in STOP is dat de teken-nauwkeurigheid. Dat gebied ziet er met een hoge technische nauwkeurigheid (links, 1 technische decimeter) op de kaart beter uit dan een grover getekende versie (rechts, 5 meter technische nauwkeurigheid). Maar juridisch maakt dat geen verschil; de lege ruimtes in de rechter figuur zullen niet opgevat worden als gebieden waar opeens een andere regel gaat gelden.",
+			"symbolisatie": "vlakken_symbolisatie.xml"
+        }
+    ]
+}

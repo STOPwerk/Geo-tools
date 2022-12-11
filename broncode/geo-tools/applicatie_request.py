@@ -23,7 +23,7 @@ class Parameters:
         Geeft parameters terug, of None als het bestand niet gelezen kan worden
         """
         try:
-            with open (specificatiePad, 'r') as json_file:
+            with open (specificatiePad, 'r', encoding='utf-8') as json_file:
                 specificatie = json.load (json_file)
         except Exception as e:
             log.Fout ('Bestand "' + specificatiePad + '" is geen JSON bestand: ' + str(e))
@@ -112,12 +112,13 @@ class Parameters:
                     break
             return None
 
-    def Bestandsnaam (self, key: str):
+    def Bestandsnaam (self, key: str, inclusiefExtensie : bool = True):
         """Geef de bestandnaam van een bestand aan de hand van de specificatie key / input type="file" control naam.  
         
         Argumenten:
         
         key str  Key waarmee het bestand wirdt/is gelezen.
+        inclusiefExtensie bool  Geeft aan of de extensie behouden moet worden.
         """
         filenaam = None
         if not self._Pad is None:
@@ -131,4 +132,7 @@ class Parameters:
                         filenaam = fileData.filename
                         break
         if not filenaam is None:
-            return os.path.splitext (filenaam)[0]
+            if inclusiefExtensie:
+                return filenaam
+            else:
+                return os.path.splitext (filenaam)[0]

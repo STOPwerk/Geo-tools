@@ -1,5 +1,5 @@
 {
   "geometrie": "testdata_vlakken.gml",
   "symbolisatie": "testdata_vlakken_symbolisatie.xml",
-  "nauwkeurigheid": 100
+  "teken-nauwkeurigheid": 100
 }

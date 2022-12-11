@@ -45,6 +45,6 @@
             "wordt": "mirt_2022.gml"
         }
     ],
-    "symbolisatie": "C:\\Projects\\KOOP\\STOP\\STOPwerk Geo-tools\\broncode\\tests\\data\\..\\gio-wijziging\\05 lijnen - GIO-delen\\mirt_alle_jaren_symbolisatie.xml",
+    "symbolisatie": "mirt_alle_jaren_symbolisatie.xml",
     "nauwkeurigheid": 10
 }

@@ -133,7 +133,7 @@ class Kaart {
         var kaartElement = document.getElementById(kaartElementId);
         kaartElement.style.width = kaartElementWidth + "px"
         kaartElement.style.height = kaartElementHeight + "px"
-        var legeRuimteOmGeometrie = 0.5;
+        var legeRuimteOmGeometrie = 0.25;
         if (this._BBox === false) {
             this._BBox = Kaart._BGT_BBox;
             legeRuimteOmGeometrie = 0;

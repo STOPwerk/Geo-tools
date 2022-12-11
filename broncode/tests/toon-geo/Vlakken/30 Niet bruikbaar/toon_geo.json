@@ -1,4 +1,4 @@
 {
   "geometrie": "testdata_vlakken.gml",
-  "nauwkeurigheid": 30
+  "teken-nauwkeurigheid": 30
 }

@@ -1,4 +1,4 @@
 {
   "geometrie": "testdata_gebiedsmarkering.gml",
-  "nauwkeurigheid": 1
+  "teken-nauwkeurigheid": 1
 }

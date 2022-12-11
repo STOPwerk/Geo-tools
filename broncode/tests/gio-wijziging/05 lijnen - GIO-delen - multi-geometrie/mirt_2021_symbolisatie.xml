@@ -15,16 +15,6 @@
         <LineSymbolizer><Stroke><SvgParameter name="stroke">#ff3c82</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
     </Rule>
     <Rule>
-        <Name>Onderwerp4</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>groepID</ogc:PropertyName> 
-                <ogc:Literal>Onderwerp4</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <LineSymbolizer><Stroke><SvgParameter name="stroke">#64aa2d</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
-    </Rule>
-    <Rule>
         <Name>Onderwerp0</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
@@ -33,16 +23,6 @@
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
         <LineSymbolizer><Stroke><SvgParameter name="stroke">#000000</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
-    </Rule>
-    <Rule>
-        <Name>Onderwerp7</Name>
-        <ogc:Filter>
-            <ogc:PropertyIsEqualTo>
-                <ogc:PropertyName>groepID</ogc:PropertyName> 
-                <ogc:Literal>Onderwerp7</ogc:Literal>
-            </ogc:PropertyIsEqualTo>
-        </ogc:Filter>
-        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ffa096</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
     </Rule>
     <Rule>
         <Name>Onderwerp8</Name>
@@ -65,6 +45,16 @@
         <LineSymbolizer><Stroke><SvgParameter name="stroke">#d2ffa5</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
     </Rule>
     <Rule>
+        <Name>Onderwerp4</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>groepID</ogc:PropertyName> 
+                <ogc:Literal>Onderwerp4</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#64aa2d</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
         <Name>Onderwerp1</Name>
         <ogc:Filter>
             <ogc:PropertyIsEqualTo>
@@ -73,6 +63,16 @@
             </ogc:PropertyIsEqualTo>
         </ogc:Filter>
         <LineSymbolizer><Stroke><SvgParameter name="stroke">#ebf0d2</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>Onderwerp7</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>groepID</ogc:PropertyName> 
+                <ogc:Literal>Onderwerp7</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <LineSymbolizer><Stroke><SvgParameter name="stroke">#ffa096</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">3</SvgParameter><SvgParameter name="stroke-linecap">butt</SvgParameter></Stroke></LineSymbolizer>
     </Rule>
     <Rule>
         <Name>Onderwerp3</Name>

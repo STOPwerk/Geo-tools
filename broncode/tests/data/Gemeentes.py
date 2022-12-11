@@ -187,7 +187,7 @@ def __GIO (subdir, jaar, multiVlakken, attribuut):
         def __Locatie (gioDeelCode, samengevoegdeGemeenten):
             gml_file.write ('''
             <geo:Locatie>''')
-            if not multiVlakken:
+            if not multiVlakken or attribuut == 3:
                 gml_file.write ('''
                 <geo:naam>''' + samengevoegdeGemeenten[0]['Naam'] + '</geo:naam>')
             gml_file.write ('''
@@ -240,6 +240,16 @@ def __GIO (subdir, jaar, multiVlakken, attribuut):
                         lijst.append (gem)
                 for gems in gemeentenPerNormwaarde.values ():
                     __Locatie (None, gems)
+            elif attribuut == 3:
+                perGemeente = {}
+                for gem in gemeenten[jaar]:
+                    lijst = perGemeente.get (gem["GM"])
+                    if lijst is None:
+                        perGemeente[gem["GM"]] = [gem]
+                    else:
+                        lijst.append (gem)
+                for gm, gems in perGemeente.items ():
+                    __Locatie (gm, gems)
             else:
                 raise 'Oeps'
         else:
@@ -267,7 +277,7 @@ geschikt om geautomatiseerd te worden uitgevoerd. De GIO kan (op dezelfde manier
 geconsolideerd worden.
 ''')
 for jaar in jaren:
-    __GIO ('01 demo - gemeentegrenzen', jaar, False, 3)
+    __GIO ('01 demo - gemeentegrenzen', jaar, True, 3)
 
 symbolisatie.MaakReadme ([testscenario_dir, '02 vlakken - geometrie'], '''#GIO met alleen geometrie
 

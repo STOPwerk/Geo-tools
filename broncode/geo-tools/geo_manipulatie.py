@@ -57,10 +57,11 @@ class GeoManipulatie:
             # _VoerUit moet in een afgeleide klasse worden geïmplementeerd
             if self._VoerUit ():
                 self.Log.Informatie ("De verwerking is voltooid.")
+                einde = self.Generator.StartSectie ("<h3>Verslag van de verwerking</h3>")
             else:
                 self.Log.Fout ("De verwerking is afgebroken.")
+                einde = self.Generator.StartSectie ("<h3>Verslag van de incomplete verwerking</h3>")
 
-            einde = self.Generator.StartSectie ("<h3>Verslag van de verwerking</h3>")
             self.Log.MaakHtml (self.Generator, None)
             self.Generator.VoegHtmlToe (einde)
             return self.Generator.Html ()
@@ -164,7 +165,12 @@ class GeoManipulatie:
         self.Log.Detail ("Lees het GIO, gebiedsmarkering of effectgebied")
         gml = self.Request.LeesBestand (self.Log, key, verplicht)
         if not gml is None:
-            return self._LeesGeoData (gml)
+            data = self._LeesGeoData (gml)
+            if data is None:
+                self.Log.Fout ("Het GIO, gebiedsmarkering of effectgebied '" + self.Request.Bestandsnaam (key) + "' kan niet ingelezen worden")
+            else:
+                self.Log.Informatie (data.Soort + " ingelezen uit '" + self.Request.Bestandsnaam (key) + "'")
+                return data
 
     def _LeesGeoData (self, gml) -> GeoData:
         """Lees de GML in als een GIO"""
@@ -344,6 +350,7 @@ class GeoManipulatie:
         # Foutmeldigen worden maar één keer gedaan
         foutmeldingen = set ()
         heeftAttribuut = None
+        bekende_id = set ()
         for locatie in [] if geoXml is None else geoXml.findall (locatieElement):
             # Lees de geometrie van een locatie
             geometrie = locatie.find (GeoManipulatie._GeoNS + 'geometrie')
@@ -358,6 +365,11 @@ class GeoManipulatie:
                     succes = False
                 else:
                     basisgeo_id = basisgeo_id.text
+                    if basisgeo_id in bekende_id:
+                        foutmeldingen.add ('Basisgeometrie-id "' + basisgeo_id + '"komt meerdere keren voor')
+                        succes = False
+                    else:
+                        bekende_id.add (basisgeo_id)
             if geometrie is None:
                 foutmeldingen.add ('Geometrie ontbreekt in een ' + locatieElement)
                 succes = False
@@ -767,13 +779,13 @@ class GeoManipulatie:
 
     def NauwkeurigheidInMeter (self) -> float:
         """Haal de nauwkeurigheid als float uit de request parameters"""
-        if self.Request.LeesString ("nauwkeurigheid") is None:
+        if self.Request.LeesString ("teken-nauwkeurigheid") is None:
             self.Log.Waarschuwing ("Geen teken-nauwkeurigheid doorgegeven - kan de GIO niet valideren")
             return None
         try:
-            nauwkeurigheid = float (self.Request.LeesString ("nauwkeurigheid"))
+            nauwkeurigheid = float (self.Request.LeesString ("teken-nauwkeurigheid"))
         except:
-            self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("nauwkeurigheid") + '"')
+            self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("teken-nauwkeurigheid") + '"')
             return None
         return nauwkeurigheid * 0.1
 

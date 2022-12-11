@@ -55,6 +55,8 @@ class GIOWijziging (GeoManipulatie):
             x = spec.get (key)
             return x if not x is None else self.Request._FormData.get (key)
 
+        succes = True
+
         #--------------------------------------------------------------
         #
         # Tonen van GIO's
@@ -76,17 +78,23 @@ class GIOWijziging (GeoManipulatie):
                 request._FormData["beschrijving"] = gio.get ("beschrijving")
                 symbolisatie = __Waarde (gio, "symbolisatie")
                 request._FormData["symbolisatie"] = symbolisatie
-                request._FormData["nauwkeurigheid"] = __Waarde (gio, "nauwkeurigheid")
+                request._FormData["teken-nauwkeurigheid"] = __Waarde (gio, "teken-nauwkeurigheid")
+
                 uitvoerder = GeoViewer (request, self.Log)
                 uitvoerder.Generator = self.Generator
+                uitvoerder._NaamIndex = self._NaamIndex
+                uitvoerder._Geometrie = self._Geometrie.get (gio["pad"])
+                uitvoerder._DataNaam = self._DataNaam.get (gio["pad"])
                 if not symbolisatie is None:
                     uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
-                einde = self.Generator.StartSectie ("<h3>" + request.Bestandsnaam ('geometrie') + "</h3>", True)
-                if not uitvoerder._VoerUit ():
-                    return False
+                einde = self.Generator.StartSectie ("<h3>" + request.Bestandsnaam ('geometrie', False) + "</h3>", True)
+                succes = uitvoerder._VoerUit ()
                 self.Generator.VoegHtmlToe (einde)
+                if not succes:
+                    break
 
+                self._NaamIndex = uitvoerder._NaamIndex
                 self._Geometrie[gio["pad"]] = uitvoerder._Geometrie
                 self._DataNaam[gio["pad"]] = uitvoerder._DataNaam
                 if not symbolisatie is None:
@@ -101,7 +109,7 @@ class GIOWijziging (GeoManipulatie):
         #--------------------------------------------------------------
         maakWijzigingLijst = self.Request._FormData.get ('wijziging')
         toonWijzigingLijst = []
-        if not maakWijzigingLijst is None and len (maakWijzigingLijst) > 0:
+        if succes and not maakWijzigingLijst is None and len (maakWijzigingLijst) > 0:
             self.Generator.VoegHtmlToe ('<div class="sectie_maak_gio_wijziging"><h2>Maak GIO-wijziging</h2>')
             altDiv = 0
             for wijziging in maakWijzigingLijst:
@@ -117,9 +125,11 @@ class GIOWijziging (GeoManipulatie):
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
                 symbolisatie = __Waarde (gio, "symbolisatie")
                 request._FormData["symbolisatie"] = symbolisatie
-                request._FormData["nauwkeurigheid"] = __Waarde (wijziging, "nauwkeurigheid")
+                request._FormData["teken-nauwkeurigheid"] = __Waarde (wijziging, "teken-nauwkeurigheid")
+
                 uitvoerder = GIOWijzigingMaker (request, self.Log)
                 uitvoerder.Generator = self.Generator
+                uitvoerder._NaamIndex = self._NaamIndex
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._WasDataNaam = self._DataNaam.get (wijziging["was"])
                 uitvoerder._Wordt = self._Geometrie.get (wijziging["wordt"])
@@ -127,12 +137,14 @@ class GIOWijziging (GeoManipulatie):
                 if not symbolisatie is None:
                     uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
-                wijziging["wijziging"] = request.Bestandsnaam ('was') + ' &rarr; ' + request.Bestandsnaam ('wordt')
+                wijziging["wijziging"] = request.Bestandsnaam ('was', False) + ' &rarr; ' + request.Bestandsnaam ('wordt', False)
                 einde = self.Generator.StartSectie ("<h3>" + wijziging["wijziging"] + "</h3>", True)
-                if not uitvoerder._VoerUit ():
-                    return False
+                succes = uitvoerder._VoerUit ()
                 self.Generator.VoegHtmlToe (einde)
+                if not succes:
+                    break
 
+                self._NaamIndex = uitvoerder._NaamIndex
                 self._Geometrie[wijziging["was"]] = uitvoerder._Was
                 self._DataNaam[wijziging["was"]] = uitvoerder._WasDataNaam
                 if not symbolisatie is None:
@@ -148,7 +160,7 @@ class GIOWijziging (GeoManipulatie):
         # Tonen van GIO-wijzigingen
         #
         #--------------------------------------------------------------
-        if len(toonWijzigingLijst) > 0:
+        if succes and len(toonWijzigingLijst) > 0:
             self.Generator.VoegHtmlToe ('<div class="sectie_toon_gio_wijziging"><h2>Toon GIO-wijziging</h2>')
             altDiv = 0
             for wijziging in toonWijzigingLijst:
@@ -163,8 +175,10 @@ class GIOWijziging (GeoManipulatie):
                 request._FormData["was"] = wijziging["was"]
                 symbolisatie = __Waarde (gio, "symbolisatie")
                 request._FormData["symbolisatie"] = symbolisatie
+
                 uitvoerder = GIOWijzigingViewer (request, self.Log)
                 uitvoerder.Generator = self.Generator
+                uitvoerder._NaamIndex = self._NaamIndex
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._WasDataNaam = self._DataNaam.get (wijziging["was"])
                 uitvoerder._Wijziging = wijziging["data"]
@@ -172,13 +186,17 @@ class GIOWijziging (GeoManipulatie):
                     uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
                 einde = self.Generator.StartSectie ("<h3>" + wijziging["wijziging"] + "</h3>", True)
-                if not uitvoerder._VoerUit ():
-                    return False
+                succes = uitvoerder._VoerUit ()
                 self.Generator.VoegHtmlToe (einde)
+                if not succes:
+                    break
 
+                self._NaamIndex = uitvoerder._NaamIndex
                 self._Geometrie[gio["pad"]] = uitvoerder._Geometrie
                 self._DataNaam[gio["pad"]] = uitvoerder._DataNaam
                 if not symbolisatie is None:
                     self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
 
             self.Generator.VoegHtmlToe ('</div>')
+
+        return succes

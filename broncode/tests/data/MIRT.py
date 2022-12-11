@@ -54,6 +54,7 @@ for jaar in jaren:
 
     ditJaar = {}
     index = 0
+    projectIndex = 0
     for gem in gml:
         code = gem.find (ns_mirt + 'mirtnrid').text.strip ()
         realisatie = gem.find (ns_mirt + 'startreali').text.strip ()
@@ -82,6 +83,7 @@ for jaar in jaren:
         else:
             geo = [geo]
 
+        projectIndex += 1
         for lijn in geo:
             lijn.attrib["srsName"] = "urn:ogc:def:crs:EPSG::28992"
             lijnXml = ET.tostring (lijn, encoding='unicode')
@@ -91,6 +93,7 @@ for jaar in jaren:
                 raise jaar + '/' + str(code) + ' gml: ' + str (e)
             lijst.append ({
                 'ID': index,
+                'Project': projectIndex,
                 'Naam': gem.find (ns_mirt + 'project').text,
                 'GIOdeel' : onderwerp,
                 'Geometrie': lijnXml,
@@ -200,8 +203,15 @@ def __GIO (subdir, jaar, multiLijnen, attribuut):
                             __Locatie (gio_delen[onderwerp], [project])
             else:
                 for onderwerp, projecten in mirt[jaar].items ():
+                    geoPerLocatie = {}
                     for project in projecten:
-                        __Locatie (gio_delen[onderwerp], [project])
+                        lijst = geoPerLocatie.get (project["Project"])
+                        if lijst is None:
+                            geoPerLocatie[project["Project"]] = [project]
+                        else:
+                            lijst.append (project)
+                    for projecten in geoPerLocatie.values ():
+                        __Locatie (gio_delen[onderwerp], projecten)
 
         gml_file.write ('''
     </geo:locaties>

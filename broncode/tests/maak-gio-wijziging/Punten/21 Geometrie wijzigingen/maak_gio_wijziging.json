@@ -1,5 +1,5 @@
 {
   "was": "testdata_was_punten.gml",
   "wordt": "testdata_wordt_punten.gml",
-  "nauwkeurigheid": 10
+  "teken-nauwkeurigheid": 10
 }

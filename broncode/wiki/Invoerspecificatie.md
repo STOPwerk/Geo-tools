@@ -32,7 +32,7 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
 {
     "geometrie": "geometrische_data.gml",
     "symbolisatie": "style.xml",
-    "nauwkeurigheid": 1,
+    "teken-nauwkeurigheid": 1,
     "beschrijving": "Optionele beschrijving"
 }
 ```
@@ -52,7 +52,7 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
 {
     "was": "GIO_was_versie.gml",
     "wordt": "GIO_wordt_versie.gml",
-    "nauwkeurigheid": 1,
+    "teken-nauwkeurigheid": 1,
     "symbolisatie": "style.xml",
     "wijziging": "GIO_wijziging.gml",
     "beschrijving": "Optionele beschrijving"
@@ -99,14 +99,14 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
         {
             "pad": "gio_1.gml", 
             "beschrijving": "Optionele beschrijving van de GIO",
-            "nauwkeurigheid": 10,
+            "teken-nauwkeurigheid": 10,
             "symbolisatie": "afwijkende_style.xml"
         },
         {"pad": "gio_2.gml" }
         {"pad": "gio_3.gml" }
     ]
     "symbolisatie": "style.xml",
-    "nauwkeurigheid": 1,
+    "teken-nauwkeurigheid": 1,
     "wijziging": [
         {
             "was": "gio_1.gml", 

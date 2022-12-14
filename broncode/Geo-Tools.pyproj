@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t "tests\maak-gio-wijziging\Punten\21 Geometrie wijzigingen"</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests\maak-gio-wijziging\Punten</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -34,6 +34,7 @@
     <Content Include="geo-tools\geo_manipulatie_ol.js" />
     <Content Include="geo-tools\geo_manipulatie_sldreader.js" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.html" />
+    <Content Include="geo-tools\maak_gio_wijziging_resultaat.js" />
     <Content Include="geo-tools\requirements.txt" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.css" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.js" />

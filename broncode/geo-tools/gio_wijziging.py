@@ -74,6 +74,7 @@ class GIOWijziging (GeoManipulatie):
                     altDiv = 3 - altDiv
 
                 request = Parameters ({}, None, self.Request._Pad)
+                request.KanBestandenSchrijven = False
                 request._FormData["geometrie"] = gio["pad"]
                 request._FormData["beschrijving"] = gio.get ("beschrijving")
                 symbolisatie = __Waarde (gio, "symbolisatie")
@@ -82,6 +83,7 @@ class GIOWijziging (GeoManipulatie):
 
                 uitvoerder = GeoViewer (request, self.Log)
                 uitvoerder.Generator = self.Generator
+                uitvoerder._DefaultSymbolenToegevoegd = self._DefaultSymbolenToegevoegd
                 uitvoerder._NaamIndex = self._NaamIndex
                 uitvoerder._Geometrie = self._Geometrie.get (gio["pad"])
                 uitvoerder._DataNaam = self._DataNaam.get (gio["pad"])
@@ -120,6 +122,7 @@ class GIOWijziging (GeoManipulatie):
                     altDiv = 3 - altDiv
 
                 request = Parameters ({}, None, self.Request._Pad)
+                request.KanBestandenSchrijven = False
                 request._FormData["was"] = wijziging["was"]
                 request._FormData["wordt"] = wijziging["wordt"]
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
@@ -129,6 +132,7 @@ class GIOWijziging (GeoManipulatie):
 
                 uitvoerder = GIOWijzigingMaker (request, self.Log)
                 uitvoerder.Generator = self.Generator
+                uitvoerder._DefaultSymbolenToegevoegd = self._DefaultSymbolenToegevoegd
                 uitvoerder._NaamIndex = self._NaamIndex
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._WasDataNaam = self._DataNaam.get (wijziging["was"])
@@ -138,9 +142,7 @@ class GIOWijziging (GeoManipulatie):
                     uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
                 wijziging["wijziging"] = request.Bestandsnaam ('was', False) + ' &rarr; ' + request.Bestandsnaam ('wordt', False)
-                einde = self.Generator.StartSectie ("<h3>" + wijziging["wijziging"] + "</h3>", True)
-                succes = uitvoerder._VoerUit ()
-                self.Generator.VoegHtmlToe (einde)
+                succes = uitvoerder._VoerUit (wijziging["wijziging"])
                 if not succes:
                     break
 
@@ -149,7 +151,7 @@ class GIOWijziging (GeoManipulatie):
                 self._DataNaam[wijziging["was"]] = uitvoerder._WasDataNaam
                 if not symbolisatie is None:
                     self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
-                if not uitvoerder._Wijziging is None:
+                if not uitvoerder._Wijziging is None and request.LeesString ("toon", True) == 'true':
                     wijziging["data"] = uitvoerder._Wijziging
                     toonWijzigingLijst.append (wijziging)
 
@@ -171,13 +173,14 @@ class GIOWijziging (GeoManipulatie):
                     altDiv = 3 - altDiv
 
                 request = Parameters ({}, None, self.Request._Pad)
-                uitvoerder.Generator = self.Generator
+                request.KanBestandenSchrijven = False
                 request._FormData["was"] = wijziging["was"]
                 symbolisatie = __Waarde (gio, "symbolisatie")
                 request._FormData["symbolisatie"] = symbolisatie
 
                 uitvoerder = GIOWijzigingViewer (request, self.Log)
                 uitvoerder.Generator = self.Generator
+                uitvoerder._DefaultSymbolenToegevoegd = self._DefaultSymbolenToegevoegd
                 uitvoerder._NaamIndex = self._NaamIndex
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._WasDataNaam = self._DataNaam.get (wijziging["was"])

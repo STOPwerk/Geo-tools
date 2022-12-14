@@ -1,11 +1,12 @@
 {
-    "GeoTools_Url": "https://github.com/STOPwerk/Geo-tools/",
-    "GeoTools_Online_Url": "https://geo-tools.vercel.app/",
-    "VersiebeheerSimulator_Url": "https://github.com/STOPwerk/Versiebeheer-simulator/",
-    "STOP_Documentatie_Url": "https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/",
-    "STOP_Voorbeelden_Url": "https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeelden",
-    "Basisgeometrie_Url": "https://docs.geostandaarden.nl/nen3610/basisgeometrie/",
-    "STOPwerk_Github_user": "STOPwerk",
-    "STOPwerk_Github_email": "frank.robijn@koop.overheid.nl",
-    "VERSIE": "2022-11-28 22:22:00"
+  "GeoTools_Url": "https://github.com/STOPwerk/Geo-tools/",
+  "GeoTools_Online_Url": "https://geo-tools.vercel.app/",
+  "VersiebeheerSimulator_Url": "https://github.com/STOPwerk/Versiebeheer-simulator/",
+  "STOP_Documentatie_Url": "https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/",
+  "STOP_Voorbeelden_Url": "https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeelden",
+  "IMOP_Versie": "2.0.0-rc",
+  "Basisgeometrie_Url": "https://docs.geostandaarden.nl/nen3610/basisgeometrie/",
+  "STOPwerk_Github_user": "STOPwerk",
+  "STOPwerk_Github_email": "frank.robijn@koop.overheid.nl",
+  "VERSIE": "2022-11-28 22:22:00"
 }

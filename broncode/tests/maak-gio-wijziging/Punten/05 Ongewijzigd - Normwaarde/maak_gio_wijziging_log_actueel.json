@@ -1,1 +1,6 @@
-[]
+[
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Oeps, deze fout is niet verwacht: 'Wijzigingen' object has no attribute 'OngewijzigdeGeometrie'"
+    }
+]

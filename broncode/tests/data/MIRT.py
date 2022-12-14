@@ -294,5 +294,5 @@ for mapPad in symbolisatie.GIOMappen ():
             { "was": 'mirt_' + str(jaren[0]) + '.gml', "wordt": 'mirt_' + str(jaren[-1]) + '.gml' }
         ],
         'symbolisatie': symbolisatie.SymbolisatiePad (mapPad, ''),
-        'nauwkeurigheid': nauwkeurigheid
+        'teken-nauwkeurigheid': nauwkeurigheid
     })

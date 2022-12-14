@@ -24,7 +24,7 @@
 		<geo:Locatie>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
-					<basisgeo:id>37b0a09f-36a0-4e69-80c2-002022000000</basisgeo:id>
+					<basisgeo:id>37b0a09f-36a0-4e69-80c2-002022000001</basisgeo:id>
 					<basisgeo:geometrie>
 						<gml:LineString srsName="urn:ogc:def:crs:EPSG::28992" srsDimension="2" gml:id="mirt_lijnen_fase.1.shape">
 							<gml:posList>231474.0 564325.0 

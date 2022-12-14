@@ -63,6 +63,7 @@ class Voorbeeld (GIOWijzigingMaker):
             request = Parameters.Lees (log, specificatie.Pad)
             if not request is None:
                 log.Informatie ('Voer het voorbeeld "' + specificatie.Titel + '" uit')
+                request._FormData["titel"] = specificatie.Titel
                 return specificatie.VoerUit (request, log)
 
         except Exception as e:
@@ -87,9 +88,6 @@ class Voorbeeld (GIOWijzigingMaker):
             self.Volgorde = volgorde
             self.VoerUit = uitvoering
 
-        def Html (self):
-            return '<a href="start_voorbeeld?index=' + str(self.Index) + '">' + self.Titel + '</a>'
-
     class VoorbeeldDirectory:
         def __init__ (self, path, name, top):
             self.Pad = path
@@ -108,15 +106,15 @@ class Voorbeeld (GIOWijzigingMaker):
                 elif not top is None and fd.is_file ():
                     maker = Voorbeeld.VoorbeeldDirectory._Specs.get (fd.name)
                     if not maker is None:
-                        spec = Voorbeeld.VoorbeeldSpecificatie (fd.path, maker[0], maker[1], maker[2], len (top.AlleSpecificaties))
+                        spec = Voorbeeld.VoorbeeldSpecificatie (fd.path, maker[0], self.Naam, maker[1], len (top.AlleSpecificaties))
                         top.AlleSpecificaties.append (spec)
                         self.Specificaties.append (spec)
 
         _Specs = {
-                'gio_wijziging.json' : (1, "Toon de GIO;s, maak en toon de GIO-wijziging(en)", GIOWijziging.ResultaatHtml),
-                'toon_geo.json' : (2, 'Toon de GIO', GeoViewer.ResultaatHtml), 
-                'maak_gio_wijziging.json' : (3, 'Maak de GIO-wijziging', GIOWijzigingMaker.ResultaatHtml), 
-                'toon_gio_wijziging.json' : (4, 'Toon de GIO-wijziging', GIOWijzigingViewer.ResultaatHtml)
+                'gio_wijziging.json' : (1, GIOWijziging.ResultaatHtml),
+                'toon_geo.json' : (2, GeoViewer.ResultaatHtml), 
+                'maak_gio_wijziging.json' : (3, GIOWijzigingMaker.ResultaatHtml), 
+                'toon_gio_wijziging.json' : (4, GIOWijzigingViewer.ResultaatHtml)
             } 
 
         def Html (self):

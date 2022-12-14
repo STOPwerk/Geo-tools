@@ -35,28 +35,23 @@ class Kaartgegevens {
 
 
 class Kaart {
-    constructor() {
+    constructor(tekennauwkeurigheid) {
+        this._TekenNauwkeurigheid = tekennauwkeurigheid;
         this._Toplagen = [];
-        this._OudLagen = [];
-        this._NieuwLagen = [];
-        this._Onderlagen = [];
+        this._Lagen = [];
+        this._ToonSlider = false;
         this._BBox = false;
         this._LagenMetProperties = 0;
     }
     static EPSG28992 = new ol.proj.Projection('urn:ogc:def:crs:EPSG::28992');
 
-    VoegOnderlaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
-        this._MaakKaartlaag(this._Onderlagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
-        return this;
-    }
-
-    VoegToplaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
-        this._MaakKaartlaag(this._Toplagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
+    VoegLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
+        this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         return this;
     }
 
     VoegOudLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
-        var layer = this._MaakKaartlaag(this._OudLagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
+        var layer = this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         var self = this;
         layer.on('prerender', function (event) {
             var ctx = event.context;
@@ -70,10 +65,11 @@ class Kaart {
             var ctx = event.context;
             ctx.restore();
         });
+        this._ToonSlider = true;
         return this;
     }
     VoegNieuwLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
-        var layer = this._MaakKaartlaag(this._NieuwLagen, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
+        var layer = this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
         var self = this;
         layer.on('prerender', function (event) {
             var ctx = event.context;
@@ -87,10 +83,11 @@ class Kaart {
             var ctx = event.context;
             ctx.restore();
         });
+        this._ToonSlider = true;
         return this;
     }
 
-    _MaakKaartlaag(collectie, naam, dataNaam, symbolisatieNaam, inControls, toonInitieel) {
+    _MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel) {
         var geoJson = Kaartgegevens.Instantie._GeoJSON[dataNaam];
         if (this._BBox === false) {
             this._BBox = geoJson.bbox;
@@ -109,7 +106,7 @@ class Kaart {
             }),
             style: Kaartgegevens.Instantie._Symbolisaties[symbolisatieNaam]
         });
-        collectie.push(layer);
+        this._Lagen.push(layer);
 
         if (geoJson.properties !== undefined) {
             this._LagenMetProperties++;
@@ -142,13 +139,14 @@ class Kaart {
         var zoomLevelX = Math.max(Math.floor(Math.log2((kaartElementWidth * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[2] - this._BBox[0]))), 0);
         var zoomLevelY = Math.max(Math.floor(Math.log2((kaartElementHeight * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[3] - this._BBox[1]))), 0);
         zoomLevel += (zoomLevelX < zoomLevelY ? zoomLevelX : zoomLevelY);
+        this._SliderPositie = kaartElementWidth / 2;
 
         // Achtergrondkaart
         var matrixIds = [];
         for (var z = 0; z < Kaart._BGT_Resolutions.length; z++) {
             matrixIds.push('urn:ogc:def:crs:EPSG::28992:' + z);
         }
-        var mapLayers = [new ol.layer.Tile({
+        self._Lagen.splice(0, 0, new ol.layer.Tile({
             extent: Kaart._BGT_BBox,
             source: new ol.source.WMTS({
                 url: 'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0',
@@ -162,28 +160,7 @@ class Kaart {
                     matrixIds: matrixIds
                 })
             })
-        })];
-
-        // Eerst de onderste lagen
-        for (var i = 0; i < this._Onderlagen.length; i++) {
-            mapLayers.push(this._Onderlagen[i]);
-        }
-
-        // Dan de oud/nieuw lagen
-        if (this._OudLagen.length > 0 || this._NieuwLagen.length > 0) {
-            this._SliderPositie = kaartElementWidth / 2;
-            for (var i = 0; i < this._OudLagen.length; i++) {
-                mapLayers.push(this._OudLagen[i]);
-            }
-            for (var i = 0; i < this._NieuwLagen.length; i++) {
-                mapLayers.push(this._NieuwLagen[i]);
-            }
-        }
-
-        // Dan de bovenste lagen
-        for (var i = 0; i < this._Toplagen.length; i++) {
-            mapLayers.push(this._Toplagen[i]);
-        }
+        }));
 
         // Tot slot de overlays / popup
         var mapOverlays = []
@@ -214,15 +191,19 @@ class Kaart {
         }
 
         // Maak het kaartbeeld
+        var view = new ol.View({
+            center: ol.extent.getCenter(this._BBox),
+            zoom: zoomLevel
+        });
         var map = new ol.Map({
-            layers: mapLayers,
+            layers: self._Lagen,
             overlays: mapOverlays,
             target: kaartElementId,
-            view: new ol.View({
-                center: ol.extent.getCenter(this._BBox),
-                zoom: zoomLevel
-            })
+            view: view
         });
+        if (this._TekenNauwkeurigheid) {
+            map.addControl(new ol.control.ScaleLine({ units: 'metric' }));
+        }
         map.render();
 
         if (this._LagenMetProperties > 0) {
@@ -251,7 +232,7 @@ class Kaart {
                 }
             });
         }
-        if (this._OudLagen.length > 0 || this._NieuwLagen.length > 0) {
+        if (this._ToonSlider) {
             var self = this;
             new Slider(kaartElement, function (positie) {
                 self._SliderPositie = positie;
@@ -259,31 +240,50 @@ class Kaart {
             })
         }
 
-        this._AanUitLagen = {};
+        var aanUitLagen = [];
+        for (var i = self._Lagen.length - 1; i >= 0; i--) {
+            if (self._Lagen[i]._AanUit) {
+                aanUitLagen.push(self._Lagen[i]);
+            }
+        }
         var aanUitLagenElt = null;
-        for (var i = mapLayers.length - 1; i >= 0; i--) {
-            if (mapLayers[i]._AanUit) {
-                if (aanUitLagenElt === null) {
-                    aanUitLagenElt = document.createElement('p');
-                    aanUitLagenElt.innerHTML = 'Gegevens in de kaart die wel/niet zichtbaar gemaakt kunnen worden:</br>'
-                    kaartElement.insertAdjacentElement('afterend', aanUitLagenElt);
-                } else {
+        if (aanUitLagen.length > 0 || this._TekenNauwkeurigheid) {
+            var elt = document.createElement('p');
+            kaartElement.insertAdjacentElement('afterend', elt); var parent = elt;
+            elt = document.createElement('table'); parent.appendChild(elt); parent = elt;
+            elt = document.createElement('tr'); parent.appendChild(elt); parent = elt;
+            elt = document.createElement('td'); parent.appendChild(elt);
+            if (aanUitLagen.length > 0) {
+                aanUitLagenElt = elt
+                aanUitLagenElt.innerHTML = 'Gegevens in de kaart die wel/niet zichtbaar gemaakt kunnen worden:</br>';
+            }
+            if (this._TekenNauwkeurigheid) {
+                elt.width = '100%';
+                elt = document.createElement('td'); parent.appendChild(elt);
+                new TekenNauwkeurigheidSchaal(this._TekenNauwkeurigheid, elt, kaartElementId, view);
+            }
+        }
+
+        this._AanUitLagen = {};
+        for (var i = 0; i < aanUitLagen.length; i++) {
+            if (aanUitLagen[i]._AanUit) {
+                if (i > 0) {
                     aanUitLagenElt.append(document.createElement('br'));
                 }
                 var ctrl = document.createElement('input');
                 ctrl.type = 'checkbox';
                 ctrl.id = kaartElementId + '_laag_' + i;
-                ctrl.checked = mapLayers[i].getVisible();
+                ctrl.checked = aanUitLagen[i].getVisible();
                 aanUitLagenElt.append(ctrl);
                 var label = document.createElement('label');
                 label.htmlFor = ctrl.id;
-                label.innerText = mapLayers[i]._AanUit
+                label.innerText = aanUitLagen[i]._AanUit
                 aanUitLagenElt.append(label);
                 this._AanUitLagen[ctrl.id] = [];
-                for (var j = 0; j <= i; j++) {
-                    if (mapLayers[j]._AanUit == mapLayers[i]._AanUit) {
-                        this._AanUitLagen[ctrl.id].push(mapLayers[j]);
-                        mapLayers[j]._AanUit = false;
+                for (var j = aanUitLagen.length - 1; j >= i; j--) {
+                    if (aanUitLagen[j]._AanUit == aanUitLagen[i]._AanUit) {
+                        this._AanUitLagen[ctrl.id].push(aanUitLagen[j]);
+                        aanUitLagen[j]._AanUit = false;
                     }
                 }
                 ctrl.addEventListener('click', (e) => {
@@ -300,12 +300,42 @@ class Kaart {
     static _BGT_Resolutions = [3440.64, 1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68, 0.84, 0.42];
 }
 
+class TekenNauwkeurigheidSchaal {
+    constructor(tekennauwkeurigheid, inElement, kaartElementId, view) {
+        inElement.style.textAlign = 'center';
+        inElement.style.whiteSpace = 'nowrap';
+        inElement.innerHTML = 'Teken-nauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="tekennauwkeurigheid"></div></br>' + tekennauwkeurigheid + '&nbsp;decimeter</br>';
+        this._TekenNauwkeurigheid = tekennauwkeurigheid / 10;
+        this._View = view;
+        this._SchaalElement = document.getElementById(kaartElementId + '_tn');
+        this._Schaal();
+        var self = this;
+        view.on('change:resolution', function () {
+            self._Schaal();
+        });
+    }
+    _Schaal() {
+        var resolution = this._View.getResolution();
+        if (resolution) {
+            var pixels = this._TekenNauwkeurigheid / resolution;
+            if (pixels < 1) {
+                this._SchaalElement.style.display = 'none';
+            } else {
+                this._SchaalElement.style.width = pixels + 'px';
+                this._SchaalElement.style.height = pixels + 'px';
+                this._SchaalElement.style.display = 'inline-block';
+            }
+        } else {
+            this._SchaalElement.style.display = 'none';
+        }
+    }
+}
+
 class Slider {
     // Inspiratie: https://www.w3schools.com/howto/howto_js_image_comparison.asp
     constructor(kaartElement, onSlide) {
         this._Kaartelement = kaartElement;
-        var kaartRect = kaartElement.getBoundingClientRect();
-        this._Left = kaartRect.left;
+        var kaartRect = this._Kaartelement.getBoundingClientRect();
         this._Width = kaartRect.right - kaartRect.left;
         this._OnSlide = onSlide;
         this._Clicked = false;
@@ -315,14 +345,17 @@ class Slider {
         this._Sliders[1].setAttribute("class", "kaart-slider lijn");
         this._Sliders[1].style.height = (kaartRect.bottom - kaartRect.top) + "px";
         var self = this;
+        var centerY = - (kaartRect.bottom - kaartRect.top) / 2;
         for (var i = 0; i < this._Sliders.length; i++) {
-            var slider = this._Sliders[i]
-            kaartElement.parentElement.insertBefore(slider, kaartElement);
-            slider.style.top = ((kaartRect.top + kaartRect.bottom) / 2 - slider.offsetHeight / 2) + "px";
-            slider.style.left = (this._Left + this._Width / 2 - slider.offsetWidth / 2) + "px";
+            var slider = this._Sliders[i];
+            this._Kaartelement.appendChild(slider);
+            slider.style.top = (centerY - slider.offsetHeight / 2) + "px";
+            slider.style.left = (this._Width / 2 - slider.offsetWidth / 2) + "px";
             slider.addEventListener("mousedown", (e) => self._SlideReady(e));
             window.addEventListener("mouseup", (e) => self._SlideFinish(e));
             slider.addEventListener("touchstart", (e) => self._SlideReady(e));
+            var sliderRect = slider.getBoundingClientRect();
+            centerY -= sliderRect.bottom - sliderRect.top;
         }
     }
     _SlideReady(e) {
@@ -342,7 +375,7 @@ class Slider {
         if (pos > this._Width) pos = this._Width;
         for (var i = 0; i < this._Sliders.length; i++) {
             var slider = this._Sliders[i]
-            slider.style.left = this._Left + (pos - (slider.offsetWidth / 2)) + "px";
+            slider.style.left = (pos - (slider.offsetWidth / 2)) + "px";
         }
         this._OnSlide(pos)
     }

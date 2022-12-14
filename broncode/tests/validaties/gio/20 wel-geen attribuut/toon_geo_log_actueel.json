@@ -1,6 +1,14 @@
 [
     {
         "Ernst": "FOUT",
-        "Tekst": "Basisgeometrie-id is verplicht in een {https://standaarden.overheid.nl/stop/imop/geo/}Locatie"
+        "Tekst": "Alle locaties moeten een waarde voor \"kwalitatieveNormwaarde\" hebben"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'testdata_punten.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

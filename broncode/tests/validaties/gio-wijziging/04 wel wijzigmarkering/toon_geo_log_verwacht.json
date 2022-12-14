@@ -2,5 +2,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "wijzigmarkering mag niet aanwezig zijn want de GIO bestaat uit punten"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'GIO-wijziging-punten.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

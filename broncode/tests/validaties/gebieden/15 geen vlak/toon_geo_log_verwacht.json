@@ -2,5 +2,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "Gebiedsmarkering/effectgebied mag alleen vlakken bevatten"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'testdata_gebiedsmarkering.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

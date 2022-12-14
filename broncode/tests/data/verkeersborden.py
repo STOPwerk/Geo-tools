@@ -280,5 +280,5 @@ for mapPad in symbolisatie.GIOMappen ():
                 { "was": 'verkeersborden_STOP_was.gml', "wordt": 'verkeersborden_STOP_wordt.gml' }
             ],
             'symbolisatie': symbolisatie.SymbolisatiePad (mapPad, ''),
-            'nauwkeurigheid': nauwkeurigheid
+            'teken-nauwkeurigheid': nauwkeurigheid
         })

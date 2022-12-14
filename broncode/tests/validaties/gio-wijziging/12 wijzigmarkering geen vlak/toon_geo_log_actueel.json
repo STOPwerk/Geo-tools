@@ -2,5 +2,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "wijzigmarkering mag alleen vlakken bevatten"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'GIO-wijziging-vlakken.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

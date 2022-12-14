@@ -42,7 +42,7 @@ met:
 | --------- | ------------ |
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html). Optioneel; als dit niet gegeven is worden alle gebieden/lijnen/punten op een standaard manier weergegeven. |
-| `nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
+| `teken-nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
 | `beschrijving` | Optioneel: een beschrijving van het GIO die in de resultaatpagina wordt opgenomen |
 
 
@@ -64,7 +64,7 @@ met:
 | --------- | ------------ |
 | `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van de GIO bevat.|
 | `wordt` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de nieuwe (wordt-)versie van de GIO bevat.|
-| `nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
+| `teken-nauwkeurigheid` | De (juridische) [teken-nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
 | `wijziging` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) met de GIO-wijziging. Dit bestand kan als invoer gebruikt worden voor de [Toon GIO wijziging](#toon-gio-wijziging) geo-tool. |
 | `beschrijving` | Optioneel: een beschrijving van de GIO-wijziging die in de resultaatpagina wordt opgenomen |
@@ -107,11 +107,14 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
     ]
     "symbolisatie": "style.xml",
     "teken-nauwkeurigheid": 1,
+    "optimalisatie": false,
     "wijziging": [
         {
             "was": "gio_1.gml", 
             "wordt": "gio_2.gml", 
-            "beschrijving": "Optionele beschrijving van de GIO-wijziging"
+            "teken-nauwkeurigheid": 10,
+            "beschrijving": "Optionele beschrijving van de GIO-wijziging",
+            "toon": true | false
         },
         { "was": "gio_2.gml", "wordt": "gio_3.gml"},
         { "was": "gio_1.gml", "wordt": "gio_3.gml"}
@@ -124,18 +127,24 @@ Elk `geometrie` element wordt omgevormd naar een [toon_geo.json](#toon-geo) spec
 | ---------------------- | --------------------- |
 | [toon_geo.json](#toon-geo): `geometrie` | `geometrie`: `pad` |
 | [toon_geo.json](#toon-geo): `symbolisatie` | `geometrie`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
-| [toon_geo.json](#toon-geo): `nauwkeurigheid` | `geometrie`: `nauwkeurigheid` indien aanwezig, anderd `nauwkeurigheid` |
+| [toon_geo.json](#toon-geo): `teken-nauwkeurigheid` | `geometrie`: `teken-nauwkeurigheid` indien aanwezig, anderd `teken-nauwkeurigheid` |
 | [toon_geo.json](#toon-geo): `beschrijving` | `geometrie`: `beschrijving` |
 
-Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak-gio-wijziging) en een  [toon_gio_wijziging.json](#toon-gio-wijziging) specificatie en daarna opeenvolgend uitgevoerd:
+Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak-gio-wijziging) en uitgevoerd:
 
 | Parameter van operatie | In deze specificatie: |
 | ---------------------- | --------------------- |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `was` | `wijziging`: `was` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `wordt` | `wijziging`: `wordt` |
-| [maak_gio_wijziging.json](#maak-gio-wijziging): `nauwkeurigheid` | `wijziging`: `nauwkeurigheid` indien aanwezig, anders `nauwkeurigheid` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `teken-nauwkeurigheid` | `wijziging`: `teken-nauwkeurigheid` indien aanwezig, anders `teken-nauwkeurigheid` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving` |
+
+Vervolgens wordt elk `wijziging` element omgevormd naar een [toon_gio_wijziging.json](#toon-gio-wijziging) specificatie en uitgevoerd:
+
+| Parameter van operatie | In deze specificatie: |
+| ---------------------- | --------------------- |
+| toon-gio-wijziging niet uitvoeren | `wijziging`: `toon` = `false` (waarde van `toon` is `true` indien niet opgegeven) |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `was` | `wijziging`: `was` |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 

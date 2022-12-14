@@ -87,7 +87,7 @@ class GeoViewer (GeoManipulatie):
         self.Log.Informatie ('Maak de kaartweergave')
         if self._DataNaam is None:
             self._DataNaam = self.VoegGeoDataToe (self._Geometrie)
-        self.ToonKaart ('kaart.VoegOnderlaagToe ("' + self._Geometrie.Soort + '", "' + self._DataNaam + '", "' + self._SymbolisatieNaam + '");')
+        self.ToonKaart ('kaart.VoegLaagToe ("' + self._Geometrie.Soort + '", "' + self._DataNaam + '", "' + self._SymbolisatieNaam + '");')
 
         if self._Geometrie.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
             self.Log.Informatie ('Valideer de GIO op teken-nauwkeurigheid')
@@ -141,9 +141,9 @@ class GeoViewer (GeoManipulatie):
     #------------------------------------------------------------------
     def _ValideerGIOPunten (self, punten: List[GeoManipulatie.EnkeleGeometrie]) -> Tuple[bool,float]:
         """Implementatie van ValideerGIO voor punt-geometrieën"""
-        self.Generator.VoegHtmlToe ('''Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de teken-nauwkeurigheid.''')
-        drempel = self.NauwkeurigheidInMeter ()
-        drempel *= drempel
+        self.Generator.VoegHtmlToe ('''<p>Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de teken-nauwkeurigheid.''')
+        nauwkeurigheid = self.NauwkeurigheidInMeter ()
+        drempel = nauwkeurigheid * nauwkeurigheid
         minimaleAfstand = None
         afstanden = {}
         aantal = {}
@@ -157,22 +157,42 @@ class GeoViewer (GeoManipulatie):
 
         # Vind alle punten die te dicht bij een ander punt liggen
         for i in range (0, len (punten)):
+            locatie_id_i = punten[i].Locatie['properties']['id']
             coord_i = punten[i].Geometrie['geometry']['coordinates']
             for j in range (i+1, len (punten)):
-                coord_j = punten[j].Geometrie['geometry']['coordinates']
-                afstand = (coord_i[0] - coord_j[0]) * (coord_i[0] - coord_j[0]) + (coord_i[1] - coord_j[1]) * (coord_i[1] - coord_j[1])
-                if afstand < drempel:
-                    __Afstand (i, afstand)
-                    __Afstand (j, afstand)
-                    if minimaleAfstand is None or afstand < minimaleAfstand:
-                        minimaleAfstand  = afstand
+                if punten[j].Locatie['properties']['id'] != locatie_id_i:
+                    coord_j = punten[j].Geometrie['geometry']['coordinates']
+                    afstand = (coord_i[0] - coord_j[0]) * (coord_i[0] - coord_j[0]) + (coord_i[1] - coord_j[1]) * (coord_i[1] - coord_j[1])
+                    if afstand < drempel:
+                        __Afstand (i, afstand)
+                        __Afstand (j, afstand)
+                        if minimaleAfstand is None or afstand < minimaleAfstand:
+                            minimaleAfstand  = afstand
+
+        # Alleen voor weergave: teken een buffer om de punten
+        dikkePunten = GeoManipulatie.GeoData ()
+        dikkePunten.Dimensie = 2
+        for i in range (0, len (punten)):
+            dikkePunt = self.MaakShapelyShape (punten[i].Geometrie).buffer (0.5*nauwkeurigheid)
+            dikkePunten.Locaties.append ({ 
+                'type': 'Feature', 
+                'geometry': mapping (dikkePunt)
+            })
+        dataNaam = self.VoegGeoDataToe (dikkePunten)
+        symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
+        kaartScript = 'kaart.VoegLaagToe ("Getekende punt (diameter is teken-afstand)", "' + dataNaam + '", "' + symNaam + '", true, true);'
+
+        symNaam = self.VoegUniformeSymbolisatieToe (0, "#DAE8FC", "#6C8EBF", '0.5')
+        kaartScript += 'kaart.VoegLaagToe ("Geo-informatieobject", "' + self._DataNaam + '", "' + symNaam + '", true, true);'
+
         # Is er een probleem?
         if minimaleAfstand is None:
-            self.Generator.VoegHtmlToe ('Dat is het geval.')
+            self.Generator.VoegHtmlToe ('Dat is het geval.</p>')
             self.Log.Informatie ('Alle punten liggen tenminste ' + self.Request.LeesString ("teken-nauwkeurigheid") + ' decimeter van elkaar af')
-            return (False, None)
         else:
             self.Log.Waarschuwing ('Er zijn ' + str(len (afstanden)) + ' punten die minder dan ' + self.Request.LeesString ("teken-nauwkeurigheid") + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
+            self.Generator.VoegHtmlToe ('Dat is niet het geval; er zijn ' + str(len (afstanden)) + ' punten die te dicht bij elkaar staan.</p>')
+
             problemen = GeoManipulatie.GeoData ()
             problemen.Attributen['d'] = GeoManipulatie.Attribuut ('d', 'Minimale afstand', 'decimeter')
             problemen.Attributen['n'] = GeoManipulatie.Attribuut ('n', 'Te nabije buren')
@@ -183,12 +203,15 @@ class GeoViewer (GeoManipulatie):
                 punt['properties'] = { 'd': round (math.sqrt (100*afstand), 2), 'n': aantal[i] }
                 problemen.Locaties.append (punt);
 
-            self.Generator.VoegHtmlToe ('Dat is niet het geval. De plaatsen waar punten te dicht bij elkaar staan:')
-            gioSym = self.VoegUniformeSymbolisatieToe (0, "#DAE8FC", "#6C8EBF", '0.5')
-            geomNaam = self.VoegGeoDataToe (problemen)
-            geomSym = self.VoegWijzigMarkeringToe ()
-            self.ToonKaart ('kaart.VoegOnderlaagToe ("Geo-informatieobject", "' + self._DataNaam + '", "' + gioSym + '", true, true);kaart.VoegOnderlaagToe ("Problematische geometrie", "' + geomNaam + '", "' + geomSym + '", true, true);')
+            dataNaam = self.VoegGeoDataToe (problemen)
+            symNaam = self.VoegWijzigMarkeringToe (1)
+            kaartScript += 'kaart.VoegLaagToe ("Problematische geometrie", "' + dataNaam + '", "' + symNaam + '", true, true);'
 
+        self.ToonKaart (kaartScript)
+
+        if minimaleAfstand is None:
+            return (False, None)
+        else:
             return (True, round(math.sqrt (100 * minimaleAfstand), 2))
 
     #------------------------------------------------------------------
@@ -281,23 +304,23 @@ Klik op een lijn in de kaart om de uitkomst van de procedure te zien voor een lo
         # Toon de vlakken in een kaart
         dataNaam = self.VoegGeoDataToe (dikkeLijnenData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
-        kaartScript = 'kaart.VoegOnderlaagToe ("Verdikte lijnen", "' + dataNaam + '", "' + symNaam + '", true, true);'
+        kaartScript = 'kaart.VoegLaagToe ("Verdikte lijnen", "' + dataNaam + '", "' + symNaam + '", true, true);'
 
         if len (problemen.Locaties) > 0:
             dataNaam = self.VoegGeoDataToe (problemen)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaartScript += 'kaart.VoegOnderlaagToe ("Gebieden waar afstanden kleiner zijn dan de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);'
+            kaartScript += 'kaart.VoegLaagToe ("Gebieden waar afstanden kleiner zijn dan de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);'
 
         dataNaam = self.VoegGeoDataToe (uitkomstData)
         symNaam = self.VoegUniformeSymbolisatieToe (1, "#0000ff", "#0000ff")
-        kaartScript += 'kaart.VoegOnderlaagToe ("Lijnen uit het GIO", "' + dataNaam + '", "' + symNaam + '", true, true);'
+        kaartScript += 'kaart.VoegLaagToe ("Lijnen uit het GIO", "' + dataNaam + '", "' + symNaam + '", true, true);'
 
         if len (problemen.Locaties) > 0:
             uitkomstData.Locaties = [l for l in uitkomstData.Locaties if l['properties']['p'] != 'ja']
             uitkomstData.Attributen = {}
             dataNaam = self.VoegGeoDataToe (uitkomstData)
             symNaam = self.VoegUniformeSymbolisatieToe (1, "#F8CECC", "#B85450", '0.5')
-            kaartScript += 'kaart.VoegOnderlaagToe ("Lijnen die niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);'
+            kaartScript += 'kaart.VoegLaagToe ("Lijnen die niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);'
 
         self.ToonKaart (kaartScript)
 
@@ -396,21 +419,21 @@ Klik in een gebied in de kaart om de uitkomst van de procedure te zien voor een 
         # Toon de vlakken in een kaart
         dataNaam = self.VoegGeoDataToe (uitkomstData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#ffffff", "#0000ff", '0')
-        kaartScript = 'kaart.VoegOnderlaagToe ("Vlakken uit het GIO", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
+        kaartScript = 'kaart.VoegLaagToe ("Vlakken uit het GIO", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
         if len (problemen.Locaties) > 0:
             uitkomstData.Locaties = [l for l in uitkomstData.Locaties if l['properties']['p'] != 'ja']
             uitkomstData.Attributen = {}
             dataNaam = self.VoegGeoDataToe (uitkomstData)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#F8CECC", "#B85450", '0.5')
-            kaartScript += 'kaart.VoegOnderlaagToe ("Vlakken die niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
+            kaartScript += 'kaart.VoegLaagToe ("Vlakken die niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
 
         dataNaam = self.VoegGeoDataToe (kleinereVlakkenData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
-        kaartScript += 'kaart.VoegOnderlaagToe ("Verkleinde vlakken", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
+        kaartScript += 'kaart.VoegLaagToe ("Verkleinde vlakken", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
         if len (problemen.Locaties) > 0:
             dataNaam = self.VoegGeoDataToe (problemen)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaartScript += 'kaart.VoegOnderlaagToe ("Gebieden waar de vlakken niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
+            kaartScript += 'kaart.VoegLaagToe ("Gebieden waar de vlakken niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
         self.ToonKaart (kaartScript)
 
         return len (problemen.Locaties) > 0

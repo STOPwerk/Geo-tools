@@ -6,5 +6,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "GIO-versie bevat geen FRBRExpression"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'testdata_punten.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

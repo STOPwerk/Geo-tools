@@ -2,5 +2,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "Was-versie en wordt-versie moeten dezelfde soorten geometrieën bevatten (punten, lijnen of vlakken)"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'GIO-wijziging-punten-vlakken.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

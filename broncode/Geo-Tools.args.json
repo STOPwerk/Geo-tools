@@ -11,10 +11,6 @@
       "Command": "-t tests"
     },
     {
-      "Id": "ecb1dd6c-72d6-45fd-abce-6be967b1845d",
-      "Command": "-t tests\\gebieden"
-    },
-    {
       "Id": "3dc35de6-362e-485b-a12b-b5f1daae7fa0",
       "Command": "-t tests\\validaties"
     },

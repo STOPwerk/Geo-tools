@@ -151,7 +151,7 @@ class GeoManipulatie:
 # Inlezen van GML
 #
 #----------------------------------------------------------------------
-    def LeesGeoBestand (self, key : str, verplicht : str) -> GeoData:
+    def LeesGeoBestand (self, key : str, verplicht : bool, bewaarGml = None) -> GeoData:
         """Lees de inhoud van een GIO, effectgebied of gebiedsmarkering.
         Het bestand wordt gevonden aan de hand van de specificatie key / input type="file" control naam.
 
@@ -159,11 +159,14 @@ class GeoManipulatie:
 
         key str        Key waarvoor de data opgehaald moet worden
         verplicht bool Geeft aan dat het bestand aanwezig moet zijn (dus niet optioneel is)
+        bewaarGml lambda  Functie die aangeroepen wordt met de GML van het bestand
 
         Geeft de inhoud van het bestand als GeoData terug, of None als er geen bestand/data is of als er een fout optreedt
         """
         self.Log.Detail ("Lees het GIO, gebiedsmarkering of effectgebied")
         gml = self.Request.LeesBestand (self.Log, key, verplicht)
+        if not bewaarGml is None:
+            bewaarGml (gml)
         if not gml is None:
             data = self._LeesGeoData (gml)
             if data is None:
@@ -570,11 +573,7 @@ class GeoManipulatie:
 
         Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
-        naam = self._DefaultSymbolenToegevoegd.get (geoData.Dimensie)
-        if naam is None:
-            self._DefaultSymbolenToegevoegd[geoData.Dimensie] = naam = self.VoegUniformeSymbolisatieToe (geoData.Dimensie, "#0000FF", "#0000CD")
-        return naam
-
+        return self.VoegUniformeSymbolisatieToe (geoData.Dimensie, "#0000FF", "#0000CD")
 
     def VoegUniformeSymbolisatieToe (self, dimensie : int, vulkleur: str, randkleur: str, opacity : str = '1') -> str:
         """Voeg een STOP symbolisatie toe voor gebruik in kaarten.
@@ -587,8 +586,11 @@ class GeoManipulatie:
 
         Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
-        if dimensie == 0:
-            rule = '''
+        key = vulkleur + '\n' + randkleur + '\n' + opacity
+        naam = self._DefaultSymbolenToegevoegd.get (key)
+        if naam is None:
+            if dimensie == 0:
+                rule = '''
     <Rule>
         <Name>Punt</Name>
         <PointSymbolizer>
@@ -610,8 +612,8 @@ class GeoManipulatie:
             </Graphic>
         </PointSymbolizer>
     </Rule>'''
-        elif dimensie == 1:
-            rule = '''
+            elif dimensie == 1:
+                rule = '''
     <Rule>
         <Name>Lijn</Name>
         <LineSymbolizer>
@@ -623,8 +625,8 @@ class GeoManipulatie:
             </Stroke>
         </LineSymbolizer>
     </Rule>'''
-        elif dimensie == 2:
-            rule = '''
+            elif dimensie == 2:
+                rule = '''
     <Rule>
         <Name>Vlak</Name>
         <PolygonSymbolizer>
@@ -640,7 +642,8 @@ class GeoManipulatie:
             </Stroke>
         </PolygonSymbolizer>
     </Rule>'''
-        return self.VoegSymbolisatieToe (GeoManipulatie._MaakFeatureTypeStyle ([rule]))
+            self._DefaultSymbolenToegevoegd[key] = naam =  self.VoegSymbolisatieToe (GeoManipulatie._MaakFeatureTypeStyle ([rule]))
+        return naam
 
 
     def VoegSymbolisatieToe (self, symbolisatie : str):
@@ -679,19 +682,20 @@ class GeoManipulatie:
 '''.join (rules) + '''
 </FeatureTypeStyle>'''
 
-    def VoegWijzigMarkeringToe (self):
+    def VoegWijzigMarkeringToe (self, dimensie : int, revisie : bool = False):
         """Voeg de symbolisatie voor de speciale wijzigmarkeringen toe en geef de naam terug"""
-        naam = self._DefaultSymbolenToegevoegd.get ('WM')
+        key  = 'WM' + str(dimensie) + str(revisie)
+        naam = self._DefaultSymbolenToegevoegd.get (key)
         if naam is None:
-            self._DefaultSymbolenToegevoegd['WM'] = naam = self.VoegSymbolisatieToe (GeoManipulatie.WijzigMarkeringSymbolisatie ())
+            self._DefaultSymbolenToegevoegd[key] = naam = self.VoegSymbolisatieToe (GeoManipulatie.WijzigMarkeringSymbolisatie (dimensie, revisie))
         return naam
 
     @staticmethod
-    def WijzigMarkeringSymbolisatie ():
+    def WijzigMarkeringSymbolisatie (dimensie : int, revisie : bool = False):
         """Geef de symbolisatie voor de speciale wijzigmarkeringen"""
-        return GeoManipulatie._MaakFeatureTypeStyle ([GeoManipulatie._WijzigMarkeringSymbolisatie])
+        return GeoManipulatie._MaakFeatureTypeStyle ([GeoManipulatie._RevisieMarkeringSymbolisatie[dimensie] if revisie else GeoManipulatie._WijzigMarkeringSymbolisatie[dimensie]])
 
-    _WijzigMarkeringSymbolisatie = '''
+    _WijzigMarkeringSymbolisatie = { 0: '''
     <Rule>
         <Name>Punt</Name>
         <PointSymbolizer>
@@ -733,7 +737,130 @@ class GeoManipulatie:
                 <Rotation>0</Rotation>
             </Graphic>
         </PointSymbolizer>
+    </Rule>''',
+     1: '''
+    <Rule>
+        <Name>Lijn</Name>
+        <LineSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#000000</CssParameter>
+                <CssParameter name="stroke-width">5</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+            </Stroke>
+        </LineSymbolizer>
+        <LineSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#F8CECC</CssParameter>
+                <CssParameter name="stroke-width">3</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+                <CssParameter name="stroke-dasharray">5 5</CssParameter>
+            </Stroke>
+        </LineSymbolizer>
+        <LineSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#82B366</CssParameter>
+                <CssParameter name="stroke-width">3</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+                <CssParameter name="stroke-dasharray">0 5 5</CssParameter>
+            </Stroke>
+        </LineSymbolizer>
+    </Rule>''',
+     2: '''
+    <Rule>
+        <Name>Vlak</Name>
+        <PolygonSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#000000</CssParameter>
+                <CssParameter name="stroke-width">5</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+            </Stroke>
+        </PolygonSymbolizer>
+        <PolygonSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#F8CECC</CssParameter>
+                <CssParameter name="stroke-width">3</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+                <CssParameter name="stroke-dasharray">5 5</CssParameter>
+            </Stroke>
+        </PolygonSymbolizer>
+        <PolygonSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#82B366</CssParameter>
+                <CssParameter name="stroke-width">3</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+                <CssParameter name="stroke-dasharray">0 5 5</CssParameter>
+            </Stroke>
+        </PolygonSymbolizer>
     </Rule>'''
+    }
+
+    _RevisieMarkeringSymbolisatie = { 0: '''
+    <Rule>
+        <Name>Punt</Name>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>star</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#000000</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>35</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>star</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#CCCCCC</SvgParameter><!--#B85450-->
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>29</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+    </Rule>''',
+     1: '''
+    <Rule>
+        <Name>Lijn</Name>
+        <LineSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#000000</CssParameter>
+                <CssParameter name="stroke-width">5</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+            </Stroke>
+        </LineSymbolizer>
+        <LineSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#CCCCCC</CssParameter>
+                <CssParameter name="stroke-width">3</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+            </Stroke>
+        </LineSymbolizer>
+    </Rule>''',
+     2: '''
+    <Rule>
+        <Name>Vlak</Name>
+        <PolygonSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#000000</CssParameter>
+                <CssParameter name="stroke-width">5</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+            </Stroke>
+        </PolygonSymbolizer>
+        <PolygonSymbolizer>
+            <Stroke>
+                <CssParameter name="stroke">#CCCCCC</CssParameter>
+                <CssParameter name="stroke-width">3</CssParameter>
+                <CssParameter name="stroke-linecap">round</CssParameter>
+            </Stroke>
+        </PolygonSymbolizer>
+    </Rule>'''
+    }
 
 #----------------------------------------------------------------------
 #
@@ -755,7 +882,10 @@ class GeoManipulatie:
             self._NaamIndex += 1
             kaartElementId = 'kaart_' + str(self._NaamIndex)
         self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId))
-        self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ();\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '", "900", "600");\n});')
+        nauwkeurigheid = self.Request.LeesString ("teken-nauwkeurigheid");
+        if nauwkeurigheid is None:
+            nauwkeurigheid = ''
+        self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart (' + nauwkeurigheid + ');\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '", "900", "600");\n});')
         return kaartElementId
 
     def _InitialiseerWebpagina (self):

@@ -9,9 +9,14 @@
 #
 #======================================================================
 
-from typing import List, Dict, Tuple
+from typing import List, Dict, Set, Tuple
 
+from pygml.v32 import encode_v32
+from shapely.geometry import mapping
+from lxml import etree
+from datetime import date
 import json
+import os;
 from uuid import uuid4
 
 from applicatie_meldingen import Meldingen
@@ -55,11 +60,7 @@ class GIOWijzigingMaker (GeoManipulatie):
         # Naam waaronder de te gebruiken symbolisatie voor zowel de was- als wordt-versie is geregistreerd
         self._SymbolisatieNaam : str = None
         # Gegevens waaruit de GIO-wijziging wordt samengesteld
-        self._Wijzigingen = GIOWijzigingMaker.Wijzigingen ()
-        # Executietijd voor de analyse van manifest ongewijzigde geometrie-locaties
-        self._Tijd_ViaID = None
-        # Executietijd voor de analyse van de overige locaties
-        self._Tijd_GeoAnalyse = None
+        self._Wijzigingen = None
         # Was-versie van de GIO minus de manifest ongewijzigde locaties
         self._ResterendWas : GeoManipulatie.GeoData = None
         # Naam om de resterend-was-data in de kaart te tonen
@@ -76,28 +77,25 @@ class GIOWijzigingMaker (GeoManipulatie):
         if not self._LeesBestandenEnSpecificatie  ():
             return False
 
+        self._InitialiseerWebpagina ()
+        self.Generator.LeesCssTemplate ('resultaat')
+        self.Generator.LeesJSTemplate ('resultaat')
         einde = self.Generator.StartSectie ("<h3>" + titelBepaling + "</h3>", True)
         if self.Request.LeesString ("beschrijving"):
             self.Generator.VoegHtmlToe ('<p>' + self.Request.LeesString ("beschrijving") + '</p>') 
-
-        self._InitialiseerWebpagina ()
-        self.Generator.LeesCssTemplate ('resultaat')
-        if self._SymbolisatieNaam is None:
-            self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
-            symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
-            self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
 
         self._BepaalWijzigingen ()
 
         self.Generator.VoegHtmlToe (einde)
 
-        if len (self._Wijzigingen.OngewijzigdeGeometrie) > 0:
-            einde = self.Generator.StartSectie ("Basisgeometrie-IDs", True)
-            self._ToonOngewijzigdeGeometrie ()
+        teHernoemen = { wordt_id: was_id for wordt_id, was_id in  self._Wijzigingen.WordtRevisieLocaties.items () if not wordt_id in was_id }
+        if len (teHernoemen) > 0:
+            einde = self.Generator.StartSectie ("Overeenkomstige basisgeometrie-IDs", True)
+            self._ToonOvereenkomstigeLocaties (teHernoemen)
             self.Generator.VoegHtmlToe (einde)
             
         einde = self.Generator.StartSectie ("GIO-Wijziging", True)
-        self.Generator.VoegHtmlToe ("... GML nog maken...")
+        self._ToonGIOWijziging ()
         self.Generator.VoegHtmlToe (einde)
 
         return True
@@ -110,7 +108,10 @@ class GIOWijzigingMaker (GeoManipulatie):
         valideerGIOs = True
         if self._Was is None:
             self.Log.Informatie ("Lees de was-versie van de GIO")
-            self._Was = self.LeesGeoBestand ('was', True)
+            def __BewaarGML (gml):
+                if self.Request.IsOnlineOperatie:
+                    self._WasGML = gml
+            self._Was = self.LeesGeoBestand ('was', True, __BewaarGML)
             if self._Was is None:
                 return False
             if self._Was.Soort != 'GIO':
@@ -136,14 +137,15 @@ class GIOWijzigingMaker (GeoManipulatie):
                 self.Log.Fout ("De was- en wordt-versie moeten allebei uitsluitend geometrie, GIO-delen of normwaarden hebben")
                 succes = False
 
-        if self._Symbolisatie is None:
+        if self._SymbolisatieNaam is None:
             self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
-            self._Symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
-            if not self._Symbolisatie is None:
-                self.Log.Detail ('Symbolisatie ingelezen')
+            symbolisatie = self.Request.LeesBestand (self.Log, "symbolisatie", False)
+            if self.Request.IsOnlineOperatie:
+                self._SymbolisatieXML = symbolisatie
+            self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
 
-        if self.Request.LeesString ('nauwkeurigheid') is None:
-            self.Log.Fout ("De nauwkeurigheid is niet opgegeven in de specificatie")
+        if self.Request.LeesString ("teken-nauwkeurigheid") is None:
+            self.Log.Fout ("De teken-nauwkeurigheid is niet opgegeven in de specificatie")
             succes = False
 
         return succes
@@ -155,64 +157,104 @@ class GIOWijzigingMaker (GeoManipulatie):
 #======================================================================
     class Wijzigingen:
 
-        def __init__ (self):
-            # De locaties uit de was-versie die in de GIO-wijziging opgenomen moet worden
-            self.WasLocaties = []
-            # De locaties uit de wordt-versie die in de GIO-wijziging opgenomen moet worden
-            self.WordtLocaties = []
-            # De basisgeometrie-ID van een locatie uit de wordt-versie (key) waarvan alle geometrieën met bijbehorende
-            # attribuutwaarde corresponderen met een onveranderde (binnen de nauwkeurigheid) geometrie van de 
-            # was-versie. De value zijn de basisgeometrie-ID van de locatie(s) uit de was-versie.
-            # De manifest ongewijzigde geometrieën zijn hierin niet opgenomen
-            self.OngewijzigdeGeometrie : Dict[str,List[str]] = {}
-            # De juridisch ongewijzigde locaties in de wordt-versie die een revisie 
-            # zijn van de locaties in de was-versie, d.w.z. alleen van naam verschillen.
-            self.WordtRevisies = []
-            # De gedetecteerde wijzigingen. Dit zijn ofwel gebieden ofwel punten.
-            self.Markering = GeoManipulatie.GeoData ()
+        def __init__ (self, wasVersie : GeoManipulatie.GeoData):
+            # De basisgeo-ID van de locaties uit de was-versie die in de GIO-wijziging opgenomen moet worden
+            self.WasLocaties : Set[str] = set ()
+            # De basisgeo-ID van de locaties uit de wordt-versie die in de GIO-wijziging opgenomen moet worden
+            self.WordtLocaties : Set[str] = set ()
+            # De gebieden waar de was-/wordt-locaties van elkaar verschillen.
+            # Dit kunnen zowel geometrieën uit de GIO-versie zijn als gebieden.
+            # Key: dimensie van de geometrie in de markering, value: lijst van enkelvoudige geometrieën
+            self.Markering : Dict[int,List[GeoManipulatie.EnkeleGeometrie]] = {}
+            self.Markering[wasVersie.Dimensie] = [] # Geometrie uit de GIO
+            if wasVersie.Dimensie == 1: # Ook gebieden
+                self.Markering[2] = []
 
-    def _BepaalWijzigingen (self) -> Wijzigingen:
+            # De juridisch ongewijzigde locaties in de wordt-versie die een revisie 
+            # zijn van de locaties in de was-versie, d.w.z. alleen van naam verschillen
+            # of waarvan de geometrie binnen de teken-nauwkeurigheid is gewijzigd.
+            # Relatie tussen de wordt-revisie-locatie en de was-locatie waar het een revisie van is
+            # Key is de basisgeometrie-ID wordt-locatie, value de basisgeo-ID van de was-versie.
+            self.WordtRevisieLocaties : Dict[str,List[str]] = {}
+            # Alleen voor de weergave: de gebieden waar de was- en wordt-revisies van elkaar verschillen.
+            # Dit kunnen zowel geometrieën uit de GIO-versie zijn als gebieden.
+            # Key: dimensie van de geometrie in de markering, value: lijst van enkelvoudige geometrieën
+            self.RevisieMarkering : Dict[int,List[GeoManipulatie.EnkeleGeometrie]] = {}
+            self.RevisieMarkering[wasVersie.Dimensie] = [] # Geometrie uit de GIO
+            if wasVersie.Dimensie == 1: # Ook gebieden
+                self.RevisieMarkering[2] = []
+
+            # Alleen voor weergave: de locaties die voor zowel de was- als wordt-versie dezelfde 
+            # basisgeo-ID hebben, en waarvan bovendien de naam en eventuele attribuutwaarde gelijk zijn
+            self.ManifestOngewijzigdeLocaties : Set[str] = set ()
+            # Alleen voor weergave: buffergebieden
+            self.VerdikteGeometrie = []
+            self.VerkleindeGeometrie = []
+
+    def _BepaalWijzigingen (self) :
         """Bepaal de wijzigingen tussen twee versies van een GIO"""
         self.Generator.VoegHtmlToe ('''<p>Voor de bepaling van een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Maak-gio-wijziging" target="_blank">procedure</a> gevolgd.
-In onderstaande kaart wordt links de was-versie, rechts de wordt-versie van de GIO getoond.
+In onderstaande kaart wordt het startpunt getoond: links de originele (was)-versie van de GIO met ''' + str(len (self._Was.Locaties)) + ''' locaties, rechts de nieuwe (wordt)-versie met ''' + str(len (self._Wordt.Locaties)) + ''' locaties.
 Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + self._Was.GeometrieNaam (False) + ' voor aanvullende details</p>\n')
         self._WasDataNaam = self.VoegGeoDataToe (self._Was)
         self._WordtDataNaam = self.VoegGeoDataToe (self._Wordt)
         self.ToonKaart ('kaart.VoegOudLaagToe ("Was-versie", "' + self._WasDataNaam + '", "' + self._SymbolisatieNaam + '").VoegNieuwLaagToe ("Wordt-versie", "' + self._WordtDataNaam + '", "' + self._SymbolisatieNaam + '");')
 
+        self.Generator.VoegHtmlToe ('''<p>De bepaling van een GIO-wijziging bestaat uit de volgende stappen:</p>
+<ol>''')
+        self._Wijzigingen = GIOWijzigingMaker.Wijzigingen (self._Was)
         self._WasLocaties = { locatie['properties']['id'] : locatie for locatie in self._Was.Locaties}
         self._WordtLocaties = { locatie['properties']['id'] : locatie for locatie in self._Wordt.Locaties}
-        numLocaties = len (self._WasLocaties) + len (self._WordtLocaties)
+
+        # De locaties voor de geo-operaties worden bijgehouden in:
         self._ManifestOngewijzigdeGeometrieen ()
 
-        analyseLocaties = len (self._ResterendWas.Locaties) + len (self._ResterendWordt.Locaties)
-        if analyseLocaties > 0:
+        tijd = None
+        if len (self._ResterendWas.Locaties) == 0:
+            if len (self._ResterendWordt.Locaties) == 0:
+                # Speciaal geval: alleen locaties met ongewijzigde geometrieën
+                self.Generator.VoegHtmlToe ('<li>Er zijn geen locaties over die via geometrische vergelijking op wijzigingen geanalyseerd hoeven te worden</li>')
+            else:
+                # Speciaal geval: alle locaties uit de was-versie hebben een ongewijzigde geometrie
+                self.Generator.VoegHtmlToe ('<li>Er zijn geen locaties uit de was-versie over die via geometrische vergelijking op wijzigingen geanalyseerd hoeven te worden. De overgebleven locaties in de wordt-versie zijn nieuw.</li>')
+                self._Wijzigingen.WordtLocaties.extend (self._ResterendWordt.Locaties)
+                wordtGeometrieen, isMulti2 = self.MaakLijstVanGeometrieen (self._ResterendWordt)
+                self._Wijzigingen.Markering[self._Was.Dimensie].Locaties.extend (wordtGeometrieen)
+
+        elif len (self._ResterendWordt.Locaties) == 0:
+            # Speciaal geval: alle locaties uit de wordt-versie hebben een ongewijzigde geometrie
+            self.Generator.VoegHtmlToe ('<li>Er zijn geen locaties uit de wordt-versie over die via geometrische vergelijking op wijzigingen geanalyseerd hoeven te worden. De overgebleven locaties in de was-versie komen te vervallen.</li>')
+            self._Wijzigingen.WasLocaties.extend (self._ResterendWordt.Locaties)
+            wasGeometrieen, isMulti = self.MaakLijstVanGeometrieen (self._ResterendWas)
+            self._Wijzigingen.Markering[self._Was.Dimensie].Locaties.extend (wasGeometrieen)
+
+        else:
+            # Voer de geometrische analyse uit
             wasGeometrieen, isMulti = self.MaakLijstVanGeometrieen (self._ResterendWas)
             wordtGeometrieen, isMulti2 = self.MaakLijstVanGeometrieen (self._ResterendWordt)
             if self._Was.Dimensie == 0:
                 self._AnalyseerPunten (wasGeometrieen, wordtGeometrieen, isMulti or isMulti2)
 
-        self.Generator.VoegHtmlToe ('<p>Alle (' + str(numLocaties) + ') locaties zijn hiermee verwerkt. ')
-        if not self._Tijd_ViaID is None:
-            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van de basisgeometrie-IDs die in beide GIO-versies voorkomen nam ' + "{:.3f}".format(self.Tijd).format (self._Tijd_ViaID) + 's voor ' + str(numLocaties - analyseLocaties) + ' locaties. ')
-        if not self._Tijd_GeoAnalyse is None:
-            self.Generator.VoegHtmlToe ('Het bepalen van de wijzigingen op basis van een geo-analyse nam ' + "{:.3f}".format(self.Tijd).format (self._Tijd_GeoAnalyse) + 's voor ' + str(analyseLocaties) + ' locaties.')
-        self.Generator.VoegHtmlToe ('</p>\n')
+        self.Generator.VoegHtmlToe ('</ol>')
+        self._ToonGeoAnalyseResultaat ()
 
     #------------------------------------------------------------------
     #
-    # Verwerk persistente ID: basisgeo-ID die zowel in de was-
+    # Verwerk locaties met een basisgeo-ID die zowel in de was-
     # als wordt-versie voorkomen.
     #
     #------------------------------------------------------------------
     def _ManifestOngewijzigdeGeometrieen (self):
         self.Log.Informatie ('Onderzoek de locaties met manifest ongewijzigde geometrieën')
+        self.Generator.VoegHtmlToe ('<li>Als dezelfde basisgeometrie-ID zowel in de was- als wordt-versie voorkomt, dan is de geometrie per definitie ongewijzigd. ')
+        if not self._Was.AttribuutNaam is None:
+            self.Generator.VoegHtmlToe ('Als de ' + self._Was.AttribuutNaam + ' van de bijbehorende locatie verschilt in beide versies, dan wijzigt de locatie en moet de hele geometrie in de wijzigmarkeringen opgenomen worden. ')
+        self.Generator.VoegHtmlToe ('Als alleen de naam van de locatie verschilt, dan wordt dat niet als een wijziging maar als een revisie beschouwd. ')
 
-        tijd_start = self.Log.Tijd ()
+        tijd = self.Log.Tijd ()
 
         # Bepaal of en hoe de locaties met manifest ongewijzigde geometrie muteren
         manifestOngewijzigdId = set ()
-        ongewijzigd = []
         for wasId, wasLocatie in self._WasLocaties.items ():
             wordtLocatie = self._WordtLocaties.get (wasId)
             if not wordtLocatie is None:
@@ -220,64 +262,34 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + se
 
                 isGewijzigd = False if self._Was.AttribuutNaam is None else bool (wasLocatie['properties'][self._Was.AttribuutNaam] != wordtLocatie['properties'][self._Was.AttribuutNaam])
                 if isGewijzigd:
-                    self._Wijzigingen.WasLocaties.append (wasLocatie)
-                    self._Wijzigingen.WordtLocaties.append (wordtLocatie)
-                    self._Wijzigingen.Markering.Locaties.extend (self.SplitsMultiGeometrie (wasLocatie))
+                    self._Wijzigingen.WasLocaties.append (wasId)
+                    self._Wijzigingen.WordtLocaties.append (wasId)
+                    self._Wijzigingen.Markering[self._Was.Dimensie].Locaties.extend (self.SplitsMultiGeometrie (wasLocatie))
 
                 elif wasLocatie['properties'].get ('naam') != wordtLocatie['properties'].get ('naam'):
-                    self._Wijzigingen.WordtRevisies.append (wordtLocatie)
+                    self._Wijzigingen.WordtRevisieLocaties[wasId] = [wasId]
                 else:
-                    ongewijzigd.append (wasLocatie)
+                    self._Wijzigingen.ManifestOngewijzigdeLocaties.add (wasId)
 
         # De overgebleven locaties zijn:
         self._ResterendWas = GeoManipulatie.GeoData () 
         self._ResterendWas.Attributen = self._Was.Attributen
         self._ResterendWas.Locaties = [l for l in self._Was.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
+        self._ResterendWordt = GeoManipulatie.GeoData () 
+        self._ResterendWordt.Attributen = self._Was.Attributen
+        self._ResterendWordt.Locaties = [l for l in self._Wordt.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
 
-        self_ResterendWordt = GeoManipulatie.GeoData () 
-        self_ResterendWordt.Attributen = self._Was.Attributen
-        self_ResterendWordt.Locaties = [l for l in self._Wordt.Locaties if not l['properties']['id'] in manifestOngewijzigdId]
+        if not tijd is None:
+            tijd = self.Log.Tijd () - tijd
 
-        if not tijd_start is None:
-            self._Tijd_ViaID = self.Log.Tijd () - tijd_start
-
-        # Neem de resultaten van deze stap in de resultaatpagina
-        self.Log.Informatie ('Presenteer de resultaten')
-        if len (manifestOngewijzigdId) == 0:
-            self.Generator.VoegHtmlToe ('''<p>Er zijn geen locaties gevonden met een manifest ongewijzigde geometrie, dus locaties die in de was- en wordt-versie dezelfde basisgeometrie-ID hebben.</p>''')
-        else:
-            self.Generator.VoegHtmlToe ('<p> Er ' + ('is één locatie' if len(manifestOngewijzigdId) == 1 else 'zijn ' + str(len(manifestOngewijzigdId)) + ' locaties') + '''gevonden 
-met een manifest ongewijzigde geometrie, dus locaties die in de was- en wordt-versie dezelfde basisgeometrie-ID hebben:
-<ul>''')
-            if not self._Was.AttribuutNaam is None:
-                self.Generator.VoegHtmlToe ('<li>' + str(len(self._Wijzigingen.WasLocaties)) + ' met een gewijzigde ' + self._Was.AttribuutNaam + ';</li>')
-            self.Generator.VoegHtmlToe ('<li>' + str(len(self._Wijzigingen.WordtRevisies)) + ''' met een gewijzigde naam;</li>
-<li>''' + str(len (ongewijzigd)) + ''' ongewijzigd</li></ul>
-In onderstaande kaart zijn deze locaties opgenomen.
-</p>\n''')
-            kaartScript = ''
-            if len (ongewijzigd) > 0:
-                dataSet = GeoManipulatie.GeoData () 
-                dataSet.Attributen = self._Was.Attributen
-                dataSet.Locaties = ongewijzigd
-                kaartScript += 'kaart.VoegOnderlaagToe ("Juridisch ongewijzigd", "' + self.VoegGeoDataToe (dataSet) + '", "' + self._SymbolisatieNaam + '", true, true);'
-
-            if len (self._Wijzigingen.Markering.Locaties) > 0:
-                kvSym = self.VoegUniformeSymbolisatieToe (self._Was.Dimensie, "#D80073", "#A50040")
-                kaartScript += 'kaart.VoegOnderlaagToe ("Gewijzigd (exclusief revisies)", "' + self.VoegGeoDataToe (self._Wijzigingen.Markering) + '", "' + kvSym + '", true, true);'
-
-            if len (self._Wijzigingen.WordtRevisies) > 0:
-                dataSet.Attributen = {}
-                dataSet.Locaties = self._Wijzigingen.WordtRevisies
-                kvSym = self.VoegUniformeSymbolisatieToe (self._Was.Dimensie, "#DAE8FC", "#6C8EBF")
-                kaartScript += 'kaart.VoegOnderlaagToe ("Revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + kvSym + '", true, true);'
-
-            if len (self._ResterendWas.Locaties) > 0 or len (self_ResterendWordt.Locaties) > 0:
-                self._ResterendWas = self.VoegGeoDataToe (self._ResterendWas)
-                self._ResterendWordtNaam = self.VoegGeoDataToe (self_ResterendWordt)
-                kaartScript += 'kaart.VoegOudLaagToe ("Nog te analyseren geometrieën", "' + self._ResterendWas + '", "' + self._SymbolisatieNaam + '", true, true).VoegNieuwLaagToe ("Nog te analyseren geometrieën", "' + self._ResterendWordtNaam + '", "' + self._SymbolisatieNaam + '", true, true);'
-
-            self.ToonKaart (kaartScript)
+        num = len (manifestOngewijzigdId)
+        self.Generator.VoegHtmlToe ('Er zijn ' + str(num) + ' locatie(s) met manifest ongewijzigde geometrie, ')
+        self.Generator.VoegHtmlToe ('waarvan ' + str(len (self._Wijzigingen.WordtLocaties)) + ' gewijzigd, ')
+        self.Generator.VoegHtmlToe (str(len (self._Wijzigingen.WordtRevisieLocaties)) + ' gereviseerd en ')
+        self.Generator.VoegHtmlToe (str(len (self._Wijzigingen.ManifestOngewijzigdeLocaties)) + ' ongewijzigd.')
+        if not tijd is None:
+            self.Generator.VoegHtmlToe (' Het analyseren van deze locaties duurde ' + '{:.3f}'.format (tijd) + 's.')
+        self.Generator.VoegHtmlToe ('</li>')
 
     #------------------------------------------------------------------
     #
@@ -288,134 +300,411 @@ In onderstaande kaart zijn deze locaties opgenomen.
     def _AnalyseerPunten (self, wasGeometrieen : List[GeoManipulatie.EnkeleGeometrie], wordtGeometrieen : List[GeoManipulatie.EnkeleGeometrie], heeftMultiGeometrie : bool):
         self.Log.Informatie ('Onderzoek de overige punt-locaties')
         drempel = self.NauwkeurigheidInMeter ()
+        self.Generator.VoegHtmlToe ('<li>Vergelijk ' + str(len (self._ResterendWas.Locaties)) + ' locaties met ' + str(len(wasGeometrieen)) + ' punten uit de was-versie en ' + str(len (self._ResterendWordt.Locaties)) + ''''
+met ''' + str(len(wordtGeometrieen)) + ''' punten uit de wordt-versie paarsgewijs met elkaar.<ul>
+<li>Als de twee punten uit een paar op een afstand kleiner dan de teken-nauwkeurigheid (''' + '{:.1f}'.format (drempel) + ''''m) staan, dan
+worden ze geacht dezelfde plaats te betreffen. ''')
+        if not self._Was.AttribuutNaam is None:
+            self.Generator.VoegHtmlToe ('Er is dan sprake van een wijziging als de bijbehorende locaties verschillen in ' + self._Was.AttribuutNaam + '''; 
+beide locaties worden dan als gewijzigd beschouwd, en het wordt-punt wordt aan de wijzigmarkering toegevoegd.''')
+        self.Generator.VoegHtmlToe ('''Zo niet, dan worden de punten als revisie van elkaar gezien - de geo-tools doen niet aan het vergelijken van geomeotrieën om te zien of ze gelijk zijn.</li>
+<li>Punten uit de was-versie die geen corresponderend punt in de wordt-versie hebben worden als vervallen beschouwd. De 
+locatie wordt aan de gewijzigde locaties toegevoegd, en het punt aan de wijzigmarkeringen.
+<li>Punten uit de wordt-versie die geen corresponderend punt in de was-versie hebben worden als nieuw beschouwd. De 
+locatie wordt aan de gewijzigde locaties toegevoegd, en het punt aan de wijzigmarkeringen.</li>
+</ul>
+''')
         drempel *= drempel
 
-        tijd_start = self.Log.Tijd ()
+        # Met was-locaties worden de hier self._ResterendWas.Locaties bedoeld, niet de self._Was.Locaties. Idem voor wordt.
 
-        # Vind alle punten die te dicht bij een ander punt liggen
-        gewijzigdeWasId = set () # ID van was-locaties waarvan tenminste een punt wordt gemuteerd
-        gewijzigdeWordtId = set () # ID van was-locaties waarvan tenminste een punt wordt gemuteerd
-        wijzigmarkeringen = [] # Apart houden voor weergave later
+        # Meet de doorlooptijd van de geo-operatie (indien tijd wordt bijgehouden)
+        tijd = self.Log.Tijd ()
+
+        # Verzamel eerst gegevens over de punten, verdeel ze over de groepen:
+        # Punten van een gewijzigde wordt-locatie of die nieuw zijn
+        wijzigingPunten : Set[GeoManipulatie.EnkeleGeometrie] = set ()
+        # Punten uit de wordt-versie die onderdeel zijn van een revisie of die niet wijzigen voor een gewijzigde wordt-locatie.
+        revisieWordtPunten : Set[GeoManipulatie.EnkeleGeometrie] = set ()
+        # Paren was-wordt punten die een revisie kunnen vormen
+        revisieParen : List[Tuple[GeoManipulatie.EnkeleGeometrie,GeoManipulatie.EnkeleGeometrie]] = []
+        # Hou op locatie-ID niveau bij:
+        # Was-locaties die gewijzigd zijn
+        gewijzigdeWasLocaties : Set[str] = set ()
+        # Wordt-locaties die gewijzigd zijn
+        gewijzigdeWordtLocaties : Set[str] = set ()
+        # Statistieken
+        numWasVervallen = 0
+
         for i in range (0, len (wasGeometrieen)):
             was_geom = wasGeometrieen[i]
             was_coord = was_geom.Geometrie['geometry']['coordinates']
 
-            wasIsGemuteerd = True
+            wasIsVervallen = None
+            revisieWordtParen = []
             for j in range (0, len (wordtGeometrieen)):
                 wordt_geom = wordtGeometrieen[j]
-                if wordt_geom is None:
-                    continue
-
                 wordt_coord = wordt_geom.Geometrie['geometry']['coordinates']
                 afstand = (was_coord[0] - wordt_coord[0]) * (was_coord[0] - wordt_coord[0]) + (was_coord[1] - wordt_coord[1]) * (was_coord[1] - wordt_coord[1])
 
                 if afstand < drempel:
                     # Dit moeten corresponderende geometrieën zijn
-                    if was_geom.Attribuutwaarde == wordt_geom.Attribuutwaarde and was_geom.Locatie['properties'].get('naam') == wordt_geom.Locatie['properties'].get('naam'):
-                        # Ook de naam en de groepID/normwaarde komen overeen
-                        lijst = self._Wijzigingen.OngewijzigdeGeometrie.get (wordt_geom.ID)
-                        if lijst is None:
-                            self._Wijzigingen.OngewijzigdeGeometrie[wordt_geom.ID] = lijst = [was_geom.ID]
-                        else:
-                            lijst.append (was_geom.ID)
-                        # Niet nodig om verder te kijken; er kan er maar 1 zijn anders waren de GIO-versies ongeschikt
-                        wasIsGemuteerd = False
+                    if was_geom.Attribuutwaarde != wordt_geom.Attribuutwaarde:
+                        # Nooit een revisie maar een wijziging
+                        wasIsVervallen = True
+                        wijzigingPunten.add ((was_geom, wordt_geom))
+                        gewijzigdeWordtLocaties.add (wordt_geom.Locatie['properties']['id'])
                     else:
-                        # De groepID/normwaarde komen niet overeen, dus er is toch sprake van een mutatie
-                        # Omdat we niet zeker weten of de geometrieën exact hetzelfde zijn, kan alleen een verandering van de naam niet tot een revisie leiden.
-                        gewijzigdeWordtId.add (wordt_geom.ID)
-                        wijzigmarkeringen.append (wordt_geom.Geometrie)
+                        # Kan onderdeel zijn van een revisie
+                        revisieWordtParen.append (wordt_geom)
+                        # Alleen de weergave: dit punt wordt altijd gemarkeerd als een revisie
+                        # Deze markering is geen onderdeel van de GIO-wijziging
+                        revisieWordtPunten.add (wordt_geom)
 
-                    wordtGeometrieen[j] = None # Deze geometrie is uitgeanalyseerd.
-                    break # De was-geometrie ook
+            if len (revisieWordtParen) > 0:
+                # revisie-kandidaat
+                if wasIsVervallen is None:
+                    # Vooralsnog lijken dit revisies
+                    revisieParen.extend (revisieWordtParen)
+                    wasIsVervallen = False
+            elif wasIsVervallen is None:
+                # Locatie is vervallen
+                wijzigingPunten.add (was_geom)
+                numWasVervallen += 1
+                wasIsVervallen = True
 
-                if wasIsGemuteerd:
-                    # Deze was heeft geen matching wordt
-                    gewijzigdeWasId.add (was_geom.ID)
-                    wijzigmarkeringen.append (was_geom.Geometrie)
+            if wasIsVervallen:
+                gewijzigdeWasLocaties.add (was_geom.Locatie['properties']['id'])
 
+        # Het kan zijn dat een wordt-punt voor het ene was-punt als revisie gezien wordt, en voor het andere als gewijzigd.
+        # Dat kan voorkomen als een van de GIO-versies punten heeft die te dicht bij elkaar staan
+        revisieWordtPunten.difference_update (wijzigingPunten)
+
+        # Bepaal de nieuwe geometrieën
+        numWordtGewijzigd = len (wijzigingPunten) - numWasVervallen
         for wordt_geom in wordtGeometrieen:
-            if not wordt_geom is None:
-                # Deze wordt heeft geen matching was
-                gewijzigdeWordtId.add (wordt_geom.ID)
-                wijzigmarkeringen.append (wordt_geom.Geometrie)
+            if not wordt_geom in wijzigingPunten and not wordt_geom in revisieWordtPunten:
+                # Deze wordt heeft geen matching was en is dus een nieuw punt
+                wijzigingPunten.add (wordt_geom)
+                gewijzigdeWordtLocaties.add (wordt_geom.Locatie['properties']['id'])
+        numWordtNieuw = len (wijzigingPunten) - numWordtGewijzigd - numWasVervallen
+
+        if not tijd is None:
+            tijd = self.Log.Tijd () - tijd
+
+        self.Generator.VoegHtmlToe ('Zo blijken ' + str(numWasVervallen) + ' punten uit de was-versie vervallen, en in de wordt-versie ' + str(numWordtNieuw) + ' punten nieuw en ' + str(numWordtGewijzigd) + ' gewijzigd te zijn. ')
+        self.Generator.VoegHtmlToe ('En er zijn ' + str(len(revisieParen)) + ' paren van een punt uit de was-versie en een uit de wordt-versie gevonden die revisies van elkaar zijn.')
+        if not tijd is None:
+            self.Generator.VoegHtmlToe (' De bepaling hiervan duurde ' + '{:.3f}'.format (tijd) + 's.')
+        self.Generator.VoegHtmlToe ('</li>')
+
+        # Bepaal welke wordt-locaties een revisie zijn, en van welke was-locaties.
+        self._VerwerkAnalyseUitkomst (gewijzigdeWasLocaties, gewijzigdeWordtLocaties, revisieParen, heeftMultiGeometrie)
+
+    #------------------------------------------------------------------
+    #
+    # Verwerk de analyseresultaten tot de gegevens voor de GIO-wijzigjng
+    #
+    #------------------------------------------------------------------
+    def _VerwerkAnalyseUitkomst (self, gewijzigdeWasLocaties : Set[str], gewijzigdeWordtLocaties : Set[str], revisieParen : List[Tuple[GeoManipulatie.EnkeleGeometrie,GeoManipulatie.EnkeleGeometrie]], heeftMultiGeometrie : bool):
+        """Gebruik de gegevens om de wijzigingen volgens spec aan te vullen"""
+
+        self.Generator.VoegHtmlToe ('''<li>Voer eventuele correcties door:
+<ul>
+<li>Als een of beide GIO-versies geometrieën bevat die minder dan de teken-nauwkeurigheid zijn gescheiden, dan kan dezelfde geometrie 
+uit de ene versie zowel als revisie van de ene als wijziging van de andere geometrie uit de andere GIO-versie gezien worden. Voer hiervoor een ontdubbeling uit.</li>''')
         if heeftMultiGeometrie:
-            self._VerifieerOngewijzigdeGeometrie (gewijzigdeWasId, gewijzigdeWordtId)
+            self.Generator.VoegHtmlToe ('''<li>Een of beide GIO-versies hebben locaties die multi-geometrieën bevatte. Het kan voorkomen dat van dezelfde locatie de ene geometrie 
+als wijziging gezien wordt en de andere als revisie. In de geo-renvooi van STOP kan alleen de hele locatie als gewijzigd of revisie aangemerkt worden. 
+Doordat de revisie-geometrie als gewijzigd opgenomen wordt, moet de locatie van de corresponderende geometrie uit de andere GIO-versie ook als wijziging opgenomen worden,
+anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was als de wordt-versie zichtbaar zijn.</li>''')
+        self.Generator.VoegHtmlToe ('</ul>')
 
-        # Werk de wijzigingen bij
-        self._Wijzigingen.WasLocaties.extend (self._WasLocaties[i] for i in gewijzigdeWasId)
-        self._Wijzigingen.WordtLocaties.extend (self._WordtLocaties[i] for i in gewijzigdeWordtId)
-        self._Wijzigingen.Markering.Locaties.extend (wijzigmarkeringen)
+        # Meet de doorlooptijd van de verwerking (indien tijd wordt bijgehouden)
+        tijd = self.Log.Tijd ()
 
-        if not tijd_start is None:
-            self._Tijd_GeoAnalyse = self.Log.Tijd () - tijd_start
-
-        # Toon het resultaat
-        self._ToonGeoAnalyseResultaat (wijzigmarkeringen, 0)
-
-    #------------------------------------------------------------------
-    #
-    # Kijk voor revisies in corresponderende geometrieën, als tenmiste
-    # alle geometrieën van een multi-geometrie ongewijzigd zijn
-    #
-    #------------------------------------------------------------------
-    def _VerifieerOngewijzigdeGeometrie (self, gewijzigdeWasId : set, gewijzigdeWordtId : set):
-        # Bij gebruik van multi-geometrieën kan het voorkomen dat er was-wordt paren in OngewijzigdeGeometrie
-        # staan (corresponderende geometrieën) terwijl andere geometrieën wel gewijzigd zijn
+        # De revisieParen bevat relaties tussen was- en wordt-locaties op puntniveau
+        # Als de locaties multi-geometrieën hebben, dan kan een revisie-punt een relatie 
+        # leggen tussen twee locaties die wijzigen. Haal die uit de revisieParen zodat
+        # alleen de echte revisieparen overblijven,
+        # Overigens: elke was-locatie is nu ofwel gewijzigd, ofwel deel van een revisieParen
+        # relatie omdat er geen ongewijzigde locaties zijn (geo-tools vergelijken geen geometrieën).
+        # Iden voor wordt-locaties.
+        revisiePaarId = [(was_geom.Locatie['properties']['id'], wordt_geom.Locatie['properties']['id']) for was_geom, wordt_geom in revisieParen]
         while True:
-            verwijderWordtId = set ()
-            for wordtId, wasIds in self._Wijzigingen.OngewijzigdeGeometrie.items ():
-                if wordtId in gewijzigdeWordtId:
-                    verwijderWordtId.add (wordtId)
-                    for wasId in wasIds:
-                        gewijzigdeWasId.add (wasId)
+            echteRevisiePaarId = []
+            for was_id, wordt_id in revisiePaarId:
+                if was_id in gewijzigdeWasLocaties:
+                    gewijzigdeWordtLocaties.add (wordt_id)
+                elif wordt_id in gewijzigdeWordtLocaties:
+                    gewijzigdeWasLocaties.add (was_id)
                 else:
-                    for wasId in wasIds:
-                        if wasId in gewijzigdeWasId:
-                            gewijzigdeWordtId.add (wordtId)
-                            for w in wasIds:
-                                gewijzigdeWasId.add (w)
-                            verwijderWordtId.add (wordtId)
-                            break
-            if len (verwijderWordtId) == 0:
-                break
-            for wordtId in verwijderWordtId:
-                self._Wijzigingen.OngewijzigdeGeometrie.pop (wordtId)
+                    echteRevisiePaarId.append ((was_id, wordt_id))
+            if len (echteRevisiePaarId) == len (revisiePaarId):
+                break;
+            revisiePaarId = echteRevisiePaarId
+
+        # Vul hiermee de wijzigingen specificaties
+        self._Wijzigingen.WasLocaties.extend (gewijzigdeWasLocaties)
+        self._Wijzigingen.WordtLocaties.extend (gewijzigdeWordtLocaties)
+        was_revisies = set ()
+        for was_id, wordt_id in revisiePaarId:
+            lijst = self._Wijzigingen.WordtRevisieLocaties.get (wordt_id)
+            if lijst is None:
+                self._Wijzigingen.WordtRevisieLocaties[wordt_id] = [was_id]
+            else:
+                lijst.append (was_id)
+            was_revisies.append (was_id)
+
+        if not tijd is None:
+            tijd = self.Log.Tijd () - tijd
+
+        self.Generator.VoegHtmlToe ('Uiteindelijk blijken ' + str(len(gewijzigdeWasLocaties)) + ' locaties uit de was-versie en ' + str(len(gewijzigdeWordtLocaties)) + ' locaties uit de wordt-versie gewijzigd.')
+        self.Generator.VoegHtmlToe (str(len(self._Wijzigingen.WordtRevisieLocaties)) + ' Locaties uit de wordt-versie blijken revisies van ' + str(len(was_revisies)) + ' locaties uit de was-versie.')
+        if not tijd is None:
+            self.Generator.VoegHtmlToe (' Het onderzoek naar en doorvoeren van correcties duurde ' + '{:.3f}'.format (tijd) + 's.')
+        self.Generator.VoegHtmlToe ('</li>')
 
     #------------------------------------------------------------------
     #
     # Toon de uitkomst van de geo-analyses op de kaart
     #
     #------------------------------------------------------------------
-    def _ToonGeoAnalyseResultaat (self, wijzigmarkeringen, dimensieMarkeringen):
-        self.Log.Informatie ('Presenteer de resultaten')
-        if len (wijzigmarkeringen) == 0:
-            self.Generator.VoegHtmlToe ('''<p>Er zijn geen locaties gevonden met een gewijzigde geometrie, groepID, normwaarde en/of naam.</p>''')
-        else:
-            self.Generator.VoegHtmlToe ('<p> Er ' + ('is één plaats' if len(wijzigmarkeringen) == 1 else 'zijn ' + str(len(wijzigmarkeringen)) + ' plaatsen') + '''gevonden 
-waar er iets is gewijzigd (geometrie, groepID, normwaarde en/of naam).
-In onderstaande kaart worden deze plaatsen getoond.</p>\n''')
-            kaartScript = ''
-            dataSet = GeoManipulatie.GeoData ()
-            dataSet.Locaties = wijzigmarkeringen
-            kvSym = self.VoegUniformeSymbolisatieToe (dimensieMarkeringen, "#D80073", "#A50040")
-            kaartScript = 'kaart.VoegToplaagToe ("Posities van wijzigingen", "' + self.VoegGeoDataToe (dataSet) + '", "' + kvSym + '", true, true);'
-            kaartScript += 'kaart.VoegOudLaagToe ("Geanalyseerde geometrieën", "' + self._ResterendWasDataNaam + '", "' + self._SymbolisatieNaam + '", true, true).VoegNieuwLaagToe ("Geanalyseerde geometrieën", "' + self._ResterendWordtDataNaam + '", "' + self._SymbolisatieNaam + '", true, true);'
+    def _ToonGeoAnalyseResultaat (self):
+        """Maak een kaart met de uitkomsten van de analyse, waarbij alle locaties/geometrieën naar hun rol in GIO-wijziging zijn opgedeeld"""
+        self.Generator.VoegHtmlToe ('''<p>De resultaten van de bepaling zijn in de kaart weergegeven.</p>''')
 
-            self.ToonKaart (kaartScript)
+        kaartScripts = { 0: '', 1: '', 2: '' }
+        dataSet = GeoManipulatie.GeoData ()
+        dataSet.Dimensie = self._Was.Dimensie
+        dataSet.Attributen = self._Was.Attributen
+
+        if len (self._Wijzigingen.VerdikteGeometrie) > 0:
+            # Buffers om geometrieën heen
+            bufferSet = GeoManipulatie.GeoData ()
+            bufferSet.Dimensie = 2
+            bufferSet.Locaties = [{ 'type': 'Feature', 'geometry': mapping (b) } for b in self._Wijzigingen.VerdikteGeometrie]
+            symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
+            kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Buffers voor de geometrieën", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+
+        if len (self._Wijzigingen.ManifestOngewijzigdeLocaties) > 0:
+            # Manifest ongewijzigde geometrieën
+            dataSet.Locaties = [self._WasLocaties[i] for i in self._Wijzigingen.ManifestOngewijzigdeLocaties]
+            symNaam = self.VoegUniformeSymbolisatieToe (dataSet.Dimensie, "#cccccc", "#888888", '0' if dataSet.Dimensie == 2 else '1')
+            kaartScripts[self._Was.Dimensie] += 'kaart.VoegLaagToe ("Manifest ongewijzigde locaties", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+
+        if len (self._Wijzigingen.WordtRevisieLocaties) > 0:
+            # Revisies
+            symNaam = self.VoegDefaultSymbolisatieToe (dataSet)
+            wasRevisieLocaties = set ()
+            for was_id in self._Wijzigingen.WordtRevisieLocaties.values ():
+                wasRevisieLocaties = wasRevisieLocaties.union (was_id)
+            dataSet.Locaties = [self._WasLocaties[i] for i in wasRevisieLocaties]
+            kaartScripts[self._Was.Dimensie] += 'kaart.VoegOudLaagToe ("Locaties met revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+            dataSet.Locaties = [self._WasLocaties[i] for i in self._Wijzigingen.WordtRevisieLocaties.keys ()]
+            kaartScripts[self._Was.Dimensie] += 'kaart.VoegNieuwLaagToe ("Locaties met revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+
+        if len (self._Wijzigingen.WasLocaties) > 0:
+            # Wijzigingen
+            symNaam = self.VoegUniformeSymbolisatieToe (dataSet.Dimensie, "#F8CECC", "#B85450", '0' if dataSet.Dimensie == 2 else '1')
+            dataSet.Locaties = [self._WasLocaties[i] for i in self._Wijzigingen.WasLocaties]
+            kaartScripts[self._Was.Dimensie] += 'kaart.VoegOudLaagToe ("Locaties met revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+        if len (self._Wijzigingen.WordtLocaties) > 0:
+            # Wijzigingen
+            symNaam = self.VoegUniformeSymbolisatieToe (dataSet.Dimensie, "#F8CECC", "#B85450", '0' if dataSet.Dimensie == 2 else '1')
+            dataSet.Locaties = [self._WasLocaties[i] for i in self._Wijzigingen.WordtLocaties]
+            kaartScripts[self._Was.Dimensie] += 'kaart.VoegOudLaagToe ("Locaties met revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+
+        if len (self._Wijzigingen.VerkleindeGeometrie) > 0:
+            # Buffers om geometrieën heen
+            bufferSet = GeoManipulatie.GeoData ()
+            bufferSet.Dimensie = 2
+            bufferSet.Locaties = [{ 'type': 'Feature', 'geometry': mapping (b) } for b in self._Wijzigingen.VerkleindeGeometrie]
+            symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
+            kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Buffers voor de geometrieën", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+
+        for dimensie, markeringen in self._Wijzigingen.RevisieMarkering.items ():
+            # Markeringen voor de revisies
+            if len (markeringen) > 0:
+                bufferSet = GeoManipulatie.GeoData ()
+                bufferSet.Dimensie = dimensie
+                bufferSet.Locaties = [{ 'type': 'Feature', 'geometry': mapping (b) } for b in markeringen]
+                symNaam = self.VoegWijzigMarkeringToe (dimensie)
+                kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Gebieden waar revisies gevonden zijn", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+
+        for dimensie, markeringen in self._Wijzigingen.Markering.items ():
+            # Markeringen voor de wijzigingen
+            if len (markeringen) > 0:
+                bufferSet = GeoManipulatie.GeoData ()
+                bufferSet.Dimensie = dimensie
+                bufferSet.Locaties = [{ 'type': 'Feature', 'geometry': mapping (b) } for b in markeringen]
+                symNaam = self.VoegWijzigMarkeringToe (dimensie)
+                kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Gebieden waar wijzigingen gevonden zijn", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+
+        self.ToonKaart (''.join (kaartScripts[2]) + ''.join (kaartScripts[1]) + ''.join (kaartScripts[0]))
+
+#======================================================================
+#
+# Toon d eresultaten
+#
+#======================================================================
 
     #------------------------------------------------------------------
     #
-    # Toon de OngewijzigdeGeometrie
+    # Toon de was/wordt locaties die hernoemd zouden moeten/kunnen worden
     #
     #------------------------------------------------------------------
-    def _ToonOngewijzigdeGeometrie (self):
-        self.Log.Informatie ('Presenteer de basisgeometrie-ID bevindingen')
-        self.Generator.VoegHtmlToe ('''<p>De was-versie bevat geometrieën die binnen de marge van de teken-nauwkeurigheid overeenkomen
-met geometrieën in de wordt-versie. Het is bovendien zo dat alle geometrieën uit de was-versie overeenkomen met locaties die verder
-geen mutaties bevat, idem voor de geometrieën uit de wordt-versie. In onderstaand tekstvak staat per basisgeometrie-ID van de locaties in de wordt-versie
-aangegeven de basisgeometrie-ID van dw corresponderende locatie(s) uit de was-versie.</p>\n<textarea>\n''')
-        self.Generator.VoegHtmlToe (json.dumps (self._Wijzigingen.OngewijzigdeGeometrie, indent=4))
-        self.Generator.VoegHtmlToe ('''\n</textarea>
-<p>Deze locaties zijn niet opgenomen in GIO-wijziging.</p>''')
+    def _ToonOvereenkomstigeLocaties (self, wasIdvoorwordtId : Dict[str,List[str]]):
+        self.Log.Informatie ('Presenteer overeenkomstige basisgeometrie-IDs van locaties')
+        self.Generator.VoegHtmlToe ('''<p>Er zijn locaties in de was- en wordt-versie van het GIO waarvan de geometrieën
+binnen de teken-nauwkeurigheid met elkaar overeenkomen. Omdat de basisgeometrie-ID van de locaties niet met elkaar overeenkomen,
+moet aangenomen worden dat de geometrieën toch van elkaar verschillen (want de geo-tools voeren geen vergelijking van
+geometrieën uit). Het advies is om de locaties in de wordt-versie te vervangen door de locaties uit de was-versie,
+zodat deze revisie niet meer nodig is.</p>
+<p>In onderstaand tekstvak staat per basisgeometrie-ID van de locaties in de wordt-versie
+aangegeven de basisgeometrie-ID van dw corresponderende locatie(s) uit de was-versie.</p>''')
+        self._ToonResultaatInTekstvak (json.dumps (self._Wijzigingen.OngewijzigdeGeometrie, indent=4, encoding="unicode"), None, 'json', 'Te_vervangen_locaties.json')
+        self.Generator.VoegHtmlToe ('''
+<p>Deze locaties zijn opgenomen in GIO-wijziging als revisies.</p>''')
 
+    #------------------------------------------------------------------
+    #
+    # Maak en toon de GIO-wijziging
+    #
+    #------------------------------------------------------------------
+    def _ToonGIOWijziging (self):
+        self.Log.Detail ("Maak en presenteer de GIO-wijziging")
+        if self.Request.IsOnlineOperatie:
+            self.Generator.VoegHtmlToe ('<form id="upload_form" action="toon_gio_wijziging" method="post" enctype="multipart/form-data">')
+        self.Generator.VoegHtmlToe ('''
+<p>De GIO-wijziging is een GML bestand waarin de vaststellingscontext nog aangepast moet worden:</p>''')
+
+        nu = date.today().strftime ("%Y-%m-%d")
+        wijzigingGML = '''<geo:GeoInformatieObjectVaststelling schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
+  https://standaarden.overheid.nl/stop/@@@IMOP_Versie@@@/imop-geo.xsd">
+    <geo:context>
+        <gio:GeografischeContext>
+            <gio:achtergrondVerwijzing>brt</gio:achtergrondVerwijzing>
+            <gio:achtergrondActualiteit>''' + nu + '''</gio:achtergrondActualiteit>
+        </gio:GeografischeContext>
+    </geo:context>
+    <geo:vastgesteldeVersie>
+        <geo:GeoInformatieObjectMutatie>
+            <geo:FRBRWork>''' + self._Was.WorkId + '''</geo:FRBRWork>
+            <geo:FRBRExpression>''' + self._Wordt.ExpressionId + '''</geo:FRBRExpression>
+            <geo:mutaties>'''
+
+        def __VoegLocatieToe (wijzigingGML, locatie, actie, revisieVan):
+            wijzigingGML += '''
+                <geo:LocatieMutatie>
+                    <geo:wijzigactie>''' + actie + '''</wijzigactie>'''
+            if not revisieVan is None:
+                for was_id in revisieVan:
+                    wijzigingGML += '''
+                    <geo:isRevisieVan>''' + was_id + '''</geo:isRevisieVan>'''
+
+            waarde = locatie['properties'].get('naam')
+            if not waarde is None:
+                wijzigingGML += '''
+                    <geo:naam>''' + waarde + '''</geo:naam>'''
+            wijzigingGML += '''
+                    <geo:geometrie>
+                        <basisgeo:Geometrie>
+                            <basisgeo:id>''' + locatie['properties']['id'] + '''</basisgeo:id>
+                            <basisgeo:geometrie>
+                                '''
+            gml = encode_v32 (locatie['geometry'])
+            wijzigingGML += etree.tostring (gml, pretty_print=True, encoding='unicode')
+            wijzigingGML += '''
+                            </basisgeo:geometrie>
+                        </basisgeo:Geometrie>
+                    </geo:geometrie>'''
+            waarde = None if self._Was.AttribuutNaam else locatie['properties'].get(self._Was.AttribuutNaam)
+            if not waarde is None:
+                wijzigingGML += '''
+                    <geo:''' + self._Was.AttribuutNaam + '>' + waarde + '</geo:' + self._Was.AttribuutNaam + '>'
+            wijzigingGML += '''
+                </geo:LocatieMutatie>'''
+            return wijzigingGML
+
+        for locatie_id in self._Wijzigingen.WasLocaties:
+            locatie = self._WasLocaties[locatie_id]
+            wijzigingGML = __VoegLocatieToe (wijzigingGML, locatie, 'verwijder', None)
+        for locatie_id in self._Wijzigingen.WordtLocaties:
+            locatie = self._WordtLocaties[locatie_id]
+            wijzigingGML = __VoegLocatieToe (wijzigingGML, locatie, 'verwijder', None)
+        for locatie_id, was_id in self._Wijzigingen.WordtRevisieLocaties.items ():
+            locatie = self._WasLocaties[locatie_id]
+            wijzigingGML = __VoegLocatieToe (wijzigingGML, locatie, 'revisie', was_id)
+
+        wijzigingGML += '''
+            </geo:mutaties>
+            <geo:wijzigmarkering>'''
+
+        for dimensie, markeringen in self._Wijzigingen.Markering.items ():
+            markeringType = ('Punt' if dimensie == 1 else 'Lijn' if dimensie == 2 else 'Vlak') + 'markering'
+            for markering in markeringen:
+                wijzigingGML += '''
+                <geo:''' + markeringType + '''>
+                    <basisgeo:Geometrie>
+                        <basisgeo:id>''' + str(uuid4 ()) + '''</basisgeo:id>
+                        <basisgeo:geometrie>
+                                '''
+                gml = encode_v32 (markering.Geometrie['geometry'])
+                wijzigingGML += etree.tostring (gml, pretty_print=True, encoding='unicode')
+                wijzigingGML += '''
+                        </basisgeo:geometrie>
+                    </basisgeo:Geometrie>
+                </geo:''' + markeringType + '''>'''
+
+
+        wijzigingGML += '''
+            </geo:wijzigmarkering>
+        </geo:GeoInformatieObjectMutatie>
+    </geo:vastgesteldeVersie>
+    <geo:wasID>''' + self._Was.ExpressionId + '''</geo:wasID>
+</geo:GeoInformatieObjectVersie>'''
+
+        if self.Request.KanBestandenSchrijven:
+            fileNaam = self.Request.LeesString ("wijziging")
+            if not fileNaam is None:
+                self.Log.Detail ("Bewaar GIO-wijzjging in bestand '" + fileNaam + "'")
+                filePad = os.path.join (self.Request._Pad, fileNaam)
+                try:
+                    os.makedirs (os.path.dirname (filePad))
+                    with open (filePad, 'w', encoding='utf-8') as gml_file:
+                        gml_file.write (wijzigingGML)
+                except Exception as e:
+                    self.Log.Fout ("Kan GIO-wijzjging niet opslaan in bestand '" + filePad + "': " + str(e))
+
+        self.Log.Detail ("Neem GIO-wijziging op in resultaatpagina")
+        self._ToonResultaatInTekstvak (wijzigingGML, "wijziging", "xml", "GIO-wijziging.gml")
+
+        if self.Request.IsOnlineOperatie:
+            self.Log.Detail ("Neem was-GML en smbolisatie op in form")
+            self._ToonResultaatInTekstvak (self._WasGML, "was", None, None, False)
+            if self._SymbolisatieXML is None:
+                self._ToonResultaatInTekstvak (self._SymbolisatieXML, "symbolisatie", None, None, False)
+            self.Generator.VoegHtmlToe ('''
+<p>Het tonen van de GIO-wijziging wordt door een andere webpagina verzorgd:</p>
+<input type="submit" value ="Toon gio-wijziging"/>
+</form>''')
+
+    #------------------------------------------------------------------
+    #
+    # Neem een tekstvak op in de pagina
+    #
+    #------------------------------------------------------------------
+    def _ToonResultaatInTekstvak (self, tekst, elementNaam : str = None, dataType : str = None, filenaam : str = None, toon : bool = True):
+        self._NaamIndex += 1
+        elementId = 'resultaat_' + str(self._NaamIndex)
+        self.Generator.VoegHtmlToe ('<textarea id="' + elementId + '"')
+        if not elementNaam is None:
+            self.Generator.VoegHtmlToe (' name="' + elementNaam + '"')
+        if not toon:
+            self.Generator.VoegHtmlToe (' style="display: none;"')
+        self.Generator.VoegHtmlToe ('>\n' + tekst.replace ('<', '&lt;').replace ('>', '&gt;') + '\n</textarea>\n')
+        if toon:
+            self.Generator.VoegHtmlToe ('<div><a data-copy="' + elementId + '" href="#">Kopieer</a> of <a data-download_' + dataType + '="' + elementId + '" data-filenaam="' + filenaam + '" href="#">download</a></div>\n')
+
+        pass

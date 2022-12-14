@@ -2,5 +2,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "Deze geo-tools kunnen niet omgaan met een mengsel van punten, lijnen en vlakken"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'testdata_punten_vlakken.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

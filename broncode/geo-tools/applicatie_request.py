@@ -47,19 +47,22 @@ class Parameters:
         self._Pad = directory_pad
         # Geeft aan of resultaatbestanden weggeschreven kunnen worden
         self.KanBestandenSchrijven = not directory_pad is None
+        # Geeft aan of het een online request betreft waar resultaten doorgegeven kunnen worden aan de volgeode operatie.
+        self.IsOnlineOperatie = directory_pad is None
 
-    def LeesString (self, key : str):
+    def LeesString (self, key : str, lowercase : bool = False):
         """Lees de waarde van een parameter aan de hand van de specificatie key / input control naam.
 
         Argumenten:
 
         key str  Key waarvoor de waarde opgehaald moet worden
+        lowercase bool  Geeft aan dat de waarde als lowervase teruggegeven moet worden
 
         Geeft de waarde terug als string, of None als de waarde niet gegeven is
         """
         waarde = None if self._FormData is None else self._FormData.get (key)
         if not waarde is None:
-            return str(waarde)
+            return str(waarde).ower () if lowercase else str(waarde)
 
     def LeesBestand (self, log : Meldingen, key: str, verplicht: bool):
         """Lees de inhoud van een bestand aan de hand van de specificatie key / input type="file" control naam.

@@ -4,7 +4,7 @@
 }
 
 .kaart-slider {
-    position: absolute;
+    position: relative;
     z-index: 9;
     cursor: ew-resize;
     background-color: #2196F3;
@@ -20,6 +20,12 @@
     .kaart-slider.lijn {
         width: 4px;
     }
+
+.tekennauwkeurigheid {
+    background-color: #000000;
+    border-radius: 50%;
+    display: inline-block;
+}
 
 .ol-popup {
     position: absolute;

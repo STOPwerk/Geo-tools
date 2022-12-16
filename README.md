@@ -3,18 +3,20 @@
 [Geo-tools online](@@@GeoTools_Online_Url@@@) - huidige versie: `@@@VERSIE@@@`.
 
 ## Wat is het?
-Gereedschap om met [geografische informatieobjecten](@@@STOP_Documentatie_Url@@@gio-intro.html) (GIO's) uit [STOP](@@@STOP_Documentatie_Url@@@) om te kunnen gaan. De geo-tools zijn vooral bedoeld om te laten zien hoe de randvoorwaarden voor het muteren van GIO's ingevuld kunnen worden.
 
-Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd worden met de [versiebeheer-simulator](@@@VersiebeheerSimulator_Url@@@).
+Het voornaamste doel is om te laten zien hoe het muteren van [geografische informatieobjecten](@@@STOP_Documentatie_Url@@@gio-intro.html) (GIO's) in [STOP](@@@STOP_Documentatie_Url@@@) werkt, waarom bepaalde keuzes zijn gemaakt. Het gaat hierbij om het maken van de GIO-wijziging die het verschil tussen twee GIO-versies beschrijft. Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd worden met de [versiebeheer-simulator](@@@VersiebeheerSimulator_Url@@@).
+
+- Er is een [demo en uitleg](@@@GeoTools_Online_Url@@@voorbeeld) beschikbaar van het maken en tonen van een GIO-wijziging.
+
+De [brondata](broncode/geo-tools/voorbeelden) daarvan staat in deze repository. 
 
 ## Wat zit er in?
 
-Een aantal [Python scripts](broncode/geo-tools) die aan software leveranciers demonstreren hoe een GIO-wijziging bepaald en getoond kan worden. De scripts zijn online uit te voeren:
+Minstens zo belangrijk is dat het mogelijk is software te maken die een GIO-wijziging kan maken en tonen, en dat GIO's te valideren zijn op de interne consistentie die daarvoor nodig is.De demo en uitleg zijn daarom gebaseerd op een aantal [Python scripts](broncode/geo-tools) die aan software leveranciers demonstreren hoe een GIO-wijziging bepaald en getoond kan worden. De scripts zijn online uit te voeren:
 
-- [Tonen van een GIO-versie, gebiedsmarkering of effectgebied](@@@GeoTools_Online_Url@@@toon_geo) die geo-informatie toont en controle van een GIO ppde geschiktheid voor het bepalen van een GIO-wijziging..
+- [Tonen van een GIO-versie, gebiedsmarkering of effectgebied](@@@GeoTools_Online_Url@@@toon_geo) die geo-informatie toont en controleert of het GIO overeenkomt met de (in het GIO of expliciet) opgegeven teken-nauwkeurigheid.
 - [Bepaling van een GIO-wijziging](@@@GeoTools_Online_Url@@@maak_gio_wijziging) uit twee versies van een GIO.
 - [Tonen van een GIO-wijziging](@@@GeoTools_Online_Url@@@toon_gio_wijziging) die de geo-renvooi voor een GIO-wijziging toont.
-- Er zijn [voorbeelden](@@@GeoTools_Online_Url@@@voorbeeld) online beschikbaar om deze scripts uit te voeren. 
 
 De scripts sluiten aan bij de [beschrijving in STOP](@@@STOP_Documentatie_Url@@@404.html).
 

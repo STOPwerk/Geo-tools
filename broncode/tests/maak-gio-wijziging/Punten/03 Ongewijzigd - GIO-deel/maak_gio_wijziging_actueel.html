@@ -4027,10 +4027,10 @@ class Slider {
     </script>
 </head>
 <body>
-<h1>GIO-wijziging</h1><button data-accordion="1" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
-<div data-accordion-paneel="1" class="accordion_h_paneel" style="display: block">
+<h1>GIO-wijziging</h1><button data-accordion="8" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
+<div data-accordion-paneel="8" class="accordion_h_paneel" style="display: block">
 <p>Voor de bepaling van een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Maak-gio-wijziging" target="_blank">procedure</a> gevolgd.
-In onderstaande kaart wordt het startpunt getoond: links de originele (was)-versie van de GIO met 3 locaties, rechts de nieuwe (wordt)-versie met 3 locaties.
+In onderstaande kaart wordt het startpunt getoond: links de originele (was)-versie van de GIO met 2 locaties, rechts de nieuwe (wordt)-versie met 2 locaties.
 Beweeg de schuif om meer of minder van elke versie te zien. Klik op een punt voor aanvullende details</p>
 
 <div id="kaart_4" class="kaart">
@@ -4043,11 +4043,12 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een punt voo
 <p>De bepaling van een GIO-wijziging bestaat uit de volgende stappen:</p>
 <ol>
 <li>Als dezelfde basisgeometrie-ID zowel in de was- als wordt-versie voorkomt, dan is de geometrie per definitie ongewijzigd. 
+Als de groepID van de bijbehorende locatie verschilt in beide versies, dan wijzigt de locatie en moet de hele geometrie in de wijzigmarkeringen opgenomen worden. 
 Als alleen de naam van de locatie verschilt, dan wordt dat niet als een wijziging maar als een revisie beschouwd. 
-Er zijn 3 locatie(s) met manifest ongewijzigde geometrie, 
+Er zijn 2 locatie(s) met manifest ongewijzigde geometrie, 
 waarvan 0 gewijzigd, 
 0 gereviseerd en 
-3 ongewijzigd.
+2 ongewijzigd.
 </li>
 <li>Er zijn geen locaties over die via geometrische vergelijking op wijzigingen geanalyseerd hoeven te worden</li>
 </ol>
@@ -4061,8 +4062,8 @@ waarvan 0 gewijzigd,
 
 </div>
 
-<button data-accordion="2" class="accordion_h active">GIO-Wijziging</button>
-<div data-accordion-paneel="2" class="accordion_h_paneel" style="display: block">
+<button data-accordion="9" class="accordion_h active">GIO-Wijziging</button>
+<div data-accordion-paneel="9" class="accordion_h_paneel" style="display: block">
 
 <p>De GIO-wijziging is een GML bestand waarin de vaststellingscontext nog aangepast moet worden:</p>
 <textarea id="resultaat_8"
@@ -4079,14 +4080,14 @@ waarvan 0 gewijzigd,
     &lt;geo:vastgesteldeVersie&gt;
         &lt;geo:GeoInformatieObjectMutatie&gt;
             &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/stopborden&lt;/geo:FRBRWork&gt;
-            &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2019;was&lt;/geo:FRBRExpression&gt;
+            &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2022;wordt&lt;/geo:FRBRExpression&gt;
             &lt;geo:mutaties&gt;
             &lt;/geo:mutaties&gt;
             &lt;geo:wijzigmarkering&gt;
             &lt;/geo:wijzigmarkering&gt;
         &lt;/geo:GeoInformatieObjectMutatie&gt;
     &lt;/geo:vastgesteldeVersie&gt;
-    &lt;geo:wasID&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2019;was&lt;/geo:wasID&gt;
+    &lt;geo:wasID&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2022;wordt&lt;/geo:wasID&gt;
 &lt;/geo:GeoInformatieObjectVersie&gt;
 </textarea>
 
@@ -4094,8 +4095,8 @@ waarvan 0 gewijzigd,
 
 </div>
 
-<button data-accordion="3" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
-<div data-accordion-paneel="3" class="accordion_h_paneel">
+<button data-accordion="10" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
+<div data-accordion-paneel="10" class="accordion_h_paneel">
 <p><b>Fouten: 0, waarschuwingen: 0</b></p>
 <!-- checkboxElement id moet overeenkomen "toon_" plus log-level waarde. -->
 <input id="toon_fout" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_fout">Toon FOUT meldingen </label>
@@ -4115,7 +4116,7 @@ waarvan 0 gewijzigd,
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand "testdata_wordt_punten.gml" voor "wordt" ingelezen</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">GIO ingelezen uit 'testdata_wordt_punten.gml'</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees de symbolisatie (indien aanwezig)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Geen bestand gespecificeerd voor "symbolisatie"</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand "testdata_punten_symbolisatie.xml" voor "symbolisatie" ingelezen</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Onderzoek de locaties met manifest ongewijzigde geometrieën</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak en presenteer de GIO-wijziging</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Neem GIO-wijziging op in resultaatpagina</td></tr>
@@ -4182,31 +4183,30 @@ waarvan 0 gewijzigd,
         });
     });
     
-Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym1",`<FeatureTypeStyle version="1.1.0"
+Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym1",`<FeatureTypeStyle version="1.1.0" 
     xmlns="http://www.opengis.net/se"
     xmlns:ogc="http://www.opengis.net/ogc">
     <FeatureTypeName>geo:Locatie</FeatureTypeName>
-    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+    <SemanticTypeIdentifier>geo:groepID</SemanticTypeIdentifier>
     <Rule>
-        <Name>Punt</Name>
-        <PointSymbolizer>
-            <Graphic>
-                <Mark>
-                    <WellKnownName>square</WellKnownName>
-                    <Fill>
-                        <SvgParameter name="fill">#0000FF</SvgParameter>
-                        <SvgParameter name="fill-opacity">1</SvgParameter>
-                    </Fill>
-                    <Stroke>
-                        <SvgParameter name="stroke">#0000CD</SvgParameter>
-                        <SvgParameter name="stroke-opacity">1</SvgParameter>
-                        <SvgParameter name="stroke-width">1</SvgParameter>
-                    </Stroke>
-                </Mark>
-                <Size>12</Size>
-                <Rotation>0</Rotation>
-            </Graphic>
-        </PointSymbolizer>
+        <Name>g2</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>groepID</ogc:PropertyName> 
+                <ogc:Literal>g2</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PointSymbolizer><Name>pc231</Name><Graphic><Mark><WellKnownName>circle</WellKnownName><Fill><SvgParameter name="fill">#C02040</SvgParameter><SvgParameter name="fill-opacity">1</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#999999</SvgParameter><SvgParameter name="stroke-opacity">0</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter></Stroke></Mark><Size>12</Size><Rotation>0</Rotation></Graphic></PointSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>g1</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>groepID</ogc:PropertyName> 
+                <ogc:Literal>g1</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PointSymbolizer><Name>pc241</Name><Graphic><Mark><WellKnownName>circle</WellKnownName><Fill><SvgParameter name="fill">#0080C0</SvgParameter><SvgParameter name="fill-opacity">1</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#999999</SvgParameter><SvgParameter name="stroke-opacity">0</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter></Stroke></Mark><Size>12</Size><Rotation>0</Rotation></Graphic></PointSymbolizer>
     </Rule>
 </FeatureTypeStyle>`);
 
@@ -4247,12 +4247,12 @@ window.addEventListener('load', function () {
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[231059.059, 583912.485], [236164.969, 579840.508], [240463.957, 581143.358], [233437.531, 579006.559], [233257.663, 582022.191], [244559.047, 590878.832], [244371.03, 591149.152], [239219.186, 591303.084], [239228.497, 591300.807], [229900.695, 581747.162], [229900.706, 581761.933], [231349.272, 583374.991], [231356.792, 583362.515], [233794.991, 579101.954], [234770.021, 584446.612], [234791.108, 584435.025], [234557.494, 583986.158], [237749.94, 577132.76], [237781.529, 574422.31], [236693.923, 576094.446], [236222.546, 578046.486], [235265.085, 578367.332], [239346.187, 574193.146]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001", "groepID": "g1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[144931.977, 487606.095], [140940.966, 485890.768], [140949.779, 485884.378], [140817.664, 486287.914], [141863.273, 486492.473], [143969.222, 483845.357], [143008.18, 483378.227], [141672.297, 486104.008], [141686.86, 486107.344], [142046.539, 486631.58], [142062.379, 486625.761], [142284.773, 486810.052], [142300.095, 486801.404], [141878.184, 486486.659], [144760.545, 487597.148], [144796.691, 487234.818], [145319.954, 488112.014], [143012.513, 487347.954], [145162.644, 487626.437], [142998.944, 487337.582], [142997.078, 487343.995], [143304.108, 487960.513], [145470.948, 485226.551], [143014.115, 487340.989], [143607.246, 488078.672], [143595.675, 488070.714], [145176.384, 487614.488], [144206.827, 487609.614], [146021.174, 488536.767], [149085.871, 489798.269], [146049.886, 488044.971], [149075.505, 489802.121], [145694.132, 488335.245], [148829.435, 489617.121], [145684.57, 488335.227], [148747.576, 490067.724], [146030.349, 488535.44], [146144.425, 487443.13], [148398.841, 490284.069], [146132.912, 487453.036], [148814.336, 489628.17], [147345.431, 489767.908], [148412.921, 490283.797], [147355.141, 489785.046], [140833.432, 486292.388], [141731.04, 486287.157], [143481.27, 483054.813], [143478.325, 483063.003], [143567.869, 483036.799], [143570.669, 483026.699], [142067.807, 484076.451], [142290.989, 486813.807], [140830.319, 486283.633], [141749.23, 486289.539], [140820.486, 486296.216], [144756.335, 487605.726], [144931.046, 487597.862], [144925.719, 487605.855], [144753.377, 487597.972], [144761.795, 487605.717], [145168.609, 487626.874], [150166.968, 480881.817], [146368.153, 491106.221], [146785.155, 490587.724], [148910.068, 490290.505]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002", "groepID": "g2"}, "_shape": null}], "bbox": [140817.664, 480881.817, 244559.047, 591303.084], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data3",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[231059.059, 583912.485], [236164.969, 579840.508], [240463.957, 581143.358], [233437.531, 579006.559], [233257.663, 582022.191], [244559.047, 590878.832], [244371.03, 591149.152], [239219.186, 591303.084], [239228.497, 591300.807], [229900.695, 581747.162], [229900.706, 581761.933], [231349.272, 583374.991], [231356.792, 583362.515], [233794.991, 579101.954], [234770.021, 584446.612], [234791.108, 584435.025], [234557.494, 583986.158], [237749.94, 577132.76], [237781.529, 574422.31], [236693.923, 576094.446], [236222.546, 578046.486], [235265.085, 578367.332], [239346.187, 574193.146]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001", "groepID": "g1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[144931.977, 487606.095], [140940.966, 485890.768], [140949.779, 485884.378], [140817.664, 486287.914], [141863.273, 486492.473], [143969.222, 483845.357], [143008.18, 483378.227], [141672.297, 486104.008], [141686.86, 486107.344], [142046.539, 486631.58], [142062.379, 486625.761], [142284.773, 486810.052], [142300.095, 486801.404], [141878.184, 486486.659], [144760.545, 487597.148], [144796.691, 487234.818], [145319.954, 488112.014], [143012.513, 487347.954], [145162.644, 487626.437], [142998.944, 487337.582], [142997.078, 487343.995], [143304.108, 487960.513], [145470.948, 485226.551], [143014.115, 487340.989], [143607.246, 488078.672], [143595.675, 488070.714], [145176.384, 487614.488], [144206.827, 487609.614], [146021.174, 488536.767], [149085.871, 489798.269], [146049.886, 488044.971], [149075.505, 489802.121], [145694.132, 488335.245], [148829.435, 489617.121], [145684.57, 488335.227], [148747.576, 490067.724], [146030.349, 488535.44], [146144.425, 487443.13], [148398.841, 490284.069], [146132.912, 487453.036], [148814.336, 489628.17], [147345.431, 489767.908], [148412.921, 490283.797], [147355.141, 489785.046], [140833.432, 486292.388], [141731.04, 486287.157], [143481.27, 483054.813], [143478.325, 483063.003], [143567.869, 483036.799], [143570.669, 483026.699], [142067.807, 484076.451], [142290.989, 486813.807], [140830.319, 486283.633], [141749.23, 486289.539], [140820.486, 486296.216], [144756.335, 487605.726], [144931.046, 487597.862], [144925.719, 487605.855], [144753.377, 487597.972], [144761.795, 487605.717], [145168.609, 487626.874], [150166.968, 480881.817], [146368.153, 491106.221], [146785.155, 490587.724], [148910.068, 490290.505]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002", "groepID": "g2"}, "_shape": null}], "bbox": [140817.664, 480881.817, 244559.047, 591303.084], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
 );
 
 
@@ -4292,7 +4292,7 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym5",`<FeatureTypeStyle version="
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data6",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[231059.059, 583912.485], [236164.969, 579840.508], [240463.957, 581143.358], [233437.531, 579006.559], [233257.663, 582022.191], [244559.047, 590878.832], [244371.03, 591149.152], [239219.186, 591303.084], [239228.497, 591300.807], [229900.695, 581747.162], [229900.706, 581761.933], [231349.272, 583374.991], [231356.792, 583362.515], [233794.991, 579101.954], [234770.021, 584446.612], [234791.108, 584435.025], [234557.494, 583986.158], [237749.94, 577132.76], [237781.529, 574422.31], [236693.923, 576094.446], [236222.546, 578046.486], [235265.085, 578367.332], [239346.187, 574193.146]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001", "groepID": "g1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[144931.977, 487606.095], [140940.966, 485890.768], [140949.779, 485884.378], [140817.664, 486287.914], [141863.273, 486492.473], [143969.222, 483845.357], [143008.18, 483378.227], [141672.297, 486104.008], [141686.86, 486107.344], [142046.539, 486631.58], [142062.379, 486625.761], [142284.773, 486810.052], [142300.095, 486801.404], [141878.184, 486486.659], [144760.545, 487597.148], [144796.691, 487234.818], [145319.954, 488112.014], [143012.513, 487347.954], [145162.644, 487626.437], [142998.944, 487337.582], [142997.078, 487343.995], [143304.108, 487960.513], [145470.948, 485226.551], [143014.115, 487340.989], [143607.246, 488078.672], [143595.675, 488070.714], [145176.384, 487614.488], [144206.827, 487609.614], [146021.174, 488536.767], [149085.871, 489798.269], [146049.886, 488044.971], [149075.505, 489802.121], [145694.132, 488335.245], [148829.435, 489617.121], [145684.57, 488335.227], [148747.576, 490067.724], [146030.349, 488535.44], [146144.425, 487443.13], [148398.841, 490284.069], [146132.912, 487453.036], [148814.336, 489628.17], [147345.431, 489767.908], [148412.921, 490283.797], [147355.141, 489785.046], [140833.432, 486292.388], [141731.04, 486287.157], [143481.27, 483054.813], [143478.325, 483063.003], [143567.869, 483036.799], [143570.669, 483026.699], [142067.807, 484076.451], [142290.989, 486813.807], [140830.319, 486283.633], [141749.23, 486289.539], [140820.486, 486296.216], [144756.335, 487605.726], [144931.046, 487597.862], [144925.719, 487605.855], [144753.377, 487597.972], [144761.795, 487605.717], [145168.609, 487626.874], [150166.968, 480881.817], [146368.153, 491106.221], [146785.155, 490587.724], [148910.068, 490290.505]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002", "groepID": "g2"}, "_shape": null}], "bbox": [140817.664, 480881.817, 244559.047, 591303.084], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
 );
 
 

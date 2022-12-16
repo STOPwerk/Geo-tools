@@ -4027,8 +4027,8 @@ class Slider {
     </script>
 </head>
 <body>
-<h1>GIO-wijziging</h1><button data-accordion="1" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
-<div data-accordion-paneel="1" class="accordion_h_paneel" style="display: block">
+<h1>GIO-wijziging</h1><button data-accordion="4" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
+<div data-accordion-paneel="4" class="accordion_h_paneel" style="display: block">
 <p>Voor de bepaling van een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Maak-gio-wijziging" target="_blank">procedure</a> gevolgd.
 In onderstaande kaart wordt het startpunt getoond: links de originele (was)-versie van de GIO met 3 locaties, rechts de nieuwe (wordt)-versie met 3 locaties.
 Beweeg de schuif om meer of minder van elke versie te zien. Klik op een punt voor aanvullende details</p>
@@ -4044,28 +4044,84 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een punt voo
 <ol>
 <li>Als dezelfde basisgeometrie-ID zowel in de was- als wordt-versie voorkomt, dan is de geometrie per definitie ongewijzigd. 
 Als alleen de naam van de locatie verschilt, dan wordt dat niet als een wijziging maar als een revisie beschouwd. 
-Er zijn 3 locatie(s) met manifest ongewijzigde geometrie, 
+Er zijn 0 locatie(s) met manifest ongewijzigde geometrie, 
 waarvan 0 gewijzigd, 
 0 gereviseerd en 
-3 ongewijzigd.
+0 ongewijzigd.
 </li>
-<li>Er zijn geen locaties over die via geometrische vergelijking op wijzigingen geanalyseerd hoeven te worden</li>
+<li>Vergelijk 3 locaties met 3 punten uit de was-versie en 3'
+met 3 punten uit de wordt-versie paarsgewijs met elkaar.<ul>
+<li>Als de twee punten uit een paar op een afstand kleiner dan de teken-nauwkeurigheid (1.0'm) staan, dan
+worden ze geacht dezelfde plaats te betreffen. 
+Zo niet, dan worden de punten als revisie van elkaar gezien - de geo-tools doen niet aan het vergelijken van geomeotrieën om te zien of ze gelijk zijn.</li>
+<li>Punten uit de was-versie die geen corresponderend punt in de wordt-versie hebben worden als vervallen beschouwd. De 
+locatie wordt aan de gewijzigde locaties toegevoegd, en het punt aan de wijzigmarkeringen.
+<li>Punten uit de wordt-versie die geen corresponderend punt in de was-versie hebben worden als nieuw beschouwd. De 
+locatie wordt aan de gewijzigde locaties toegevoegd, en het punt aan de wijzigmarkeringen.</li>
+</ul>
+
+Zo blijken 0 punten uit de was-versie vervallen, en in de wordt-versie 0 punten nieuw en 0 gewijzigd te zijn. 
+En er zijn 3 paren van een punt uit de was-versie en een uit de wordt-versie gevonden die revisies van elkaar zijn.
+</li>
+<li>Voer eventuele correcties door:
+<ul>
+<li>Als een of beide GIO-versies geometrieën bevat die minder dan de teken-nauwkeurigheid zijn gescheiden, dan kan dezelfde geometrie 
+uit de ene versie zowel als revisie van de ene als wijziging van de andere geometrie uit de andere GIO-versie gezien worden. Voer hiervoor een ontdubbeling uit.</li>
+<li>Een of beide GIO-versies hebben locaties die multi-geometrieën bevatte. Het kan voorkomen dat van dezelfde locatie de ene geometrie 
+als wijziging gezien wordt en de andere als revisie. In de geo-renvooi van STOP kan alleen de hele locatie als gewijzigd of revisie aangemerkt worden. 
+Doordat de revisie-geometrie als gewijzigd opgenomen wordt, moet de locatie van de corresponderende geometrie uit de andere GIO-versie ook als wijziging opgenomen worden,
+anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was als de wordt-versie zichtbaar zijn.</li>
+</ul>
+Uiteindelijk blijken 0 locaties uit de was-versie en 0 locaties uit de wordt-versie gewijzigd.
+3 Locaties uit de wordt-versie blijken revisies van 3 locaties uit de was-versie.
+</li>
 </ol>
 <p>De resultaten van de bepaling zijn in de kaart weergegeven.</p>
-<div id="kaart_7" class="kaart">
+<div id="kaart_9" class="kaart">
 </div>
-<div id="kaart_7_popup" class="ol-popup">
-    <a href="#" id="kaart_7_popup-closer" class="ol-popup-closer"></a>
-    <div id="kaart_7_popup-content" class="ol-popup-content"></div>
-</div>
-
+<div id="kaart_9_popup" class="ol-popup">
+    <a href="#" id="kaart_9_popup-closer" class="ol-popup-closer"></a>
+    <div id="kaart_9_popup-content" class="ol-popup-content"></div>
 </div>
 
-<button data-accordion="2" class="accordion_h active">GIO-Wijziging</button>
-<div data-accordion-paneel="2" class="accordion_h_paneel" style="display: block">
+</div>
+
+<button data-accordion="5" class="accordion_h active">Overeenkomstige basisgeometrie-IDs</button>
+<div data-accordion-paneel="5" class="accordion_h_paneel" style="display: block">
+<p>Er zijn locaties in de was- en wordt-versie van het GIO waarvan de geometrieën
+binnen de teken-nauwkeurigheid met elkaar overeenkomen. Omdat de basisgeometrie-ID van de locaties niet met elkaar overeenkomen,
+moet aangenomen worden dat de geometrieën toch van elkaar verschillen (want de geo-tools voeren geen vergelijking van
+geometrieën uit). Het advies is om de locaties in de wordt-versie te vervangen door de locaties uit de was-versie,
+zodat deze revisie niet meer nodig is. Of om, als de naam van de locatie wel moet wijzigen, dezelfde basisgeometrie-IDs
+te gebruiken in beide versies.</p>
+<p>In onderstaand tekstvak staat per basisgeometrie-ID van de locaties in de wordt-versie
+aangegeven de basisgeometrie-ID van dw corresponderende locatie(s) uit de was-versie.</p>
+<textarea id="resultaat_10"
+>
+{
+    "37b0a09f-36a0-4e69-80c1-10000000002": [
+        "37b0a09f-36a0-4e69-80c1-00000000002"
+    ],
+    "37b0a09f-36a0-4e69-80c1-10000000003": [
+        "37b0a09f-36a0-4e69-80c1-00000000003"
+    ],
+    "37b0a09f-36a0-4e69-80c1-10000000004": [
+        "37b0a09f-36a0-4e69-80c1-00000000004"
+    ]
+}
+</textarea>
+
+<div><a data-copy="resultaat_10" href="#">Kopieer</a> of <a data-download_json="resultaat_10" data-filenaam="Te_vervangen_locaties.json" href="#">download</a></div>
+
+
+<p>Deze locaties zijn opgenomen in GIO-wijziging als revisies.</p>
+</div>
+
+<button data-accordion="6" class="accordion_h active">GIO-Wijziging</button>
+<div data-accordion-paneel="6" class="accordion_h_paneel" style="display: block">
 
 <p>De GIO-wijziging is een GML bestand waarin de vaststellingscontext nog aangepast moet worden:</p>
-<textarea id="resultaat_8"
+<textarea id="resultaat_11"
  name="wijziging"
 >
 &lt;geo:GeoInformatieObjectVaststelling schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
@@ -4081,6 +4137,42 @@ waarvan 0 gewijzigd,
             &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/stopborden&lt;/geo:FRBRWork&gt;
             &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2019;was&lt;/geo:FRBRExpression&gt;
             &lt;geo:mutaties&gt;
+                &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wijzigactie&gt;revisie&lt;/wijzigactie&gt;
+                    &lt;geo:isRevisieVan&gt;37b0a09f-36a0-4e69-80c1-00000000002&lt;/geo:isRevisieVan&gt;
+                    &lt;geo:geometrie&gt;
+                        &lt;basisgeo:Geometrie&gt;
+                            &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c1-10000000002&lt;/basisgeo:id&gt;
+                            &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;113836.728 475429.222&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                            &lt;/basisgeo:geometrie&gt;
+                        &lt;/basisgeo:Geometrie&gt;
+                    &lt;/geo:geometrie&gt;
+                &lt;/geo:LocatieMutatie&gt;
+                &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wijzigactie&gt;revisie&lt;/wijzigactie&gt;
+                    &lt;geo:isRevisieVan&gt;37b0a09f-36a0-4e69-80c1-00000000003&lt;/geo:isRevisieVan&gt;
+                    &lt;geo:geometrie&gt;
+                        &lt;basisgeo:Geometrie&gt;
+                            &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c1-10000000003&lt;/basisgeo:id&gt;
+                            &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;197244.212 471457.236&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                            &lt;/basisgeo:geometrie&gt;
+                        &lt;/basisgeo:Geometrie&gt;
+                    &lt;/geo:geometrie&gt;
+                &lt;/geo:LocatieMutatie&gt;
+                &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wijzigactie&gt;revisie&lt;/wijzigactie&gt;
+                    &lt;geo:isRevisieVan&gt;37b0a09f-36a0-4e69-80c1-00000000004&lt;/geo:isRevisieVan&gt;
+                    &lt;geo:geometrie&gt;
+                        &lt;basisgeo:Geometrie&gt;
+                            &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c1-10000000004&lt;/basisgeo:id&gt;
+                            &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;87970.258 452158.606&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                            &lt;/basisgeo:geometrie&gt;
+                        &lt;/basisgeo:Geometrie&gt;
+                    &lt;/geo:geometrie&gt;
+                &lt;/geo:LocatieMutatie&gt;
             &lt;/geo:mutaties&gt;
             &lt;geo:wijzigmarkering&gt;
             &lt;/geo:wijzigmarkering&gt;
@@ -4090,12 +4182,12 @@ waarvan 0 gewijzigd,
 &lt;/geo:GeoInformatieObjectVersie&gt;
 </textarea>
 
-<div><a data-copy="resultaat_8" href="#">Kopieer</a> of <a data-download_xml="resultaat_8" data-filenaam="GIO-wijziging.gml" href="#">download</a></div>
+<div><a data-copy="resultaat_11" href="#">Kopieer</a> of <a data-download_xml="resultaat_11" data-filenaam="GIO-wijziging.gml" href="#">download</a></div>
 
 </div>
 
-<button data-accordion="3" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
-<div data-accordion-paneel="3" class="accordion_h_paneel">
+<button data-accordion="7" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
+<div data-accordion-paneel="7" class="accordion_h_paneel">
 <p><b>Fouten: 0, waarschuwingen: 0</b></p>
 <!-- checkboxElement id moet overeenkomen "toon_" plus log-level waarde. -->
 <input id="toon_fout" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_fout">Toon FOUT meldingen </label>
@@ -4117,6 +4209,8 @@ waarvan 0 gewijzigd,
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees de symbolisatie (indien aanwezig)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Geen bestand gespecificeerd voor "symbolisatie"</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Onderzoek de locaties met manifest ongewijzigde geometrieën</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Onderzoek de overige punt-locaties</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Presenteer overeenkomstige basisgeometrie-IDs van locaties</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak en presenteer de GIO-wijziging</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Neem GIO-wijziging op in resultaatpagina</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">De verwerking is voltooid.</td></tr>
@@ -4252,7 +4346,7 @@ Kaartgegevens.Instantie.VoegDataToe ("data2",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data3",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
 );
 
 
@@ -4262,7 +4356,17 @@ kaart.VoegOudLaagToe ("Was-versie", "data2", "sym1").VoegNieuwLaagToe ("Wordt-ve
 kaart.Toon ("kaart_4", "900", "600");
 });
 
-Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym5",`<FeatureTypeStyle version="1.1.0"
+Kaartgegevens.Instantie.VoegDataToe ("data5",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data6",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-10000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym7",`<FeatureTypeStyle version="1.1.0"
     xmlns="http://www.opengis.net/se"
     xmlns:ogc="http://www.opengis.net/ogc">
     <FeatureTypeName>geo:Locatie</FeatureTypeName>
@@ -4272,18 +4376,52 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym5",`<FeatureTypeStyle version="
         <PointSymbolizer>
             <Graphic>
                 <Mark>
-                    <WellKnownName>square</WellKnownName>
+                    <WellKnownName>star</WellKnownName>
                     <Fill>
-                        <SvgParameter name="fill">#cccccc</SvgParameter>
+                        <SvgParameter name="fill">#007bc7</SvgParameter>
                         <SvgParameter name="fill-opacity">1</SvgParameter>
                     </Fill>
-                    <Stroke>
-                        <SvgParameter name="stroke">#000000</SvgParameter>
-                        <SvgParameter name="stroke-opacity">1</SvgParameter>
-                        <SvgParameter name="stroke-width">1</SvgParameter>
-                    </Stroke>
                 </Mark>
-                <Size>12</Size>
+                <Size>35</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>star</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#b2d7ee</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>29</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>circle</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#007bc7</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>11</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>circle</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#b2d7ee</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>7</Size>
                 <Rotation>0</Rotation>
             </Graphic>
         </PointSymbolizer>
@@ -4291,15 +4429,15 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym5",`<FeatureTypeStyle version="
 </FeatureTypeStyle>`);
 
 
-Kaartgegevens.Instantie.VoegDataToe ("data6",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+Kaartgegevens.Instantie.VoegDataToe ("data8",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222]}
 );
 
 
 window.addEventListener("load", function () {
 var kaart = new Kaart (10);
-kaart.VoegLaagToe ("Manifest ongewijzigde locaties", "data6", "sym5", true, true);
-kaart.Toon ("kaart_7", "900", "600");
+kaart.VoegOudLaagToe ("Locaties met revisies", "data5", "sym1", true, true);kaart.VoegNieuwLaagToe ("Locaties met revisies", "data6", "sym1", true, true);kaart.VoegLaagToe ("Markering waar revisies gevonden zijn", "data8", "sym7", true, true);
+kaart.Toon ("kaart_9", "900", "600");
 });
 </script>
 </body>

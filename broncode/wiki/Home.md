@@ -10,10 +10,12 @@ Deze documentatie betreft een aantal [Python scripts](../broncode/geo-tools) die
 - [Bepaling van een GIO-wijziging](@@@GeoTools_Online_Url@@@maak_gio_wijziging) uit twee versies van een GIO.
 - [Tonen van een GIO-wijziging](@@@GeoTools_Online_Url@@@toon_gio_wijziging) die de geo-renvooi voor een GIO-wijziging toont.
 
+De [voorbeelden](../broncode/geo-tools/voorbeelden) met een demo en uitleg van de principes zijn ook [online](@@@GeoTools_Online_Url@@@voorbeelden) te bekijken.
+
 De scripts sluiten aan bij de [beschrijving in STOP](@@@STOP_Documentatie_Url@@@404.html).
 
 ## Offline / eigen computer
-De scripts zijn ook te [downloaden](..) en op de eigen computer uit te voeren. De invoerbestanden moeten dan in een map op de eigen computer staan:
+De scripts zijn te [downloaden](..) en op de eigen computer uit te voeren. De invoerbestanden moeten dan in een map op de eigen computer staan:
 
 - [Invoerspecificatie](Invoerspecificatie) voor de scripts op de eigen computer.
 

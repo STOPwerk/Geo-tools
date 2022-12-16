@@ -26,6 +26,8 @@ window.addEventListener('load', function () {
             var area = document.getElementById(e.srcElement.dataset['copy']);
             area.select();
             document.execCommand('copy');
+            area.selectionStart = 0;
+            area.selectionEnd = 0;
         });
     });
 

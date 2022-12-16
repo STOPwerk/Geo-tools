@@ -4,25 +4,29 @@
 
 <h2>Wat is het?</h2>
 <p>
-    Gereedschap om met geografische informatie te kunnen omgaan die conform <a href="@@@STOP_Documentatie_Url@@@">STOP</a>
-    in GML is vastgelegd, zoals de <a href="@@@STOP_Documentatie_Url@@@gio-intro.html">geografische informatieobjecten</a> (GIO's).
-    De geo-tools zijn vooral bedoeld om te laten zien hoe de randvoorwaarden voor het muteren van GIO's ingevuld kunnen worden.
-
-    Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd worden met de <a href="@@@VersiebeheerSimulator_Url@@@gio-intro.html">versiebeheer-simulator</a>.
+    Het voornaamste doel is om te laten zien hoe het muteren van <a href="@@@STOP_Documentatie_Url@@@gio-intro.html">geografische informatieobjecten</a> (GIO's)
+    in ' <a href="@@@STOP_Documentatie_Url@@@">STOP</a> werkt, waarom bepaalde keuzes zijn gemaakt. Het gaat hierbij
+    om het maken van de GIO-wijziging die het verschil tussen twee GIO-versies beschrijft.
+    Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd worden met de <a href="@@@VersiebeheerSimulator_Url@@@">versiebeheer-simulator</a>.
 </p>
+<ul>
+    <li>Er is een <a href="voorbeeld">demo en uitleg</a> beschikbaar van het maken en tonen van een GIO-wijziging.</li>
+</ul>
 
 <h2>Wat zit er in?</h2>
 <p>
-    Een aantal <a href="@@@GeoTools_Url@@@">Python scripts</a>
-    die aan software leveranciers demonstreren hoe een GIO-wijziging bepaald en getoond kan worden. De scripts zijn online uit te voeren:
+    Minstens zo belangrijk is dat het mogelijk is software te maken die een GIO-wijziging kan maken en tonen, en dat GIO's te valideren
+    zijn op de interne consistentie die daarvoor nodig is.De demo en uitleg zijn daarom gebaseerd op een aantal <a href="@@@GeoTools_Url@@@">Python scripts</a>.
+    De scripts zijn online uit te voeren:
 </p>
 <ul>
-    <li><a href="toon_geo">Tonen van een GIO-versie</a> om te controleren of een GIO geschikt is voor het geautomatiseerd bepalen van wijzingen.</li>
+    <li><a href="toon_geo">Tonen van een GIO-versie</a> en controleren of een GIO overeenkomt met de (in het GIO of expliciet) opgegeven teken-nauwkeurigheid.</li>
     <li><a href="maak_gio_wijziging">Bepaling van een GIO-wijziging</a> uit twee versies van een GIO.</li>
     <li><a href="toon_gio_wijziging">Tonen van een GIO-wijziging</a> die de geo-renvooi voor een GIO-wijziging toont.</li>
-    <li>Er zijn <a href="voorbeeld">voorbeelden</a> beschikbaar om deze scripts uit te voeren.</li>
 </ul>
 <p>
+    De online tools worden gehost via het [hobby](https://vercel.com/pricing) plan en zijn niet bedoeld als productie-waardige omgeving.
+    Om met veel/grote GIO's aan de slag te gaan: download de Python scripts en draai de geo-tools op eigen hardware.
     De scripts sluiten aan bij de <a href="@@@STOP_Documentatie_Url@@@404.html">beschrijving in STOP</a>.
     Met het eerste script is ook een gebiedsmarkering of effectgebied te bekijken.
 </p>

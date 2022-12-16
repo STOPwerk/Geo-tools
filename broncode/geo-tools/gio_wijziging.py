@@ -53,7 +53,9 @@ class GIOWijziging (GeoManipulatie):
 
         def __Waarde (spec, key):
             x = spec.get (key)
-            return x if not x is None else self.Request._FormData.get (key)
+            if x is None:
+                x = self.Request._FormData.get (key)
+            return x if not x is None and x else None
 
         succes = True
 

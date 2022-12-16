@@ -2,6 +2,20 @@
 <geo:GeoInformatieObjectVersie schemaversie="1.3.0" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2">
 	<geo:FRBRWork>/join/id/regdata/mnre9999/2022/stopborden</geo:FRBRWork>
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/stopborden/nld@2022;wordt</geo:FRBRExpression>
+    <geo:groepen>
+        <geo:Groep>
+            <geo:groepID>g1</geo:groepID>
+            <geo:label>Groep #1</geo:label>
+        </geo:Groep>
+        <geo:Groep>
+            <geo:groepID>g2</geo:groepID>
+            <geo:label>Groep #2</geo:label>
+        </geo:Groep>
+        <geo:Groep>
+            <geo:groepID>g3</geo:groepID>
+            <geo:label>Groep #3</geo:label>
+        </geo:Groep>
+    </geo:groepen>
 	<geo:locaties>
 		<geo:Locatie>
 			<geo:geometrie>
@@ -75,6 +89,7 @@
 					</basisgeo:geometrie>
 				</basisgeo:Geometrie>
 			</geo:geometrie>
+			<geo:groepID>g1</geo:groepID>
 		</geo:Locatie>
 		<geo:Locatie>
 			<geo:geometrie>
@@ -292,6 +307,20 @@
 					</basisgeo:geometrie>
 				</basisgeo:Geometrie>
 			</geo:geometrie>
+            <geo:groepID>g2</geo:groepID>
+		</geo:Locatie>
+		<geo:Locatie>
+			<geo:geometrie>
+				<basisgeo:Geometrie>
+					<basisgeo:id>37b0a09f-36a0-4e69-80c1-00000000004</basisgeo:id>
+					<basisgeo:geometrie>
+						<gml:Point srsName="urn:ogc:def:crs:EPSG::28992">
+							<gml:pos>87970.258 452158.606</gml:pos>
+						</gml:Point>
+					</basisgeo:geometrie>
+				</basisgeo:Geometrie>
+			</geo:geometrie>
+            <geo:groepID>g3</geo:groepID>
 		</geo:Locatie>
 	</geo:locaties>
 </geo:GeoInformatieObjectVersie>

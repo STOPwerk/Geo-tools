@@ -8,7 +8,11 @@
 from typing import Dict, List, Tuple
 
 import pygml
+from pygml.v32 import encode_v32, GML32_ENCODER
+GML32_ENCODER.id_required = False # Basisgeometrie gebruikt geen gml:id
+from lxml import etree as lxml_etree
 from shapely.geometry import shape
+
 import json
 import re
 from xml.etree import ElementTree
@@ -96,6 +100,20 @@ class GeoManipulatie:
             self.Label = tag if label is None else label
             self.Eenheid = eenheid
 
+    class GIODeel:
+        def __init__ (self, groepId : str, label : str):
+            """Maak een instantie van de informatie over een GIO-deel
+            
+            Argumenten:
+
+            groepId str  ID voor het GIO-deel
+            label str  Naam van het GIO-deel
+            """
+            self.GroepId = groepId
+            self.Label = label
+            # Als onderdeel van de GIO-Wijziging: wat moet er mee gebeuren?
+            self.WijzigActie = None
+
     class GeoData:
         def __init__(self):
             # Geeft de bron aan: Gebied, GIO of GIO-wijziging
@@ -108,13 +126,23 @@ class GeoManipulatie:
             # Geeft aan of er een waarde met de locatie geassocieerd is (groepID, normwaarde).
             # Zo nee, dan is dit None. Zo ja, dan staat er de naam van het waarde-element
             self.AttribuutNaam : str = None
+            # Definitie van de GIO-delen
+            self.GIODelen : Dict[str,GeoManipulatie.GIODeel] = None
+            # Label voor de norm
+            self.NormLabel = None
+            # ID voor de norm
+            self.NormID = None
+            # Label voor de eenheid van de normwaarden
+            self.EenheidLabel = None
+            # ID voor de eenheid van de normwaarden
+            self.EenheidID = None
             #----------------------------------------------------------
             # Voor een GIO-versie
             #----------------------------------------------------------
             # De expression-identificatie van de GIO
             self.ExpressionId : str = None
             # De vaststellingscontext van de GIO (indien bekend)
-            self.Vaststellingscontext : Element = None
+            self.Vaststellingscontext : str = None
             #----------------------------------------------------------
             # Voor een GIO-versie, effectgebied, gebiedsmarkering
             #----------------------------------------------------------
@@ -134,8 +162,10 @@ class GeoManipulatie:
             self.Was : GeoManipulatie.GeoData = None 
             # De wordt-locaties
             self.Wordt : GeoManipulatie.GeoData = None 
-            # De wijzig-markering indien aanwezig
-            self.WijzigMarkering : GeoManipulatie.GeoData = None
+            # De wordt-locaties die uitsluitend als revisie voorkomen
+            self.WordtRevisies : GeoManipulatie.GeoData = None 
+            # De wijzig-markering indien aanwezig, uitgesplitst naar de dimensie van de geometrieën.
+            self.WijzigMarkering : Dict[int,GeoManipulatie.GeoData] = None
 
         def GeometrieNaam (self, meervoud: bool) -> str:
             """Geeft de gewone naam voor de geometrieën in de geo-data, in enkel- of meervoud."""
@@ -203,6 +233,8 @@ class GeoManipulatie:
             mutatie = None
             if geoXml.tag == GeoManipulatie._GeoNS + 'GeoInformatieObjectVaststelling':
                 data.Vaststellingscontext = geoXml.find (GeoManipulatie._GeoNS + 'context')
+                if not data.Vaststellingscontext is None:
+                    data.Vaststellingscontext = ElementTree.tostring (data.Vaststellingscontext, encoding='unicode')
                 geoXml = geoXml.find (GeoManipulatie._GeoNS + 'vastgesteldeVersie')
                 if not geoXml is None:
                     mutatie = geoXml.find (GeoManipulatie._GeoNS + 'GeoInformatieObjectMutatie')
@@ -220,14 +252,37 @@ class GeoManipulatie:
             else:
                 self.Log.Fout ("GIO-versie bevat geen FRBRWork")
                 succes = False
-            normLabel = None
-            elt = geoXml.find (GeoManipulatie._GeoNS + 'normlabel')
+            elt = geoXml.find (GeoManipulatie._GeoNS + 'groepen')
             if not elt is None:
-                normLabel = elt.text
-            eenheidLabel = None
-            elt = geoXml.find (GeoManipulatie._GeoNS + 'eenheidlabel')
-            if not elt is None:
-                eenheidLabel = elt.text
+                data.AttribuutNaam = 'groepID'
+                data.GIODelen = {}
+                for groepXml in elt.findall (GeoManipulatie._GeoNS + 'Groep'):
+                    groepId = groepXml.find (GeoManipulatie._GeoNS + 'groepID')
+                    elt2 = groepXml.find (GeoManipulatie._GeoNS + 'label')
+                    if groepId is None or elt2 is None:
+                        self.Log.Fout ("Een GIO-deel/groep moet een groepID en label hebben")
+                        succes = False
+                    else:
+                        data.GIODelen[groepId.text] = GeoManipulatie.GIODeel (groepId.text, elt2.text)
+                        if mutatie:
+                            # GIO-wijziging
+                            elt2 = groepXml.find (GeoManipulatie._GeoNS + 'wijzigactie')
+                            if not elt2 is None:
+                                data.GIODelen[groepId.text] = elt2.text
+
+            else:
+                elt = geoXml.find (GeoManipulatie._GeoNS + 'normlabel')
+                if not elt is None:
+                    data.NormLabel = elt.text
+                    elt = geoXml.find (GeoManipulatie._GeoNS + 'normID')
+                    if not elt is None:
+                        data.NormID = elt.text
+                    elt = geoXml.find (GeoManipulatie._GeoNS + 'eenheidlabel')
+                    if not elt is None:
+                        data.EenheidLabel = elt.text
+                    elt = geoXml.find (GeoManipulatie._GeoNS + 'eenheidID')
+                    if not elt is None:
+                        data.EenheidID = elt.text
 
             if mutatie is None:
                 # Het is een GIO-versie
@@ -243,6 +298,28 @@ class GeoManipulatie:
                 elif len (data.Locaties) == 0:
                     self.Log.Fout ("GIO bevat geen locaties")
                     succes = False
+                elif data.AttribuutNaam == 'groepID':
+                    if data.GIODelen is None:
+                        self.Log.Fout ("GIO bevat geen definities van GIO-delen")
+                        succes = False
+                    else:
+                        meldingen = set ()
+                        for locatie in data.Locaties:
+                            groepId = locatie['properties']['groepID']
+                            if not groepId in data.GIODelen:
+                                meldingen.add ("Locatie heeft onbekende groepID = '" + groepId + "'")
+                        if len (meldingen) > 0:
+                            succes = False
+                            for melding in meldingen:
+                                self.Log.Fout (melding)
+                elif not data.NormLabel is None:
+                    if data.AttribuutNaam is None:
+                        self.Log.Fout ("GIO bevat een norm maar de locaties hebben geen normwaarden")
+                        succes = False
+                elif not data.AttribuutNaam is None:
+                    if data.NormLabel is None:
+                        self.Log.Fout ("GIO heeft geen label voor de norm")
+                        succes = False
             else:
                 # Het is een GIO-wijziging
                 data.Soort = 'GIO-wijziging'
@@ -319,12 +396,8 @@ class GeoManipulatie:
                 if locatiesZijnValide:
                     # Lees de wijzigmarkering in
                     geoXml = mutatie.find (GeoManipulatie._GeoNS + 'wijzigmarkering')
-                    if data.Dimensie == 0:
-                        if not geoXml is None:
-                            self.Log.Fout ("wijzigmarkering mag niet aanwezig zijn want de GIO bestaat uit punten")
-                            succes = False
-                    elif geoXml is None:
-                        self.Log.Fout ("wijzigmarkering moet aanwezig zijn want de GIO bestaat uit lijnen of vlakken")
+                    if geoXml is None:
+                        self.Log.Fout ("wijzigmarkering moet aanwezig zijn")
                         succes = False
                     else:
                         data.WijzigMarkering = GeoManipulatie.GeoData ()
@@ -338,7 +411,7 @@ class GeoManipulatie:
                             succes = False
 
             if data.AttribuutNaam == 'groepID':
-                data.Attributen[data.AttribuutNaam] = GeoManipulatie.Attribuut (data.AttribuutNaam, 'GIO-deel')
+                data.Attributen[data.AttribuutNaam] = GeoManipulatie.Attribuut (data.AttribuutNaam, 'groepID')
             elif not data.AttribuutNaam  is None:
                 data.Attributen[data.AttribuutNaam] = GeoManipulatie.Attribuut (data.AttribuutNaam, 'Normwaarde' if normLabel is None else normLabel, eenheidLabel)
 
@@ -352,7 +425,7 @@ class GeoManipulatie:
         succes = True
         # Foutmeldigen worden maar één keer gedaan
         foutmeldingen = set ()
-        heeftAttribuut = None
+        heeftAttribuut = None if data.AttribuutNaam is None else True
         bekende_id = set ()
         for locatie in [] if geoXml is None else geoXml.findall (locatieElement):
             # Lees de geometrie van een locatie
@@ -482,6 +555,133 @@ class GeoManipulatie:
 
 #----------------------------------------------------------------------
 #
+# Maken van XML voor GIO-wijziging
+#
+#----------------------------------------------------------------------
+    def SchrijfGIOWijziging (self, gioWijziging : GeoData) -> str:
+        """Stel de XML op voor een GIO-wijziging (als string)
+
+        Argumenten:
+        gioWijziging GeoData  De GIO-wijzifging
+        """
+
+        def __GML(geom):
+            geom['crs'] = {'properties' : { 'name': "urn:ogc:def:crs:EPSG::28992" } }
+            gml = encode_v32 (geom, None)
+            for withId in gml.xpath ('//*[@gml:id]', namespaces={'gml' : 'http://www.opengis.net/gml/3.2'}):
+                withId.attrib.pop ('{http://www.opengis.net/gml/3.2}id')
+            gml = lxml_etree.tostring (gml, encoding='unicode')
+            gml = gml.replace (' xmlns:gml="http://www.opengis.net/gml/3.2"', '')
+            return gml
+
+        wijzigingGML = '''<geo:GeoInformatieObjectVaststelling schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
+  https://standaarden.overheid.nl/stop/@@@IMOP_Versie@@@/imop-geo.xsd">
+''' + gioWijziging.Vaststellingscontext + '''
+    <geo:vastgesteldeVersie>
+        <geo:GeoInformatieObjectMutatie>
+            <geo:FRBRWork>''' + gioWijziging.WorkId + '''</geo:FRBRWork>
+            <geo:FRBRExpression>''' + gioWijziging.Wordt.ExpressionId + '''</geo:FRBRExpression>'''
+
+        if not gioWijziging.GIODelen is None:
+            wijzigingGML += '''
+            <geo:groepen>'''
+            for gioDeel in gioWijziging.GIODelen.values ():
+                wijzigingGML += '''
+                <geo:Groep>
+                    <geo:groepID>''' + gioDeel.GroepId + '''</geo:groepID>
+                    <geo:label>''' + gioDeel.Label + '''</geo:label>'''
+                if not gioDeel.WijzigActie is None:
+                    wijzigingGML += '''
+                    <geo:wijzigactie>''' + gioDeel.WijzigActie + '''</geo:wijzigactie>'''
+                wijzigingGML += '''
+                <geo:/Groep>'''
+
+            wijzigingGML += '''
+            </geo:groepen>'''
+        elif not gioWijziging.NormLabel is None:
+            wijzigingGML += '''
+                    <geo:normlabel>''' + gioWijziging.NormLabel + '''</geo:normlabel>'''
+            if not gioWijziging.NormID is None:
+                wijzigingGML += '''
+                    <geo:normID>''' + gioWijziging.NormID + '''</geo:normID>'''
+            if not gioWijziging.EenheidLabel is None:
+                wijzigingGML += '''
+                    <geo:eenheidlabel>''' + gioWijziging.EenheidLabel + '''</geo:eenheidlabel>'''
+            if not gioWijziging.EenheidID is None:
+                wijzigingGML += '''
+                    <geo:eenheidID>''' + gioWijziging.EenheidID + '''</geo:eenheidID>'''
+
+
+        wijzigingGML += '''
+            <geo:mutaties>'''
+
+        def __VoegLocatieToe (wijzigingGML, locatie, actie):
+            wijzigingGML += '''
+                <geo:LocatieMutatie>
+                    <geo:wijzigactie>''' + actie + '''</wijzigactie>'''
+            props = locatie.get ('properties')
+            revisieVan = props.get ('isRevisieVan')
+            if not revisieVan is None:
+                for was_id in revisieVan:
+                    wijzigingGML += '''
+                    <geo:isRevisieVan>''' + was_id + '''</geo:isRevisieVan>'''
+
+            waarde = props.get('naam')
+            if not waarde is None:
+                wijzigingGML += '''
+                    <geo:naam>''' + waarde + '''</geo:naam>'''
+            wijzigingGML += '''
+                    <geo:geometrie>
+                        <basisgeo:Geometrie>
+                            <basisgeo:id>''' + props['id'] + '''</basisgeo:id>
+                            <basisgeo:geometrie>
+                                ''' + __GML (locatie['geometry']) + '''
+                            </basisgeo:geometrie>
+                        </basisgeo:Geometrie>
+                    </geo:geometrie>'''
+            waarde = None if gioWijziging.AttribuutNaam is None else props.get(gioWijziging.AttribuutNaam)
+            if not waarde is None:
+                wijzigingGML += '''
+                    <geo:''' + gioWijziging.AttribuutNaam + '>' + waarde + '</geo:' + gioWijziging.AttribuutNaam + '>'
+            wijzigingGML += '''
+                </geo:LocatieMutatie>'''
+            return wijzigingGML
+
+        for locatie in gioWijziging.Was.Locaties:
+            wijzigingGML = __VoegLocatieToe (wijzigingGML, locatie, 'verwijder')
+        for locatie in gioWijziging.Wordt.Locaties:
+            wijzigingGML = __VoegLocatieToe (wijzigingGML, locatie, 'voegtoe')
+        for locatie in gioWijziging.WordtRevisies.Locaties:
+            wijzigingGML = __VoegLocatieToe (wijzigingGML, locatie, 'reviseer')
+
+        wijzigingGML += '''
+            </geo:mutaties>
+            <geo:wijzigmarkering>'''
+
+        for dimensie, markeringen in gioWijziging.WijzigMarkering.items ():
+            markeringType = ('Punt' if dimensie == 0 else 'Lijn' if dimensie == 1 else 'Vlak')
+            for markering in markeringen.Locaties:
+                wijzigingGML += '''
+                <geo:''' + markeringType + '''>
+                    <basisgeo:Geometrie>
+                        <basisgeo:id>''' + markering['properties']['id'] + '''</basisgeo:id>
+                        <basisgeo:geometrie>
+                                ''' + __GML (markering['geometry']) + '''
+                        </basisgeo:geometrie>
+                    </basisgeo:Geometrie>
+                </geo:''' + markeringType + '''>'''
+
+
+        wijzigingGML += '''
+            </geo:wijzigmarkering>
+        </geo:GeoInformatieObjectMutatie>
+    </geo:vastgesteldeVersie>
+    <geo:wasID>''' + gioWijziging.Was.ExpressionId + '''</geo:wasID>
+</geo:GeoInformatieObjectVersie>'''
+        return wijzigingGML
+
+#----------------------------------------------------------------------
+#
 # Conversie naar Shapely objecten om mee te rekenen
 #
 #----------------------------------------------------------------------
@@ -519,6 +719,19 @@ class GeoManipulatie:
             'crs': { 'type': 'name', 'properties': { 'name': 'urn:ogc:def:crs:EPSG::28992' } },
             'features' : geoData.Locaties
         }
+        # Bepaal de properties die op de kaart getoond kan worden
+        if len (geoData.Attributen) > 0:
+            collectie['properties'] = {a.Tag : [a.Label, '' if a.Eenheid is None else a.Eenheid] for a in geoData.Attributen.values ()} 
+
+        if not geoData.GIODelen is None:
+            collectie['properties']['GIO-deel'] = ['GIO-deel', '']
+            collectie['features'] = []
+            for locatie in geoData.Locaties:
+                toon = locatie.copy ()
+                toon['properties'] = locatie['properties'].copy ()
+                toon['properties']['GIO-deel'] = geoData.GIODelen[toon['properties']['groepID']].Label
+                collectie['features'].append (toon)
+
         # Bepaal de bounding box van de hele collectie
         bbox = False
         for locatie in geoData.Locaties:
@@ -536,10 +749,6 @@ class GeoManipulatie:
                     bbox = list (locatieBBox)
         if bbox:
             collectie['bbox'] = bbox
-
-        # Bepaal de properties die op de kaart getoond kan worden
-        if len (geoData.Attributen) > 0:
-            collectie['properties'] = {a.Tag : [a.Label, '' if a.Eenheid is None else a.Eenheid] for a in geoData.Attributen.values ()} 
 
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
@@ -733,7 +942,7 @@ class GeoManipulatie:
                         <SvgParameter name="fill-opacity">1</SvgParameter>
                     </Fill>
                 </Mark>
-                <Size>10</Size>
+                <Size>11</Size>
                 <Rotation>0</Rotation>
             </Graphic>
         </PointSymbolizer>
@@ -802,7 +1011,7 @@ class GeoManipulatie:
                 <Mark>
                     <WellKnownName>star</WellKnownName>
                     <Fill>
-                        <SvgParameter name="fill">#000000</SvgParameter>
+                        <SvgParameter name="fill">#007bc7</SvgParameter>
                         <SvgParameter name="fill-opacity">1</SvgParameter>
                     </Fill>
                 </Mark>
@@ -815,11 +1024,37 @@ class GeoManipulatie:
                 <Mark>
                     <WellKnownName>star</WellKnownName>
                     <Fill>
-                        <SvgParameter name="fill">#CCCCCC</SvgParameter><!--#B85450-->
+                        <SvgParameter name="fill">#b2d7ee</SvgParameter>
                         <SvgParameter name="fill-opacity">1</SvgParameter>
                     </Fill>
                 </Mark>
                 <Size>29</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>circle</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#007bc7</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>11</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>circle</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#b2d7ee</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>7</Size>
                 <Rotation>0</Rotation>
             </Graphic>
         </PointSymbolizer>
@@ -829,14 +1064,14 @@ class GeoManipulatie:
         <Name>Lijn</Name>
         <LineSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#000000</CssParameter>
+                <CssParameter name="stroke">#007bc7</CssParameter>
                 <CssParameter name="stroke-width">5</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
             </Stroke>
         </LineSymbolizer>
         <LineSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#CCCCCC</CssParameter>
+                <CssParameter name="stroke">#b2d7ee</CssParameter>
                 <CssParameter name="stroke-width">3</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
             </Stroke>
@@ -847,14 +1082,14 @@ class GeoManipulatie:
         <Name>Vlak</Name>
         <PolygonSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#000000</CssParameter>
+                <CssParameter name="stroke">#007bc7</CssParameter>
                 <CssParameter name="stroke-width">5</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
             </Stroke>
         </PolygonSymbolizer>
         <PolygonSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#CCCCCC</CssParameter>
+                <CssParameter name="stroke">#b2d7ee</CssParameter>
                 <CssParameter name="stroke-width">3</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
             </Stroke>

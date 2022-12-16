@@ -2,34 +2,53 @@
 <geo:GeoInformatieObjectVersie schemaversie="1.3.0" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2">
 	<geo:FRBRWork>/join/id/regdata/mnre9999/2022/stopborden</geo:FRBRWork>
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/stopborden/nld@2022;wordt</geo:FRBRExpression>
+    <geo:groepen>
+        <geo:Groep>
+            <geo:groepID>g1</geo:groepID>
+            <geo:label>Groep #1</geo:label>
+        </geo:Groep>
+        <geo:Groep>
+            <geo:groepID>g2</geo:groepID>
+            <geo:label>Groep #2</geo:label>
+        </geo:Groep>
+    </geo:groepen>
 	<geo:locaties>
 		<geo:Locatie>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
-					<basisgeo:id>37b0a09f-36a0-4e69-80c1-10000000001</basisgeo:id>
+					<basisgeo:id>37b0a09f-36a0-4e69-80c1-00000000001</basisgeo:id>
 					<basisgeo:geometrie>
 						<gml:MultiPoint srsName="urn:ogc:def:crs:EPSG::28992">
 							<gml:pointMembers>
 								<gml:Point>
-									<gml:pos>144931.977 487606.095</gml:pos>
+									<gml:pos>231059.059 583912.485</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>140940.966 485890.768</gml:pos>
+									<gml:pos>236164.969 579840.508</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>140949.779 485884.378</gml:pos>
+									<gml:pos>240463.957 581143.358</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>140817.664 486287.914</gml:pos>
+									<gml:pos>233437.531 579006.559</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>141863.273 486492.473</gml:pos>
+									<gml:pos>233257.663 582022.191</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>143969.222 483845.357</gml:pos>
+									<gml:pos>244559.047 590878.832</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>143008.18 483378.227</gml:pos>
+									<gml:pos>244371.03 591149.152</gml:pos>
+								</gml:Point>
+								<gml:Point>
+									<gml:pos>239219.186 591303.084</gml:pos>
+								</gml:Point>
+								<gml:Point>
+									<gml:pos>239228.497 591300.807</gml:pos>
+								</gml:Point>
+								<gml:Point>
+									<gml:pos>229900.695 581747.162</gml:pos>
 								</gml:Point>
 								<gml:Point>
 									<gml:pos>229900.706 581761.933</gml:pos>
@@ -75,43 +94,35 @@
 					</basisgeo:geometrie>
 				</basisgeo:Geometrie>
 			</geo:geometrie>
+            <geo:groepID>g1</geo:groepID>
 		</geo:Locatie>
 		<geo:Locatie>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
-					<basisgeo:id>37b0a09f-36a0-4e69-80c1-10000000002</basisgeo:id>
+					<basisgeo:id>37b0a09f-36a0-4e69-80c1-00000000002</basisgeo:id>
 					<basisgeo:geometrie>
 						<gml:MultiPoint srsName="urn:ogc:def:crs:EPSG::28992">
 							<gml:pointMembers>
 								<gml:Point>
-									<gml:pos>231059.059 583912.485</gml:pos>
+									<gml:pos>144931.977 487606.095</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>236164.969 579840.508</gml:pos>
+									<gml:pos>140940.966 485890.768</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>240463.957 581143.358</gml:pos>
+									<gml:pos>140949.779 485884.378</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>233437.531 579006.559</gml:pos>
+									<gml:pos>140817.664 486287.914</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>233257.663 582022.191</gml:pos>
+									<gml:pos>141863.273 486492.473</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>244559.047 590878.832</gml:pos>
+									<gml:pos>143969.222 483845.357</gml:pos>
 								</gml:Point>
 								<gml:Point>
-									<gml:pos>244371.03 591149.152</gml:pos>
-								</gml:Point>
-								<gml:Point>
-									<gml:pos>239219.186 591303.084</gml:pos>
-								</gml:Point>
-								<gml:Point>
-									<gml:pos>239228.497 591300.807</gml:pos>
-								</gml:Point>
-								<gml:Point>
-									<gml:pos>229900.695 581747.162</gml:pos>
+									<gml:pos>143008.18 483378.227</gml:pos>
 								</gml:Point>
 								<gml:Point>
 									<gml:pos>141672.297 486104.008</gml:pos>
@@ -292,6 +303,20 @@
 					</basisgeo:geometrie>
 				</basisgeo:Geometrie>
 			</geo:geometrie>
+            <geo:groepID>g2</geo:groepID>
+		</geo:Locatie>
+		<geo:Locatie>
+			<geo:geometrie>
+				<basisgeo:Geometrie>
+					<basisgeo:id>37b0a09f-36a0-4e69-80c1-00000000004</basisgeo:id>
+					<basisgeo:geometrie>
+						<gml:Point srsName="urn:ogc:def:crs:EPSG::28992">
+							<gml:pos>87970.258 452158.606</gml:pos>
+						</gml:Point>
+					</basisgeo:geometrie>
+				</basisgeo:Geometrie>
+			</geo:geometrie>
+            <geo:groepID>g1</geo:groepID>
 		</geo:Locatie>
 	</geo:locaties>
 </geo:GeoInformatieObjectVersie>

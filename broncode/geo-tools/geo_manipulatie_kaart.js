@@ -52,6 +52,9 @@ class Kaart {
 
     VoegOudLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
         var layer = this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
+        if (layer._PopupNaam) {
+            layer._PopupNaam += ' (origineel)'
+        }
         var self = this;
         layer.on('prerender', function (event) {
             var ctx = event.context;
@@ -70,6 +73,9 @@ class Kaart {
     }
     VoegNieuwLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
         var layer = this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
+        if (layer._PopupNaam) {
+            layer._PopupNaam += ' (nieuw)'
+        }
         var self = this;
         layer.on('prerender', function (event) {
             var ctx = event.context;

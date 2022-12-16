@@ -4027,10 +4027,10 @@ class Slider {
     </script>
 </head>
 <body>
-<h1>GIO-wijziging</h1><button data-accordion="1" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
-<div data-accordion-paneel="1" class="accordion_h_paneel" style="display: block">
+<h1>GIO-wijziging</h1><button data-accordion="29" class="accordion_h active"><h3>Bepaling GIO wijziging</h3></button>
+<div data-accordion-paneel="29" class="accordion_h_paneel" style="display: block">
 <p>Voor de bepaling van een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Maak-gio-wijziging" target="_blank">procedure</a> gevolgd.
-In onderstaande kaart wordt het startpunt getoond: links de originele (was)-versie van de GIO met 3 locaties, rechts de nieuwe (wordt)-versie met 3 locaties.
+In onderstaande kaart wordt het startpunt getoond: links de originele (was)-versie van de GIO met 2 locaties, rechts de nieuwe (wordt)-versie met 2 locaties.
 Beweeg de schuif om meer of minder van elke versie te zien. Klik op een punt voor aanvullende details</p>
 
 <div id="kaart_4" class="kaart">
@@ -4043,29 +4043,30 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een punt voo
 <p>De bepaling van een GIO-wijziging bestaat uit de volgende stappen:</p>
 <ol>
 <li>Als dezelfde basisgeometrie-ID zowel in de was- als wordt-versie voorkomt, dan is de geometrie per definitie ongewijzigd. 
+Als de groepID van de bijbehorende locatie verschilt in beide versies, dan wijzigt de locatie en moet de hele geometrie in de wijzigmarkeringen opgenomen worden. 
 Als alleen de naam van de locatie verschilt, dan wordt dat niet als een wijziging maar als een revisie beschouwd. 
-Er zijn 3 locatie(s) met manifest ongewijzigde geometrie, 
-waarvan 0 gewijzigd, 
+Er zijn 2 locatie(s) met manifest ongewijzigde geometrie, 
+waarvan 1 gewijzigd, 
 0 gereviseerd en 
-3 ongewijzigd.
+1 ongewijzigd.
 </li>
 <li>Er zijn geen locaties over die via geometrische vergelijking op wijzigingen geanalyseerd hoeven te worden</li>
 </ol>
 <p>De resultaten van de bepaling zijn in de kaart weergegeven.</p>
-<div id="kaart_7" class="kaart">
+<div id="kaart_12" class="kaart">
 </div>
-<div id="kaart_7_popup" class="ol-popup">
-    <a href="#" id="kaart_7_popup-closer" class="ol-popup-closer"></a>
-    <div id="kaart_7_popup-content" class="ol-popup-content"></div>
-</div>
-
+<div id="kaart_12_popup" class="ol-popup">
+    <a href="#" id="kaart_12_popup-closer" class="ol-popup-closer"></a>
+    <div id="kaart_12_popup-content" class="ol-popup-content"></div>
 </div>
 
-<button data-accordion="2" class="accordion_h active">GIO-Wijziging</button>
-<div data-accordion-paneel="2" class="accordion_h_paneel" style="display: block">
+</div>
+
+<button data-accordion="30" class="accordion_h active">GIO-Wijziging</button>
+<div data-accordion-paneel="30" class="accordion_h_paneel" style="display: block">
 
 <p>De GIO-wijziging is een GML bestand waarin de vaststellingscontext nog aangepast moet worden:</p>
-<textarea id="resultaat_8"
+<textarea id="resultaat_13"
  name="wijziging"
 >
 &lt;geo:GeoInformatieObjectVaststelling schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
@@ -4079,23 +4080,229 @@ waarvan 0 gewijzigd,
     &lt;geo:vastgesteldeVersie&gt;
         &lt;geo:GeoInformatieObjectMutatie&gt;
             &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/stopborden&lt;/geo:FRBRWork&gt;
-            &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2019;was&lt;/geo:FRBRExpression&gt;
+            &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2022;wordt&lt;/geo:FRBRExpression&gt;
             &lt;geo:mutaties&gt;
+                &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wijzigactie&gt;verwijder&lt;/wijzigactie&gt;
+                    &lt;geo:geometrie&gt;
+                        &lt;basisgeo:Geometrie&gt;
+                            &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c1-00000000001&lt;/basisgeo:id&gt;
+                            &lt;basisgeo:geometrie&gt;
+                                &lt;gml:MultiPoint srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:geometryMembers&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;231059.059 583912.485&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;236164.969 579840.508&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;240463.957 581143.358&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;233437.531 579006.559&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;233257.663 582022.191&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;244559.047 590878.832&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;244371.03 591149.152&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;239219.186 591303.084&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;239228.497 591300.807&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;229900.695 581747.162&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;229900.706 581761.933&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;231349.272 583374.991&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;231356.792 583362.515&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;233794.991 579101.954&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;234770.021 584446.612&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;234791.108 584435.025&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;234557.494 583986.158&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;237749.94 577132.76&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;237781.529 574422.31&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;236693.923 576094.446&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;236222.546 578046.486&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;235265.085 578367.332&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;239346.187 574193.146&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;/gml:geometryMembers&gt;&lt;/gml:MultiPoint&gt;
+                            &lt;/basisgeo:geometrie&gt;
+                        &lt;/basisgeo:Geometrie&gt;
+                    &lt;/geo:geometrie&gt;
+                &lt;/geo:LocatieMutatie&gt;
+                &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wijzigactie&gt;verwijder&lt;/wijzigactie&gt;
+                    &lt;geo:geometrie&gt;
+                        &lt;basisgeo:Geometrie&gt;
+                            &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c1-00000000001&lt;/basisgeo:id&gt;
+                            &lt;basisgeo:geometrie&gt;
+                                &lt;gml:MultiPoint srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:geometryMembers&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;231059.059 583912.485&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;236164.969 579840.508&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;240463.957 581143.358&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;233437.531 579006.559&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;233257.663 582022.191&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;244559.047 590878.832&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;244371.03 591149.152&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;239219.186 591303.084&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;239228.497 591300.807&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;229900.695 581747.162&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;229900.706 581761.933&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;231349.272 583374.991&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;231356.792 583362.515&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;233794.991 579101.954&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;234770.021 584446.612&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;234791.108 584435.025&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;234557.494 583986.158&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;237749.94 577132.76&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;237781.529 574422.31&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;236693.923 576094.446&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;236222.546 578046.486&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;235265.085 578367.332&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;gml:Point&gt;&lt;gml:pos&gt;239346.187 574193.146&lt;/gml:pos&gt;&lt;/gml:Point&gt;&lt;/gml:geometryMembers&gt;&lt;/gml:MultiPoint&gt;
+                            &lt;/basisgeo:geometrie&gt;
+                        &lt;/basisgeo:Geometrie&gt;
+                    &lt;/geo:geometrie&gt;
+                &lt;/geo:LocatieMutatie&gt;
             &lt;/geo:mutaties&gt;
             &lt;geo:wijzigmarkering&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;f33d8c46-a161-4970-af92-6c89c73b5531&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;231059.059 583912.485&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;51af7f91-ab87-4b83-a9bb-aa2e43a785b7&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;236164.969 579840.508&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;def5e06c-79c1-40b7-9dd5-b161ce5c3d10&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;240463.957 581143.358&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;a6b92dc6-adc2-4c7f-86b1-dd210ca111be&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;233437.531 579006.559&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;b2c5ed10-8b90-43d4-881c-14eb74884b6f&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;233257.663 582022.191&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;0774798d-6b1e-46bf-80bc-52892a1a1f36&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;244559.047 590878.832&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;3756fe1f-7e1f-4317-8546-3ce4afd3febc&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;244371.03 591149.152&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;503bb888-72bc-49d5-810d-0d2fbf829579&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;239219.186 591303.084&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;6f9af11a-cb0e-45d7-a7f3-baa3b5baab09&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;239228.497 591300.807&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;3f7b3c5b-d808-4c9d-8ef9-194290eb9b07&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;229900.695 581747.162&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;7a512d12-4ce0-4d4b-bd45-f48bd3a59133&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;229900.706 581761.933&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;045494e2-5ce1-4d0e-904f-dc618f4fa590&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;231349.272 583374.991&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;3105dc08-16bb-4f31-82e1-b0d084444f73&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;231356.792 583362.515&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;a483a657-ca72-4e10-8b14-fabab4278cd4&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;233794.991 579101.954&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;1c910870-237c-445c-a1e2-e1b873fcebce&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;234770.021 584446.612&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;f8323b46-5a0d-46f2-9c9e-80fe52c9fa49&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;234791.108 584435.025&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;f5ff2c36-309a-4343-9f08-b49b976ccf1f&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;234557.494 583986.158&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;e0f57459-ac3e-4fe4-a233-bf5052fe8d41&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;237749.94 577132.76&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;d3ccdaa0-6f3d-40b8-8bae-e60ecbd27694&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;237781.529 574422.31&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;1e3b11f0-de2b-4e9b-98ac-168517d352d5&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;236693.923 576094.446&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;5ac442eb-6851-4b75-b155-89498040c991&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;236222.546 578046.486&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;bed9bd72-86df-4173-b025-a693c3e0c0f9&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;235265.085 578367.332&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
+                &lt;geo:Punt&gt;
+                    &lt;basisgeo:Geometrie&gt;
+                        &lt;basisgeo:id&gt;72f54477-c530-4eac-8e75-104c4599d36f&lt;/basisgeo:id&gt;
+                        &lt;basisgeo:geometrie&gt;
+                                &lt;gml:Point srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:pos&gt;239346.187 574193.146&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+                        &lt;/basisgeo:geometrie&gt;
+                    &lt;/basisgeo:Geometrie&gt;
+                &lt;/geo:Punt&gt;
             &lt;/geo:wijzigmarkering&gt;
         &lt;/geo:GeoInformatieObjectMutatie&gt;
     &lt;/geo:vastgesteldeVersie&gt;
-    &lt;geo:wasID&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2019;was&lt;/geo:wasID&gt;
+    &lt;geo:wasID&gt;/join/id/regdata/mnre9999/2022/stopborden/nld@2022;wordt&lt;/geo:wasID&gt;
 &lt;/geo:GeoInformatieObjectVersie&gt;
 </textarea>
 
-<div><a data-copy="resultaat_8" href="#">Kopieer</a> of <a data-download_xml="resultaat_8" data-filenaam="GIO-wijziging.gml" href="#">download</a></div>
+<div><a data-copy="resultaat_13" href="#">Kopieer</a> of <a data-download_xml="resultaat_13" data-filenaam="GIO-wijziging.gml" href="#">download</a></div>
 
 </div>
 
-<button data-accordion="3" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
-<div data-accordion-paneel="3" class="accordion_h_paneel">
+<button data-accordion="31" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
+<div data-accordion-paneel="31" class="accordion_h_paneel">
 <p><b>Fouten: 0, waarschuwingen: 0</b></p>
 <!-- checkboxElement id moet overeenkomen "toon_" plus log-level waarde. -->
 <input id="toon_fout" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_fout">Toon FOUT meldingen </label>
@@ -4115,7 +4322,7 @@ waarvan 0 gewijzigd,
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand "testdata_wordt_punten.gml" voor "wordt" ingelezen</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">GIO ingelezen uit 'testdata_wordt_punten.gml'</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees de symbolisatie (indien aanwezig)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Geen bestand gespecificeerd voor "symbolisatie"</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand "testdata_punten_symbolisatie.xml" voor "symbolisatie" ingelezen</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Onderzoek de locaties met manifest ongewijzigde geometrieën</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak en presenteer de GIO-wijziging</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Neem GIO-wijziging op in resultaatpagina</td></tr>
@@ -4182,31 +4389,30 @@ waarvan 0 gewijzigd,
         });
     });
     
-Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym1",`<FeatureTypeStyle version="1.1.0"
+Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym1",`<FeatureTypeStyle version="1.1.0" 
     xmlns="http://www.opengis.net/se"
     xmlns:ogc="http://www.opengis.net/ogc">
     <FeatureTypeName>geo:Locatie</FeatureTypeName>
-    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+    <SemanticTypeIdentifier>geo:groepID</SemanticTypeIdentifier>
     <Rule>
-        <Name>Punt</Name>
-        <PointSymbolizer>
-            <Graphic>
-                <Mark>
-                    <WellKnownName>square</WellKnownName>
-                    <Fill>
-                        <SvgParameter name="fill">#0000FF</SvgParameter>
-                        <SvgParameter name="fill-opacity">1</SvgParameter>
-                    </Fill>
-                    <Stroke>
-                        <SvgParameter name="stroke">#0000CD</SvgParameter>
-                        <SvgParameter name="stroke-opacity">1</SvgParameter>
-                        <SvgParameter name="stroke-width">1</SvgParameter>
-                    </Stroke>
-                </Mark>
-                <Size>12</Size>
-                <Rotation>0</Rotation>
-            </Graphic>
-        </PointSymbolizer>
+        <Name>g2</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>groepID</ogc:PropertyName> 
+                <ogc:Literal>g2</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PointSymbolizer><Name>pc231</Name><Graphic><Mark><WellKnownName>circle</WellKnownName><Fill><SvgParameter name="fill">#C02040</SvgParameter><SvgParameter name="fill-opacity">1</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#999999</SvgParameter><SvgParameter name="stroke-opacity">0</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter></Stroke></Mark><Size>12</Size><Rotation>0</Rotation></Graphic></PointSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>g1</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>groepID</ogc:PropertyName> 
+                <ogc:Literal>g1</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PointSymbolizer><Name>pc241</Name><Graphic><Mark><WellKnownName>circle</WellKnownName><Fill><SvgParameter name="fill">#0080C0</SvgParameter><SvgParameter name="fill-opacity">1</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#999999</SvgParameter><SvgParameter name="stroke-opacity">0</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter></Stroke></Mark><Size>12</Size><Rotation>0</Rotation></Graphic></PointSymbolizer>
     </Rule>
 </FeatureTypeStyle>`);
 
@@ -4247,12 +4453,12 @@ window.addEventListener('load', function () {
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[231059.059, 583912.485], [236164.969, 579840.508], [240463.957, 581143.358], [233437.531, 579006.559], [233257.663, 582022.191], [244559.047, 590878.832], [244371.03, 591149.152], [239219.186, 591303.084], [239228.497, 591300.807], [229900.695, 581747.162], [229900.706, 581761.933], [231349.272, 583374.991], [231356.792, 583362.515], [233794.991, 579101.954], [234770.021, 584446.612], [234791.108, 584435.025], [234557.494, 583986.158], [237749.94, 577132.76], [237781.529, 574422.31], [236693.923, 576094.446], [236222.546, 578046.486], [235265.085, 578367.332], [239346.187, 574193.146]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001", "groepID": "g1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[144931.977, 487606.095], [140940.966, 485890.768], [140949.779, 485884.378], [140817.664, 486287.914], [141863.273, 486492.473], [143969.222, 483845.357], [143008.18, 483378.227], [141672.297, 486104.008], [141686.86, 486107.344], [142046.539, 486631.58], [142062.379, 486625.761], [142284.773, 486810.052], [142300.095, 486801.404], [141878.184, 486486.659], [144760.545, 487597.148], [144796.691, 487234.818], [145319.954, 488112.014], [143012.513, 487347.954], [145162.644, 487626.437], [142998.944, 487337.582], [142997.078, 487343.995], [143304.108, 487960.513], [145470.948, 485226.551], [143014.115, 487340.989], [143607.246, 488078.672], [143595.675, 488070.714], [145176.384, 487614.488], [144206.827, 487609.614], [146021.174, 488536.767], [149085.871, 489798.269], [146049.886, 488044.971], [149075.505, 489802.121], [145694.132, 488335.245], [148829.435, 489617.121], [145684.57, 488335.227], [148747.576, 490067.724], [146030.349, 488535.44], [146144.425, 487443.13], [148398.841, 490284.069], [146132.912, 487453.036], [148814.336, 489628.17], [147345.431, 489767.908], [148412.921, 490283.797], [147355.141, 489785.046], [140833.432, 486292.388], [141731.04, 486287.157], [143481.27, 483054.813], [143478.325, 483063.003], [143567.869, 483036.799], [143570.669, 483026.699], [142067.807, 484076.451], [142290.989, 486813.807], [140830.319, 486283.633], [141749.23, 486289.539], [140820.486, 486296.216], [144756.335, 487605.726], [144931.046, 487597.862], [144925.719, 487605.855], [144753.377, 487597.972], [144761.795, 487605.717], [145168.609, 487626.874], [150166.968, 480881.817], [146368.153, 491106.221], [146785.155, 490587.724], [148910.068, 490290.505]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002", "groepID": "g2"}, "_shape": null}], "bbox": [140817.664, 480881.817, 244559.047, 591303.084], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data3",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[231059.059, 583912.485], [236164.969, 579840.508], [240463.957, 581143.358], [233437.531, 579006.559], [233257.663, 582022.191], [244559.047, 590878.832], [244371.03, 591149.152], [239219.186, 591303.084], [239228.497, 591300.807], [229900.695, 581747.162], [229900.706, 581761.933], [231349.272, 583374.991], [231356.792, 583362.515], [233794.991, 579101.954], [234770.021, 584446.612], [234791.108, 584435.025], [234557.494, 583986.158], [237749.94, 577132.76], [237781.529, 574422.31], [236693.923, 576094.446], [236222.546, 578046.486], [235265.085, 578367.332], [239346.187, 574193.146]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001", "groepID": "g2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[144931.977, 487606.095], [140940.966, 485890.768], [140949.779, 485884.378], [140817.664, 486287.914], [141863.273, 486492.473], [143969.222, 483845.357], [143008.18, 483378.227], [141672.297, 486104.008], [141686.86, 486107.344], [142046.539, 486631.58], [142062.379, 486625.761], [142284.773, 486810.052], [142300.095, 486801.404], [141878.184, 486486.659], [144760.545, 487597.148], [144796.691, 487234.818], [145319.954, 488112.014], [143012.513, 487347.954], [145162.644, 487626.437], [142998.944, 487337.582], [142997.078, 487343.995], [143304.108, 487960.513], [145470.948, 485226.551], [143014.115, 487340.989], [143607.246, 488078.672], [143595.675, 488070.714], [145176.384, 487614.488], [144206.827, 487609.614], [146021.174, 488536.767], [149085.871, 489798.269], [146049.886, 488044.971], [149075.505, 489802.121], [145694.132, 488335.245], [148829.435, 489617.121], [145684.57, 488335.227], [148747.576, 490067.724], [146030.349, 488535.44], [146144.425, 487443.13], [148398.841, 490284.069], [146132.912, 487453.036], [148814.336, 489628.17], [147345.431, 489767.908], [148412.921, 490283.797], [147355.141, 489785.046], [140833.432, 486292.388], [141731.04, 486287.157], [143481.27, 483054.813], [143478.325, 483063.003], [143567.869, 483036.799], [143570.669, 483026.699], [142067.807, 484076.451], [142290.989, 486813.807], [140830.319, 486283.633], [141749.23, 486289.539], [140820.486, 486296.216], [144756.335, 487605.726], [144931.046, 487597.862], [144925.719, 487605.855], [144753.377, 487597.972], [144761.795, 487605.717], [145168.609, 487626.874], [150166.968, 480881.817], [146368.153, 491106.221], [146785.155, 490587.724], [148910.068, 490290.505]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002", "groepID": "g2"}, "_shape": null}], "bbox": [140817.664, 480881.817, 244559.047, 591303.084], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
 );
 
 
@@ -4292,14 +4498,108 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym5",`<FeatureTypeStyle version="
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data6",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [87970.258, 452158.606]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000004"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [113836.728, 475429.222]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [197244.212, 471457.236]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000003"}, "_shape": null}], "bbox": [87970.258, 452158.606, 197244.212, 475429.222], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[144931.977, 487606.095], [140940.966, 485890.768], [140949.779, 485884.378], [140817.664, 486287.914], [141863.273, 486492.473], [143969.222, 483845.357], [143008.18, 483378.227], [141672.297, 486104.008], [141686.86, 486107.344], [142046.539, 486631.58], [142062.379, 486625.761], [142284.773, 486810.052], [142300.095, 486801.404], [141878.184, 486486.659], [144760.545, 487597.148], [144796.691, 487234.818], [145319.954, 488112.014], [143012.513, 487347.954], [145162.644, 487626.437], [142998.944, 487337.582], [142997.078, 487343.995], [143304.108, 487960.513], [145470.948, 485226.551], [143014.115, 487340.989], [143607.246, 488078.672], [143595.675, 488070.714], [145176.384, 487614.488], [144206.827, 487609.614], [146021.174, 488536.767], [149085.871, 489798.269], [146049.886, 488044.971], [149075.505, 489802.121], [145694.132, 488335.245], [148829.435, 489617.121], [145684.57, 488335.227], [148747.576, 490067.724], [146030.349, 488535.44], [146144.425, 487443.13], [148398.841, 490284.069], [146132.912, 487453.036], [148814.336, 489628.17], [147345.431, 489767.908], [148412.921, 490283.797], [147355.141, 489785.046], [140833.432, 486292.388], [141731.04, 486287.157], [143481.27, 483054.813], [143478.325, 483063.003], [143567.869, 483036.799], [143570.669, 483026.699], [142067.807, 484076.451], [142290.989, 486813.807], [140830.319, 486283.633], [141749.23, 486289.539], [140820.486, 486296.216], [144756.335, 487605.726], [144931.046, 487597.862], [144925.719, 487605.855], [144753.377, 487597.972], [144761.795, 487605.717], [145168.609, 487626.874], [150166.968, 480881.817], [146368.153, 491106.221], [146785.155, 490587.724], [148910.068, 490290.505]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000002", "groepID": "g2"}, "_shape": null}], "bbox": [140817.664, 480881.817, 150166.968, 491106.221], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym7",`<FeatureTypeStyle version="1.1.0"
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+    <Rule>
+        <Name>Punt</Name>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>square</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#F8CECC</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                    <Stroke>
+                        <SvgParameter name="stroke">#B85450</SvgParameter>
+                        <SvgParameter name="stroke-opacity">1</SvgParameter>
+                        <SvgParameter name="stroke-width">1</SvgParameter>
+                    </Stroke>
+                </Mark>
+                <Size>12</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+    </Rule>
+</FeatureTypeStyle>`);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data8",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[231059.059, 583912.485], [236164.969, 579840.508], [240463.957, 581143.358], [233437.531, 579006.559], [233257.663, 582022.191], [244559.047, 590878.832], [244371.03, 591149.152], [239219.186, 591303.084], [239228.497, 591300.807], [229900.695, 581747.162], [229900.706, 581761.933], [231349.272, 583374.991], [231356.792, 583362.515], [233794.991, 579101.954], [234770.021, 584446.612], [234791.108, 584435.025], [234557.494, 583986.158], [237749.94, 577132.76], [237781.529, 574422.31], [236693.923, 576094.446], [236222.546, 578046.486], [235265.085, 578367.332], [239346.187, 574193.146]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001", "groepID": "g1"}, "_shape": null}], "bbox": [229900.695, 574193.146, 244559.047, 591303.084], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data9",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[231059.059, 583912.485], [236164.969, 579840.508], [240463.957, 581143.358], [233437.531, 579006.559], [233257.663, 582022.191], [244559.047, 590878.832], [244371.03, 591149.152], [239219.186, 591303.084], [239228.497, 591300.807], [229900.695, 581747.162], [229900.706, 581761.933], [231349.272, 583374.991], [231356.792, 583362.515], [233794.991, 579101.954], [234770.021, 584446.612], [234791.108, 584435.025], [234557.494, 583986.158], [237749.94, 577132.76], [237781.529, 574422.31], [236693.923, 576094.446], [236222.546, 578046.486], [235265.085, 578367.332], [239346.187, 574193.146]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c1-00000000001", "groepID": "g2"}, "_shape": null}], "bbox": [229900.695, 574193.146, 244559.047, 591303.084], "properties": {"id": ["ID", ""], "groepID": ["GIO-deel", ""]}}
+);
+
+
+Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym10",`<FeatureTypeStyle version="1.1.0"
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+    <Rule>
+        <Name>Punt</Name>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>star</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#000000</SvgParameter>
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>35</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>star</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#F8CECC</SvgParameter><!--#B85450-->
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>29</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+        <PointSymbolizer>
+            <Graphic>
+                <Mark>
+                    <WellKnownName>circle</WellKnownName>
+                    <Fill>
+                        <SvgParameter name="fill">#82B366</SvgParameter><!--#D5E8D4-->
+                        <SvgParameter name="fill-opacity">1</SvgParameter>
+                    </Fill>
+                </Mark>
+                <Size>11</Size>
+                <Rotation>0</Rotation>
+            </Graphic>
+        </PointSymbolizer>
+    </Rule>
+</FeatureTypeStyle>`);
+
+
+Kaartgegevens.Instantie.VoegDataToe ("data11",
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [231059.059, 583912.485]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [236164.969, 579840.508]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [240463.957, 581143.358]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [233437.531, 579006.559]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [233257.663, 582022.191]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [244559.047, 590878.832]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [244371.03, 591149.152]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [239219.186, 591303.084]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [239228.497, 591300.807]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [229900.695, 581747.162]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [229900.706, 581761.933]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [231349.272, 583374.991]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [231356.792, 583362.515]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [233794.991, 579101.954]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [234770.021, 584446.612]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [234791.108, 584435.025]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [234557.494, 583986.158]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [237749.94, 577132.76]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [237781.529, 574422.31]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [236693.923, 576094.446]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [236222.546, 578046.486]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [235265.085, 578367.332]}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [239346.187, 574193.146]}, "_shape": null}], "bbox": [229900.695, 574193.146, 244559.047, 591303.084]}
 );
 
 
 window.addEventListener("load", function () {
 var kaart = new Kaart (10);
-kaart.VoegLaagToe ("Manifest ongewijzigde locaties", "data6", "sym5", true, true);
-kaart.Toon ("kaart_7", "900", "600");
+kaart.VoegLaagToe ("Manifest ongewijzigde locaties", "data6", "sym5", true, true);kaart.VoegOudLaagToe ("Gewijzigde locaties", "data8", "sym7", true, true);kaart.VoegNieuwLaagToe ("Gewijzigde locaties", "data9", "sym7", true, true);kaart.VoegLaagToe ("Markering waar wijzigingen gevonden zijn", "data11", "sym10", true, true);
+kaart.Toon ("kaart_12", "900", "600");
 });
 </script>
 </body>

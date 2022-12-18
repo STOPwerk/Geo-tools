@@ -25,6 +25,19 @@
         <label for="teken-nauwkeurigheid"><b>Tekennauwkeurigheid</b></label>&nbsp;<input type="number" name="teken-nauwkeurigheid" id="teken-nauwkeurigheid" value="1" min="1"></input>&nbsp;<label for="teken-nauwkeurigheid"><b>decimeter</b></label><br>
         De juridische/tekennauwkeurigheid van de geometrieën in de GIO ([zie documentatie](@@@GeoTools_Url@@@wiki/Toon-controleer-gio)).
     </p>
+    <p>
+        Voor een geo-informatieobject met GIO-delen of met normwaarden is een symbolisatie conform
+        <a href="@@@STOP_Documentatie_Url@@@">STOP</a> vereist. Als die niet wordt meegegeven worden de
+        GIO-delen en normwaarden niet gevisualiseerd, maar ze zijn wel opvraagbaar door op een positie in
+        de kaart te klikken. Voor een GIO met alleen geometrie of voor een gebiedsmarkering/effectgebied mag een symbolisatie worden meegegeven maar dat hoeft niet.
+    </p>
+    <div class="box" id="symbolisatie_box">
+        <label>
+            <span class="link">Selecteer de symbolisatie voor het geo-informatieobject</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <input class="box__file" type="file" name="symbolisatie" id="symbolisatie" accept="application/xml" />
+        </label>
+    </div>
     <button id="startknop">Maak GIO-wijziging</button>
     <input type="hidden" name="titel" id="titel">
 </form>

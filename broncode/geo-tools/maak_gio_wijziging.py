@@ -49,12 +49,8 @@ class GIOWijzigingMaker (GeoManipulatie):
         super ().__init__ ("GIO-wijziging", "GIO-wijziging - geen resultaat", request, log)
         # Was-versie van de GIO
         self._Was : GeoManipulatie.GeoData = None
-        # Naam om de was-data in de kaart te tonen
-        self._WasDataNaam : str = None
         # Wordt-versie van de GIO
         self._Wordt : GeoManipulatie.GeoData = None
-        # Naam om de wordt-data in de kaart te tonen
-        self._WordtDataNaam : str = None
         # Naam waaronder de te gebruiken symbolisatie voor zowel de was- als wordt-versie is geregistreerd
         self._SymbolisatieNaam : str = None
         # Gegevens waaruit de GIO-wijziging wordt samengesteld
@@ -70,7 +66,7 @@ class GIOWijzigingMaker (GeoManipulatie):
         # De resulterende GIO-wijziging
         self._Wijziging : GeoManipulatie.GeoData = None
 
-    def _VoerUit (self, titelBepaling = "Bepaling GIO wijziging"):
+    def _VoerUit (self, titelOperatie = "Bepaling GIO wijziging"):
         """Voer het request uit"""
         if not self._LeesBestandenEnSpecificatie  ():
             return False
@@ -78,7 +74,7 @@ class GIOWijzigingMaker (GeoManipulatie):
         self._InitialiseerWebpagina ()
         self.Generator.LeesCssTemplate ('resultaat')
         self.Generator.LeesJSTemplate ('resultaat')
-        einde = self.Generator.StartSectie ("<h3>" + titelBepaling + "</h3>", True)
+        einde = self.Generator.StartSectie ("<h3>" + titelOperatie + "</h3>", True)
         if self.Request.LeesString ("beschrijving"):
             self.Generator.VoegHtmlToe ('<p>' + self.Request.LeesString ("beschrijving") + '</p>') 
 
@@ -134,11 +130,11 @@ class GIOWijzigingMaker (GeoManipulatie):
             if self._Was.AttribuutNaam != self._Wordt.AttribuutNaam:
                 self.Log.Fout ("De was- en wordt-versie moeten allebei uitsluitend geometrie, GIO-delen of normwaarden hebben")
                 succes = False
-            elif self._Was.GIODelen is None:
+            elif not self._Was.GIODelen is None:
                 for groepId, gioDeel in self._Was.GIODelen.items ():
                     nieuw = self._Wordt.GIODelen.get (groepId)
                     if not nieuw is None and nieuw.Label != gioDeel.Label:
-                        self.Log.Fout ("Label van GiO-deel verschilt: groepID '" + groepID + "' had label '" + gioDeel.Label + "' en dat wordt '" + nieuw.Label + "'")
+                        self.Log.Fout ("Label van GIO-deel verschilt: groepID '" + groepID + "' had label '" + gioDeel.Label + "' en dat wordt '" + nieuw.Label + "'")
                         succes = False
 
         if self._SymbolisatieNaam is None:
@@ -148,8 +144,7 @@ class GIOWijzigingMaker (GeoManipulatie):
                 self._SymbolisatieXML = symbolisatie
             self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
 
-        if self.Request.LeesString ("teken-nauwkeurigheid") is None:
-            self.Log.Fout ("De teken-nauwkeurigheid is niet opgegeven in de specificatie")
+        if self.NauwkeurigheidInDecimeter (False) is None:
             succes = False
 
         return succes
@@ -200,9 +195,13 @@ class GIOWijzigingMaker (GeoManipulatie):
         self.Generator.VoegHtmlToe ('''<p>Voor de bepaling van een GIO-wijziging wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Maak-gio-wijziging" target="_blank">procedure</a> gevolgd.
 In onderstaande kaart wordt het startpunt getoond: links de originele (was)-versie van de GIO met ''' + str(len (self._Was.Locaties)) + ''' locaties, rechts de nieuwe (wordt)-versie met ''' + str(len (self._Wordt.Locaties)) + ''' locaties.
 Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + self._Was.GeometrieNaam (False) + ' voor aanvullende details</p>\n')
-        self._WasDataNaam = self.VoegGeoDataToe (self._Was)
-        self._WordtDataNaam = self.VoegGeoDataToe (self._Wordt)
-        self.ToonKaart ('kaart.VoegOudLaagToe ("Was-versie", "' + self._WasDataNaam + '", "' + self._SymbolisatieNaam + '").VoegNieuwLaagToe ("Wordt-versie", "' + self._WordtDataNaam + '", "' + self._SymbolisatieNaam + '");')
+        kaart = GeoManipulatie.Kaart (self)
+        dataNaam = self.VoegGeoDataToe (self._Was)
+        kaart.VoegOudLaagToe ("Was-versie", dataNaam, self._SymbolisatieNaam)
+        dataNaam = self.VoegGeoDataToe (self._Wordt)
+        kaart.VoegNieuwLaagToe ("Wordt-versie", dataNaam, self._SymbolisatieNaam)
+        kaart.ZoomTotNauwkeurigheid (False)
+        kaart.Toon ()
 
         self.Generator.VoegHtmlToe ('''<p>De bepaling van een GIO-wijziging bestaat uit de volgende stappen:</p>
 <ol>''')
@@ -488,6 +487,7 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
         self._Wijziging.AttribuutNaam = self._Was.AttribuutNaam
         self._Wijziging.Dimensie = self._Was.Dimensie
         self._Wijziging.Soort = 'GIO-wijziging'
+        self._Wijziging.Tekennauwkeurigheid = self.NauwkeurigheidInDecimeter ()
         if self._Wordt.Vaststellingscontext is None:
             nu = date.today().strftime ("%Y-%m-%d")
             self._Wijziging.Vaststellingscontext = '''    <geo:context>
@@ -563,7 +563,8 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
         """Maak een kaart met de uitkomsten van de analyse, waarbij alle locaties/geometrieën naar hun rol in GIO-wijziging zijn opgedeeld"""
         self.Generator.VoegHtmlToe ('''<p>De resultaten van de bepaling zijn in de kaart weergegeven.</p>''')
 
-        kaartScripts = { 0: '', 1: '', 2: '' }
+        kaart = GeoManipulatie.Kaart (self)
+        kaart.ZoomTotNauwkeurigheid (True)
         dataSet = GeoManipulatie.GeoData ()
         dataSet.Dimensie = self._Was.Dimensie
         dataSet.Attributen = self._Was.Attributen
@@ -574,13 +575,13 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
             bufferSet.Dimensie = 2
             bufferSet.Locaties = [{ 'type': 'Feature', 'geometry': mapping (b) } for b in self._Wijzigingen.VerdikteGeometrie]
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Buffers voor de geometrieën", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+            kaart.VoegLaagToe ("Buffers voor de geometrieën", self.VoegGeoDataToe (bufferSet), symNaam, True, True)
 
         if len (self._Wijzigingen.ManifestOngewijzigdeLocaties) > 0:
             # Manifest ongewijzigde geometrieën
             dataSet.Locaties = [self._WasLocaties[i] for i in self._Wijzigingen.ManifestOngewijzigdeLocaties]
             symNaam = self.VoegUniformeSymbolisatieToe (dataSet.Dimensie, "#cccccc", "#000000", '0' if dataSet.Dimensie == 2 else '1')
-            kaartScripts[self._Was.Dimensie] += 'kaart.VoegLaagToe ("Manifest ongewijzigde locaties", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+            kaart.VoegLaagToe ("Manifest ongewijzigde locaties", self.VoegGeoDataToe (dataSet), symNaam, True, True)
 
         if len (self._Wijzigingen.WordtRevisieLocaties) > 0:
             # Revisies
@@ -589,20 +590,20 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
             for was_id in self._Wijzigingen.WordtRevisieLocaties.values ():
                 wasRevisieLocaties.update (was_id)
             dataSet.Locaties = [self._WasLocaties[i] for i in wasRevisieLocaties]
-            kaartScripts[self._Was.Dimensie] += 'kaart.VoegOudLaagToe ("Locaties met revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+            kaart.VoegOudLaagToe ("Locaties met revisies", self.VoegGeoDataToe (dataSet), symNaam, True, True)
             dataSet.Locaties = [self._WordtLocaties[i] for i in self._Wijzigingen.WordtRevisieLocaties.keys ()]
-            kaartScripts[self._Was.Dimensie] += 'kaart.VoegNieuwLaagToe ("Locaties met revisies", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+            kaart.VoegNieuwLaagToe ("Locaties met revisies", self.VoegGeoDataToe (dataSet), symNaam, True, True)
 
         if len (self._Wijzigingen.WasLocaties) > 0:
             # Wijzigingen
             symNaam = self.VoegUniformeSymbolisatieToe (dataSet.Dimensie, "#F8CECC", "#B85450", '0' if dataSet.Dimensie == 2 else '1')
             dataSet.Locaties = [self._WasLocaties[i] for i in self._Wijzigingen.WasLocaties]
-            kaartScripts[self._Was.Dimensie] += 'kaart.VoegOudLaagToe ("Gewijzigde locaties", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+            kaart.VoegOudLaagToe ("Gewijzigde locaties", self.VoegGeoDataToe (dataSet), symNaam, True, True)
         if len (self._Wijzigingen.WordtLocaties) > 0:
             # Wijzigingen
             symNaam = self.VoegUniformeSymbolisatieToe (dataSet.Dimensie, "#F8CECC", "#B85450", '0' if dataSet.Dimensie == 2 else '1')
             dataSet.Locaties = [self._WordtLocaties[i] for i in self._Wijzigingen.WordtLocaties]
-            kaartScripts[self._Was.Dimensie] += 'kaart.VoegNieuwLaagToe ("Gewijzigde locaties", "' + self.VoegGeoDataToe (dataSet) + '", "' + symNaam + '", true, true);'
+            kaart.VoegNieuwLaagToe ("Gewijzigde locaties", self.VoegGeoDataToe (dataSet), symNaam, True, True)
 
         if len (self._Wijzigingen.VerkleindeGeometrie) > 0:
             # Buffers om geometrieën heen
@@ -610,7 +611,7 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
             bufferSet.Dimensie = 2
             bufferSet.Locaties = [{ 'type': 'Feature', 'geometry': mapping (b) } for b in self._Wijzigingen.VerkleindeGeometrie]
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Buffers voor de geometrieën", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+            kaart.VoegLaagToe ("Buffers voor de geometrieën", self.VoegGeoDataToe (bufferSet), symNaam, True, True)
 
         for dimensie, markeringen in self._Wijzigingen.RevisieMarkering.items ():
             # Markeringen voor de revisies
@@ -619,7 +620,7 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
                 bufferSet.Dimensie = dimensie
                 bufferSet.Locaties = markeringen
                 symNaam = self.VoegWijzigMarkeringToe (dimensie, True)
-                kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Markering waar revisies gevonden zijn", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+                kaart.VoegLaagToe ("Markering waar revisies gevonden zijn", self.VoegGeoDataToe (bufferSet), symNaam, True, True)
 
         for dimensie, markeringen in self._Wijzigingen.Markering.items ():
             # Markeringen voor de wijzigingen
@@ -628,9 +629,9 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
                 bufferSet.Dimensie = dimensie
                 bufferSet.Locaties = markeringen
                 symNaam = self.VoegWijzigMarkeringToe (dimensie)
-                kaartScripts[bufferSet.Dimensie] += 'kaart.VoegLaagToe ("Markering waar wijzigingen gevonden zijn", "' + self.VoegGeoDataToe (bufferSet) + '", "' + symNaam + '", true, true);'
+                kaart.VoegLaagToe ("Markering waar wijzigingen gevonden zijn", self.VoegGeoDataToe (bufferSet), symNaam, True, True)
 
-        self.ToonKaart (''.join (kaartScripts[2]) + ''.join (kaartScripts[1]) + ''.join (kaartScripts[0]))
+        kaart.Toon ()
 
 #======================================================================
 #
@@ -653,7 +654,7 @@ zodat deze revisie niet meer nodig is. Of om, als de naam van de locatie wel moe
 te gebruiken in beide versies.</p>
 <p>In onderstaand tekstvak staat per basisgeometrie-ID van de locaties in de wordt-versie
 aangegeven de basisgeometrie-ID van dw corresponderende locatie(s) uit de was-versie.</p>''')
-        self._ToonResultaatInTekstvak (json.dumps (wasIdvoorwordtId, indent=4), None, 'json', 'Te_vervangen_locaties.json')
+        self._ToonResultaatInTekstvak (json.dumps (wasIdvoorwordtId, indent=4), 'Te_vervangen_locaties.json', 'json')
         self.Generator.VoegHtmlToe ('''
 <p>Deze locaties zijn opgenomen in GIO-wijziging als revisies.</p>''')
 
@@ -684,33 +685,14 @@ aangegeven de basisgeometrie-ID van dw corresponderende locatie(s) uit de was-ve
                     self.Log.Fout ("Kan GIO-wijzjging niet opslaan in bestand '" + filePad + "': " + str(e))
 
         self.Log.Detail ("Neem GIO-wijziging op in resultaatpagina")
-        self._ToonResultaatInTekstvak (wijzigingGML, "wijziging", "xml", "GIO-wijziging.gml")
+        self._ToonResultaatInTekstvak (wijzigingGML, "GIO-wijziging.gml", "xml", "wijziging")
 
         if self.Request.IsOnlineOperatie:
             self.Log.Detail ("Neem was-GML en smbolisatie op in form")
-            self._ToonResultaatInTekstvak (self._WasGML, "was", None, None, False)
+            self._ToonResultaatInTekstvak (self._WasGML, None, None, "was", False)
             if self._SymbolisatieXML is None:
-                self._ToonResultaatInTekstvak (self._SymbolisatieXML, "symbolisatie", None, None, False)
+                self._ToonResultaatInTekstvak (self._SymbolisatieXML, None, None, "symbolisatie", False)
             self.Generator.VoegHtmlToe ('''
 <p>Het tonen van de GIO-wijziging wordt door een andere webpagina verzorgd:</p>
 <input type="submit" value ="Toon gio-wijziging"/>
 </form>''')
-
-    #------------------------------------------------------------------
-    #
-    # Neem een tekstvak op in de pagina
-    #
-    #------------------------------------------------------------------
-    def _ToonResultaatInTekstvak (self, tekst, elementNaam : str = None, dataType : str = None, filenaam : str = None, toon : bool = True):
-        self._NaamIndex += 1
-        elementId = 'resultaat_' + str(self._NaamIndex)
-        self.Generator.VoegHtmlToe ('<textarea id="' + elementId + '"')
-        if not elementNaam is None:
-            self.Generator.VoegHtmlToe (' name="' + elementNaam + '"')
-        if not toon:
-            self.Generator.VoegHtmlToe (' style="display: none;"')
-        self.Generator.VoegHtmlToe ('>\n' + tekst.replace ('<', '&lt;').replace ('>', '&gt;') + '\n</textarea>\n')
-        if toon:
-            self.Generator.VoegHtmlToe ('<div><a data-copy="' + elementId + '" href="#">Kopieer</a> of <a data-download_' + dataType + '="' + elementId + '" data-filenaam="' + filenaam + '" href="#">download</a></div>\n')
-
-        pass

@@ -35,76 +35,16 @@ class Kaartgegevens {
 
 
 class Kaart {
-    constructor(tekennauwkeurigheid) {
-        this._TekenNauwkeurigheid = tekennauwkeurigheid;
+    constructor() {
         this._Toplagen = [];
         this._Lagen = [];
         this._ToonSlider = false;
-        this._BBox = false;
         this._LagenMetProperties = 0;
     }
     static EPSG28992 = new ol.proj.Projection('urn:ogc:def:crs:EPSG::28992');
 
     VoegLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
-        this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
-        return this;
-    }
-
-    VoegOudLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
-        var layer = this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
-        if (layer._PopupNaam) {
-            layer._PopupNaam += ' (origineel)'
-        }
-        var self = this;
-        layer.on('prerender', function (event) {
-            var ctx = event.context;
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(0, 0, self._SliderPositie, ctx.canvas.height);
-            ctx.clip();
-        });
-
-        layer.on('postrender', function (event) {
-            var ctx = event.context;
-            ctx.restore();
-        });
-        this._ToonSlider = true;
-        return this;
-    }
-    VoegNieuwLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
-        var layer = this._MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel);
-        if (layer._PopupNaam) {
-            layer._PopupNaam += ' (nieuw)'
-        }
-        var self = this;
-        layer.on('prerender', function (event) {
-            var ctx = event.context;
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(self._SliderPositie, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.clip();
-        });
-
-        layer.on('postrender', function (event) {
-            var ctx = event.context;
-            ctx.restore();
-        });
-        this._ToonSlider = true;
-        return this;
-    }
-
-    _MaakKaartlaag(naam, dataNaam, symbolisatieNaam, inControls, toonInitieel) {
         var geoJson = Kaartgegevens.Instantie._GeoJSON[dataNaam];
-        if (this._BBox === false) {
-            this._BBox = geoJson.bbox;
-        } else {
-            this._BBox = [
-                (this._BBox[0] < geoJson.bbox[0] ? this._BBox[0] : geoJson.bbox[0]),
-                (this._BBox[1] < geoJson.bbox[1] ? this._BBox[1] : geoJson.bbox[1]),
-                (this._BBox[2] > geoJson.bbox[2] ? this._BBox[2] : geoJson.bbox[2]),
-                (this._BBox[3] > geoJson.bbox[3] ? this._BBox[3] : geoJson.bbox[3])
-            ];
-        }
         var layer = new ol.layer.Vector({
             source: new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(geoJson),
@@ -126,34 +66,76 @@ class Kaart {
         } else {
             layer._AanUit = false
         }
-
-        return layer;
+        return this;
     }
 
-    Toon(kaartElementId, kaartElementWidth, kaartElementHeight) {
+    AlsOudLaag() {
+        var layer = this._Lagen[this._Lagen.length - 1];
+        if (layer._PopupNaam) {
+            layer._PopupNaam += ' (origineel)'
+        }
+        var self = this;
+        layer.on('prerender', function (event) {
+            var ctx = event.context;
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(0, 0, self._SliderPositie, ctx.canvas.height);
+            ctx.clip();
+        });
+
+        layer.on('postrender', function (event) {
+            var ctx = event.context;
+            ctx.restore();
+        });
+        this._ToonSlider = true;
+        return this;
+    }
+    AlsNieuwLaag() {
+        var layer = this._Lagen[this._Lagen.length - 1];
+        if (layer._PopupNaam) {
+            layer._PopupNaam += ' (nieuw)'
+        }
+        var self = this;
+        layer.on('prerender', function (event) {
+            var ctx = event.context;
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(self._SliderPositie, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.clip();
+        });
+
+        layer.on('postrender', function (event) {
+            var ctx = event.context;
+            ctx.restore();
+        });
+        this._ToonSlider = true;
+        return this;
+    }
+
+    Toon(opties) {
         var self = this;
         // Bepaal eerst welk deel van Nederland getoond moet worden
-        var kaartElement = document.getElementById(kaartElementId);
-        kaartElement.style.width = kaartElementWidth + "px"
-        kaartElement.style.height = kaartElementHeight + "px"
+        var kaartElement = document.getElementById(opties['kaartelementId']);
+        kaartElement.style.width = opties['kaartelementWidth'] + "px"
+        kaartElement.style.height = opties['kaartelementHeight'] + "px"
         var legeRuimteOmGeometrie = 0.25;
-        if (this._BBox === false) {
-            this._BBox = Kaart._BGT_BBox;
+        if (!('bbox' in opties)) {
+            opties['bbox'] = Kaart._BRT_BBox;
             legeRuimteOmGeometrie = 0;
         }
-        var zoomLevel = 20 - Kaart._BGT_Resolutions.length;
-        var zoomLevelX = Math.max(Math.floor(Math.log2((kaartElementWidth * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[2] - this._BBox[0]))), 0);
-        var zoomLevelY = Math.max(Math.floor(Math.log2((kaartElementHeight * (1 - legeRuimteOmGeometrie) * Kaart._BGT_Resolutions[0]) / (this._BBox[3] - this._BBox[1]))), 0);
+        var zoomLevel = 6;
+        var zoomLevelX = Math.max(Math.floor(Math.log2((opties['kaartelementWidth'] * (1 - legeRuimteOmGeometrie) * Kaart._BRT_Resolutions[0]) / (opties['bbox'][2] - opties['bbox'][0]))), 0);
+        var zoomLevelY = Math.max(Math.floor(Math.log2((opties['kaartelementHeight'] * (1 - legeRuimteOmGeometrie) * Kaart._BRT_Resolutions[0]) / (opties['bbox'][3] - opties['bbox'][1]))), 0);
         zoomLevel += (zoomLevelX < zoomLevelY ? zoomLevelX : zoomLevelY);
-        this._SliderPositie = kaartElementWidth / 2;
+        this._SliderPositie = opties['kaartelementWidth'] / 2;
 
         // Achtergrondkaart
         var matrixIds = [];
-        for (var z = 0; z < Kaart._BGT_Resolutions.length; z++) {
+        for (var z = 0; z < Kaart._BRT_Resolutions.length; z++) {
             matrixIds.push('urn:ogc:def:crs:EPSG::28992:' + z);
         }
         self._Lagen.splice(0, 0, new ol.layer.Tile({
-            extent: Kaart._BGT_BBox,
+            extent: Kaart._BRT_BBox,
             source: new ol.source.WMTS({
                 url: 'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0',
                 layer: 'pastel',
@@ -161,8 +143,8 @@ class Kaart {
                 format: 'image/png',
                 projection: Kaart.EPSG28992,
                 tileGrid: new ol.tilegrid.WMTS({
-                    origin: ol.extent.getTopLeft(Kaart._BGT_BBox),
-                    resolutions: Kaart._BGT_Resolutions,
+                    origin: ol.extent.getTopLeft(Kaart._BRT_BBox),
+                    resolutions: Kaart._BRT_Resolutions,
                     matrixIds: matrixIds
                 })
             })
@@ -170,13 +152,13 @@ class Kaart {
 
         // Tot slot de overlays / popup
         var mapOverlays = []
-        const popup_content = document.getElementById(kaartElementId + '_popup-content');
-        const popup_closer = document.getElementById(kaartElementId + '_popup-closer');
+        const popup_content = document.getElementById(opties['kaartelementId'] + '_popup-content');
+        const popup_closer = document.getElementById(opties['kaartelementId'] + '_popup-closer');
         var popup_overlay = false;
         if (this._LagenMetProperties > 0) {
             // Popup wordt als overlay op de kaart getoond
             popup_overlay = new ol.Overlay({
-                element: document.getElementById(kaartElementId + '_popup'),
+                element: document.getElementById(opties['kaartelementId'] + '_popup'),
                 autoPan: true,
                 autoPanAnimation: {
                     duration: 250
@@ -190,7 +172,7 @@ class Kaart {
                 return false;
             };
         } else {
-            var popup = document.getElementById(kaartElementId + '_popup');
+            var popup = document.getElementById(opties['kaartelementId'] + '_popup');
             if (popup) {
                 popup.remove();
             }
@@ -198,16 +180,17 @@ class Kaart {
 
         // Maak het kaartbeeld
         var view = new ol.View({
-            center: ol.extent.getCenter(this._BBox),
-            zoom: zoomLevel
+            center: ol.extent.getCenter(opties['bbox']),
+            zoom: zoomLevel,
+            maxZoom: ('maxZoom' in opties ? opties['maxZoom'] : 24)
         });
         var map = new ol.Map({
             layers: self._Lagen,
             overlays: mapOverlays,
-            target: kaartElementId,
+            target: opties['kaartelementId'],
             view: view
         });
-        if (this._TekenNauwkeurigheid) {
+        if ('teken-nauwkeurigheid' in opties) {
             map.addControl(new ol.control.ScaleLine({ units: 'metric' }));
         }
         map.render();
@@ -253,7 +236,7 @@ class Kaart {
             }
         }
         var aanUitLagenElt = null;
-        if (aanUitLagen.length > 0 || this._TekenNauwkeurigheid) {
+        if (aanUitLagen.length > 0 || 'teken-nauwkeurigheid' in opties) {
             var elt = document.createElement('p');
             kaartElement.insertAdjacentElement('afterend', elt); var parent = elt;
             elt = document.createElement('table'); parent.appendChild(elt); parent = elt;
@@ -263,10 +246,10 @@ class Kaart {
                 aanUitLagenElt = elt
                 aanUitLagenElt.innerHTML = 'Gegevens in de kaart die wel/niet zichtbaar gemaakt kunnen worden:</br>';
             }
-            if (this._TekenNauwkeurigheid) {
+            if ('teken-nauwkeurigheid' in opties) {
                 elt.width = '100%';
                 elt = document.createElement('td'); parent.appendChild(elt);
-                new TekenNauwkeurigheidSchaal(this._TekenNauwkeurigheid, elt, kaartElementId, view);
+                new TekenNauwkeurigheidSchaal(opties['teken-nauwkeurigheid'], elt, opties['kaartelementId'], view);
             }
         }
 
@@ -278,7 +261,7 @@ class Kaart {
                 }
                 var ctrl = document.createElement('input');
                 ctrl.type = 'checkbox';
-                ctrl.id = kaartElementId + '_laag_' + i;
+                ctrl.id = opties['kaartelementId'] + '_laag_' + i;
                 ctrl.checked = aanUitLagen[i].getVisible();
                 aanUitLagenElt.append(ctrl);
                 var label = document.createElement('label');
@@ -302,8 +285,8 @@ class Kaart {
         }
     }
 
-    static _BGT_BBox = [-285401.92, 22598.08, 595401.9199999999, 903401.9199999999];
-    static _BGT_Resolutions = [3440.64, 1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68, 0.84, 0.42];
+    static _BRT_BBox = [-285401.92, 22598.08, 595401.9199999999, 903401.9199999999];
+    static _BRT_Resolutions = [3440.64, 1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68, 0.84, 0.42, 0.21];
 }
 
 class TekenNauwkeurigheidSchaal {

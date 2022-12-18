@@ -39,8 +39,6 @@ class GIOWijziging (GeoManipulatie):
         super ().__init__ ("GIO-wijziging", "GIO-wijziging - geen resultaat", request, log)
         # Geometrie specificatie voor de GIO's
         self._Geometrie : Dict[str,GeoManipulatie.GeoData] = {}
-        # Naam van de GIO data voor kaartweergave
-        self._DataNaam : Dict[str,str] = {}
         # Naam waaronder de te gebruiken symbolisatie is geregistreerd
         self._SymbolisatieNaam : Dict[str,str] = {}
 
@@ -83,12 +81,10 @@ class GIOWijziging (GeoManipulatie):
                 request._FormData["symbolisatie"] = symbolisatie
                 request._FormData["teken-nauwkeurigheid"] = __Waarde (gio, "teken-nauwkeurigheid")
 
+                self.Log.Informatie ("Toon GIO: '" + gio["pad"] + "'")
                 uitvoerder = GeoViewer (request, self.Log)
-                uitvoerder.Generator = self.Generator
-                uitvoerder._DefaultSymbolenToegevoegd = self._DefaultSymbolenToegevoegd
-                uitvoerder._NaamIndex = self._NaamIndex
+                uitvoerder._GebruikCache (self._Cache)
                 uitvoerder._Geometrie = self._Geometrie.get (gio["pad"])
-                uitvoerder._DataNaam = self._DataNaam.get (gio["pad"])
                 if not symbolisatie is None:
                     uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
@@ -98,9 +94,7 @@ class GIOWijziging (GeoManipulatie):
                 if not succes:
                     break
 
-                self._NaamIndex = uitvoerder._NaamIndex
                 self._Geometrie[gio["pad"]] = uitvoerder._Geometrie
-                self._DataNaam[gio["pad"]] = uitvoerder._DataNaam
                 if not symbolisatie is None:
                     self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
 
@@ -132,14 +126,11 @@ class GIOWijziging (GeoManipulatie):
                 request._FormData["symbolisatie"] = symbolisatie
                 request._FormData["teken-nauwkeurigheid"] = __Waarde (wijziging, "teken-nauwkeurigheid")
 
+                self.Log.Informatie ("Maak GIO-wijziging: '" + wijziging["was"] + "' &rarr; '" + wijziging["was"] + "'")
                 uitvoerder = GIOWijzigingMaker (request, self.Log)
-                uitvoerder.Generator = self.Generator
-                uitvoerder._DefaultSymbolenToegevoegd = self._DefaultSymbolenToegevoegd
-                uitvoerder._NaamIndex = self._NaamIndex
+                uitvoerder._GebruikCache (self._Cache)
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
-                uitvoerder._WasDataNaam = self._DataNaam.get (wijziging["was"])
                 uitvoerder._Wordt = self._Geometrie.get (wijziging["wordt"])
-                uitvoerder._WordtDataNaam = self._DataNaam.get (wijziging["wordt"])
                 if not symbolisatie is None:
                     uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
@@ -148,12 +139,11 @@ class GIOWijziging (GeoManipulatie):
                 if not succes:
                     break
 
-                self._NaamIndex = uitvoerder._NaamIndex
                 self._Geometrie[wijziging["was"]] = uitvoerder._Was
-                self._DataNaam[wijziging["was"]] = uitvoerder._WasDataNaam
                 if not symbolisatie is None:
                     self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
-                if not uitvoerder._Wijziging is None and request.LeesString ("toon", True) == 'true':
+                request._FormData["toon"] = wijziging.get ("toon")
+                if not uitvoerder._Wijziging is None and request.LeesString ("toon", True) != 'false':
                     wijziging["data"] = uitvoerder._Wijziging
                     toonWijzigingLijst.append (wijziging)
 
@@ -180,25 +170,18 @@ class GIOWijziging (GeoManipulatie):
                 symbolisatie = __Waarde (gio, "symbolisatie")
                 request._FormData["symbolisatie"] = symbolisatie
 
+                self.Log.Informatie ("Toon GIO-wijziging: '" + wijziging["wijziging"] + "'")
                 uitvoerder = GIOWijzigingViewer (request, self.Log)
-                uitvoerder.Generator = self.Generator
-                uitvoerder._DefaultSymbolenToegevoegd = self._DefaultSymbolenToegevoegd
-                uitvoerder._NaamIndex = self._NaamIndex
+                uitvoerder._GebruikCache (self._Cache)
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
-                uitvoerder._WasDataNaam = self._DataNaam.get (wijziging["was"])
                 uitvoerder._Wijziging = wijziging["data"]
                 if not symbolisatie is None:
                     uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
-                einde = self.Generator.StartSectie ("<h3>" + wijziging["wijziging"] + "</h3>", True)
-                succes = uitvoerder._VoerUit ()
-                self.Generator.VoegHtmlToe (einde)
+                succes = uitvoerder._VoerUit (wijziging["wijziging"])
                 if not succes:
                     break
 
-                self._NaamIndex = uitvoerder._NaamIndex
-                self._Geometrie[gio["pad"]] = uitvoerder._Geometrie
-                self._DataNaam[gio["pad"]] = uitvoerder._DataNaam
                 if not symbolisatie is None:
                     self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
 

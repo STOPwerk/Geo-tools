@@ -62,7 +62,7 @@ class Parameters:
         """
         waarde = None if self._FormData is None else self._FormData.get (key)
         if not waarde is None:
-            return str(waarde).ower () if lowercase else str(waarde)
+            return str(waarde).lower () if lowercase else str(waarde)
 
     def LeesBestand (self, log : Meldingen, key: str, verplicht: bool):
         """Lees de inhoud van een bestand aan de hand van de specificatie key / input type="file" control naam.

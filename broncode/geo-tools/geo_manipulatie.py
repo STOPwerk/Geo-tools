@@ -14,6 +14,7 @@ from lxml import etree as lxml_etree
 from shapely.geometry import shape
 
 import json
+import math
 import re
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
@@ -28,6 +29,22 @@ class GeoManipulatie:
 # Maken van een webpagina
 #
 #======================================================================
+    class Cache:
+        def __init__ (self, generator):
+            """Instantie met gegevens die door opeenvolgende operaties gedeeld moeten worden"""
+            # Generator om de resultaat-pagina te maken
+            self.Generator = generator
+            # Status attribuut voor het opnemen van de nodige scripts/css
+            # self._WebpaginaKanKaartTonen
+            # Status van het toevoegen van de default symbolen
+            self._DefaultSymbolenToegevoegd : Dict[int,str] = {}
+            # Index voor het uitdelen van unieke namen
+            self._NaamIndex = 0
+            # Dimensie van alle datalagen
+            self._Dimensie : Dict[str,int] = {}
+            # Bounding box van alle datalagen
+            self._BoundingBox : Dict[str,List[float]] = {}
+
     def __init__ (self, defaultTitel, titelBijFout, request : Parameters, log: Meldingen = None):
         """Maak een instantie van de geo-operatie aan
 
@@ -47,12 +64,13 @@ class GeoManipulatie:
         self.Titel = request.LeesString ('titel')
         # Generator om de resultaat-pagina te maken
         self.Generator = WebpaginaGenerator (defaultTitel if self.Titel is None else self.Titel)
-        # Status attribuut voor het opnemen van de nodige scripts/css
-        # self._WebpaginaKanKaartTonen
-        # Status van het toevoegen van de default symbolen
-        self._DefaultSymbolenToegevoegd : Dict[int,str] = {}
-        # Index voor het uitdelen van unieke namen
-        self._NaamIndex = 0
+        self._Cache = GeoManipulatie.Cache (self.Generator)
+
+    def _GebruikCache (self, cache : Cache) -> 'GeoManipulatie':
+        """Laat deze operatie de cache van een andere GeoManipulatie operatie gebruiken"""
+        self._Cache = cache
+        self.Generator = cache.Generator
+        return self
 
     def VoerUit(self):
         """Maak de webpagina aan"""
@@ -61,11 +79,14 @@ class GeoManipulatie:
             # _VoerUit moet in een afgeleide klasse worden geïmplementeerd
             if self._VoerUit ():
                 self.Log.Informatie ("De verwerking is voltooid.")
+                self.Generator.VoegHtmlToe ("<p>&nbsp;</p>")
                 einde = self.Generator.StartSectie ("<h3>Verslag van de verwerking</h3>")
             else:
                 self.Log.Fout ("De verwerking is afgebroken.")
+                self.Generator.VoegHtmlToe ("<p><b>De verwerking is afgeboken!</b></p>")
                 einde = self.Generator.StartSectie ("<h3>Verslag van de incomplete verwerking</h3>")
 
+            self.Generator.VoegHtmlToe ("<p>&nbsp;</p>")
             self.Log.MaakHtml (self.Generator, None)
             self.Generator.VoegHtmlToe (einde)
             return self.Generator.Html ()
@@ -136,6 +157,8 @@ class GeoManipulatie:
             self.EenheidLabel = None
             # ID voor de eenheid van de normwaarden
             self.EenheidID = None
+            # Teken-nauwkeurigheid in decimeter
+            self.Tekennauwkeurigheid : int = None
             #----------------------------------------------------------
             # Voor een GIO-versie
             #----------------------------------------------------------
@@ -166,6 +189,11 @@ class GeoManipulatie:
             self.WordtRevisies : GeoManipulatie.GeoData = None 
             # De wijzig-markering indien aanwezig, uitgesplitst naar de dimensie van de geometrieën.
             self.WijzigMarkering : Dict[int,GeoManipulatie.GeoData] = None
+            #----------------------------------------------------------
+            # Voor weergave op de kaart
+            #----------------------------------------------------------
+            # De naam waaronder deze date via VoegGeoDataToe is geregistreerd voor kaartweergave
+            self._KaartgegevensNaam : str = None
 
         def GeometrieNaam (self, meervoud: bool) -> str:
             """Geeft de gewone naam voor de geometrieën in de geo-data, in enkel- of meervoud."""
@@ -555,9 +583,80 @@ class GeoManipulatie:
 
 #----------------------------------------------------------------------
 #
-# Maken van XML voor GIO-wijziging
+# Maken van GML
 #
 #----------------------------------------------------------------------
+    def SchrijfGIO (self, gio : GeoData) -> str:
+        """Stel de XML op voor een GIO (als string)
+
+        Argumenten:
+        gio GeoData  Het GIO
+        """
+        gioGML = '''<geo:GeoInformatieObjectVersie schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
+  https://standaarden.overheid.nl/stop/@@@IMOP_Versie@@@/imop-geo.xsd">
+    <geo:FRBRWork>''' + gio.WorkId + '''</geo:FRBRWork>
+    <geo:FRBRExpression>''' + gio.ExpressionId + '''</geo:FRBRExpression>'''
+        if hasattr (gio, 'Tekennauwkeurigheid'):
+            gioGML += '''
+    <geo:tekennauwkeurigheid>''' + str (gio.Tekennauwkeurigheid) + '''</geo:tekennauwkeurigheid>'''
+
+        if not gio.GIODelen is None:
+            gioGML += '''
+    <geo:groepen>'''
+            for gioDeel in gio.GIODelen.values ():
+                gioGML += '''
+        <geo:Groep>
+            <geo:groepID>''' + gioDeel.GroepId + '''</geo:groepID>
+            <geo:label>''' + gioDeel.Label + '''</geo:label>
+            <geo:/Groep>'''
+            gioGML += '''
+    </geo:groepen>'''
+        elif not gio.NormLabel is None:
+            gioGML += '''
+    <geo:normlabel>''' + gio.NormLabel + '''</geo:normlabel>'''
+            if not gio.NormID is None:
+                gioGML += '''
+    <geo:normID>''' + gio.NormID + '''</geo:normID>'''
+            if not gio.EenheidLabel is None:
+                gioGML += '''
+    <geo:eenheidlabel>''' + gio.EenheidLabel + '''</geo:eenheidlabel>'''
+            if not gio.EenheidID is None:
+                gioGML += '''
+    <geo:eenheidID>''' + gio.EenheidID + '''</geo:eenheidID>'''
+
+
+        gioGML += '''
+    <geo:locaties>'''
+
+        for locatie in gio.Locaties:
+            gioGML += '''
+        <geo:Locatie>'''
+            props = locatie.get ('properties')
+            waarde = props.get('naam')
+            if not waarde is None:
+                gioGML += '''
+            <geo:naam>''' + waarde + '''</geo:naam>'''
+            gioGML += '''
+            <geo:geometrie>
+                <basisgeo:Geometrie>
+                    <basisgeo:id>''' + props['id'] + '''</basisgeo:id>
+                    <basisgeo:geometrie>
+                        ''' + GeoManipulatie._GeometrieGML (locatie['geometry']) + '''
+                    </basisgeo:geometrie>
+                </basisgeo:Geometrie>
+            </geo:geometrie>'''
+            waarde = None if gio.AttribuutNaam is None else props.get(gio.AttribuutNaam)
+            if not waarde is None:
+                gioGML += '''
+            <geo:''' + gio.AttribuutNaam + '>' + waarde + '</geo:' + gio.AttribuutNaam + '>'
+            gioGML += '''
+        </geo:Locatie>'''
+
+        gioGML += '''
+    </geo:locaties>
+</geo:GeoInformatieObjectVersie>'''
+        return gioGML
+
     def SchrijfGIOWijziging (self, gioWijziging : GeoData) -> str:
         """Stel de XML op voor een GIO-wijziging (als string)
 
@@ -565,22 +664,14 @@ class GeoManipulatie:
         gioWijziging GeoData  De GIO-wijzifging
         """
 
-        def __GML(geom):
-            geom['crs'] = {'properties' : { 'name': "urn:ogc:def:crs:EPSG::28992" } }
-            gml = encode_v32 (geom, None)
-            for withId in gml.xpath ('//*[@gml:id]', namespaces={'gml' : 'http://www.opengis.net/gml/3.2'}):
-                withId.attrib.pop ('{http://www.opengis.net/gml/3.2}id')
-            gml = lxml_etree.tostring (gml, encoding='unicode')
-            gml = gml.replace (' xmlns:gml="http://www.opengis.net/gml/3.2"', '')
-            return gml
-
         wijzigingGML = '''<geo:GeoInformatieObjectVaststelling schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
   https://standaarden.overheid.nl/stop/@@@IMOP_Versie@@@/imop-geo.xsd">
 ''' + gioWijziging.Vaststellingscontext + '''
     <geo:vastgesteldeVersie>
         <geo:GeoInformatieObjectMutatie>
             <geo:FRBRWork>''' + gioWijziging.WorkId + '''</geo:FRBRWork>
-            <geo:FRBRExpression>''' + gioWijziging.Wordt.ExpressionId + '''</geo:FRBRExpression>'''
+            <geo:FRBRExpression>''' + gioWijziging.Wordt.ExpressionId + '''</geo:FRBRExpression>
+            <geo:tekennauwkeurigheid>''' + str (gioWijziging.Tekennauwkeurigheid) + '''</geo:tekennauwkeurigheid>'''
 
         if not gioWijziging.GIODelen is None:
             wijzigingGML += '''
@@ -635,7 +726,7 @@ class GeoManipulatie:
                         <basisgeo:Geometrie>
                             <basisgeo:id>''' + props['id'] + '''</basisgeo:id>
                             <basisgeo:geometrie>
-                                ''' + __GML (locatie['geometry']) + '''
+                                ''' + GeoManipulatie._GeometrieGML (locatie['geometry']) + '''
                             </basisgeo:geometrie>
                         </basisgeo:Geometrie>
                     </geo:geometrie>'''
@@ -666,7 +757,7 @@ class GeoManipulatie:
                     <basisgeo:Geometrie>
                         <basisgeo:id>''' + markering['properties']['id'] + '''</basisgeo:id>
                         <basisgeo:geometrie>
-                                ''' + __GML (markering['geometry']) + '''
+                                ''' + GeoManipulatie._GeometrieGML (markering['geometry']) + '''
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:''' + markeringType + '''>'''
@@ -677,8 +768,19 @@ class GeoManipulatie:
         </geo:GeoInformatieObjectMutatie>
     </geo:vastgesteldeVersie>
     <geo:wasID>''' + gioWijziging.Was.ExpressionId + '''</geo:wasID>
-</geo:GeoInformatieObjectVersie>'''
+</geo:GeoInformatieObjectVaststelling>'''
         return wijzigingGML
+
+    @staticmethod
+    def _GeometrieGML(geom):
+        geom['crs'] = {'properties' : { 'name': "urn:ogc:def:crs:EPSG::28992" } }
+        gml = encode_v32 (geom, None)
+        for withId in gml.xpath ('//*[@gml:id]', namespaces={'gml' : 'http://www.opengis.net/gml/3.2'}):
+            withId.attrib.pop ('{http://www.opengis.net/gml/3.2}id')
+        gml = lxml_etree.tostring (gml, encoding='unicode')
+        gml = gml.replace (' xmlns:gml="http://www.opengis.net/gml/3.2"', '')
+        return gml
+
 
 #----------------------------------------------------------------------
 #
@@ -714,6 +816,14 @@ class GeoManipulatie:
         if geoData is None:
             self.Log.Detail ('Geen geo-data beschikbaar dus niet toegevoegd aan de kaartgegevens')
             return
+        if not geoData._KaartgegevensNaam is None:
+            # Is al eerder geregistreerd
+            return geoData._KaartgegevensNaam
+
+        self._Cache._NaamIndex += 1
+        geoData._KaartgegevensNaam = 'data' + str(self._Cache._NaamIndex)
+        self._Cache._Dimensie[geoData._KaartgegevensNaam] = geoData.Dimensie
+
         collectie = {
             'type' : 'FeatureCollection',
             'crs': { 'type': 'name', 'properties': { 'name': 'urn:ogc:def:crs:EPSG::28992' } },
@@ -733,29 +843,28 @@ class GeoManipulatie:
                 collectie['features'].append (toon)
 
         # Bepaal de bounding box van de hele collectie
-        bbox = False
+        bbox = None
         for locatie in geoData.Locaties:
             locatieShape = GeoManipulatie.MaakShapelyShape (locatie)
             if not locatieShape.is_empty:
                 locatieBBox = locatieShape.bounds
-                if bbox:
+                if bbox is None:
+                    bbox = list (locatieBBox)
+                else:
                     bbox = [
                             bbox[0] if bbox[0] < locatieBBox[0] else locatieBBox[0],
                             bbox[1] if bbox[1] < locatieBBox[1] else locatieBBox[1],
                             bbox[2] if bbox[2] > locatieBBox[2] else locatieBBox[2],
                             bbox[3] if bbox[3] > locatieBBox[3] else locatieBBox[3]
                         ]
-                else:
-                    bbox = list (locatieBBox)
-        if bbox:
+        if not bbox is None:
             collectie['bbox'] = bbox
+            self._Cache._BoundingBox[geoData._KaartgegevensNaam] = bbox
 
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
-        self._NaamIndex += 1
-        naam = 'data' + str(self._NaamIndex)
-        self.Generator.VoegSlotScriptToe ('\nKaartgegevens.Instantie.VoegDataToe ("' + naam + '",\n' + json.dumps (collectie, cls=GeoManipulatie._JsonGeoEncoder, ensure_ascii=False) + '\n);\n')
-        return naam
+        self.Generator.VoegSlotScriptToe ('\nKaartgegevens.Instantie.VoegDataToe ("' + geoData._KaartgegevensNaam + '",\n' + json.dumps (collectie, cls=GeoManipulatie._JsonGeoEncoder, ensure_ascii=False) + '\n);\n')
+        return geoData._KaartgegevensNaam
 
     class _JsonGeoEncoder (json.JSONEncoder):
         def default(self, o):
@@ -767,6 +876,153 @@ class GeoManipulatie:
 # Weergave op de kaart
 #
 #======================================================================
+
+#----------------------------------------------------------------------
+#
+# Kaart in webpagina
+#
+#----------------------------------------------------------------------
+    class Kaart:
+        def __init__ (self, operatie : 'GeoManipulatie'):
+            """Maak een nieuwe kaart om dadelijk te tonen"""
+            self._Operatie = operatie
+            self._Operatie._InitialiseerWebpagina ()
+            self._Operatie._Cache._NaamIndex += 1
+            # Initialisatie van de kaartlagen (per dimensie)
+            self._InitialisatieScripts = { 0 : '', 1: '', 2: '' }
+            # Bounding box van alle lagen tot nu toe
+            self._BoundingBox = None
+            # Opties om door te geven aan de kaart
+            self._Opties = {
+                'kaartelementId': 'kaart_' + str(self._Operatie._Cache._NaamIndex),
+                'kaartelementWidth': 900,
+                'kaartelementHeight': 600
+            }
+            nauwkeurigheid = self._Operatie.Request.LeesString ("teken-nauwkeurigheid");
+            if not nauwkeurigheid is None:
+                self._Opties['teken-nauwkeurigheid'] = int (nauwkeurigheid)
+
+
+        def VoegLaagToe (self, naam : str, dataNaam : str, symbolisatieNaam : str, inControls : bool = False, toonInitieel : bool = True):
+            """Voeg data met symbolisatie toe aan de kaart
+            
+            Argumenten:
+
+            naam str  Naam van de kaart zoals gebruikt bij de weergave van properties en bij het aan/uit zetten van lagen
+            dataNaam str  Naam van de geodata die getoond moet worden, zoals verkregen uit de VoegGeoDataToe
+            symbolisatieNaam str  Naam van de symbolisatie, zoals verkregen uit een van de Voeg*Toe methoden
+            inControls bool  Geeft aan dat de laag aan/uit gezet kan worden door de eindgebruiker
+            toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
+            """
+            self._InitialisatieScripts[self._Operatie._Cache._Dimensie[dataNaam]] += ';\nkaart.VoegLaagToe ("' + naam + '", "' + dataNaam + '", "' + symbolisatieNaam + '", ' + ('true' if inControls else 'false') + ', ' + ('true' if toonInitieel else 'false') + ')'
+            bbox = self._Operatie._Cache._BoundingBox.get (dataNaam)
+            if not bbox is None:
+                if self._BoundingBox is None:
+                    self._BoundingBox = bbox
+                else:
+                    self._BoundingBox = [
+                            self._BoundingBox[0] if self._BoundingBox[0] < bbox[0] else bbox[0],
+                            self._BoundingBox[1] if self._BoundingBox[1] < bbox[1] else bbox[1],
+                            self._BoundingBox[2] if self._BoundingBox[2] > bbox[2] else bbox[2],
+                            self._BoundingBox[3] if self._BoundingBox[3] > bbox[3] else bbox[3]
+                        ]
+
+        def VoegOudLaagToe (self, naam : str, dataNaam : str, symbolisatieNaam : str, inControls : bool = False, toonInitieel : bool = True):
+            """Voeg data met symbolisatie toe aan de kaart als een oude/was-laag
+            
+            Argumenten:
+
+            naam str  Naam van de kaart zoals gebruikt bij de weergave van properties (wordt " (oud)" achter gezet) en bij het aan/uit zetten van lagen
+            dataNaam str  Naam van de geodata die getoond moet worden, zoals verkregen uit de VoegGeoDataToe
+            symbolisatieNaam str  Naam van de symbolisatie, zoals verkregen uit een van de Voeg*Toe methoden
+            inControls bool  Geeft aan dat de laag aan/uit gezet kan worden door de eindgebruiker
+            toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
+            """
+            self.VoegLaagToe (naam, dataNaam, symbolisatieNaam, inControls, toonInitieel)
+            self._InitialisatieScripts[self._Operatie._Cache._Dimensie[dataNaam]] += '.AlsOudLaag ()'
+
+        def VoegNieuwLaagToe (self, naam : str, dataNaam : str, symbolisatieNaam : str, inControls : bool = False, toonInitieel : bool = True):
+            """Voeg data met symbolisatie toe aan de kaart als een nieuwe/wordt-laag
+            
+            Argumenten:
+
+            naam str  Naam van de kaart zoals gebruikt bij de weergave van properties (wordt " (nieuw)" achter gezet) en bij het aan/uit zetten van lagen
+            dataNaam str  Naam van de geodata die getoond moet worden, zoals verkregen uit de VoegGeoDataToe
+            symbolisatieNaam str  Naam van de symbolisatie, zoals verkregen uit een van de Voeg*Toe methoden
+            inControls bool  Geeft aan dat de laag aan/uit gezet kan worden door de eindgebruiker
+            toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
+            """
+            self.VoegLaagToe (naam, dataNaam, symbolisatieNaam, inControls, toonInitieel)
+            self._InitialisatieScripts[self._Operatie._Cache._Dimensie[dataNaam]] += '.AlsNieuwLaag ()'
+
+        def ZoomTotNauwkeurigheid (self, extraZoom : bool):
+            """Geeft aan dat het maximale zoom level overen moet komen met de teken-nauwkeurigheid
+            
+            Argumenten:
+
+            extraZoom bool  Geeft aan dat er extra zoom levels moeten zijn zodat het effect van de teken-nauwkeurigheid te zien is
+            """
+            nauwkeurigheid = self._Operatie.NauwkeurigheidInDecimeter (False)
+            if nauwkeurigheid is None:
+                self._Opties.pop ('maxZoom', None)
+            else:
+                maxZoom = 22 - math.floor(math.log2(nauwkeurigheid)) + (4 if extraZoom else 0)
+                self._Opties['maxZoom'] = 22 if maxZoom > 22 else maxZoom
+
+        def Toon (self):
+            """Toon een kaart op de huidige plaats in de webpagina"""
+            self._Operatie.Generator.VoegHtmlToe (self._Operatie.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', self._Opties['kaartelementId']))
+            if not self._BoundingBox is None:
+                self._Opties['bbox'] = self._BoundingBox
+            
+            self._Operatie.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ()' + ''.join (self._InitialisatieScripts[d] for d in [2,1,0]) + ';\nkaart.Toon (' + json.dumps (self._Opties) + ');\n});')
+
+    def MaximaalZoomLevel (self):
+        """Maximaal zoom level voor een GIO bij gegeven nauwkeurigheid"""
+        maxZoom = 22 - math.floor(math.log2(self._Operatie.NauwkeurigheidInDecimeter ()))
+        return 22 if maxZoom > 22 else maxZoom
+
+    def ZoomLevelDetailPerMeter (self, zoomLevel : int):
+        """Geef de kleinst zichtbare details voor een zoomlevel bij gegeven nauwkeurigheid
+        
+        Argumenten:
+
+        zoomLevel int  Zoom level, kan niet groter zijn dan MaximaalZoomLevel
+        """
+        return 0.1 * math.pow (2, (22 - zoomLevel) if zoomLevel < 22 else 0)
+
+
+    #------------------------------------------------------------------
+    #
+    # Niet-kaartgebonden
+    #
+    #------------------------------------------------------------------
+    def _InitialiseerWebpagina (self):
+        """Voeg de bestanden toe nodig om OpenLayers kaarten op te nemen in de webpagina
+        """
+        if not hasattr (self._Cache, '_WebpaginaKanKaartTonen'):
+            setattr (self._Cache, '_WebpaginaKanKaartTonen', True)
+            self.Generator.LeesCssTemplate ('ol')
+            self.Generator.LeesJSTemplate ("ol", True, True)
+            self.Generator.LeesJSTemplate ("sldreader", True, True)
+            self.Generator.LeesCssTemplate ("juxtapose")
+            self.Generator.LeesJSTemplate ("juxtapose", True, True)
+            self.Generator.LeesCssTemplate ("kaart")
+            self.Generator.LeesJSTemplate ("kaart", True, True)
+            self.Generator.LeesCssTemplate ("resultaat")
+            self.Generator.LeesJSTemplate ("resultaat")
+
+    def _ToonResultaatInTekstvak (self, tekst, filenaam : str, dataType : str, elementNaam : str = None, toon : bool = True):
+        self._Cache._NaamIndex += 1
+        elementId = 'resultaat_' + str(self._Cache._NaamIndex)
+        self.Generator.VoegHtmlToe ('<textarea id="' + elementId + '" class="resultaat"')
+        if not elementNaam is None:
+            self.Generator.VoegHtmlToe (' name="' + elementNaam + '"')
+        if not toon:
+            self.Generator.VoegHtmlToe (' style="display: none;"')
+        self.Generator.VoegHtmlToe ('>\n' + tekst.replace ('<', '&lt;').replace ('>', '&gt;') + '\n</textarea>\n')
+        if toon:
+            self.Generator.VoegHtmlToe ('<div><a data-copy="' + elementId + '" href="#">Kopieer</a> of <a data-download_' + dataType + '="' + elementId + '" data-filenaam="' + filenaam + '" href="#">download</a></div>\n')
 
 #----------------------------------------------------------------------
 #
@@ -796,7 +1052,7 @@ class GeoManipulatie:
         Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
         key = vulkleur + '\n' + randkleur + '\n' + opacity
-        naam = self._DefaultSymbolenToegevoegd.get (key)
+        naam = self._Cache._DefaultSymbolenToegevoegd.get (key)
         if naam is None:
             if dimensie == 0:
                 rule = '''
@@ -851,7 +1107,7 @@ class GeoManipulatie:
             </Stroke>
         </PolygonSymbolizer>
     </Rule>'''
-            self._DefaultSymbolenToegevoegd[key] = naam =  self.VoegSymbolisatieToe (GeoManipulatie._MaakFeatureTypeStyle ([rule]))
+            self._Cache._DefaultSymbolenToegevoegd[key] = naam =  self.VoegSymbolisatieToe (GeoManipulatie._MaakFeatureTypeStyle ([rule]))
         return naam
 
 
@@ -873,8 +1129,8 @@ class GeoManipulatie:
 
         # Voeg toe aan de scripts van de pagina
         self._InitialiseerWebpagina ()
-        self._NaamIndex += 1
-        naam = 'sym' + str(self._NaamIndex)
+        self._Cache._NaamIndex += 1
+        naam = 'sym' + str(self._Cache._NaamIndex)
         self.Generator.VoegSlotScriptToe ('\nKaartgegevens.Instantie.VoegSymbolisatieToe ("' + naam + '",`' + symbolisatie + '`);\n')
         return naam
 
@@ -894,9 +1150,9 @@ class GeoManipulatie:
     def VoegWijzigMarkeringToe (self, dimensie : int, revisie : bool = False):
         """Voeg de symbolisatie voor de speciale wijzigmarkeringen toe en geef de naam terug"""
         key  = 'WM' + str(dimensie) + str(revisie)
-        naam = self._DefaultSymbolenToegevoegd.get (key)
+        naam = self._Cache._DefaultSymbolenToegevoegd.get (key)
         if naam is None:
-            self._DefaultSymbolenToegevoegd[key] = naam = self.VoegSymbolisatieToe (GeoManipulatie.WijzigMarkeringSymbolisatie (dimensie, revisie))
+            self._Cache._DefaultSymbolenToegevoegd[key] = naam = self.VoegSymbolisatieToe (GeoManipulatie.WijzigMarkeringSymbolisatie (dimensie, revisie))
         return naam
 
     @staticmethod
@@ -1097,64 +1353,58 @@ class GeoManipulatie:
     </Rule>'''
     }
 
-#----------------------------------------------------------------------
+#======================================================================
 #
-# Kaart in webpagina
+# Ondersteuning rekenen met geometrieën
 #
-#----------------------------------------------------------------------
-    def ToonKaart (self, jsInitialisatie : str, kaartElementId : str = None):
-        """Toon een kaart op de huidige plaats in de webpagina
+#======================================================================
 
+#----------------------------------------------------------------------
+#
+# Teken-nauwkeurigheid
+#
+#----------------------------------------------------------------------
+    def NauwkeurigheidInDecimeter (self, verplicht: bool = True) -> int:
+        """Haal de nauwkeurigheid in decimeters uit de request parameters
+        
         Argumenten:
 
-        jsInitialisatie str  Javascript om de kaartlagen aan de kaart toe te voegen. De kaart is beschikbaar als 'kaart' variabele,
-        kaartElementId str  Naam van het (in dese methode te maken) HTML element waarin de kaart getoond wordt  Geef None door om een elementnaam te genereren.
+        verplicht bool  Geeft aan dat de teken-nauwkeurigheid een verplichte parameter is
 
-        Geeft kaartElementId terug.
+        Geeft de waarde als int terug, of None als de teken-nauwkeurigheid niet is opgegeven
         """
-        self._InitialiseerWebpagina ()
-        if kaartElementId is None:
-            self._NaamIndex += 1
-            kaartElementId = 'kaart_' + str(self._NaamIndex)
-        self.Generator.VoegHtmlToe (self.Generator.LeesHtmlTemplate ("kaart", False).replace ('<!--ID-->', kaartElementId))
-        nauwkeurigheid = self.Request.LeesString ("teken-nauwkeurigheid");
-        if nauwkeurigheid is None:
-            nauwkeurigheid = ''
-        self.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart (' + nauwkeurigheid + ');\n' + jsInitialisatie + '\nkaart.Toon ("' + kaartElementId + '", "900", "600");\n});')
-        return kaartElementId
-
-    def _InitialiseerWebpagina (self):
-        """Voeg de bestanden toe nodig om OpenLayers kaarten op te nemen in de webpagina
-        """
-        if not hasattr (self, '_WebpaginaKanKaartTonen'):
-            setattr (self, '_WebpaginaKanKaartTonen', True)
-            self.Generator.LeesCssTemplate ('ol')
-            self.Generator.LeesJSTemplate ("ol", True, True)
-            self.Generator.LeesJSTemplate ("sldreader", True, True)
-            self.Generator.LeesCssTemplate ("juxtapose")
-            self.Generator.LeesJSTemplate ("juxtapose", True, True)
-            self.Generator.LeesCssTemplate ("kaart")
-            self.Generator.LeesJSTemplate ("kaart", True, True)
-
-#======================================================================
-#
-# Ondersteuning GIO-wijziging
-#
-#======================================================================
-
-    def NauwkeurigheidInMeter (self) -> float:
-        """Haal de nauwkeurigheid als float uit de request parameters"""
         if self.Request.LeesString ("teken-nauwkeurigheid") is None:
-            self.Log.Waarschuwing ("Geen teken-nauwkeurigheid doorgegeven - kan de GIO niet valideren")
+            if verplicht:
+                self.Log.Fout ("De teken-nauwkeurigheid is niet opgegeven in de specificatie")
             return None
         try:
-            nauwkeurigheid = float (self.Request.LeesString ("teken-nauwkeurigheid"))
+            nauwkeurigheid = int (self.Request.LeesString ("teken-nauwkeurigheid"))
         except:
             self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("teken-nauwkeurigheid") + '"')
             return None
-        return nauwkeurigheid * 0.1
+        return nauwkeurigheid
 
+    def NauwkeurigheidInMeter (self, verplicht: bool = True) -> float:
+        """Haal de nauwkeurigheid in meters uit de request parameters
+        
+        Argumenten:
 
+        verplicht bool  Geeft aan dat de teken-nauwkeurigheid een verplichte parameter is
+
+        Geeft de waarde als int terug, of None als de teken-nauwkeurigheid niet is opgegeven
+        """
+        nauwkeurigheid = self.NauwkeurigheidInDecimeter (True)
+        if not nauwkeurigheid is None:
+            try:
+                return 0.1 * float (nauwkeurigheid)
+            except:
+                self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("teken-nauwkeurigheid") + '"')
+
+#----------------------------------------------------------------------
+#
+# Omzetten multi-geometrie naar enkele geometrieën
+#
+#----------------------------------------------------------------------
     class EnkeleGeometrie:
         def __init__ (self, locatie, geometrie, attribuutwaarde : str):
             """Een Point, LineString of Polygon geometrie die onderdeel is van de (multi-)geometrie van de locatie.
@@ -1235,3 +1485,10 @@ class GeoManipulatie:
                         'type': 'Feature',
                         'geometry': locatieGeometrie
                     }]
+
+#----------------------------------------------------------------------
+#
+# Zoom-afhankelijke operaties
+#
+#----------------------------------------------------------------------
+

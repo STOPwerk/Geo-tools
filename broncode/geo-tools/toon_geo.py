@@ -85,20 +85,22 @@ class GeoViewer (GeoManipulatie):
         self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
 
         self.Log.Informatie ('Maak de kaartweergave')
-        if self._DataNaam is None:
-            self._DataNaam = self.VoegGeoDataToe (self._Geometrie)
-        self.ToonKaart ('kaart.VoegLaagToe ("' + self._Geometrie.Soort + '", "' + self._DataNaam + '", "' + self._SymbolisatieNaam + '");')
+        self._DataNaam = self.VoegGeoDataToe (self._Geometrie)
+        kaart = GeoManipulatie.Kaart (self)
+        kaart.ZoomTotNauwkeurigheid (True)
+        kaart.VoegLaagToe (self._Geometrie.Soort, self._DataNaam, self._SymbolisatieNaam)
+        kaart.Toon ()
 
-        if self._Geometrie.Soort == 'GIO' and not self.NauwkeurigheidInMeter () is None:
+        if self._Geometrie.Soort == 'GIO' and not self.NauwkeurigheidInDecimeter (False) is None:
             self.Log.Informatie ('Valideer de GIO op teken-nauwkeurigheid')
-            self.Generator.VoegHtmlToe ('<p>De GIO zou met een teken-nauwkeurigheid van ' + self.Request.LeesString ("teken-nauwkeurigheid") +  ''' decimeter zijn opgesteld.
+            self.Generator.VoegHtmlToe ('<p>De GIO zou met een teken-nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) +  ''' decimeter zijn opgesteld.
             Om te zien of dat klopt wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>''')
             lijst = self.MaakLijstVanGeometrieen (self._Geometrie)[0]
             heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, self._Geometrie.Dimensie)
             if not heeftProblemen:
-                self.Generator.VoegHtmlToe ('<p>Het GIO past inderdaad bij een teken-nauwkeurigheid van ' + self.Request.LeesString ("teken-nauwkeurigheid") + ' decimeter</p>')
+                self.Generator.VoegHtmlToe ('<p>Het GIO past inderdaad bij een teken-nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) + ' decimeter</p>')
             else:
-                self.Generator.VoegHtmlToe ('<p>Het GIO past <b>niet</b> bij een teken-nauwkeurigheid van ' + self.Request.LeesString ("teken-nauwkeurigheid") + ''' decimeter.
+                self.Generator.VoegHtmlToe ('<p>Het GIO past <b>niet</b> bij een teken-nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) + ''' decimeter.
                 Tenzij de verkeerde teken-nauwkeurigheid opgegeven is zouden eerst de geometrieën in de GIO gecorrigeerd moeten worden. ''')
                 if not tekennauwkeurigheid is None:
                     if tekennauwkeurigheid <= 0:
@@ -178,19 +180,22 @@ class GeoViewer (GeoManipulatie):
                 'type': 'Feature', 
                 'geometry': mapping (dikkePunt)
             })
+
+        kaart = GeoManipulatie.Kaart (self)
+        kaart.ZoomTotNauwkeurigheid (False)
         dataNaam = self.VoegGeoDataToe (dikkePunten)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
-        kaartScript = 'kaart.VoegLaagToe ("Getekende punt (diameter is teken-afstand)", "' + dataNaam + '", "' + symNaam + '", true, true);'
+        kaart.VoegLaagToe ("Getekende punt (diameter is teken-afstand)", dataNaam, symNaam, True, True)
 
         symNaam = self.VoegUniformeSymbolisatieToe (0, "#DAE8FC", "#6C8EBF", '0.5')
-        kaartScript += 'kaart.VoegLaagToe ("Geo-informatieobject", "' + self._DataNaam + '", "' + symNaam + '", true, true);'
+        kaart.VoegLaagToe ("Geo-informatieobject", self._DataNaam, symNaam, True, True)
 
         # Is er een probleem?
         if minimaleAfstand is None:
             self.Generator.VoegHtmlToe ('Dat is het geval.</p>')
-            self.Log.Informatie ('Alle punten liggen tenminste ' + self.Request.LeesString ("teken-nauwkeurigheid") + ' decimeter van elkaar af')
+            self.Log.Informatie ('Alle punten liggen tenminste ' + str(self.NauwkeurigheidInDecimeter ()) + ' decimeter van elkaar af')
         else:
-            self.Log.Waarschuwing ('Er zijn ' + str(len (afstanden)) + ' punten die minder dan ' + self.Request.LeesString ("teken-nauwkeurigheid") + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
+            self.Log.Waarschuwing ('Er zijn ' + str(len (afstanden)) + ' punten die minder dan ' + str(self.NauwkeurigheidInDecimeter ()) + ' decimeter van elkaar af liggen, met een minimum van ' + str(minimaleAfstand) + ' decimeter')
             self.Generator.VoegHtmlToe ('Dat is niet het geval; er zijn ' + str(len (afstanden)) + ' punten die te dicht bij elkaar staan.</p>')
 
             problemen = GeoManipulatie.GeoData ()
@@ -205,9 +210,9 @@ class GeoViewer (GeoManipulatie):
 
             dataNaam = self.VoegGeoDataToe (problemen)
             symNaam = self.VoegWijzigMarkeringToe (1)
-            kaartScript += 'kaart.VoegLaagToe ("Problematische geometrie", "' + dataNaam + '", "' + symNaam + '", true, true);'
+            kaart.VoegLaagToe ("Problematische geometrie", dataNaam , symNaam, True, True)
 
-        self.ToonKaart (kaartScript)
+        kaart.Toon ()
 
         if minimaleAfstand is None:
             return (False, None)
@@ -302,27 +307,29 @@ Klik op een lijn in de kaart om de uitkomst van de procedure te zien voor een lo
 
 
         # Toon de vlakken in een kaart
+        kaart = GeoManipulatie.Kaart (self)
+        kaart.ZoomTotNauwkeurigheid (False)
         dataNaam = self.VoegGeoDataToe (dikkeLijnenData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
-        kaartScript = 'kaart.VoegLaagToe ("Verdikte lijnen", "' + dataNaam + '", "' + symNaam + '", true, true);'
+        kaart.VoegLaagToe ("Verdikte lijnen", dataNaam, symNaam, True, True)
 
         if len (problemen.Locaties) > 0:
             dataNaam = self.VoegGeoDataToe (problemen)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaartScript += 'kaart.VoegLaagToe ("Gebieden waar afstanden kleiner zijn dan de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);'
+            kaart.VoegLaagToe ("Gebieden waar afstanden kleiner zijn dan de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
 
         dataNaam = self.VoegGeoDataToe (uitkomstData)
         symNaam = self.VoegUniformeSymbolisatieToe (1, "#0000ff", "#0000ff")
-        kaartScript += 'kaart.VoegLaagToe ("Lijnen uit het GIO", "' + dataNaam + '", "' + symNaam + '", true, true);'
+        kaart.VoegLaagToe ("Lijnen uit het GIO", dataNaam, symNaam, True, True)
 
         if len (problemen.Locaties) > 0:
             uitkomstData.Locaties = [l for l in uitkomstData.Locaties if l['properties']['p'] != 'ja']
             uitkomstData.Attributen = {}
             dataNaam = self.VoegGeoDataToe (uitkomstData)
             symNaam = self.VoegUniformeSymbolisatieToe (1, "#F8CECC", "#B85450", '0.5')
-            kaartScript += 'kaart.VoegLaagToe ("Lijnen die niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);'
+            kaart.VoegLaagToe ("Lijnen die niet passen bij de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
 
-        self.ToonKaart (kaartScript)
+        kaart.Toon ()
 
         return not minimaleAfstand is None, None if minimaleAfstand is None else round(10 * minimaleAfstand, 2)
 
@@ -417,23 +424,25 @@ Klik in een gebied in de kaart om de uitkomst van de procedure te zien voor een 
 
 
         # Toon de vlakken in een kaart
+        kaart = GeoManipulatie.Kaart (self)
+        kaart.ZoomTotNauwkeurigheid (False)
         dataNaam = self.VoegGeoDataToe (uitkomstData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#ffffff", "#0000ff", '0')
-        kaartScript = 'kaart.VoegLaagToe ("Vlakken uit het GIO", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
+        kaart.VoegLaagToe ("Vlakken uit het GIO", dataNaam, symNaam, True, True)
         if len (problemen.Locaties) > 0:
             uitkomstData.Locaties = [l for l in uitkomstData.Locaties if l['properties']['p'] != 'ja']
             uitkomstData.Attributen = {}
             dataNaam = self.VoegGeoDataToe (uitkomstData)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#F8CECC", "#B85450", '0.5')
-            kaartScript += 'kaart.VoegLaagToe ("Vlakken die niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
+            kaart.VoegLaagToe ("Vlakken die niet passen bij de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
 
         dataNaam = self.VoegGeoDataToe (kleinereVlakkenData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
-        kaartScript += 'kaart.VoegLaagToe ("Verkleinde vlakken", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
+        kaart.VoegLaagToe ("Verkleinde vlakken", dataNaam, symNaam, True, True)
         if len (problemen.Locaties) > 0:
             dataNaam = self.VoegGeoDataToe (problemen)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaartScript += 'kaart.VoegLaagToe ("Gebieden waar de vlakken niet passen bij de teken-nauwkeurigheid", "' + dataNaam + '", "' + symNaam + '", true, true);\n'
-        self.ToonKaart (kaartScript)
+            kaart.VoegLaagToe ("Gebieden waar de vlakken niet passen bij de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
+        kaart.Toon ()
 
         return len (problemen.Locaties) > 0

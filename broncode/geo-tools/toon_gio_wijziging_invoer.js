@@ -4,20 +4,20 @@ window.addEventListener('load', function () {
     // Basale validatie
     // ======================================================================
     const wasFile = document.getElementById('was');
-    const wordtFile = document.getElementById('wordt');
+    const wijzigingFile = document.getElementById('wijziging');
     const symbolisatieFile = document.getElementById('symbolisatie');
     const startknop = this.document.getElementById("startknop");
 
     function UpdateControlStatus() {
 
         var heeftWas = 0;
-        var heeftWordt = 0;
+        var heeftWijziging = 0;
         var heeftSymbolisatie = 0;
 
         var container = document.getElementById('bestanden');
         container.innerHTML = '';
         const titel = document.getElementById('titel');
-        titel.value = '&Delta;(';
+        titel.value = '';
 
         for (var i = 0; i < wasFile.files.length; i++) {
             var file = wasFile.files[i];
@@ -25,18 +25,15 @@ window.addEventListener('load', function () {
             container.appendChild(line);
             line.innerText = 'Was-versie: ' + file.name;
             heeftWas++;
-            if (i == 0) {
-                titel.value += file.name;
-            }
         }
-        for (var i = 0; i < wordtFile.files.length; i++) {
-            var file = wordtFile.files[i];
+        for (var i = 0; i < wijzigingFile.files.length; i++) {
+            var file = wijzigingFile.files[i];
             var line = document.createElement('div');
             container.appendChild(line);
-            line.innerText = 'Wordt-versie: ' + file.name;
-            heeftWordt++;
+            line.innerText = 'GIO-wijziging: ' + file.name;
+            heeftWijziging++;
             if (i == 0) {
-                titel.value += ',' + file.name + ')';
+                titel.value = file.name;
             }
         }
         for (var i = 0; i < symbolisatieFile.files.length; i++) {
@@ -46,12 +43,12 @@ window.addEventListener('load', function () {
             line.innerText = 'Symbolisatie: ' + file.name;
             heeftSymbolisatie++;
         }
-        if (heeftWas > 1 || heeftWordt > 1 || heeftSymbolisatie > 1) {
+        if (heeftWas > 1 || heeftWijziging > 1 || heeftSymbolisatie > 1) {
             var line = document.createElement('div');
             container.appendChild(line);
-            line.innerText = 'Er mag maar 1 was-versie en 1 wordt-versie en hooguit 1 symbolisatie geselecteerd zijn!';
+            line.innerText = 'Er mag maar 1 was-versie, 1 GIO-wijziging en hooguit 1 symbolisatie geselecteerd zijn!';
         }
-        startknop.disabled = heeftWas != 1 || heeftWordt != 1 || heeftSymbolisatie > 1;
+        startknop.disabled = heeftWas != 1 || heeftWijziging != 1 || heeftSymbolisatie > 1;
     }
     UpdateControlStatus();
 
@@ -59,7 +56,7 @@ window.addEventListener('load', function () {
     wasFile.addEventListener('click', function (e) {
         UpdateControlStatus();
     });
-    wordtFile.addEventListener('click', function (e) {
+    wijzigingFile.addEventListener('click', function (e) {
         UpdateControlStatus();
     });
     symbolisatieFile.addEventListener('click', function (e) {
@@ -85,7 +82,6 @@ window.addEventListener('load', function () {
         }, false);
     }
     InitBox(document.getElementById('was_box'), wasFile);
-    InitBox(document.getElementById('wordt_box'), wordtFile);
+    InitBox(document.getElementById('wijziging_box'), wijzigingFile);
     InitBox(document.getElementById('symbolisatie_box'), wijzigingFile);
-
 });

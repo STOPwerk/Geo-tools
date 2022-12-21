@@ -43,7 +43,7 @@ class Kaart {
     }
     static EPSG28992 = new ol.proj.Projection('urn:ogc:def:crs:EPSG::28992');
 
-    VoegLaagToe(naam, dataNaam, symbolisatieNaam, inControls = false, toonInitieel = true) {
+    VoegLaagToe(naam, dataNaam, symbolisatieNaam) {
         var geoJson = Kaartgegevens.Instantie._GeoJSON[dataNaam];
         var layer = new ol.layer.Vector({
             source: new ol.source.Vector({
@@ -54,21 +54,23 @@ class Kaart {
         });
         this._Lagen.push(layer);
 
+        layer._Naam = naam;
         if (geoJson.properties !== undefined) {
             this._LagenMetProperties++;
             layer._PopupNaam = naam;
             layer._PopupProperties = geoJson.properties;
-        }
-
-        if (inControls) {
-            layer._AanUit = naam;
-            layer.setVisible(toonInitieel);
+            layer._ToonInPopup = true;
         } else {
-            layer._AanUit = false
+            layer._ToonInPopup = false;
         }
+        layer._AanUit = false
         return this;
     }
-
+    AlsAanUitLaag(toonInitieel = true) {
+        var layer = this._Lagen[this._Lagen.length - 1];
+        layer._AanUit = layer._Naam;
+        layer.setVisible(toonInitieel);
+    }
     AlsOudLaag() {
         var layer = this._Lagen[this._Lagen.length - 1];
         if (layer._PopupNaam) {
@@ -110,6 +112,11 @@ class Kaart {
         });
         this._ToonSlider = true;
         return this;
+    }
+    LimiteerZoomLevel(minZoom, maxZoom) {
+        var layer = this._Lagen[this._Lagen.length - 1];
+        layer.setMinZoom(minZoom);
+        layer.setMaxZoom(maxZoom);
     }
 
     Toon(opties) {
@@ -201,7 +208,7 @@ class Kaart {
             map.on('click', function (e) {
                 var content = false;
                 map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
-                    if (layer._PopupNaam !== undefined) {
+                    if (layer._ToonInPopup) {
                         var attr = feature.getProperties();
                         if (content === false) {
                             content = '';
@@ -222,7 +229,6 @@ class Kaart {
             });
         }
         if (this._ToonSlider) {
-            var self = this;
             new Slider(kaartElement, function (positie) {
                 self._SliderPositie = positie;
                 map.render();

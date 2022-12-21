@@ -92,9 +92,19 @@ class GeoViewer (GeoManipulatie):
         kaart.Toon ()
 
         if self._Geometrie.Soort == 'GIO' and not self.NauwkeurigheidInDecimeter (False) is None:
-            self.Log.Informatie ('Valideer de GIO op teken-nauwkeurigheid')
+            self.Log.Informatie ('Toon GIO met schaalafhankelijkheid')
             self.Generator.VoegHtmlToe ('<p>De GIO zou met een teken-nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) +  ''' decimeter zijn opgesteld.
-            Om te zien of dat klopt wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>''')
+            Een GIO-viewer zou dat kunnen gebruiken om het maximale zoom-niveau in te perken. Een viewer kan ook andere schaal-afhankelijke vereenvoudigingen doorvoeren,
+            zoals in deze kaart gedaan is:.</p>''')
+
+            kaart = GeoManipulatie.Kaart (self)
+            kaart.ZoomTotNauwkeurigheid (False)
+            self.VoegSchaalafhankelijkeLagenToe (kaart, self._Geometrie.Soort, self._Geometrie, self._SymbolisatieNaam, self.VoegWijzigMarkeringToe (0, True))
+            kaart.Toon ()
+
+            self.Log.Informatie ('Valideer de GIO op teken-nauwkeurigheid')
+            self.Generator.VoegHtmlToe ('''<p>Het opgeven van een teken-nauwkeurigheid voor een GIO suggereert dat twee <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Locatie.html" target="_blank">GIO-Locaties</a>
+            elkaar niet overlappen binnen de teken-nauwkeurigheid. Om te zien of dat klopt wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>''')
             lijst = self.MaakLijstVanGeometrieen (self._Geometrie)[0]
             heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, self._Geometrie.Dimensie)
             if not heeftProblemen:
@@ -182,7 +192,7 @@ class GeoViewer (GeoManipulatie):
             })
 
         kaart = GeoManipulatie.Kaart (self)
-        kaart.ZoomTotNauwkeurigheid (False)
+        kaart.ZoomTotNauwkeurigheid (True)
         dataNaam = self.VoegGeoDataToe (dikkePunten)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
         kaart.VoegLaagToe ("Getekende punt (diameter is teken-afstand)", dataNaam, symNaam, True, True)
@@ -308,7 +318,7 @@ Klik op een lijn in de kaart om de uitkomst van de procedure te zien voor een lo
 
         # Toon de vlakken in een kaart
         kaart = GeoManipulatie.Kaart (self)
-        kaart.ZoomTotNauwkeurigheid (False)
+        kaart.ZoomTotNauwkeurigheid (True)
         dataNaam = self.VoegGeoDataToe (dikkeLijnenData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
         kaart.VoegLaagToe ("Verdikte lijnen", dataNaam, symNaam, True, True)
@@ -425,7 +435,7 @@ Klik in een gebied in de kaart om de uitkomst van de procedure te zien voor een 
 
         # Toon de vlakken in een kaart
         kaart = GeoManipulatie.Kaart (self)
-        kaart.ZoomTotNauwkeurigheid (False)
+        kaart.ZoomTotNauwkeurigheid (True)
         dataNaam = self.VoegGeoDataToe (uitkomstData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#ffffff", "#0000ff", '0')
         kaart.VoegLaagToe ("Vlakken uit het GIO", dataNaam, symNaam, True, True)

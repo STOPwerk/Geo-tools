@@ -11,7 +11,7 @@ import pygml
 from pygml.v32 import encode_v32, GML32_ENCODER
 GML32_ENCODER.id_required = False # Basisgeometrie gebruikt geen gml:id
 from lxml import etree as lxml_etree
-from shapely.geometry import shape
+from shapely.geometry import shape, mapping
 
 import json
 import math
@@ -29,6 +29,8 @@ class GeoManipulatie:
 # Maken van een webpagina
 #
 #======================================================================
+#region Maken van een webpagina
+
     class Cache:
         def __init__ (self, generator):
             """Instantie met gegevens die door opeenvolgende operaties gedeeld moeten worden"""
@@ -95,6 +97,41 @@ class GeoManipulatie:
             generator = WebpaginaGenerator (self._TitelBijFout)
             self.Log.MaakHtml (generator, None, "De verwerking is afgebroken.")
             return generator.Html ()
+#endregion
+
+#----------------------------------------------------------------------
+#
+# Niet-kaartgerelateerde hulpfuncties
+#
+#----------------------------------------------------------------------
+#region Niet-kaartgerelateerde hulpfuncties
+    def _InitialiseerWebpagina (self):
+        """Voeg de bestanden toe nodig om OpenLayers kaarten op te nemen in de webpagina
+        """
+        if not hasattr (self._Cache, '_WebpaginaKanKaartTonen'):
+            setattr (self._Cache, '_WebpaginaKanKaartTonen', True)
+            self.Generator.LeesCssTemplate ('ol')
+            self.Generator.LeesJSTemplate ("ol", True, True)
+            self.Generator.LeesJSTemplate ("sldreader", True, True)
+            self.Generator.LeesCssTemplate ("juxtapose")
+            self.Generator.LeesJSTemplate ("juxtapose", True, True)
+            self.Generator.LeesCssTemplate ("kaart")
+            self.Generator.LeesJSTemplate ("kaart", True, True)
+            self.Generator.LeesCssTemplate ("resultaat")
+            self.Generator.LeesJSTemplate ("resultaat")
+
+    def _ToonResultaatInTekstvak (self, tekst, filenaam : str, dataType : str, elementNaam : str = None, toon : bool = True):
+        self._Cache._NaamIndex += 1
+        elementId = 'resultaat_' + str(self._Cache._NaamIndex)
+        self.Generator.VoegHtmlToe ('<textarea id="' + elementId + '" class="resultaat"')
+        if not elementNaam is None:
+            self.Generator.VoegHtmlToe (' name="' + elementNaam + '"')
+        if not toon:
+            self.Generator.VoegHtmlToe (' style="display: none;"')
+        self.Generator.VoegHtmlToe ('>\n' + tekst.replace ('<', '&lt;').replace ('>', '&gt;') + '\n</textarea>\n')
+        if toon:
+            self.Generator.VoegHtmlToe ('<div><a data-copy="' + elementId + '" href="#">Kopieer</a> of <a data-download_' + dataType + '="' + elementId + '" data-filenaam="' + filenaam + '" href="#">download</a></div>\n')
+#endregion
 
 #======================================================================
 #
@@ -107,6 +144,8 @@ class GeoManipulatie:
 # Interne representatie van een GIO/gebied
 #
 #----------------------------------------------------------------------
+#region Interne representatie van een GIO/gebied
+
     class Attribuut:
         def __init__(self, tag : str, label: str = None, eenheid : str = None):
             """Maak een instantie van de informatie over een attribuut
@@ -194,6 +233,18 @@ class GeoManipulatie:
             #----------------------------------------------------------
             # De naam waaronder deze date via VoegGeoDataToe is geregistreerd voor kaartweergave
             self._KaartgegevensNaam : str = None
+            # De vereenvoudige geomeotrieën voor deze geo-data, per zoom-level.
+            # Key van de collectie is de teken-nauwkeurigheid in decimeters
+            self._VereenvoudigdeGeometrie : Dict[int,List[GeoManipulatie.GeoData]] = None
+            # Als dit een vereenvoudigde geometrie is, geeft het zoom-level waarvoor deze geo-data is gemaakt.
+            # Zoom-level is zoals gebruikt in OpenLayers.
+            self._VoorZoomLevel = None
+            # Als dit een vereenvoudige geometrie is, dan geeft _InGridCel aan waar in een grid hoeveel gemetrieën
+            # gelokaliseerd zijn die in verband met de resolutie niet meer getoond worden.
+            # Dit zijn (X,Y) coordinaten in een grid met cellen:
+            # - Lengte en breedte zijn ZoomLevelDetailPerMeter
+            # - Centrum van de cel is _GridCenterX + X * ZoomLevelDetailPerMeter, _GridCenterY + Y * ZoomLevelDetailPerMeter
+            self._AantalInGridCel : GeoManipulatie.GeoData = None
 
         def GeometrieNaam (self, meervoud: bool) -> str:
             """Geeft de gewone naam voor de geometrieën in de geo-data, in enkel- of meervoud."""
@@ -204,11 +255,71 @@ class GeoManipulatie:
             if self.Dimensie == 2:
                 return "vlakken" if meervoud else "vlak"
 
+    def MaximaalZoomLevel (self, nauwkeurigheidDecimeter : int = None):
+        """Maximaal zoom level voor een GIO bij gegeven nauwkeurigheid.
+        
+        Argumenten:
+
+        nauwkeurigheidDecimeter int  Teken-nauwkeurigheid van de GIO. Bij None wordt de teken-nauwkeurigheid uit de specs gebruikt
+        """
+        maxZoom = 22 - math.floor(math.log2(self._Operatie.NauwkeurigheidInDecimeter () if nauwkeurigheidDecimeter is None else nauwkeurigheidDecimeter))
+        return 22 if maxZoom > 22 else maxZoom
+
+    def ZoomLevelDetailPerMeter (self, zoomLevel : int):
+        """Geef de kleinst zichtbare details voor een zoomlevel bij gegeven nauwkeurigheid
+        
+        Argumenten:
+
+        zoomLevel int  Zoom level, kan niet groter zijn dan MaximaalZoomLevel
+        """
+        return 0.1 * math.pow (2, (22 - zoomLevel) if zoomLevel < 22 else 0)
+
+    def _GridCelNaarRD (self, dpm : float, cel : Tuple[int,int]) -> List[float]:
+        """Conversie van grid cellen naar de coördinaten van het centrum van de cellen:
+
+        Argumenten:
+        dpm float  Uitkomst van ZoomLevelDetailPerMeter
+        cel (x,y) Index van de cel als gemaat door _GridCelVoorPunt
+
+        Geeft terug: De coördinaten van het centrum van de cel
+        """
+        return [GeoManipulatie._GridCenterX + cel[0] * dpm, GeoManipulatie._GridCenterY + cel[1] * dpm]
+
+    def _PastGeometrieInGridCel (self, dpm : float, locatie):
+        """Bekijk of een locatie-geometrie zo klein is dat die in een grid cel past,
+        en geef terug welke dat is (indien te groot: geeft None terug).
+
+        Argumenten:
+        dpm float  Uitkomst van ZoomLevelDetailPerMeter
+        locatie object  Locatie van GeoData
+        """
+        locatieShape = GeoManipulatie.MaakShapelyShape (locatie)
+        if locatieShape.bounds[2] - locatieShape.bounds[0] <= dpm and locatieShape.bounds[3] - locatieShape.bounds[1] <= dpm:
+            return self._GridCelVoorPunt (dpm, [(locatieShape.bounds[2] + locatieShape.bounds[0]) / 2, (locatieShape.bounds[3] + locatieShape.bounds[1]) / 2])
+
+    def _GridCelVoorPunt (self, dpm : float, coords : List[float]):
+        """Geef terug in welke grid cel een punt ligt.
+
+        Argumenten:
+        dpm float  Uitkomst van ZoomLevelDetailPerMeter
+        coords [.,.]  Coördinaten van het punt
+        """
+        x = round ((coords[0] - GeoManipulatie._GridCenterX) / dpm)
+        y = round ((coords[1] - GeoManipulatie._GridCenterY) / dpm)
+        return (x,y)
+
+    _GridCenterX = 142735.75
+    _GridCenterY = 470715.91
+
+#endregion
+
 #----------------------------------------------------------------------
 #
 # Inlezen van GML
 #
 #----------------------------------------------------------------------
+#region Inlezen van GML
+
     def LeesGeoBestand (self, key : str, verplicht : bool, bewaarGml = None) -> GeoData:
         """Lees de inhoud van een GIO, effectgebied of gebiedsmarkering.
         Het bestand wordt gevonden aan de hand van de specificatie key / input type="file" control naam.
@@ -580,12 +691,15 @@ class GeoManipulatie:
             'LineString': 1, 'MultiLineString': 1,
             'Polygon': 2, 'MultiPolygon': 2
         }
+#endregion
 
 #----------------------------------------------------------------------
 #
 # Maken van GML
 #
 #----------------------------------------------------------------------
+#region Maken van GML
+
     def SchrijfGIO (self, gio : GeoData) -> str:
         """Stel de XML op voor een GIO (als string)
 
@@ -780,13 +894,15 @@ class GeoManipulatie:
         gml = lxml_etree.tostring (gml, encoding='unicode')
         gml = gml.replace (' xmlns:gml="http://www.opengis.net/gml/3.2"', '')
         return gml
-
+#endregion
 
 #----------------------------------------------------------------------
 #
 # Conversie naar Shapely objecten om mee te rekenen
 #
 #----------------------------------------------------------------------
+#region Conversie naar Shapely objecten om mee te rekenen
+
     @staticmethod
     def MaakShapelyShape (locatie):
         """Maak een Shapely shape voor de locatie (als dat niet eerder gebeurd is) en geef die terug.
@@ -798,12 +914,15 @@ class GeoManipulatie:
         if not '_shape' in locatie:
             locatie['_shape'] = shape (locatie['geometry'])
         return locatie['_shape']
+#endregion
 
 #----------------------------------------------------------------------
 #
 # Wegschrijven als JSON voor kaart in de webpagina
 #
 #----------------------------------------------------------------------
+#region Wegschrijven als JSON voor kaart in de webpagina
+
     def VoegGeoDataToe (self, geoData : GeoData):
         """Voeg de geo-gegevens uit een GIO of gebied toe aan de data beschikbaar in de resultaatpagina;
 
@@ -870,6 +989,7 @@ class GeoManipulatie:
         def default(self, o):
             """Objecten worden niet meegenomen"""
             return None
+#endregion
 
 #======================================================================
 #
@@ -882,6 +1002,7 @@ class GeoManipulatie:
 # Kaart in webpagina
 #
 #----------------------------------------------------------------------
+#region Kaart in webpagina
     class Kaart:
         def __init__ (self, operatie : 'GeoManipulatie'):
             """Maak een nieuwe kaart om dadelijk te tonen"""
@@ -890,6 +1011,7 @@ class GeoManipulatie:
             self._Operatie._Cache._NaamIndex += 1
             # Initialisatie van de kaartlagen (per dimensie)
             self._InitialisatieScripts = { 0 : '', 1: '', 2: '' }
+            self._DimensieLaatsteWijzigingInitialisatieScripts = None
             # Bounding box van alle lagen tot nu toe
             self._BoundingBox = None
             # Opties om door te geven aan de kaart
@@ -903,7 +1025,7 @@ class GeoManipulatie:
                 self._Opties['teken-nauwkeurigheid'] = int (nauwkeurigheid)
 
 
-        def VoegLaagToe (self, naam : str, dataNaam : str, symbolisatieNaam : str, inControls : bool = False, toonInitieel : bool = True):
+        def VoegLaagToe (self, naam : str, dataNaam : str, symbolisatieNaam : str, inControls : bool = False, toonInitieel : bool = True, negeerBBox : bool = False):
             """Voeg data met symbolisatie toe aan de kaart
             
             Argumenten:
@@ -913,19 +1035,34 @@ class GeoManipulatie:
             symbolisatieNaam str  Naam van de symbolisatie, zoals verkregen uit een van de Voeg*Toe methoden
             inControls bool  Geeft aan dat de laag aan/uit gezet kan worden door de eindgebruiker
             toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
+            negeerBBox bool  Negeer de uitgestrektheid van de laag voor de bepalong van de initiële kaartview
             """
-            self._InitialisatieScripts[self._Operatie._Cache._Dimensie[dataNaam]] += ';\nkaart.VoegLaagToe ("' + naam + '", "' + dataNaam + '", "' + symbolisatieNaam + '", ' + ('true' if inControls else 'false') + ', ' + ('true' if toonInitieel else 'false') + ')'
-            bbox = self._Operatie._Cache._BoundingBox.get (dataNaam)
-            if not bbox is None:
-                if self._BoundingBox is None:
-                    self._BoundingBox = bbox
-                else:
-                    self._BoundingBox = [
-                            self._BoundingBox[0] if self._BoundingBox[0] < bbox[0] else bbox[0],
-                            self._BoundingBox[1] if self._BoundingBox[1] < bbox[1] else bbox[1],
-                            self._BoundingBox[2] if self._BoundingBox[2] > bbox[2] else bbox[2],
-                            self._BoundingBox[3] if self._BoundingBox[3] > bbox[3] else bbox[3]
-                        ]
+            self._DimensieLaatsteWijzigingInitialisatieScripts= self._Operatie._Cache._Dimensie[dataNaam]
+            self._InitialisatieScripts[self._DimensieLaatsteWijzigingInitialisatieScripts] += ';\nkaart.VoegLaagToe ("' + naam + '", "' + dataNaam + '", "' + symbolisatieNaam + '")'
+            if inControls:
+                self.LaatsteLaagInControls (toonInitieel)
+            if not negeerBBox:
+                bbox = self._Operatie._Cache._BoundingBox.get (dataNaam)
+                if not bbox is None:
+                    if self._BoundingBox is None:
+                        self._BoundingBox = bbox
+                    else:
+                        self._BoundingBox = [
+                                self._BoundingBox[0] if self._BoundingBox[0] < bbox[0] else bbox[0],
+                                self._BoundingBox[1] if self._BoundingBox[1] < bbox[1] else bbox[1],
+                                self._BoundingBox[2] if self._BoundingBox[2] > bbox[2] else bbox[2],
+                                self._BoundingBox[3] if self._BoundingBox[3] > bbox[3] else bbox[3]
+                            ]
+
+        def LaatsteLaagInControls (self, toonInitieel : bool = True):
+            """Geeft aan dat de laatst toegevoegde laag aan/uit gezet kan worden door de eindgebruiker
+            
+            Argumenten:
+
+            toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
+            """
+            self._InitialisatieScripts[self._DimensieLaatsteWijzigingInitialisatieScripts] += '.AlsAanUitLaag (' + ('true' if toonInitieel else 'false') + ')'
+
 
         def VoegOudLaagToe (self, naam : str, dataNaam : str, symbolisatieNaam : str, inControls : bool = False, toonInitieel : bool = True):
             """Voeg data met symbolisatie toe aan de kaart als een oude/was-laag
@@ -939,7 +1076,12 @@ class GeoManipulatie:
             toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
             """
             self.VoegLaagToe (naam, dataNaam, symbolisatieNaam, inControls, toonInitieel)
-            self._InitialisatieScripts[self._Operatie._Cache._Dimensie[dataNaam]] += '.AlsOudLaag ()'
+            self.LaatsteLaagAlsOud ()
+
+        def LaatsteLaagAlsOud (self):
+            """Geeft aan dat de laatst toegevoegde laag een oude/was-laag is.
+            """
+            self._InitialisatieScripts[self._DimensieLaatsteWijzigingInitialisatieScripts] += '.AlsOudLaag ()'
 
         def VoegNieuwLaagToe (self, naam : str, dataNaam : str, symbolisatieNaam : str, inControls : bool = False, toonInitieel : bool = True):
             """Voeg data met symbolisatie toe aan de kaart als een nieuwe/wordt-laag
@@ -953,7 +1095,22 @@ class GeoManipulatie:
             toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
             """
             self.VoegLaagToe (naam, dataNaam, symbolisatieNaam, inControls, toonInitieel)
-            self._InitialisatieScripts[self._Operatie._Cache._Dimensie[dataNaam]] += '.AlsNieuwLaag ()'
+            self.LaatsteLaagAlsNieuw ()
+
+        def LaatsteLaagAlsNieuw (self):
+            """Geeft aan dat de laatst toegevoegde laag een nieuwe/wordt-laag is.
+            """
+            self._InitialisatieScripts[self._DimensieLaatsteWijzigingInitialisatieScripts] += '.AlsNieuwLaag ()'
+
+        def LaatsteLaagZoomLevel (self, minZoom : int, maxZoom : int):
+            """Geeft aan dat de laatst toegevoegde laag alleen in het aangegeven bereik van zoom levels getoond mag worden.
+
+            Argumenten:
+
+            minZoom int  Het meest uitgezoomde zoom-leve waarop de kaart getoond mag worden, of None als er geen bepering is
+            mazZoom int  Het meest ingezoomde zoom-leve waarop de kaart getoond mag worden, of None als er geen bepering is
+            """
+            self._InitialisatieScripts[self._DimensieLaatsteWijzigingInitialisatieScripts] += '.LimiteerZoomLevel (' + str(0 if minZoom is None else minZoom) + ', ' + str(100 if maxZoom is None else maxZoom) + ')'
 
         def ZoomTotNauwkeurigheid (self, extraZoom : bool):
             """Geeft aan dat het maximale zoom level overen moet komen met de teken-nauwkeurigheid
@@ -966,8 +1123,8 @@ class GeoManipulatie:
             if nauwkeurigheid is None:
                 self._Opties.pop ('maxZoom', None)
             else:
-                maxZoom = 22 - math.floor(math.log2(nauwkeurigheid)) + (4 if extraZoom else 0)
-                self._Opties['maxZoom'] = 22 if maxZoom > 22 else maxZoom
+                maxZoom = 22 - math.floor(math.log2(nauwkeurigheid))
+                self._Opties['maxZoom'] = (22 if maxZoom > 22 else maxZoom) + (4 if extraZoom else 0)
 
         def Toon (self):
             """Toon een kaart op de huidige plaats in de webpagina"""
@@ -976,59 +1133,15 @@ class GeoManipulatie:
                 self._Opties['bbox'] = self._BoundingBox
             
             self._Operatie.Generator.VoegSlotScriptToe ('\nwindow.addEventListener("load", function () {\nvar kaart = new Kaart ()' + ''.join (self._InitialisatieScripts[d] for d in [2,1,0]) + ';\nkaart.Toon (' + json.dumps (self._Opties) + ');\n});')
-
-    def MaximaalZoomLevel (self):
-        """Maximaal zoom level voor een GIO bij gegeven nauwkeurigheid"""
-        maxZoom = 22 - math.floor(math.log2(self._Operatie.NauwkeurigheidInDecimeter ()))
-        return 22 if maxZoom > 22 else maxZoom
-
-    def ZoomLevelDetailPerMeter (self, zoomLevel : int):
-        """Geef de kleinst zichtbare details voor een zoomlevel bij gegeven nauwkeurigheid
-        
-        Argumenten:
-
-        zoomLevel int  Zoom level, kan niet groter zijn dan MaximaalZoomLevel
-        """
-        return 0.1 * math.pow (2, (22 - zoomLevel) if zoomLevel < 22 else 0)
-
-
-    #------------------------------------------------------------------
-    #
-    # Niet-kaartgebonden
-    #
-    #------------------------------------------------------------------
-    def _InitialiseerWebpagina (self):
-        """Voeg de bestanden toe nodig om OpenLayers kaarten op te nemen in de webpagina
-        """
-        if not hasattr (self._Cache, '_WebpaginaKanKaartTonen'):
-            setattr (self._Cache, '_WebpaginaKanKaartTonen', True)
-            self.Generator.LeesCssTemplate ('ol')
-            self.Generator.LeesJSTemplate ("ol", True, True)
-            self.Generator.LeesJSTemplate ("sldreader", True, True)
-            self.Generator.LeesCssTemplate ("juxtapose")
-            self.Generator.LeesJSTemplate ("juxtapose", True, True)
-            self.Generator.LeesCssTemplate ("kaart")
-            self.Generator.LeesJSTemplate ("kaart", True, True)
-            self.Generator.LeesCssTemplate ("resultaat")
-            self.Generator.LeesJSTemplate ("resultaat")
-
-    def _ToonResultaatInTekstvak (self, tekst, filenaam : str, dataType : str, elementNaam : str = None, toon : bool = True):
-        self._Cache._NaamIndex += 1
-        elementId = 'resultaat_' + str(self._Cache._NaamIndex)
-        self.Generator.VoegHtmlToe ('<textarea id="' + elementId + '" class="resultaat"')
-        if not elementNaam is None:
-            self.Generator.VoegHtmlToe (' name="' + elementNaam + '"')
-        if not toon:
-            self.Generator.VoegHtmlToe (' style="display: none;"')
-        self.Generator.VoegHtmlToe ('>\n' + tekst.replace ('<', '&lt;').replace ('>', '&gt;') + '\n</textarea>\n')
-        if toon:
-            self.Generator.VoegHtmlToe ('<div><a data-copy="' + elementId + '" href="#">Kopieer</a> of <a data-download_' + dataType + '="' + elementId + '" data-filenaam="' + filenaam + '" href="#">download</a></div>\n')
+#endregion
 
 #----------------------------------------------------------------------
 #
 # Symbolisatie
 #
 #----------------------------------------------------------------------
+#region Symbolisatie
+
     def VoegDefaultSymbolisatieToe (self, geoData : GeoData) -> str:
         """Voeg de default symbolisatie toe voor de geodata
         
@@ -1051,7 +1164,7 @@ class GeoManipulatie:
 
         Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
-        key = vulkleur + '\n' + randkleur + '\n' + opacity
+        key = str(dimensie) + vulkleur + '\n' + randkleur + '\n' + opacity
         naam = self._Cache._DefaultSymbolenToegevoegd.get (key)
         if naam is None:
             if dimensie == 0:
@@ -1352,6 +1465,7 @@ class GeoManipulatie:
         </PolygonSymbolizer>
     </Rule>'''
     }
+#endregion
 
 #======================================================================
 #
@@ -1364,6 +1478,8 @@ class GeoManipulatie:
 # Teken-nauwkeurigheid
 #
 #----------------------------------------------------------------------
+#region Teken-nauwkeurigheid
+
     def NauwkeurigheidInDecimeter (self, verplicht: bool = True) -> int:
         """Haal de nauwkeurigheid in decimeters uit de request parameters
         
@@ -1399,12 +1515,15 @@ class GeoManipulatie:
                 return 0.1 * float (nauwkeurigheid)
             except:
                 self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("teken-nauwkeurigheid") + '"')
+#endregion
 
 #----------------------------------------------------------------------
 #
 # Omzetten multi-geometrie naar enkele geometrieën
 #
 #----------------------------------------------------------------------
+#region Omzetten multi-geometrie naar enkele geometrieën
+
     class EnkeleGeometrie:
         def __init__ (self, locatie, geometrie, attribuutwaarde : str):
             """Een Point, LineString of Polygon geometrie die onderdeel is van de (multi-)geometrie van de locatie.
@@ -1485,10 +1604,221 @@ class GeoManipulatie:
                         'type': 'Feature',
                         'geometry': locatieGeometrie
                     }]
+#endregion
 
 #----------------------------------------------------------------------
 #
 # Zoom-afhankelijke operaties
 #
 #----------------------------------------------------------------------
+#region Zoom-afhankelijke operaties
 
+    class CelData:
+        def __init__ (self, rdX, rdY):
+            """Maak data voor een nieuwe grid cel"""
+            self.Aantal = 1
+            self._SomX = rdX
+            self._SomY = rdY
+
+        def VoegToe (self, rdX, rdY):
+            """Voeg een geometrie met gegeven positie toe aan de grid cel"""
+            self.Aantal += 1
+            self._SomX += rdX
+            self._SomY += rdY
+
+        def Combineer (self, data : 'CelData'):
+            """Combineer grid data"""
+            if not data is None:
+                self.Aantal += data.Aantal
+                self._SomX += data._SomX
+                self._SomY += data._SomY
+                return True
+            return False
+
+        def CelX (self):
+            """Bepaal de gewogen X-positie van de geometrieën"""
+            return math.floor (self._SomX / self.Aantal)
+        def CelY (self):
+            """Bepaal de gewogen Y-positie van de geometrieën"""
+            return math.floor (self._SomY / self.Aantal)
+
+    def MaakSchaalafhankelijkeGeometrie (self, geoData : GeoData):
+        """Vereenvoudig de geometrieën in de locaties voor weergave, waarbij
+        voor lagere zoom-levels (verder uitgezoomd) minder detail getoond wordt.
+        Geeft de lijst met vereenvoudigde GeoData terug
+        """
+        nauwkeurigheid = self.NauwkeurigheidInDecimeter (False) if geoData.Tekennauwkeurigheid is None else geoData.Tekennauwkeurigheid
+        nauwkeurigheid = 1 if nauwkeurigheid is None else nauwkeurigheid
+        if geoData._VereenvoudigdeGeometrie is None:
+            geoData._VereenvoudigdeGeometrie = {}
+        resultaat = geoData._VereenvoudigdeGeometrie.get (nauwkeurigheid)
+        if not resultaat is None:
+            return resultaat
+        geoData._VereenvoudigdeGeometrie[nauwkeurigheid] = resultaat = []
+
+        # Ga uit van de enkelvoudige geometrieën
+        locatiesVoorgaandNiveau = geoData.Locaties
+
+        # Key = (x,y) van cel, value = aantal geometrieën, som van X, som van Y
+        aantalVoorgaandeNiveau : Dict[Tuple[int,int], GeoManipulatie.CelData] = {}
+        voorgaandeCelDeler = 1
+        for zoomLevel in range (self.MaximaalZoomLevel (nauwkeurigheid), 0, -1):
+            locatiesAndersDanVoorgaande = False
+            cellenAndersDanVoorgaande = False
+            voorgaandeCelDeler *= 2
+
+            # Neem de grid cellen uit het voorgaande niveau over op dit niveau
+            aantalDitNiveau : Dict[Tuple[int,int], GeoManipulatie.CelData]= {}
+            for celVoorgaandNiveau, voorgaandeData in aantalVoorgaandeNiveau.items ():
+                celDitNiveau = (celVoorgaandNiveau[0] // voorgaandeCelDeler, celVoorgaandNiveau[1] // voorgaandeCelDeler)
+                data = aantalDitNiveau.get (celDitNiveau)
+                if data is None:
+                    aantalDitNiveau[celDitNiveau] = voorgaandeData
+                else:
+                    cellenAndersDanVoorgaande = True # Dit niveau beslaat minder cellen
+                    data.Combineer (voorgaandeData)
+
+            dpm = self.ZoomLevelDetailPerMeter (zoomLevel)
+            locatiesDitNiveau : List[object] = []
+            if geoData.Dimensie == 0:
+                # Behandel punten niet meer als losse geometrie als er meerdere in een grid cel vallen
+                puntCellen : Dict[Tuple[int,int], GeoManipulatie.EnkeleGeometrie] = {}
+                for locatie in locatiesVoorgaandNiveau:
+                    punt = locatie['geometry']['coordinates']
+                    cel = self._GridCelVoorPunt (dpm, punt)
+                    data = aantalDitNiveau.get (cel)
+                    if not data is None:
+                        # Er zijn al meer punten in deze cel
+                        data.VoegToe (punt[0], punt[1])
+                        locatiesAndersDanVoorgaande = cellenAndersDanVoorgaande = True # Dit niveau heeft minder punten
+                    else:
+                        anderPunt = puntCellen.get (cel)
+                        if not anderPunt is None:
+                            # Er is nog een punt op dit niveau dat in de cel valt
+                            puntCellen.pop (cel)
+                            data = GeoManipulatie.CelData (punt[0], punt[1])
+                            data.VoegToe (anderPunt[0], anderPunt[1])
+                            locatiesAndersDanVoorgaande = cellenAndersDanVoorgaande = True # Dit niveau heeft minder punten
+                        else:
+                            # Tot nu toe het enige punt
+                            puntCellen[cel] = punt
+                locatiesDitNiveau = list (puntCellen.values ())
+
+            else:
+                # Laat een lijn of vlak weg als het helemaal in een grid cel valt
+                for locatie in locatiesVoorgaandNiveau:
+                    cel = self._PastGeometrieInGridCel (dpm, locatie)
+                    if not cel is None:
+                        # Ja, laat de geometrie weg
+                        data = aantalDitNiveau.get (cel)
+                        shape = self.MaakShapelyShape (locatie)
+                        if data is None:
+                            aantalDitNiveau[cel] = GeoManipulatie.CelData ((shape.bounds[0] + shape.bounds[2])/2, (shape.bounds[1] + shape.bounds[3])/2)
+                        else:
+                            data.VoegToe ((shape.bounds[0] + shape.bounds[2])/2, (shape.bounds[1] + shape.bounds[3])/2)
+                        locatiesAndersDanVoorgaande = cellenAndersDanVoorgaande = True # Dit niveau heeft minder geometrieën
+                    else:
+                        # Nee, simplificeer de geometrie
+                        vorigeShape = self.MaakShapelyShape (locatie)
+                        shape = vorigeShape.simplify (dpm)
+                        if not shape.__eq__ (vorigeShape):
+                            locatiesAndersDanVoorgaande = True # Andere geometrie
+                            locatie = {
+                                'type': 'Feature',
+                                'properties': locatie.get ('properties'),
+                                'geometry': mapping(shape),
+                                '_shape': shape
+                            }
+                        locatiesDitNiveau.append (locatie)
+
+            # Het is nu mogelijk dat twee nabije geometrieën in twee naburige cellen terecht
+            # komen, bijv met x-index = 127 en x = 128. Het volgende zoomniveau zijn het nog
+            # steeds twee cellen, met x-index 63 en 64. Combineer daarom steeds naburige cellen,
+            # daardoor zal de versmelting van naburige geometrieën wel plaatsvinden. Bovendien
+            # wordt de afstand tussen naburige markers daardoor groter
+            for cel in list (aantalDitNiveau.keys ()):
+                data = aantalDitNiveau.pop (cel, None)
+                if not data is None:
+                    for dx in range (0, 4): # Combineer 4x4 cellen
+                        for dy in range (0, 4):
+                            if dx == 9 and dy == 0:
+                                continue
+                            buur = (cel[0] + dx, cel[1] + dy)
+                            if data.Combineer (aantalDitNiveau.pop (buur, None)):
+                                cellenAndersDanVoorgaande = True
+
+                    # Ken dat toe aan de juiste grid cel
+                    cel = self._GridCelVoorPunt (dpm, [data.CelX (), data.CelY ()])
+                    aantalDitNiveau[cel] = data
+
+            if locatiesAndersDanVoorgaande or cellenAndersDanVoorgaande:
+                # Maak een nieuw niveau aan
+                ditNiveau = GeoManipulatie.GeoData ()
+                ditNiveau.Attributen = geoData.Attributen
+                ditNiveau.Dimensie = geoData.Dimensie
+                ditNiveau._VoorZoomLevel = zoomLevel
+                if locatiesAndersDanVoorgaande:
+                    ditNiveau.Locaties = locatiesDitNiveau
+                else:
+                    ditNiveau.Locaties = None
+
+                if cellenAndersDanVoorgaande:
+                    ditNiveau._AantalInGridCel = GeoManipulatie.GeoData ()
+                    ditNiveau._AantalInGridCel.Attributen = { 'n': GeoManipulatie.Attribuut ('n',  'Aantal niet-getoonde locaties') }
+                    ditNiveau._AantalInGridCel.Dimensie = 0
+                    ditNiveau._AantalInGridCel.Locaties = [{
+                        'type': 'Feature',
+                        'properties': { 'n': data.Aantal },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': self._GridCelNaarRD (dpm, cel)
+                        }
+                    } for cel, data in aantalDitNiveau.items ()]
+
+                resultaat.append (ditNiveau)
+
+                aantalVoorgaandeNiveau = aantalDitNiveau
+                voorgaandeCelDeler = 1
+                locatiesVoorgaandNiveau = locatiesDitNiveau
+
+        return resultaat
+
+    def VoegSchaalafhankelijkeLagenToe (self, kaart : Kaart, naam: str, geoData : GeoData, geometrieSymbolisatieNaam: str, markeringSymbolisatieNaam: str, postLaag = None):
+        """Voeg de schaalafhankelijke kaartlagen aan de kaart toe; ze moeten eerder zijn gemaakt via MaakSchaalafhankelijkeGeometrie.
+
+        Argumenten:
+
+        kaart Kaart  Kaart waaraan de lagen toegevoegd moeten worden
+        naam str  Naam van de kaartlaag
+        geoData GeoData  De geometrieën die aan de kaart toegevoegd moeten worden
+        geometrieSymbolisatieNaam str  Naam van de symbolisatie (verkregen via een van de Voeg*Toe methoden) te gebruiken voor de locaties in geoData.
+        markeringSymbolisatieNaam str  Naam van de symbolisatie (verkregen via een van de Voeg*Toe methoden) te gebruiken voor de punten die ontbrekende geometrieën aanduiden.
+        postLaag lambda  Methode die aangeroepen wordt nadat een kaartlaag is toegevoegd
+        """
+        schaalafhankelijk = self.MaakSchaalafhankelijkeGeometrie (self._Geometrie)
+
+        kaart.VoegLaagToe (naam, self.VoegGeoDataToe (geoData), geometrieSymbolisatieNaam)
+        if not postLaag is None:
+            postLaag ()
+        voorgaandeZoom = None
+        for geschaald in schaalafhankelijk:
+            if not geschaald.Locaties is None:
+                kaart.LaatsteLaagZoomLevel (geschaald._VoorZoomLevel, voorgaandeZoom)
+                voorgaandeZoom = geschaald._VoorZoomLevel
+                dataNaam = self.VoegGeoDataToe (geschaald)
+                kaart.VoegLaagToe (naam, dataNaam, geometrieSymbolisatieNaam)
+        if not voorgaandeZoom is None:
+            kaart.LaatsteLaagZoomLevel (None, voorgaandeZoom)
+
+        # Nu placeholders voor de ontbrekende geometrieën, indien noodzakelijk
+        voorgaandeZoom = None
+        for geschaald in schaalafhankelijk:
+            if not geschaald._AantalInGridCel is None:
+                if not voorgaandeZoom is None:
+                    kaart.LaatsteLaagZoomLevel (geschaald._VoorZoomLevel, voorgaandeZoom)
+                dataNaam = self.VoegGeoDataToe (geschaald._AantalInGridCel)
+                kaart.VoegLaagToe (naam, dataNaam, markeringSymbolisatieNaam, False, False, True)
+                voorgaandeZoom = geschaald._VoorZoomLevel
+        if not voorgaandeZoom is None:
+            kaart.LaatsteLaagZoomLevel (None, voorgaandeZoom)
+#endregion

@@ -114,7 +114,8 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
             "wordt": "gio_2.gml", 
             "teken-nauwkeurigheid": 10,
             "beschrijving": "Optionele beschrijving van de GIO-wijziging",
-            "toon": true | false
+            "toon": true | false,
+            "beschrijving_toon": "Optionele beschrijving van het tonen van de GIO-wijziging"
         },
         { "was": "gio_2.gml", "wordt": "gio_3.gml"},
         { "was": "gio_1.gml", "wordt": "gio_3.gml"}
@@ -147,5 +148,6 @@ Vervolgens wordt elk `wijziging` element omgevormd naar een [toon_gio_wijziging.
 | toon-gio-wijziging niet uitvoeren | `wijziging`: `toon` = `false` (waarde van `toon` is `true` indien niet opgegeven) |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `was` | `wijziging`: `was` |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
+| [toon_gio_wijziging.json](#toon-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving_toon` |
 
 De GIO-wijziging uit de `maak_gio_wijziging` wordt in-memory doorgegeven aan de `toon_gio_wijziging` operatie.

@@ -69,6 +69,10 @@ class GIOWijzigingViewer (GeoManipulatie):
         self._ToonWordtVersie ()
         self.Generator.VoegHtmlToe (einde);
 
+        einde = self.Generator.StartSectie ("Toon GIO-wijziging", True)
+        self._ToonGIOWijziging ()
+        self.Generator.VoegHtmlToe (einde);
+
         return True
 
 
@@ -184,7 +188,7 @@ class GIOWijzigingViewer (GeoManipulatie):
     def _ToonWordtVersie (self):
         self.Generator.VoegHtmlToe ('''<p>Door combinatie van de originele GIO-versie en de GIO-wijziging kan de nieuwe versie gereconstrueerd worden.
 De volgorde van de Locaties in de GIO hoeft niet overeen te komen met de volgorde in de GIO-versie die voor de bepaling van de GIO-wijziging
-is gebruikt, of (voor de behouden locaties) voor de locaties in de originele versie.</p>''')
+is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO-versie.</p>''')
         gml = self.SchrijfGIO (self._Wordt)
         self._ToonResultaatInTekstvak (gml, 'Wordt_versie.gml', 'xml')
 
@@ -194,4 +198,10 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele ver
 #
 #======================================================================
     def _ToonGIOWijziging (self):
+        self.Generator.VoegHtmlToe ('''<p>Net als bij tekst-renvooi geeft de geo-renvooi aan <i>waar</i> de verschillen te vinden zijn.
+<i>Wat</i> de verschillen zijn blijkt uit de vergelijking van de originele en nieuwe versie. Als de aandacht meteen op de verschillen
+gevestigd wordt door de niet-gewijzigde kleinste eenheden van mutatie (GIO-locaties) weg te laten. Om de wijzigingen in hun context
+te zien moeten ook de niet-gewijzigde locaties te zien zijn, als de eindgebruiker daarom vraagt.</p>
+<p>Wat wel verschilt van de tekst-renvooi is dat de kaart zover uitgezoomd is dat sommige verschillen niet zichtbaar zijn.
+Bij het tonen van de GIO-wijziging moet daarom via de markeringen ervoor gezorgd worden dat er geen wijzigingen buiten beeld raken.</p>''')
         pass

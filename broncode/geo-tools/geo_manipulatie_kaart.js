@@ -63,13 +63,14 @@ class Kaart {
         } else {
             layer._ToonInPopup = false;
         }
-        layer._AanUit = false
+        layer._AanUit = false;
         return this;
     }
     AlsAanUitLaag(toonInitieel = true) {
         var layer = this._Lagen[this._Lagen.length - 1];
         layer._AanUit = layer._Naam;
         layer.setVisible(toonInitieel);
+        return this;
     }
     AlsOudLaag() {
         var layer = this._Lagen[this._Lagen.length - 1];

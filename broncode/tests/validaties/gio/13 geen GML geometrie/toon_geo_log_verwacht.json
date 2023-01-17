@@ -2,5 +2,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "GML-geometrie kan niet gebruikt worden: XML nodes of type BestaatNiet are not supported."
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'testdata_punten.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

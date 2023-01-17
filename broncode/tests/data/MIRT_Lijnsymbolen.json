@@ -1,0 +1,167 @@
+[{
+        "Code": "000",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#000000</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "001",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ebf0d2</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "002",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#d2ffa5</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "003",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#b45fd2</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "004",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#64aa2d</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "005",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ffc8be</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "006",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ff3c82</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "007",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ffa096</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "008",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#f091be</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "009",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ff9b00</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "010",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#28c846</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "011",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ff6923</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "012",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ebc3d7</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "013",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#9b32cd</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "014",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#dc9b78</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "015",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#009b00</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "016",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#82a591</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "017",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ff78a0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "018",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#b9d746</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "019",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#82c846</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "020",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#cdcdcd</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "021",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#0000ff</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "022",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#00ffff</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "023",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#afcde1</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "024",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#5757ff</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "025",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ff0000</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "026",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ffff00</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "027",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ffffb4</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "028",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#c8a0d7</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "029",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#fad2ff</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "030",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#ebe1eb</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "031",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#C02040</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "032",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#E04040</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "033",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#E06060</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "034",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#FF6060</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "035",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#FFC040</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "036",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#FFE000</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "037",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#E0C0A0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "038",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#C0A000</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "039",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#C0C000</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "040",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#E0E080</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "041",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#0080C0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "042",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#0080FF</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "043",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#40E0FF</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "044",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#40E0E0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "045",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#8080C0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "046",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#8080FF</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "047",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#C0C0FF</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "048",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#00C0C0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "049",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#40E0C0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "050",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#60E0A0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "051",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#00C000</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "052",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#00FF00</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "053",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#80FF80</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }, {
+        "Code": "054",
+        "Symbolizer": "<LineSymbolizer><Stroke><SvgParameter name=\"stroke\">#B0B0B0</SvgParameter><SvgParameter name=\"stroke-opacity\">1</SvgParameter><SvgParameter name=\"stroke-width\">3</SvgParameter><SvgParameter name=\"stroke-linecap\">butt</SvgParameter></Stroke></LineSymbolizer>"
+    }
+]

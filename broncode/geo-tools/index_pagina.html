@@ -1,26 +1,34 @@
 <p>
-    Huidige versie: <code>2022-11-28 22:22:02</code>
+    Huidige versie: <code>2023-01-17 22:10:53</code>
 </p>
 
 <h2>Wat is het?</h2>
 <p>
-    Gereedschap om met geogeafische informatie te kunnen omgaan die conform <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/">STOP</a>
-    in GML is vastgelegd. Het gaat met name om de <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/gio-intro.html">geografische informatieobjecten</a> (GIO's).
-    Laat ook zien hoe de randvoorwaarden voor het muteren van GIO's ingevuld kunnen worden.
+    Het voornaamste doel is om te laten zien hoe het muteren van <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/gio-intro.html">geografische informatieobjecten</a> (GIO's)
+    in ' <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/">STOP</a> werkt, waarom bepaalde keuzes zijn gemaakt. Het gaat hierbij
+    om het maken van de GIO-wijziging die het verschil tussen twee GIO-versies beschrijft.
+    Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd worden met de <a href="https://github.com/STOPwerk/Versiebeheer-simulator/">versiebeheer-simulator</a>.
 </p>
+<ul>
+    <li>Er is een <a href="voorbeeld">demo en uitleg</a> beschikbaar van het maken en tonen van een GIO-wijziging.</li>
+</ul>
 
 <h2>Wat zit er in?</h2>
 <p>
-    een aantal <a href="https://github.com/STOPwerk/Geo-tools/">Python scripts</a>
-    die aan software leveranciers demonstreren hoe een GIO-wijziging bepaald en getoond kan worden. De scripts zijn online uit te voeren:
+    Minstens zo belangrijk is dat het mogelijk is software te maken die een GIO-wijziging kan maken en tonen, en dat GIO's te valideren
+    zijn op de interne consistentie die daarvoor nodig is.De demo en uitleg zijn daarom gebaseerd op een aantal <a href="https://github.com/STOPwerk/Geo-tools/">Python scripts</a>.
+    De scripts zijn online uit te voeren:
 </p>
 <ul>
-    <li><a href="toon_geo">Tonen van een GIO-versie, gebiedsmarkering of effectgebied</a> die gei-informatie toont.</li>
-    <li><a href="gio_wijziging">Bepaling van een GIO-wijziging</a> uit twee versies van een GIO.</li>
+    <li><a href="toon_geo">Tonen van een GIO-versie</a> en controleren of een GIO overeenkomt met de (in het GIO of expliciet) opgegeven teken-nauwkeurigheid.</li>
+    <li><a href="maak_gio_wijziging">Bepaling van een GIO-wijziging</a> uit twee versies van een GIO.</li>
     <li><a href="toon_gio_wijziging">Tonen van een GIO-wijziging</a> die de geo-renvooi voor een GIO-wijziging toont.</li>
 </ul>
 <p>
+    De online tools worden gehost via het [hobby](https://vercel.com/pricing) plan en zijn niet bedoeld als productie-waardige omgeving.
+    Om met veel/grote GIO's aan de slag te gaan: download de Python scripts en draai de geo-tools op eigen hardware.
     De scripts sluiten aan bij de <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/404.html">beschrijving in STOP</a>.
+    Met het eerste script is ook een gebiedsmarkering of effectgebied te bekijken.
 </p>
 <p>
     Verder twee webpagina's om aanvullende bestanden te maken die kunnen helpen om een GIO in GIS software (onder andere <a href="https://www.qgis.org/">QGIS</a>) te tonen:

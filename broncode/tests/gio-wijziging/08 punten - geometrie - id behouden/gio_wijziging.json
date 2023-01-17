@@ -1,0 +1,18 @@
+{
+    "geometrie": [
+        {
+            "pad": "verkeersborden_STOP_was.gml"
+        },
+        {
+            "pad": "verkeersborden_STOP_wordt.gml"
+        }
+    ],
+    "wijziging": [
+        {
+            "was": "verkeersborden_STOP_was.gml",
+            "wordt": "verkeersborden_STOP_wordt.gml"
+        }
+    ],
+    "symbolisatie": null,
+    "teken-nauwkeurigheid": 10
+}

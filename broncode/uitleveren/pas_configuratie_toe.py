@@ -14,13 +14,16 @@ import sys
 import zipfile
 
 helptekst = '''
-pas_configuratie_toe.py pad_naar_uitleverbestanden pad_naar_te_configureren_bestanden 
+pas_configuratie_toe.py pad_naar_uitleverbestanden pad_naar_te_configureren_bestanden [r]
 
 pad_naar_uitleverbestanden         Pad naar de directory waarin de extra bestanden voor de uitlevering staan
 pad_naar_te_configureren_bestanden Pad naar de directory met geparametriseerde bestanden
+r                                  Geeft aan dat ook subdirectories onderzocht moeten worden
 '''
-
-if len (sys.argv) != 3:
+recursief = False
+if len (sys.argv) == 4 and sys.argv[3] == 'r':
+    recursief = True
+elif len (sys.argv) != 3:
     print (helptekst)
     sys.exit(2)
 
@@ -54,7 +57,7 @@ if os.path.isdir (bestanden_map):
     for root, dirs, files in os.walk (bestanden_map):
         for file in files:
             ext = os.path.splitext(file)[1]
-            if not ext is None and ext in ['.py', '.css', '.js', '.htm', '.html', '.txt', '.md', '.bat']:
+            if not ext is None and ext in ['.py', '.css', '.js', '.json', '.htm', '.html', '.txt', '.md', '.bat']:
                 bronPad = os.path.join (root, file)
                 try:
                     with open (bronPad, 'r') as tekstfile:
@@ -68,4 +71,5 @@ if os.path.isdir (bestanden_map):
                 except Exception as e:
                     print ('Kan parameters in bestand "' + bronPad + '" niet vervangen: ' + str(e))
                     sys.exit(2)
-        break
+        if not recursief:
+            break

@@ -16,7 +16,8 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>FlaskWebProject1</Name>
     <RootNamespace>FlaskWebProject1</RootNamespace>
-    <InterpreterId>Global|VisualStudio|venv</InterpreterId>
+    <InterpreterId>MSBuild|env|C:\Projects\KOOP\STOP\STOPwerk Geo-tools\broncode\Geo-Tools.pyproj</InterpreterId>
+    <WebBrowserPort>8888</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +33,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sld_maker.py" />
+    <Compile Include="voorbeeld.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="gfs_maker.css" />
@@ -43,12 +47,13 @@
     <Content Include="sld_maker.js" />
     <Content Include="static\applicatie_web_favicon.png" />
     <Content Include="vercel.json" />
+    <Content Include="voorbeeld_selectie.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="static\" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|venv" />
+    <InterpreterReference Include="MSBuild|env|C:\Projects\KOOP\STOP\STOPwerk Geo-tools\broncode\Geo-Tools.pyproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

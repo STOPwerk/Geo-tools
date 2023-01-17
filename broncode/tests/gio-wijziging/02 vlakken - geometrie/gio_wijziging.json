@@ -1,0 +1,50 @@
+{
+    "geometrie": [
+        {
+            "pad": "gemeenten_2017.gml"
+        },
+        {
+            "pad": "gemeenten_2018.gml"
+        },
+        {
+            "pad": "gemeenten_2019.gml"
+        },
+        {
+            "pad": "gemeenten_2020.gml"
+        },
+        {
+            "pad": "gemeenten_2021.gml"
+        },
+        {
+            "pad": "gemeenten_2022.gml"
+        }
+    ],
+    "wijziging": [
+        {
+            "was": "gemeenten_2017.gml",
+            "wordt": "gemeenten_2018.gml"
+        },
+        {
+            "was": "gemeenten_2018.gml",
+            "wordt": "gemeenten_2019.gml"
+        },
+        {
+            "was": "gemeenten_2019.gml",
+            "wordt": "gemeenten_2020.gml"
+        },
+        {
+            "was": "gemeenten_2020.gml",
+            "wordt": "gemeenten_2021.gml"
+        },
+        {
+            "was": "gemeenten_2021.gml",
+            "wordt": "gemeenten_2022.gml"
+        },
+        {
+            "was": "gemeenten_2017.gml",
+            "wordt": "gemeenten_2022.gml"
+        }
+    ],
+    "symbolisatie": null,
+    "teken-nauwkeurigheid": 10
+}

@@ -1,6 +1,14 @@
 [
     {
         "Ernst": "FOUT",
-        "Tekst": "Alleen RD coördinaten (urn:ogc:def:crs:EPSG::28992) zijn toegestaan"
+        "Tekst": "Alleen RD coördinaten (urn:ogc:def:crs:EPSG::28992 of EPSG:28992) zijn toegestaan"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'testdata_gebiedsmarkering.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

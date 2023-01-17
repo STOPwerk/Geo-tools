@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests\gebieden</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests\maak-gio-wijziging\Punten</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -27,15 +27,24 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="geo-tools\geo_manipulatie_kaart.html" />
+    <Content Include="geo-tools\geo_manipulatie_kaart.css" />
     <Content Include="geo-tools\geo_manipulatie_kaart.js" />
     <Content Include="geo-tools\geo_manipulatie_ol.css" />
     <Content Include="geo-tools\geo_manipulatie_ol.js" />
     <Content Include="geo-tools\geo_manipulatie_sldreader.js" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.html" />
+    <Content Include="geo-tools\geo_manipulatie_resultaat.css" />
+    <Content Include="geo-tools\toon_gio_wijziging_resultaat.js" />
+    <Content Include="geo-tools\geo_manipulatie_resultaat.js" />
     <Content Include="geo-tools\requirements.txt" />
+    <Content Include="geo-tools\maak_gio_wijziging_invoer.css" />
+    <Content Include="geo-tools\maak_gio_wijziging_invoer.js" />
     <Content Include="geo-tools\toon_geo_invoer.css" />
     <Content Include="geo-tools\toon_geo_invoer.js" />
     <Content Include="geo-tools\toon_geo_invoer.html" />
+    <Content Include="geo-tools\toon_gio_wijziging_invoer.css" />
+    <Content Include="geo-tools\toon_gio_wijziging_invoer.js" />
     <Content Include="geo-tools\voer_tools_uit.bat" />
     <Content Include="README.md" />
     <Content Include="geo-tools\applicatie_meldingen_einde.html" />
@@ -43,8 +52,28 @@
     <Content Include="geo-tools\weergave_webpagina_einde.html" />
     <Content Include="geo-tools\weergave_webpagina_start.html" />
     <Content Include="Geo-Tools.pyproj.vsspell" />
-    <Content Include="tests\geo_wijziging\punten\puntsymbolen.json" />
-    <Content Include="tests\geo_wijziging\punten\verkeersborden_STOP.json" />
+    <Content Include="tests\data\Gemeentegrenzen_2017.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2018.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2019.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2020.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2021.gml" />
+    <Content Include="tests\data\Gemeentegrenzen_2022.gml" />
+    <Content Include="tests\data\Gemeentes_Vlaksymbolen.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2017.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2018.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2019.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2020.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2021.json" />
+    <Content Include="tests\data\Gemeente_Provincie_2022.json" />
+    <Content Include="tests\data\MIRT_2017.gml" />
+    <Content Include="tests\data\MIRT_2018.gml" />
+    <Content Include="tests\data\MIRT_2019.gml" />
+    <Content Include="tests\data\MIRT_2020.gml" />
+    <Content Include="tests\data\MIRT_2021.gml" />
+    <Content Include="tests\data\MIRT_2022.gml" />
+    <Content Include="tests\data\MIRT_Lijnsymbolen.json" />
+    <Content Include="tests\data\verkeersborden_puntsymbolen.json" />
+    <Content Include="tests\data\verkeersborden_STOP.json" />
     <Content Include="uitleveren\configuratie.json" />
     <Content Include="uitleveren\download\LEESMIJ.txt" />
     <Content Include="uitleveren\download\voer_tools_uit_voor_mijn_voorbeelden.bat" />
@@ -53,11 +82,13 @@
     <Content Include="uitleveren\README.md" />
     <Content Include="uitleveren\wiki_extra\Maak STOPwerk git user.bat" />
     <Content Include="uitleveren\wiki_extra\__LEESMIJ.txt" />
-    <Content Include="wiki\Code-gio-wijziging.md" />
-    <Content Include="wiki\Code-toon-gio-wijziging.md" />
+    <Content Include="wiki\Toon-controleer-gio.md" />
+    <Content Include="wiki\Maak-gio-wijziging.md" />
+    <Content Include="wiki\Toon-gio-wijziging.md" />
     <Content Include="wiki\Geo-tools-uitvoeren.md" />
     <Content Include="wiki\Home.md" />
     <Content Include="wiki\Invoerspecificatie.md" />
+    <Content Include="wiki\Tekennauwkeurigheid.png" />
     <Content Include="wiki\_Sidebar.md" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +96,7 @@
     <Compile Include="geo-tools\applicatie.py" />
     <Compile Include="geo-tools\applicatie_meldingen.py" />
     <Compile Include="geo-tools\geo_manipulatie.py" />
+    <Compile Include="geo-tools\gio_wijziging.py" />
     <Compile Include="geo-tools\toon_geo_resultaat.css" />
     <Compile Include="geo-tools\toon_geo.py" />
     <Compile Include="geo-tools\toon_gio_wijziging_invoer.html" />
@@ -75,7 +107,11 @@
     <Compile Include="geo-tools\weergave_webpagina.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tests\geo_wijziging\punten\verkeersborden.py" />
+    <Compile Include="tests\data\CirkelNaarPolygon.py" />
+    <Compile Include="tests\data\MIRT.py" />
+    <Compile Include="tests\data\Gemeentes.py" />
+    <Compile Include="tests\data\symbolisatie.py" />
+    <Compile Include="tests\data\verkeersborden.py" />
     <Compile Include="uitleveren\maak_release_artefacts.py" />
     <Compile Include="uitleveren\pas_configuratie_toe.py" />
   </ItemGroup>
@@ -83,7 +119,7 @@
     <Folder Include="geo-tools\" />
     <Folder Include="tests\" />
     <Folder Include="tests\geo_wijziging\" />
-    <Folder Include="tests\geo_wijziging\punten\" />
+    <Folder Include="tests\data\" />
     <Folder Include="uitleveren\" />
     <Folder Include="uitleveren\download\" />
     <Folder Include="uitleveren\wiki_extra\" />

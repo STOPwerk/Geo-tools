@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FeatureTypeStyle version="1.1.0" 
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:kwantitatieveNormwaarde</SemanticTypeIdentifier>
+    <Rule>
+        <Name>32</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>32</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>12</Name><Fill><SvgParameter name="fill">#ebc3d7</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+    <Rule>
+        <Name>37</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>kwantitatieveNormwaarde</ogc:PropertyName> 
+                <ogc:Literal>37</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <PolygonSymbolizer><Name>16</Name><Fill><SvgParameter name="fill">#82a591</SvgParameter><SvgParameter name="fill-opacity">0.5</SvgParameter></Fill><Stroke><SvgParameter name="stroke">#000001</SvgParameter><SvgParameter name="stroke-opacity">1</SvgParameter><SvgParameter name="stroke-width">1</SvgParameter><SvgParameter name="stroke-linejoin">round</SvgParameter></Stroke></PolygonSymbolizer>
+    </Rule>
+</FeatureTypeStyle>

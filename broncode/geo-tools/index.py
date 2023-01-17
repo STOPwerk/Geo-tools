@@ -8,6 +8,7 @@
 #
 #======================================================================
 
+from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
 from weergave_webpagina import WebpaginaGenerator
 
@@ -16,6 +17,7 @@ from sld_maker import SLDMaker
 from toon_geo import GeoViewer
 from maak_gio_wijziging import GIOWijzigingMaker
 from toon_gio_wijziging import GIOWijzigingViewer
+from voorbeeld import Voorbeeld
 
 
 #----------------------------------------------------------------------
@@ -52,15 +54,15 @@ def toon_geo():
 
 @app.route('/toon_geo_resultaat', methods = ['POST'])
 def toon_geo_resultaat():
-    return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None))
+    return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
 
-@app.route('/gio_wijziging')
+@app.route('/maak_gio_wijziging')
 def gio_wijziging():
     return GIOWijzigingMaker.InvoerHtml ()
 
-@app.route('/gio_wijziging_resultaat', methods = ['POST'])
+@app.route('/maak_gio_wijziging_resultaat', methods = ['POST'])
 def gio_wijziging_resultaat():
-    return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None))
+    return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
 
 
 @app.route('/toon_gio_wijziging')
@@ -69,7 +71,16 @@ def toon_gio_wijziging():
 
 @app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
 def toon_gio_wijziging_resultaat():
-    return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None))
+    return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
+
+@app.route('/voorbeeld')
+def voorbeeld():
+    return Voorbeeld.SelectieHtml ()
+
+@app.route('/start_voorbeeld')
+def start_voorbeeld():
+    return Voorbeeld.VoerUit (Parameters (request.args, None, None))
+
 
 #----------------------------------------------------------------------
 #

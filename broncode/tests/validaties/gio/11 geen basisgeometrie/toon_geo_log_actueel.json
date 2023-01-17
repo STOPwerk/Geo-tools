@@ -2,5 +2,13 @@
     {
         "Ernst": "FOUT",
         "Tekst": "Geometrie ontbreekt in een {https://standaarden.overheid.nl/stop/imop/geo/}Locatie"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Het GIO, gebiedsmarkering of effectgebied 'testdata_punten.gml' kan niet ingelezen worden"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "De verwerking is afgebroken."
     }
 ]

@@ -1,0 +1,52 @@
+#upload_form .box {
+    background-color: white;
+    outline: 2px dashed black;
+    width: 100%;
+    height: 15em;
+}
+
+    #upload_form .box.is-dragover {
+        background-color: #dae8fc;
+    }
+
+#upload_form .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    #upload_form .box input {
+        display: none;
+    }
+
+#upload_form .link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+    #upload_form .link:hover {
+        color: blue;
+    }
+
+#startknop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 3px solid #82b366;
+    background-color: #d5e8d4;
+    font-size: large;
+    font-weight: bolder;
+    padding: 1em;
+    cursor: pointer;
+}
+
+    #startknop:hover:enabled {
+        border-color: #d79b00;
+        background-color: #ffe6cc;
+    }
+
+#bestanden {
+    height: 5em;
+    font-weight: bolder;
+}

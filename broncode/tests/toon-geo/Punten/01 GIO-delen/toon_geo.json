@@ -1,0 +1,5 @@
+{
+  "geometrie": "testdata_punten.gml",
+  "symbolisatie": "testdata_punten_symbolisatie.xml",
+  "teken-nauwkeurigheid": 10
+}

@@ -1,0 +1,25 @@
+{
+  "beschrijving": "Demonstratie van het maken en tonen van een GIO-wijziging voor een GIO die punten bevat.</p><p>Laat zien hoe een GIO-wijziging berekend kan worden voor een GIO waarin alle geometrieën bestaan uit punten.</p><p>Dit is slechts een van de mogelijke manieren om een GIO-wijziging te bepalen op basis van alleen de informatie die in een GIO-versie aanwezig is. Andere implementaties zijn mogelijk, zeker als ook de brondata voor de GIO-versies beschikbaar is.",
+  "symbolisatie": "punten_symbolisatie.xml",
+  "teken-nauwkeurigheid": 30,
+  "geometrie": [
+    {
+      "pad": "Originele versie.gml",
+      "beschrijving": "Deze demo laat zien hoe een GIO-wijziging gemaakt wordt waarbij steeds dezelfde GIO-versie als uitgangspunt genomen wordt. De originele GIO-versie bestaat uit twee individuele punten (links) die altijd meer dan de teken-nauwkeurigheid uit elkaar staan, twee individuele punten (rechts) die meestal ver genoeg uit elkaar staan, en twee punten (midden) in een enkele locatie met een multi-geometrie. De punten zijn ondergebracht in drie GIO-delen.",
+      "teken-nauwkeurigheid": ""
+    }
+  ],
+  "wijziging": [
+    {
+      "was": "Originele versie.gml",
+      "wordt": "Nieuwe versie dezelfde basisgeo-id.gml",
+      "beschrijving": "Een voorbeeld waarbij de geometrie niet wijzigt en elk punt ook dezelfde basisgeometrie-ID houdt. Daarmee weet de software zeker dat de geometrie niet gewijzigd is, en hoeft geen geometrische vergelijking uitgevoerd te worden.</p><ul><li>Het punt uiterst links houdt dezelfde naam en blijft bij hetzelfde GIO-deel, dus geen wijziging.</li><li>Het punt midden-links heeft een andere naam en blijft bij hetzelfde GIO-deel, dus een revisie</li><li>Het punt uiterst rechts wordt aan een ander GIO-deel toebedeeld, dus een wijziging.</li><li>Het punt midden-rechts houdt dezelfde naam en blijft aan een hetzelfde GIO-deel toebedeeld, maar de naam van het GIO-deel wijzigt. Dan moet het GIO-deel ook een andere groepID krijgen en het punt dus ook, zodat getoond kan worden op de kaart om welk gebied het gaat. Dit punt wordt daarom toch gewijzigd.</li><li>De punten in het midden worden bij een ander GIO-deel toebedeeld, dus een wijziging. Omdat niet zichtbaar is voor de eindgebruiker hoe geometrieën in locaties verdeeld zijn, wordt bij beide punten aangegeven dat er een wijziging is.</li></ul><p>Bij het tonen van de GIO-wijziging worden de individuele wijzigmarkeringen niet getoond als de kaart voldoende ingezoomd is. Bij voldoende uitzoomen worden de markeringen gecombineerd getoond. Revisies worden niet getoond."
+    },
+    {
+      "was": "Originele versie.gml",
+      "wordt": "Nieuwe versie dezelfde geometrie.gml",
+      "beschrijving": "Een voorbeeld waarbij de geometrie niet significant wijzigt maar alle locaties wel een andere basisgeometrie-ID krijgen. Omdat de software niet probeert uit te zoeken of de geometrie exact hetzelfde is, wordt elk punt als een revisie aangemerkt en krijgt de opsteller van de GIO het advies te bekijken of de basisgeometrie-ID niet behouden kan worden.</p><ul><li>Het punt midden-links heeft exact dezelfde coördinaten en dezelfde naam</li><li>Het punt midden-rechts heeft ongeveer dezelfde coördinaten en dezelfde naam</li><li>De punten uiterst links en rechts worden met dezelfde (links) en ongeveer dezelfde (rechts) coördinaten gecombineerd in een nieuwe locatie.</li><li>De locatie in het midden wordt opgedeeld in twee locaties waarbij het bovenste punt dezelfde en het onderste ongeveer dezelfde coördinaten heeft.</li></ul><p>Juridisch-inhoudelijk wijzigt de GIO niet.",
+      "toon": false
+    }
+  ]
+}

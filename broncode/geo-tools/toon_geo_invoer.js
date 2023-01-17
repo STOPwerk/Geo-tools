@@ -10,6 +10,8 @@ window.addEventListener('load', function () {
 
     var geoFileType = '';
     var symbolisatieNodig = false;
+    var teveelFiles = false;
+    var geometrieOk = false;
 
     function FileLezer(file, line) {
         this._Line = line;
@@ -17,14 +19,15 @@ window.addEventListener('load', function () {
 
         this._InterpreteerGML = function (gml) {
             symbolisatieNodig = false;
+            geometrieOk = false;
             startknop.disabled = true;
             if (gml.match(/\<([^:]+:){0,1}Gebiedsmarkering[\s>]/)) {
                 geoFileType = 'Gebiedsmarkering';
-                startknop.disabled = false;
+                geometrieOk = true;
             }
             else if (gml.match(/\<([^:]+:){0,1}Effectgebied[\s>]/)) {
                 geoFileType = 'Effectgebied';
-                startknop.disabled = false;
+                geometrieOk = true;
             }
             else {
                 if (gml.match(/\<([^:]+:){0,1}kwantitatieveNormwaarde[\s>]/)
@@ -38,12 +41,12 @@ window.addEventListener('load', function () {
                         symbolisatieNodig = false;
                     } else {
                         geoFileType = 'GIO (vaststelling)';
-                        startknop.disabled = false;
+                        geometrieOk = true;
                     }
                 }
                 else if (gml.match(/\<([^:]+:){0,1}GeoInformatieObjectVersie[\s>]/)) {
                     geoFileType = 'GIO (versie)';
-                    startknop.disabled = false;
+                    geometrieOk = true;
                 }
                 else {
                     geoFileType = 'Onbekend dataformaat';
@@ -52,9 +55,7 @@ window.addEventListener('load', function () {
             }
             line.innerText = geoFileType + ': ' + file.name;
             symbolisatieInvoer.style.display = (symbolisatieNodig ? '' : 'none');
-            if (!symbolisatieNodig) {
-                symbolisatieFile.value = null;
-            }
+            startknop.disabled = (teveelFiles || !geometrieOk);
         }
 
         const This = this;
@@ -71,33 +72,52 @@ window.addEventListener('load', function () {
 
     function UpdateControlStatus(geometrieGewijzigd) {
 
-        var container = document.getElementById('bestanden');
+        const container = document.getElementById('bestanden');
         container.innerHTML = '';
+		const titel = document.getElementById('titel');
+		titel.value = '';
 
         if (geometrieGewijzigd) {
             geoFileType = '';
             symbolisatieNodig = false;
         }
 
+        var heeftGeometrie = false;
+        var analyseline = false;
+        teveelFiles = false;
         for (var i = 0; i < geometrieFile.files.length; i++) {
             var file = geometrieFile.files[i];
             var line = document.createElement('div');
             container.appendChild(line);
 
-            if (geometrieGewijzigd) {
-                line.innerText = 'Analyseer ' + file.name + '...';
-                new FileLezer(file, line).VoerUit();
-            }
-            else {
+            if (i > 0) {
+                teveelFiles = true;
+                line.innerText = 'Extra bestand geselecteerd! ' + file.name;
+				titel.value = '';
+            } else {
                 line.innerText = geoFileType + ': ' + file.name;
+                analyseline = line;
+				titel.value = file.name;
             }
+            heeftGeometrie = file;
+        }
+        if (heeftGeometrie && geometrieGewijzigd) {
+            geometrieOk = false;
+            analyseline.innerText = 'Analyseer ' + heeftGeometrie.name + '...';
+            new FileLezer(heeftGeometrie, analyseline).VoerUit();
         }
         for (var i = 0; i < symbolisatieFile.files.length; i++) {
             var file = symbolisatieFile.files[i];
             var line = document.createElement('div');
             container.appendChild(line);
-            line.innerText = 'Symbolisatie: ' + file.name;
+            if (i > 0) {
+                teveelFiles = true;
+                line.innerText = 'Extra bestand geselecteerd! ' + file.name;
+            } else {
+                line.innerText = 'Symbolisatie: ' + file.name;
+            }
         }
+        startknop.disabled = (teveelFiles || !geometrieOk);
     }
 
     // Event handlers

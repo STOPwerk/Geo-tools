@@ -59,11 +59,9 @@ class GIOWijzigingViewer (GeoManipulatie):
             return False
 
         self._InitialiseerWebpagina ()
-        einde = self.Generator.StartSectie ("Weergave van de GIO-wijziging" if titelOperatie is None else "<h3>" + titelOperatie + "</h3>", True)
+        eindeSectie = self.Generator.StartSectie ("Weergave van de GIO-wijziging" if titelOperatie is None else "<h3>" + titelOperatie + "</h3>", True)
         if self.Request.LeesString ("beschrijving"):
             self.Generator.VoegHtmlToe ('<p>' + self.Request.LeesString ("beschrijving") + '</p>') 
-        self._ToonGIOWijziging ()
-        self.Generator.VoegHtmlToe (einde);
 
         einde = self.Generator.StartSectie ("Reconstructie van de wordt-versie", True)
         self._ToonWordtVersie ()
@@ -72,6 +70,8 @@ class GIOWijzigingViewer (GeoManipulatie):
         einde = self.Generator.StartSectie ("Toon GIO-wijziging", True)
         self._ToonGIOWijziging ()
         self.Generator.VoegHtmlToe (einde);
+
+        self.Generator.VoegHtmlToe (eindeSectie);
 
         return True
 
@@ -204,4 +204,31 @@ gevestigd wordt door de niet-gewijzigde kleinste eenheden van mutatie (GIO-locat
 te zien moeten ook de niet-gewijzigde locaties te zien zijn, als de eindgebruiker daarom vraagt.</p>
 <p>Wat wel verschilt van de tekst-renvooi is dat de kaart zover uitgezoomd is dat sommige verschillen niet zichtbaar zijn.
 Bij het tonen van de GIO-wijziging moet daarom via de markeringen ervoor gezorgd worden dat er geen wijzigingen buiten beeld raken.</p>''')
-        pass
+        return
+        kaart = GeoManipulatie.Kaart (self)
+        kaart.ZoomTotNauwkeurigheid (True)
+        # Onderste lagen zijn de schaalafhankelijke was-wordt
+        wasWordtVolledig = 'Was-wordt (volledig)'
+        schaalafhankelijk = self.MaakSchaalafhankelijkeGeometrie ([self._Was])
+        self.VoegSchaalafhankelijkeLocatiesToe (kaart, wasWordtVolledig, schaalafhankelijk, lambda gd: self._SymbolisatieNaam, lambda gd: kaart.LaatsteLaagAlsOud () )
+        self.VoegSchaalafhankelijkeMarkeringenToe (kaart, wasWordtVolledig, schaalafhankelijk, self.VoegWijzigMarkeringToe (0, True), lambda gd: kaart.LaatsteLaagAlsOud ())
+        schaalafhankelijk = self.MaakSchaalafhankelijkeGeometrie ([self._Wordt])
+        self.VoegSchaalafhankelijkeLocatiesToe (kaart, wasWordtVolledig, schaalafhankelijk, lambda gd: self._SymbolisatieNaam, lambda gd: kaart.LaatsteLaagAlsNieuw () )
+        self.VoegSchaalafhankelijkeMarkeringenToe (kaart, wasWordtVolledig, schaalafhankelijk, self.VoegWijzigMarkeringToe (0, True), lambda gd: kaart.LaatsteLaagAlsNieuw ())
+
+        # Volgende lagen zijn was-wordt uit de wijziging, exclusief revisies
+        wasWordtWijziging = 'Was-wordt (wijziging)'
+        schaalafhankelijk = self.MaakSchaalafhankelijkeGeometrie ([self._Wijziging.Was])
+        self.VoegSchaalafhankelijkeLocatiesToe (kaart, wasWordtWijziging, schaalafhankelijk, lambda gd: self._SymbolisatieNaam, lambda gd: kaart.LaatsteLaagAlsOud () )
+        self.VoegSchaalafhankelijkeMarkeringenToe (kaart, wasWordtWijziging, schaalafhankelijk, self.VoegWijzigMarkeringToe (0, True), lambda gd: kaart.LaatsteLaagAlsOud ())
+        schaalafhankelijk = self.MaakSchaalafhankelijkeGeometrie ([self._Wijziging.Wordt])
+        self.VoegSchaalafhankelijkeLocatiesToe (kaart, wasWordtWijziging, schaalafhankelijk, lambda gd: self._SymbolisatieNaam, lambda gd: kaart.LaatsteLaagAlsNieuw () )
+        self.VoegSchaalafhankelijkeMarkeringenToe (kaart, wasWordtWijziging, schaalafhankelijk, self.VoegWijzigMarkeringToe (0, True), lambda gd: kaart.LaatsteLaagAlsNieuw ())
+
+        # Wijzigmarkeringen
+        markering = 'Wijzigmarkering'
+        schaalafhankelijk = self.MaakSchaalafhankelijkeGeometrie ([self._Wijziging.WijzigMarkering[i] for i in self._Wijziging.WijzigMarkering.keys ()])
+        self.VoegSchaalafhankelijkeLocatiesToe (kaart, markering, schaalafhankelijk, lambda gd: self.VoegWijzigMarkeringToe (gd.Dimensie, False))
+        self.VoegSchaalafhankelijkeMarkeringenToe (kaart, markering, schaalafhankelijk, self.VoegWijzigMarkeringToe (0, False))
+
+        kaart.Toon ()

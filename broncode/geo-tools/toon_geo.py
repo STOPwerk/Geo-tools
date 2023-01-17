@@ -99,7 +99,9 @@ class GeoViewer (GeoManipulatie):
 
             kaart = GeoManipulatie.Kaart (self)
             kaart.ZoomTotNauwkeurigheid (False)
-            self.VoegSchaalafhankelijkeLagenToe (kaart, self._Geometrie.Soort, self._Geometrie, self._SymbolisatieNaam, self.VoegWijzigMarkeringToe (0, True))
+            schaalafhankelijk = self.MaakSchaalafhankelijkeGeometrie ([self._Geometrie])
+            self.VoegSchaalafhankelijkeLocatiesToe (kaart, self._Geometrie.Soort, schaalafhankelijk, lambda gd: self._SymbolisatieNaam)
+            self.VoegSchaalafhankelijkeMarkeringenToe (kaart, self._Geometrie.Soort, schaalafhankelijk, self.VoegWijzigMarkeringToe (0, True))
             kaart.Toon ()
 
             self.Log.Informatie ('Valideer de GIO op teken-nauwkeurigheid')

@@ -1,3 +1,3 @@
-# Belang teken-nauwkeurigheid
+# Belang juridische nauwkeurigheid
 
-Demonstratie van het belang van teken-nauwkeurigheid voor het geautomatiseerd detecteren van juridisch signifcante wijzigingen tussen twee GIO-versies.
+Demonstratie van het belang van juridische nauwkeurigheid voor het geautomatiseerd detecteren van juridisch signifcante wijzigingen tussen twee GIO-versies.

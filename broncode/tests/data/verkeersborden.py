@@ -157,7 +157,7 @@ def __GIO (subdir, multi, gemeente, jaar, filename, version, filter, idprefix = 
 symbolisatie.MaakReadme ([testscenario_dir, '08 punten - geometrie - id behouden'], '''#GIO met alleen geometrie
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit punten.
-Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
+Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de juridische nauwkeurigheid)
 en als de basisgeometrie-ID van ongewijzigde geometrieën behouden blijft in verschillende versies van de GIO,
 het bepalen van de geo-renvooi sneller verloopt omdat de ongewijzigde geometrieën niet meegenomen hoeven te worden
 in de geo-operaties.
@@ -193,7 +193,7 @@ __GIO ('08 punten - geometrie', False, 0, False, 'verkeersborden_STOP_wordt.gml'
 symbolisatie.MaakReadme ([testscenario_dir, '09 punten - GIO-delen - id behouden'], '''#GIO met GIO-delen
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met met GIO-delen bestaande uit punten.
-Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
+Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de juridische nauwkeurigheid)
 en als de basisgeometrie-ID van ongewijzigde geometrieën behouden blijft in verschillende versies van de GIO,
 het bepalen van de geo-renvooi sneller verloopt omdat de ongewijzigde geometrieën niet meegenomen hoeven te worden
 in de geo-operaties.
@@ -229,7 +229,7 @@ __GIO ('09 punten - GIO-delen', False, 2, False, 'verkeersborden_STOP_wordt.gml'
 symbolisatie.MaakReadme ([testscenario_dir, '10 punten - normwaarden - id behouden'], '''#GIO met normwaarden
 
 Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor punten.
-Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de tekennauwkeurigheid)
+Het laat zien dat als een GIO zorgvuldig opgesteld wordt (geen overlappende eometrieën binnen de juridische nauwkeurigheid)
 en als de basisgeometrie-ID van ongewijzigde geometrieën behouden blijft in verschillende versies van de GIO,
 het bepalen van de geo-renvooi sneller verloopt omdat de ongewijzigde geometrieën niet meegenomen hoeven te worden
 in de geo-operaties.
@@ -280,5 +280,5 @@ for mapPad in symbolisatie.GIOMappen ():
                 { "was": 'verkeersborden_STOP_was.gml', "wordt": 'verkeersborden_STOP_wordt.gml' }
             ],
             'symbolisatie': symbolisatie.SymbolisatiePad (mapPad, ''),
-            'teken-nauwkeurigheid': nauwkeurigheid
+            'juridische-nauwkeurigheid': nauwkeurigheid
         })

@@ -93,7 +93,7 @@ class GeoViewer (GeoManipulatie):
 
         if self._Geometrie.Soort == 'GIO' and not self.NauwkeurigheidInDecimeter (False) is None:
             self.Log.Informatie ('Toon GIO met schaalafhankelijkheid')
-            self.Generator.VoegHtmlToe ('<p>De GIO zou met een teken-nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) +  ''' decimeter zijn opgesteld.
+            self.Generator.VoegHtmlToe ('<p>De GIO zou met een juridische nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) +  ''' decimeter zijn opgesteld.
             Een GIO-viewer zou dat kunnen gebruiken om het maximale zoom-niveau in te perken. Een viewer kan ook andere schaal-afhankelijke vereenvoudigingen doorvoeren,
             zoals in deze kaart gedaan is:.</p>''')
 
@@ -104,21 +104,21 @@ class GeoViewer (GeoManipulatie):
             self.VoegSchaalafhankelijkeMarkeringenToe (kaart, self._Geometrie.Soort, schaalafhankelijk, self.VoegWijzigMarkeringToe (0, True))
             kaart.Toon ()
 
-            self.Log.Informatie ('Valideer de GIO op teken-nauwkeurigheid')
-            self.Generator.VoegHtmlToe ('''<p>Het opgeven van een teken-nauwkeurigheid voor een GIO suggereert dat twee <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Locatie.html" target="_blank">GIO-Locaties</a>
-            elkaar niet overlappen binnen de teken-nauwkeurigheid. Om te zien of dat klopt wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>''')
+            self.Log.Informatie ('Valideer de GIO op juridische nauwkeurigheid')
+            self.Generator.VoegHtmlToe ('''<p>Het opgeven van een juridische nauwkeurigheid voor een GIO suggereert dat twee <a href="@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Locatie.html" target="_blank">GIO-Locaties</a>
+            elkaar niet overlappen binnen de juridische nauwkeurigheid. Om te zien of dat klopt wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>''')
             lijst = self.MaakLijstVanGeometrieen (self._Geometrie)[0]
-            heeftProblemen, tekennauwkeurigheid = self.ValideerGIO (lijst, self._Geometrie.Dimensie)
+            heeftProblemen, juridischeNauwkeurigheid = self.ValideerGIO (lijst, self._Geometrie.Dimensie)
             if not heeftProblemen:
-                self.Generator.VoegHtmlToe ('<p>Het GIO past inderdaad bij een teken-nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) + ' decimeter</p>')
+                self.Generator.VoegHtmlToe ('<p>Het GIO past inderdaad bij een juridische nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) + ' decimeter</p>')
             else:
-                self.Generator.VoegHtmlToe ('<p>Het GIO past <b>niet</b> bij een teken-nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) + ''' decimeter.
-                Tenzij de verkeerde teken-nauwkeurigheid opgegeven is zouden eerst de geometrieën in de GIO gecorrigeerd moeten worden. ''')
-                if not tekennauwkeurigheid is None:
-                    if tekennauwkeurigheid <= 0:
+                self.Generator.VoegHtmlToe ('<p>Het GIO past <b>niet</b> bij een juridische nauwkeurigheid van ' + str(self.NauwkeurigheidInDecimeter ()) + ''' decimeter.
+                Tenzij de verkeerde juridische nauwkeurigheid opgegeven is zouden eerst de geometrieën in de GIO gecorrigeerd moeten worden. ''')
+                if not juridischeNauwkeurigheid is None:
+                    if juridischeNauwkeurigheid <= 0:
                         self.Generator.VoegHtmlToe ('Er is sprake van verschillende locaties waarvan de geometrieën samenvallen.')
                     else:
-                        self.Generator.VoegHtmlToe ('Het GIO lijkt gemaakt voor een teken-nauwkeurigheid van ' + str(tekennauwkeurigheid) + ' decimeter of kleiner')
+                        self.Generator.VoegHtmlToe ('Het GIO lijkt gemaakt voor een juridische nauwkeurigheid van ' + str(juridischeNauwkeurigheid) + ' decimeter of kleiner')
                 self.Generator.VoegHtmlToe ('</p>')
         self.Log.Detail ('Maak de pagina af')
         self.Generator.LeesCssTemplate ('resultaat')
@@ -138,7 +138,7 @@ class GeoViewer (GeoManipulatie):
         dimensie int  Dimensie van de geometrieën in de GIO
 
         Geeft een of de GIO valide is. Geeft daarnaast (indien mogelijk) terug bij 
-        welke tekennauwkeurigheid (in decimeter) de GIO wel valide is.
+        welke juridische nauwkeurigheid (in decimeter) de GIO wel valide is.
         """
         if self.NauwkeurigheidInMeter () is None:
             return (None, None)
@@ -155,7 +155,7 @@ class GeoViewer (GeoManipulatie):
     #------------------------------------------------------------------
     def _ValideerGIOPunten (self, punten: List[GeoManipulatie.EnkeleGeometrie]) -> Tuple[bool,float]:
         """Implementatie van ValideerGIO voor punt-geometrieën"""
-        self.Generator.VoegHtmlToe ('''<p>Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de teken-nauwkeurigheid.''')
+        self.Generator.VoegHtmlToe ('''<p>Voor een GIO met punten als geometrie wordt gecontroleerd dat de afstand tussen de punten groter is dan de juridische nauwkeurigheid.''')
         nauwkeurigheid = self.NauwkeurigheidInMeter ()
         drempel = nauwkeurigheid * nauwkeurigheid
         minimaleAfstand = None
@@ -239,8 +239,8 @@ class GeoViewer (GeoManipulatie):
         nauwkeurigheid = self.NauwkeurigheidInMeter ();
         self.Generator.VoegHtmlToe ('''<p>Voor een GIO met lijnen:
 <ol>
-    <li>Locaties waarvan de uitgestrektheid kleiner is dan de teken-nauwkeurigheid worden genegeerd, als: bounding_box.width &lt; ''' + '{:2f}'.format (nauwkeurigheid) + ''' en bounding_box.height &lt; ''' + '{:2f}'.format (nauwkeurigheid) + '''</li>
-    <li>Geef de lijnen als dikte de teken-nauwkeurigheid: buffer (''' + '{:2f}'.format (nauwkeurigheid) + ''')</li>
+    <li>Locaties waarvan de uitgestrektheid kleiner is dan de juridische nauwkeurigheid worden genegeerd, als: bounding_box.width &lt; ''' + '{:2f}'.format (nauwkeurigheid) + ''' en bounding_box.height &lt; ''' + '{:2f}'.format (nauwkeurigheid) + '''</li>
+    <li>Geef de lijnen als dikte de juridische nauwkeurigheid: buffer (''' + '{:2f}'.format (nauwkeurigheid) + ''')</li>
     <li>Van de dikke lijnen wordt paarsgewijs de overlap (intersection) bepaald. Als er overlap is, dan komen de originele lijnen te dicht bij elkaar.
     <li>Van dikke lijnen die tot dezelfde locatie behoren wordt geen intersectie bepaald - de lijnen mogen dicht bij elkaar liggen of elkaar zelfs snijden.
 </ol>
@@ -328,7 +328,7 @@ Klik op een lijn in de kaart om de uitkomst van de procedure te zien voor een lo
         if len (problemen.Locaties) > 0:
             dataNaam = self.VoegGeoDataToe (problemen)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaart.VoegLaagToe ("Gebieden waar afstanden kleiner zijn dan de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
+            kaart.VoegLaagToe ("Gebieden waar afstanden kleiner zijn dan de juridische nauwkeurigheid", dataNaam, symNaam, True, True)
 
         dataNaam = self.VoegGeoDataToe (uitkomstData)
         symNaam = self.VoegUniformeSymbolisatieToe (1, "#0000ff", "#0000ff")
@@ -339,7 +339,7 @@ Klik op een lijn in de kaart om de uitkomst van de procedure te zien voor een lo
             uitkomstData.Attributen = {}
             dataNaam = self.VoegGeoDataToe (uitkomstData)
             symNaam = self.VoegUniformeSymbolisatieToe (1, "#F8CECC", "#B85450", '0.5')
-            kaart.VoegLaagToe ("Lijnen die niet passen bij de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
+            kaart.VoegLaagToe ("Lijnen die niet passen bij de juridische nauwkeurigheid", dataNaam, symNaam, True, True)
 
         kaart.Toon ()
 
@@ -353,8 +353,8 @@ Klik op een lijn in de kaart om de uitkomst van de procedure te zien voor een lo
         bufferafstand = - 0.5 * self.NauwkeurigheidInMeter ();
         self.Generator.VoegHtmlToe ('''<p>Voor een GIO met vlakken:
 <ol>
-    <li>Verklein de vlakken met de halve teken-nauwkeurigheid: buffer (''' + '{:2f}'.format (bufferafstand) + ''')</li>
-    <li>Vlakken die te klein zijn verdwijnen daardoor. Als een locatie uit alleen van dat soort vlakken bestaat, dan past de locatie niet in de GIO voor de opgegeven teken-nauwkeurigheid.</li>
+    <li>Verklein de vlakken met de halve juridische nauwkeurigheid: buffer (''' + '{:2f}'.format (bufferafstand) + ''')</li>
+    <li>Vlakken die te klein zijn verdwijnen daardoor. Als een locatie uit alleen van dat soort vlakken bestaat, dan past de locatie niet in de GIO voor de opgegeven juridische nauwkeurigheid.</li>
     <li>Van de verkleinde vlakken wordt paarsgewijs de overlap (intersection) bepaald. Als er overlap is, dan overlappen de originele vlakken teveel.
 </ol>
 Klik in een gebied in de kaart om de uitkomst van de procedure te zien voor een locatie.</p>''')
@@ -391,9 +391,9 @@ Klik in een gebied in de kaart om de uitkomst van de procedure te zien voor een 
             kleinerVlak = self.MaakShapelyShape (vlak.Geometrie).buffer (bufferafstand)
             if kleinerVlak is None or kleinerVlak.is_empty:
                 if not nauwkeurigheidTeGroot:
-                    self.Log.Waarschuwing ("De teken-nauwkeurigheid is zo'n groot getal dat het groter is dan sommige vlakken")
+                    self.Log.Waarschuwing ("De juridische nauwkeurigheid is zo'n groot getal dat het groter is dan sommige vlakken")
                     nauwkeurigheidTeGroot = True
-                vlakkenDataLocatie['properties']['p'] = 'nee; kleiner dan de teken-nauwkeurigheid'
+                vlakkenDataLocatie['properties']['p'] = 'nee; kleiner dan de juridische nauwkeurigheid'
                 problemen.Locaties.append ({ 
                     'type': 'Feature', 
                     'geometry': vlak.Locatie['geometry'], 
@@ -446,7 +446,7 @@ Klik in een gebied in de kaart om de uitkomst van de procedure te zien voor een 
             uitkomstData.Attributen = {}
             dataNaam = self.VoegGeoDataToe (uitkomstData)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#F8CECC", "#B85450", '0.5')
-            kaart.VoegLaagToe ("Vlakken die niet passen bij de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
+            kaart.VoegLaagToe ("Vlakken die niet passen bij de juridische nauwkeurigheid", dataNaam, symNaam, True, True)
 
         dataNaam = self.VoegGeoDataToe (kleinereVlakkenData)
         symNaam = self.VoegUniformeSymbolisatieToe (2, "#DAE8FC", "#6C8EBF", '0.5')
@@ -454,7 +454,7 @@ Klik in een gebied in de kaart om de uitkomst van de procedure te zien voor een 
         if len (problemen.Locaties) > 0:
             dataNaam = self.VoegGeoDataToe (problemen)
             symNaam = self.VoegUniformeSymbolisatieToe (2, "#D80073", "#A50040")
-            kaart.VoegLaagToe ("Gebieden waar de vlakken niet passen bij de teken-nauwkeurigheid", dataNaam, symNaam, True, True)
+            kaart.VoegLaagToe ("Gebieden waar de vlakken niet passen bij de juridische nauwkeurigheid", dataNaam, symNaam, True, True)
         kaart.Toon ()
 
         return len (problemen.Locaties) > 0

@@ -196,8 +196,8 @@ class GeoManipulatie:
             self.EenheidLabel = None
             # ID voor de eenheid van de normwaarden
             self.EenheidID = None
-            # Teken-nauwkeurigheid in decimeter
-            self.Tekennauwkeurigheid : int = None
+            # Juridische nauwkeurigheid in decimeter
+            self.JuridischeNauwkeurigheid : int = None
             #----------------------------------------------------------
             # Voor een GIO-versie
             #----------------------------------------------------------
@@ -248,7 +248,7 @@ class GeoManipulatie:
         
         Argumenten:
 
-        nauwkeurigheidDecimeter int  Teken-nauwkeurigheid van de GIO. Bij None wordt de teken-nauwkeurigheid uit de specs gebruikt
+        nauwkeurigheidDecimeter int  Juridische nauwkeurigheid van de GIO. Bij None wordt de juridische nauwkeurigheid uit de specs gebruikt
         """
         maxZoom = 22 - math.floor(math.log2(self._Operatie.NauwkeurigheidInDecimeter () if nauwkeurigheidDecimeter is None else nauwkeurigheidDecimeter))
         return 22 if maxZoom > 22 else maxZoom
@@ -383,9 +383,9 @@ class GeoManipulatie:
             else:
                 self.Log.Fout ("GIO-versie bevat geen FRBRWork")
                 succes = False
-            elt = geoXml.find (GeoManipulatie._GeoNS + 'tekennauwkeurigheid')
+            elt = geoXml.find (GeoManipulatie._GeoNS + 'juridischeNauwkeurigheid')
             if not elt is None:
-                data.Tekennauwkeurigheid = elt.text
+                data.JuridischeNauwkeurigheid = elt.text
 
             elt = geoXml.find (GeoManipulatie._GeoNS + 'groepen')
             if not elt is None:
@@ -486,7 +486,7 @@ class GeoManipulatie:
 
                 mutaties = GeoManipulatie.GeoData ()
                 mutaties.AttribuutNaam = data.AttribuutNaam
-                if not self._LeesLocaties (mutaties, geoXml.find (GeoManipulatie._GeoNS + 'mutaties'), GeoManipulatie._GeoNS + 'LocatieMutatie', 'naam', ['groepID', 'kwalitatieveNormwaarde', 'kwantitatieveNormwaarde'], True):
+                if not self._LeesLocaties (mutaties, geoXml.find (GeoManipulatie._GeoNS + 'locatieMutaties'), GeoManipulatie._GeoNS + 'LocatieMutatie', 'naam', ['groepID', 'kwalitatieveNormwaarde', 'kwantitatieveNormwaarde'], True):
                     succes = False
                 elif len (mutaties.Locaties) == 0:
                     self.Log.Fout ("GIO-wijziging bevat geen mutaties")
@@ -508,9 +508,9 @@ class GeoManipulatie:
                     data.WordtRevisies.Locaties = [l for l in mutaties if l['properties']['wijzigactie'] == GeoManipulatie._Wijzigactie_Revisie]
 
                     # Lees de wijzigmarkering in
-                    geoXml = mutatie.find (GeoManipulatie._GeoNS + 'wijzigmarkering')
+                    geoXml = mutatie.find (GeoManipulatie._GeoNS + 'wijzigmarkeringen')
                     if geoXml is None:
-                        self.Log.Fout ("wijzigmarkering moet aanwezig zijn")
+                        self.Log.Fout ("wijzigmarkeringen moet aanwezig zijn")
                         succes = False
                     else:
                         data.WijzigMarkering = {}
@@ -523,13 +523,13 @@ class GeoManipulatie:
                         elif len (markeringen.Locaties) > 0:
                             geenMarkeringen = False
                             if markeringen.Dimensie != 0:
-                                self.Log.Fout ("wijzigmarkering bevat 'Punt'-en die geen punt zijn")
+                                self.Log.Fout ("wijzigmarkeringen bevat 'Punt'-en die geen punt zijn")
                                 succes = False
                             else:
                                 data.WijzigMarkering[markeringen.Dimensie] = markeringen
                         elif data.Dimensie == 0:
                             geenMarkeringen = False
-                            self.Log.Fout ("wijzigmarkering moet punten bevatten want de GIO bestaat uit punten")
+                            self.Log.Fout ("wijzigmarkeringen moet punten bevatten want de GIO bestaat uit punten")
                             succes = False
 
                         markeringen = GeoManipulatie.GeoData ()
@@ -539,10 +539,10 @@ class GeoManipulatie:
                         elif len (markeringen.Locaties) > 0:
                             geenMarkeringen = False
                             if markeringen.Dimensie != 1:
-                                self.Log.Fout ("wijzigmarkering bevat 'Lijn'-en die geen lijn zijn")
+                                self.Log.Fout ("wijzigmarkeringen bevat 'Lijn'-en die geen lijn zijn")
                                 succes = False
                             elif data.Dimensie != 1:
-                                self.Log.Fout ("wijzigmarkering bevat 'Lijn'-en maar de GIO bevat geen lijnen")
+                                self.Log.Fout ("wijzigmarkeringen bevat 'Lijn'-en maar de GIO bevat geen lijnen")
                                 succes = False
                             else:
                                 data.WijzigMarkering[markeringen.Dimensie] = markeringen
@@ -554,16 +554,16 @@ class GeoManipulatie:
                         elif len (markeringen.Locaties) > 0:
                             geenMarkeringen = False
                             if markeringen.Dimensie != 2:
-                                self.Log.Fout ("wijzigmarkering bevat 'Vlak'-en die geen vlak zijn")
+                                self.Log.Fout ("wijzigmarkeringen bevat 'Vlak'-en die geen vlak zijn")
                                 succes = False
                             elif data.Dimensie == 0:
-                                self.Log.Fout ("wijzigmarkering bevat 'Vlak'-ken maar de GIO bevat punten")
+                                self.Log.Fout ("wijzigmarkeringen bevat 'Vlak'-ken maar de GIO bevat punten")
                                 succes = False
                             else:
                                 data.WijzigMarkering[markeringen.Dimensie] = markeringen
 
                         if geenMarkeringen:
-                            self.Log.Fout ("GIO-wijziging moet wijzigmarkeringen bevatten")
+                            self.Log.Fout ("GIO-wijziging moet Wijzigmarkeringen bevatten")
                             succes = False
 
             if data.AttribuutNaam == 'groepID':
@@ -734,9 +734,9 @@ class GeoManipulatie:
   https://standaarden.overheid.nl/stop/@@@IMOP_Versie@@@/imop-geo.xsd">
     <geo:FRBRWork>''' + gio.WorkId + '''</geo:FRBRWork>
     <geo:FRBRExpression>''' + gio.ExpressionId + '''</geo:FRBRExpression>'''
-        if hasattr (gio, 'Tekennauwkeurigheid'):
+        if hasattr (gio, 'JuridischeNauwkeurigheid'):
             gioGML += '''
-    <geo:tekennauwkeurigheid>''' + str (gio.Tekennauwkeurigheid) + '''</geo:tekennauwkeurigheid>'''
+    <geo:juridischeNauwkeurigheid>''' + str (gio.JuridischeNauwkeurigheid) + '''</geo:juridischeNauwkeurigheid>'''
 
         if not gio.GIODelen is None:
             gioGML += '''
@@ -809,7 +809,7 @@ class GeoManipulatie:
         <geo:GeoInformatieObjectMutatie>
             <geo:FRBRWork>''' + gioWijziging.WorkId + '''</geo:FRBRWork>
             <geo:FRBRExpression>''' + gioWijziging.Wordt.ExpressionId + '''</geo:FRBRExpression>
-            <geo:tekennauwkeurigheid>''' + str (gioWijziging.Tekennauwkeurigheid) + '''</geo:tekennauwkeurigheid>'''
+            <geo:juridischeNauwkeurigheid>''' + str (gioWijziging.JuridischeNauwkeurigheid) + '''</geo:juridischeNauwkeurigheid>'''
 
         if not gioWijziging.GIODelen is None:
             wijzigingGML += '''
@@ -842,7 +842,7 @@ class GeoManipulatie:
 
 
         wijzigingGML += '''
-            <geo:mutaties>'''
+            <geo:locatieMutaties>'''
 
         def __VoegLocatieToe (wijzigingGML, locatie, actie):
             wijzigingGML += '''
@@ -884,8 +884,8 @@ class GeoManipulatie:
             wijzigingGML = __VoegLocatieToe (wijzigingGML, locatie, GeoManipulatie._Wijzigactie_Revisie)
 
         wijzigingGML += '''
-            </geo:mutaties>
-            <geo:wijzigmarkering>'''
+            </geo:locatieMutaties>
+            <geo:wijzigmarkeringen>'''
 
         for dimensie, markeringen in gioWijziging.WijzigMarkering.items ():
             markeringType = ('Punt' if dimensie == 0 else 'Lijn' if dimensie == 1 else 'Vlak')
@@ -902,7 +902,7 @@ class GeoManipulatie:
 
 
         wijzigingGML += '''
-            </geo:wijzigmarkering>
+            </geo:wijzigmarkeringen>
         </geo:GeoInformatieObjectMutatie>
     </geo:vastgesteldeVersie>
     <geo:wasID>''' + gioWijziging.Was.ExpressionId + '''</geo:wasID>
@@ -1050,9 +1050,9 @@ class GeoManipulatie:
                 'kaartelementWidth': 900,
                 'kaartelementHeight': 600
             }
-            nauwkeurigheid = self._Operatie.Request.LeesString ("teken-nauwkeurigheid");
+            nauwkeurigheid = self._Operatie.Request.LeesString ("juridische-nauwkeurigheid");
             if not nauwkeurigheid is None:
-                self._Opties['teken-nauwkeurigheid'] = int (nauwkeurigheid)
+                self._Opties['juridische-nauwkeurigheid'] = int (nauwkeurigheid)
             self._Operatie.Log.Detail ("Prepareer kaart " + self._Opties['kaartelementId'])
 
 
@@ -1145,11 +1145,11 @@ class GeoManipulatie:
             self._InitialisatieScripts[self._DimensieLaatsteWijzigingInitialisatieScripts] += '.LimiteerZoomLevel (' + str(0 if minZoom is None else minZoom) + ', ' + str(100 if maxZoom is None else maxZoom) + ')'
 
         def ZoomTotNauwkeurigheid (self, extraZoom : bool):
-            """Geeft aan dat het maximale zoom level overen moet komen met de teken-nauwkeurigheid
+            """Geeft aan dat het maximale zoom level overen moet komen met de juridische nauwkeurigheid
             
             Argumenten:
 
-            extraZoom bool  Geeft aan dat er extra zoom levels moeten zijn zodat het effect van de teken-nauwkeurigheid te zien is
+            extraZoom bool  Geeft aan dat er extra zoom levels moeten zijn zodat het effect van de juridische nauwkeurigheid te zien is
             """
             nauwkeurigheid = self._Operatie.NauwkeurigheidInDecimeter (False)
             if nauwkeurigheid is None:
@@ -1508,28 +1508,28 @@ class GeoManipulatie:
 
 #----------------------------------------------------------------------
 #
-# Teken-nauwkeurigheid
+# Juridische nauwkeurigheid
 #
 #----------------------------------------------------------------------
-#region Teken-nauwkeurigheid
+#region Juridische nauwkeurigheid
 
     def NauwkeurigheidInDecimeter (self, verplicht: bool = True) -> int:
         """Haal de nauwkeurigheid in decimeters uit de request parameters
         
         Argumenten:
 
-        verplicht bool  Geeft aan dat de teken-nauwkeurigheid een verplichte parameter is
+        verplicht bool  Geeft aan dat de juridische nauwkeurigheid een verplichte parameter is
 
-        Geeft de waarde als int terug, of None als de teken-nauwkeurigheid niet is opgegeven
+        Geeft de waarde als int terug, of None als de juridische nauwkeurigheid niet is opgegeven
         """
-        if self.Request.LeesString ("teken-nauwkeurigheid") is None:
+        if self.Request.LeesString ("juridische-nauwkeurigheid") is None:
             if verplicht:
-                self.Log.Fout ("De teken-nauwkeurigheid is niet opgegeven in de specificatie")
+                self.Log.Fout ("De juridische  nauwkeurigheid is niet opgegeven in de specificatie")
             return None
         try:
-            nauwkeurigheid = int (self.Request.LeesString ("teken-nauwkeurigheid"))
+            nauwkeurigheid = int (self.Request.LeesString ("juridische-nauwkeurigheid"))
         except:
-            self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("teken-nauwkeurigheid") + '"')
+            self.Log.Fout ('De opgegeven juridische nauwkeurigheid is geen getal: "' + self.Request.LeesString ("juridische-nauwkeurigheid") + '"')
             return None
         return nauwkeurigheid
 
@@ -1538,16 +1538,16 @@ class GeoManipulatie:
         
         Argumenten:
 
-        verplicht bool  Geeft aan dat de teken-nauwkeurigheid een verplichte parameter is
+        verplicht bool  Geeft aan dat de juridische nauwkeurigheid een verplichte parameter is
 
-        Geeft de waarde als int terug, of None als de teken-nauwkeurigheid niet is opgegeven
+        Geeft de waarde als int terug, of None als de juridische nauwkeurigheid niet is opgegeven
         """
         nauwkeurigheid = self.NauwkeurigheidInDecimeter (True)
         if not nauwkeurigheid is None:
             try:
                 return 0.1 * float (nauwkeurigheid)
             except:
-                self.Log.Fout ('De opgegeven teken-nauwkeurigheid is geen getal: "' + self.Request.LeesString ("teken-nauwkeurigheid") + '"')
+                self.Log.Fout ('De opgegeven juridische nauwkeurigheid is geen getal: "' + self.Request.LeesString ("juridische-nauwkeurigheid") + '"')
 #endregion
 
 #----------------------------------------------------------------------
@@ -1692,7 +1692,7 @@ class GeoManipulatie:
 
     class SchaalafhankelijkeGeoData:
         def __init__ (self):
-            # Tekennauwkeurigheid
+            # Juridische nauwkeurigheid
             self.Nauwkeurigheid : float = None
             # De schaalafhankelijke geodata per zomlevel, voor oplopende zoomlevel. De brondata is hierin als eerste opgenomen.
             self.ZoomLevels : List[GeoManipulatie.SchaalafhankelijkeGeometrie] = []
@@ -1703,13 +1703,13 @@ class GeoManipulatie:
 
         Argumenten:
 
-        geoData GeoData  Een lijst met de geoData van dezelfde dimensie en tekennauwkeurigheid die tegelijk schaalafhankelijk weergegeven moeten worden.
+        geoData GeoData  Een lijst met de geoData van dezelfde dimensie en juridische nauwkeurigheid die tegelijk schaalafhankelijk weergegeven moeten worden.
 
         Geeft de vereenvoudigde geometrieën en markers als GeoData terug.
         """
         nauwkeurigheid = None
         for gd in geoData:
-            nauwkeurigheid = gd.Tekennauwkeurigheid
+            nauwkeurigheid = gd.JuridischeNauwkeurigheid
             dimensie = gd.Dimensie
             if not nauwkeurigheid is None:
                 break
@@ -1717,7 +1717,7 @@ class GeoManipulatie:
             nauwkeurigheid = self.NauwkeurigheidInDecimeter (False)
             if nauwkeurigheid is None:
                 nauwkeurigheid = 1
-        self.Log.Detail ("Maak schaalafhankelijke geometrie voor " + str(len(geoData)) + " GIO/was-/wordt-versies met teken-nauwkeurigheid " + str (nauwkeurigheid) + " decimeter")
+        self.Log.Detail ("Maak schaalafhankelijke geometrie voor " + str(len(geoData)) + " GIO/was-/wordt-versies met juridische nauwkeurigheid " + str (nauwkeurigheid) + " decimeter")
         resultaat = GeoManipulatie.SchaalafhankelijkeGeoData ()
         resultaat.Nauwkeurigheid = nauwkeurigheid
 

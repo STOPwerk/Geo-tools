@@ -13,7 +13,7 @@ Python script: [toon_geo.py](../blob/main/broncode/geo-tools/maak_gio_wijziging.
 
 De uitgangspunten voor dit algeoritme zijn:
 * De geo-tools werken alleen als een GIO uitsluitend punten, lijnen of vlakken hebben. Dit is een implementatiebeperking. Het algoritme kan uitgebreid worden naar GIO's waarin een mix van punten, lijnen en vlakken voorkomen.
-* Beide GIO-versies zijn [geschikt bevonden](Toon-controleer-gio) voor dezelfde teken-nauwkeurigheid die gebruikt wordt bij deze operatie.
+* Beide GIO-versies zijn [geschikt bevonden](Toon-controleer-gio) voor dezelfde juridische nauwkeurigheid die gebruikt wordt bij deze operatie.
 * Als het een GIO betreft met GIO-delen, dan zijn de groepID en bijbehorende naam onveranderlijk in de tijd en onderanderlijk aan elkaar gekoppeld. Als in de was- en wordt-versie van de GIO dezelfde groepID voorkomt, dan hoort daar dezelfde naam bij. Als dezelfde naam voorkomt, dan heeft die dezelfde groepID. 
 
 De bepaling van de GIO-wijziging kan opgesplitst worden in:
@@ -37,8 +37,8 @@ De uitkomst van het algoritme is een GIO-wijziging die bestaat uit:
 Als dezelfde basisgeometrie-ID zowel in de was- als wordt-versie bij een GIO-Locatie voorkomt, dan:
 
 * is de geometrie ongewijzigd, want dat is de eis om dezelfde basisgeometrie-ID te mogen gebruiken;
-* zijn er binnen de wordt-versie geen andere locaties die (voor de opgegeven teken-nauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de wordt-versie ongeschikt bevonden zijn);
-* zijn er binnen de was-versie geen andere locaties die (voor de opgegeven teken-nauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de was-versie ongeschikt bevonden zijn).
+* zijn er binnen de wordt-versie geen andere locaties die (voor de opgegeven juridische nauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de wordt-versie ongeschikt bevonden zijn);
+* zijn er binnen de was-versie geen andere locaties die (voor de opgegeven juridische nauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de was-versie ongeschikt bevonden zijn).
 
 De bijbehorende GIO-locatie uit de was-versie muteert daarom naar de GIO-Locatie in wordt-versie en overlapt io geen enkele manier geometrisch met de overige locaties uit de GIO-versies. Voor deze locaties geldt:
 

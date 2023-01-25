@@ -144,7 +144,7 @@ class GIOWijzigingViewer (GeoManipulatie):
         self._Wordt.NormID = self._Wijziging.NormID
         self._Wordt.NormLabel = self._Wijziging.NormLabel
         self._Wordt.Soort = 'GIO'
-        self._Wordt.Tekennauwkeurigheid = self._Wijziging.Tekennauwkeurigheid
+        self._Wordt.JuridischeNauwkeurigheid = self._Wijziging.JuridischeNauwkeurigheid
         self._Wordt.WorkId = self._Wijziging.WorkId
 
         locaties = {locatie['properties']['id'] : locatie for locatie in self._Was.Locaties }

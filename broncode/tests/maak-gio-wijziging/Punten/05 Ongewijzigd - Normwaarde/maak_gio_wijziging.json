@@ -2,5 +2,5 @@
   "was": "testdata_was_punten.gml",
   "wordt": "testdata_wordt_punten.gml",
   "symbolisatie": "testdata_punten_symbolisatie.xml",
-  "teken-nauwkeurigheid": 10
+  "juridische-nauwkeurigheid": 10
 }

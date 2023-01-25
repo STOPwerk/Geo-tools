@@ -32,7 +32,7 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
 {
     "geometrie": "geometrische_data.gml",
     "symbolisatie": "style.xml",
-    "teken-nauwkeurigheid": 1,
+    "juridische-nauwkeurigheid": 1,
     "beschrijving": "Optionele beschrijving"
 }
 ```
@@ -42,7 +42,7 @@ met:
 | --------- | ------------ |
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html). Optioneel; als dit niet gegeven is worden alle gebieden/lijnen/punten op een standaard manier weergegeven. |
-| `teken-nauwkeurigheid` | De (juridische) [tekennauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
+| `juridische-nauwkeurigheid` | De [juridische nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
 | `beschrijving` | Optioneel: een beschrijving van het GIO die in de resultaatpagina wordt opgenomen |
 
 
@@ -52,7 +52,7 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
 {
     "was": "GIO_was_versie.gml",
     "wordt": "GIO_wordt_versie.gml",
-    "teken-nauwkeurigheid": 1,
+    "juridische-nauwkeurigheid": 1,
     "symbolisatie": "style.xml",
     "wijziging": "GIO_wijziging.gml",
     "beschrijving": "Optionele beschrijving"
@@ -64,7 +64,7 @@ met:
 | --------- | ------------ |
 | `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van de GIO bevat.|
 | `wordt` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de nieuwe (wordt-)versie van de GIO bevat.|
-| `teken-nauwkeurigheid` | De (juridische) [teken-nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
+| `juridische-nauwkeurigheid` | De (juridische) [juridische-nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
 | `wijziging` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) met de GIO-wijziging. Dit bestand kan als invoer gebruikt worden voor de [Toon GIO wijziging](#toon-gio-wijziging) geo-tool. |
 | `beschrijving` | Optioneel: een beschrijving van de GIO-wijziging die in de resultaatpagina wordt opgenomen |
@@ -99,20 +99,20 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
         {
             "pad": "gio_1.gml", 
             "beschrijving": "Optionele beschrijving van de GIO",
-            "teken-nauwkeurigheid": 10,
+            "juridische-nauwkeurigheid": 10,
             "symbolisatie": "afwijkende_style.xml"
         },
         {"pad": "gio_2.gml" }
         {"pad": "gio_3.gml" }
     ]
     "symbolisatie": "style.xml",
-    "teken-nauwkeurigheid": 1,
+    "juridische-nauwkeurigheid": 1,
     "optimalisatie": false,
     "wijziging": [
         {
             "was": "gio_1.gml", 
             "wordt": "gio_2.gml", 
-            "teken-nauwkeurigheid": 10,
+            "juridische-nauwkeurigheid": 10,
             "beschrijving": "Optionele beschrijving van de GIO-wijziging",
             "toon": true | false,
             "beschrijving_toon": "Optionele beschrijving van het tonen van de GIO-wijziging"
@@ -128,7 +128,7 @@ Elk `geometrie` element wordt omgevormd naar een [toon_geo.json](#toon-geo) spec
 | ---------------------- | --------------------- |
 | [toon_geo.json](#toon-geo): `geometrie` | `geometrie`: `pad` |
 | [toon_geo.json](#toon-geo): `symbolisatie` | `geometrie`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
-| [toon_geo.json](#toon-geo): `teken-nauwkeurigheid` | `geometrie`: `teken-nauwkeurigheid` indien aanwezig, anderd `teken-nauwkeurigheid` |
+| [toon_geo.json](#toon-geo): `juridische-nauwkeurigheid` | `geometrie`: `juridische-nauwkeurigheid` indien aanwezig, anderd `juridische-nauwkeurigheid` |
 | [toon_geo.json](#toon-geo): `beschrijving` | `geometrie`: `beschrijving` |
 
 Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak-gio-wijziging) en uitgevoerd:
@@ -137,7 +137,7 @@ Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak
 | ---------------------- | --------------------- |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `was` | `wijziging`: `was` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `wordt` | `wijziging`: `wordt` |
-| [maak_gio_wijziging.json](#maak-gio-wijziging): `teken-nauwkeurigheid` | `wijziging`: `teken-nauwkeurigheid` indien aanwezig, anders `teken-nauwkeurigheid` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `juridische-nauwkeurigheid` | `wijziging`: `juridische-nauwkeurigheid` indien aanwezig, anders `juridische-nauwkeurigheid` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving` |
 

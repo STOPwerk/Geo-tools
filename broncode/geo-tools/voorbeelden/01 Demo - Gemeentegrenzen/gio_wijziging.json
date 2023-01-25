@@ -1,22 +1,22 @@
 {
-	"beschrijving": "Demonstratie van het nut van GIO-wijzigingen/geo-renvooi. Als er relatief kleine wijzigingen in een GIO worden vastgesteld, dan is het voor eenieder lastig te doorgronden wat er gewijzigd is. Door in een besluit de wijziging in de GIO (naast de wijziging van de tekst) in renvooi weer te geven wordt wel duidelijk wat de wijziging inhoudt.</p><p>De gekozen manier van opstellen en presenteren van de GIO-wijziging is (net als renvooi voor te tekst) geschikt om geautomatiseerd te worden uitgevoerd. De GIO kan (op dezelfde manier als tekst van een regeling) geconsolideerd worden.",
-    "geometrie": [
-        {
-            "pad": "gemeenten_2017.gml",
-			"beschrijving": "De gemeentegrenzen uit 2017 als een GIO met de gemeenten als GIO-delen."
-        },
-        {
-            "pad": "gemeenten_2022.gml",
-			"beschrijving": "De gemeentegrenzen uit 2022 als een GIO met de gemeenten als GIO-delen."
-        }
-    ],
-    "wijziging": [
-        {
-            "was": "gemeenten_2017.gml",
-            "wordt": "gemeenten_2022.gml",
-			"beschrijving": "Verandering van de gemeentelijke indeling tussen 2018 en eind 2022 als GIO-wijziging."
-        }
-    ],
-    "symbolisatie": "gemeenten_alle_jaren_symbolisatie.xml",
-    "teken-nauwkeurigheid": 10
+  "beschrijving": "Demonstratie van het nut van GIO-wijzigingen/geo-renvooi. Als er relatief kleine wijzigingen in een GIO worden vastgesteld, dan is het voor eenieder lastig te doorgronden wat er gewijzigd is. Door in een besluit de wijziging in de GIO (naast de wijziging van de tekst) in renvooi weer te geven wordt wel duidelijk wat de wijziging inhoudt.</p><p>De gekozen manier van opstellen en presenteren van de GIO-wijziging is (net als renvooi voor te tekst) geschikt om geautomatiseerd te worden uitgevoerd. De GIO kan (op dezelfde manier als tekst van een regeling) geconsolideerd worden.",
+  "geometrie": [
+    {
+      "pad": "gemeenten_2017.gml",
+      "beschrijving": "De gemeentegrenzen uit 2017 als een GIO met de gemeenten als GIO-delen."
+    },
+    {
+      "pad": "gemeenten_2022.gml",
+      "beschrijving": "De gemeentegrenzen uit 2022 als een GIO met de gemeenten als GIO-delen."
+    }
+  ],
+  "wijziging": [
+    {
+      "was": "gemeenten_2017.gml",
+      "wordt": "gemeenten_2022.gml",
+      "beschrijving": "Verandering van de gemeentelijke indeling tussen 2018 en eind 2022 als GIO-wijziging."
+    }
+  ],
+  "symbolisatie": "gemeenten_alle_jaren_symbolisatie.xml",
+  "juridische-nauwkeurigheid": 10
 }

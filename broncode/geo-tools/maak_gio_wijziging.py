@@ -144,7 +144,7 @@ class GIOWijzigingMaker (GeoManipulatie):
                 self._SymbolisatieXML = symbolisatie
             self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
 
-        if self.NauwkeurigheidInDecimeter (False) is None:
+        if self.NauwkeurigheidInDecimeter (True) is None:
             succes = False
 
         return succes

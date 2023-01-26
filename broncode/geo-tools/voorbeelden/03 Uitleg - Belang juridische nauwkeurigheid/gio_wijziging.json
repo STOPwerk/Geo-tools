@@ -16,7 +16,7 @@
     {
       "was": "Originele versie.gml",
       "wordt": "Gewijzigde versie.gml",
-      "juridische nauwkeurigheid": 20000,
+      "juridische-nauwkeurigheid": 20000,
       "toon": false,
       "beschrijving": "STOP kent een geo-renvooimechanisme voor het doorgeven van een wijziging in een GIO. Daarbij wordt aangegeven welke GIO-<a href=\"@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Locatie.html\">Locaties</a> uit de originele versie van de GIO komen te vervallen, en welke nieuwe GIO_Locaties in de nieuwe versie worden geïntroduceerd. Daarnaast is aangegeven in welke gebieden wijzigingen zijn opgetreden. In dit geval is het ongewijzigde gebied dus geen onderdeel van de GIO-wijziging, maar de oude en nieuwe vorm van het gewijzigde gebied wel. En de teken-onnauwkeurigheden op de afscheiding zouden niet als wijziging gemarkeerd moeten worden, omdat ze juridisch niet relevant zijn. Dat kan de software doen door details kleiner dan de juridische nauwkeurigheid te negeren."
     }

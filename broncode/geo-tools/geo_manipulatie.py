@@ -816,14 +816,14 @@ class GeoManipulatie:
             <geo:groepen>'''
             for gioDeel in gioWijziging.GIODelen.values ():
                 wijzigingGML += '''
-                <geo:Groep>
+                <geo:GroepMutatie>
                     <geo:groepID>''' + gioDeel.GroepId + '''</geo:groepID>
                     <geo:label>''' + gioDeel.Label + '''</geo:label>'''
                 if not gioDeel.WijzigActie is None:
                     wijzigingGML += '''
                     <geo:wijzigactie>''' + gioDeel.WijzigActie + '''</geo:wijzigactie>'''
                 wijzigingGML += '''
-                <geo:/Groep>'''
+                </geo:GroepMutatie>'''
 
             wijzigingGML += '''
             </geo:groepen>'''
@@ -846,15 +846,8 @@ class GeoManipulatie:
 
         def __VoegLocatieToe (wijzigingGML, locatie, actie):
             wijzigingGML += '''
-                <geo:LocatieMutatie>
-                    <geo:wijzigactie>''' + actie + '''</wijzigactie>'''
+                <geo:LocatieMutatie>'''
             props = locatie.get ('properties')
-            revisieVan = props.get ('isRevisieVan')
-            if not revisieVan is None:
-                for was_id in revisieVan:
-                    wijzigingGML += '''
-                    <geo:isRevisieVan>''' + was_id + '''</geo:isRevisieVan>'''
-
             waarde = props.get('naam')
             if not waarde is None:
                 wijzigingGML += '''
@@ -872,6 +865,13 @@ class GeoManipulatie:
             if not waarde is None:
                 wijzigingGML += '''
                     <geo:''' + gioWijziging.AttribuutNaam + '>' + waarde + '</geo:' + gioWijziging.AttribuutNaam + '>'
+            wijzigingGML += '''
+                    <geo:wijzigactie>''' + actie + '''</geo:wijzigactie>'''
+            #revisieVan = props.get ('isRevisieVan')
+            #if not revisieVan is None:
+            #    for was_id in revisieVan:
+            #        wijzigingGML += '''
+            #        <geo:isRevisieVan>''' + was_id + '''</geo:isRevisieVan>'''
             wijzigingGML += '''
                 </geo:LocatieMutatie>'''
             return wijzigingGML
@@ -892,12 +892,14 @@ class GeoManipulatie:
             for markering in markeringen.Locaties:
                 wijzigingGML += '''
                 <geo:''' + markeringType + '''>
-                    <basisgeo:Geometrie>
-                        <basisgeo:id>''' + markering['properties']['id'] + '''</basisgeo:id>
-                        <basisgeo:geometrie>
+                    <geo:geometrie>
+                        <basisgeo:Geometrie>
+                            <basisgeo:id>''' + markering['properties']['id'] + '''</basisgeo:id>
+                            <basisgeo:geometrie>
                                 ''' + GeoManipulatie._GeometrieGML (markering['geometry']) + '''
-                        </basisgeo:geometrie>
-                    </basisgeo:Geometrie>
+                            </basisgeo:geometrie>
+                        </basisgeo:Geometrie>
+                    </geo:geometrie>
                 </geo:''' + markeringType + '''>'''
 
 
@@ -911,7 +913,7 @@ class GeoManipulatie:
 
     _Wijzigactie_Was = 'verwijder'
     _Wijzigactie_Wordt = 'voegtoe'
-    _Wijzigactie_Revisie = 'revisie'
+    _Wijzigactie_Revisie = 'reviseer'
 
     @staticmethod
     def _GeometrieGML(geom):

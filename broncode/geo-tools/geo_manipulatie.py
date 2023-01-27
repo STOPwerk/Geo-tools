@@ -282,9 +282,9 @@ class GeoManipulatie:
         locatie object  Locatie van GeoData
         """
         locatieShape = GeoManipulatie.MaakShapelyShape (locatie)
-        cel = self._GridCelVoorPunt (dpm, locatieShape.bounds[0], locatieShape.bounds[1])
-        dx = self._GridCelVoorPunt (dpm, locatieShape.bounds[2], locatieShape.bounds[1])[0] - cel[0] + 1
-        dy = self._GridCelVoorPunt (dpm, locatieShape.bounds[0], locatieShape.bounds[3])[1] - cel[1] + 1
+        cel = self._GridCelVoorPunt (dpm, [locatieShape.bounds[0], locatieShape.bounds[1]])
+        dx = self._GridCelVoorPunt (dpm, [locatieShape.bounds[2], locatieShape.bounds[1]])[0] - cel[0] + 1
+        dy = self._GridCelVoorPunt (dpm, [locatieShape.bounds[0], locatieShape.bounds[3]])[1] - cel[1] + 1
         return (cel, dx, dy)
 
     def _GridCelVoorPunt (self, dpm : float, coords : List[float]) -> Tuple[int,int]:
@@ -391,7 +391,7 @@ class GeoManipulatie:
             if not elt is None:
                 data.AttribuutNaam = 'groepID'
                 data.GIODelen = {}
-                for groepXml in elt.findall (GeoManipulatie._GeoNS + 'Groep'):
+                for groepXml in elt.findall (GeoManipulatie._GeoNS + ('Groep' if mutatie is None else 'GroepMutatie')):
                     groepId = groepXml.find (GeoManipulatie._GeoNS + 'groepID')
                     elt2 = groepXml.find (GeoManipulatie._GeoNS + 'label')
                     if groepId is None or elt2 is None:

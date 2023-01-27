@@ -53,8 +53,8 @@ except Exception as e:
 configuratie["VERSIE"] = datetime.now().strftime ("%Y-%m-%d %H:%M:%S")
 
 # Onderzoek de bestanden
-if os.path.isdir (bestanden_map):
-    for root, dirs, files in os.walk (bestanden_map):
+def _WerkBestandenBij (map):
+    for root, dirs, files in os.walk (map):
         for file in files:
             ext = os.path.splitext(file)[1]
             if not ext is None and ext in ['.py', '.css', '.js', '.json', '.htm', '.html', '.txt', '.md', '.bat']:
@@ -71,5 +71,10 @@ if os.path.isdir (bestanden_map):
                 except Exception as e:
                     print ('Kan parameters in bestand "' + bronPad + '" niet vervangen: ' + str(e))
                     sys.exit(2)
-        if not recursief:
-            break
+        if recursief:
+            for dir in dirs:
+                if not dir in ['env', 'venv']:
+                    _WerkBestandenBij (os.path.join (root, dir))
+        break
+
+_WerkBestandenBij (bestanden_map)

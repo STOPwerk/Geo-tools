@@ -134,7 +134,7 @@ class GIOWijzigingMaker (GeoManipulatie):
                 for groepId, gioDeel in self._Was.GIODelen.items ():
                     nieuw = self._Wordt.GIODelen.get (groepId)
                     if not nieuw is None and nieuw.Label != gioDeel.Label:
-                        self.Log.Fout ("Label van GIO-deel verschilt: groepID '" + groepID + "' had label '" + gioDeel.Label + "' en dat wordt '" + nieuw.Label + "'")
+                        self.Log.Fout ("Label van GIO-deel verschilt: groepID '" + groepId + "' had label '" + gioDeel.Label + "' en dat wordt '" + nieuw.Label + "'")
                         succes = False
 
         if self._SymbolisatieNaam is None:

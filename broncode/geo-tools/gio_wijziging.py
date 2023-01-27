@@ -79,7 +79,7 @@ class GIOWijziging (GeoManipulatie):
                 request._FormData["beschrijving"] = gio.get ("beschrijving")
                 symbolisatie = __Waarde (gio, "symbolisatie")
                 request._FormData["symbolisatie"] = symbolisatie
-                request._FormData["teken-nauwkeurigheid"] = __Waarde (gio, "teken-nauwkeurigheid")
+                request._FormData["juridische-nauwkeurigheid"] = __Waarde (gio, "juridische-nauwkeurigheid")
 
                 self.Log.Informatie ("Toon GIO: '" + gio["pad"] + "'")
                 uitvoerder = GeoViewer (request, self.Log)
@@ -124,7 +124,7 @@ class GIOWijziging (GeoManipulatie):
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
                 symbolisatie = __Waarde (gio, "symbolisatie")
                 request._FormData["symbolisatie"] = symbolisatie
-                request._FormData["teken-nauwkeurigheid"] = __Waarde (wijziging, "teken-nauwkeurigheid")
+                request._FormData["juridische-nauwkeurigheid"] = __Waarde (wijziging, "juridische-nauwkeurigheid")
 
                 self.Log.Informatie ("Maak GIO-wijziging: '" + wijziging["was"] + "' &rarr; '" + wijziging["was"] + "'")
                 uitvoerder = GIOWijzigingMaker (request, self.Log)

@@ -1,4 +1,4 @@
 {
   "geometrie": "testdata_vlakken.gml",
-  "teken-nauwkeurigheid": 150
+  "juridische-nauwkeurigheid": 150
 }

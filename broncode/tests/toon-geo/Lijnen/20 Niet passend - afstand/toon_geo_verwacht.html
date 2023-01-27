@@ -4028,12 +4028,12 @@ class Slider {
     <div id="kaart_3_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>De GIO zou met een teken-nauwkeurigheid van 250 decimeter zijn opgesteld.
+<p>De GIO zou met een juridische-nauwkeurigheid van 250 decimeter zijn opgesteld.
             Om te zien of dat klopt wordt de elders beschreven <a href="@@@GeoTools_Url@@@wiki/Toon-controleer-gio" target="_blank">procedure</a> gevolgd.</p>
 <p>Voor een GIO met lijnen:
 <ol>
-    <li>Locaties waarvan de uitgestrektheid kleiner is dan de teken-nauwkeurigheid worden genegeerd, als: bounding_box.width &lt; 25.000000 en bounding_box.height &lt; 25.000000</li>
-    <li>Geef de lijnen als dikte de teken-nauwkeurigheid: buffer (25.000000)</li>
+    <li>Locaties waarvan de uitgestrektheid kleiner is dan de juridische-nauwkeurigheid worden genegeerd, als: bounding_box.width &lt; 25.000000 en bounding_box.height &lt; 25.000000</li>
+    <li>Geef de lijnen als dikte de juridische-nauwkeurigheid: buffer (25.000000)</li>
     <li>Van de dikke lijnen wordt paarsgewijs de overlap (intersection) bepaald. Als er overlap is, dan komen de originele lijnen te dicht bij elkaar.
     <li>Van dikke lijnen die tot dezelfde locatie behoren wordt geen intersectie bepaald - de lijnen mogen dicht bij elkaar liggen of elkaar zelfs snijden.
 </ol>
@@ -4045,9 +4045,9 @@ Klik op een lijn in de kaart om de uitkomst van de procedure te zien voor een lo
     <div id="kaart_12_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>Het GIO past <b>niet</b> bij een teken-nauwkeurigheid van 250 decimeter.
-                Tenzij de verkeerde teken-nauwkeurigheid opgegeven is zouden eerst de geometrieën in de GIO gecorrigeerd moeten worden. 
-Het GIO lijkt gemaakt voor een teken-nauwkeurigheid van 200.0 decimeter of kleiner
+<p>Het GIO past <b>niet</b> bij een juridische-nauwkeurigheid van 250 decimeter.
+                Tenzij de verkeerde juridische-nauwkeurigheid opgegeven is zouden eerst de geometrieën in de GIO gecorrigeerd moeten worden. 
+Het GIO lijkt gemaakt voor een juridische-nauwkeurigheid van 200.0 decimeter of kleiner
 </p>
 <button data-accordion="5" class="accordion_h"><h3>Verslag van de verwerking</h3></button>
 <div data-accordion-paneel="5" class="accordion_h_paneel">
@@ -4069,7 +4069,7 @@ Het GIO lijkt gemaakt voor een teken-nauwkeurigheid van 200.0 decimeter of klein
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Geen bestand gespecificeerd voor "symbolisatie"</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Maak de kaartweergave</td></tr>
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Valideer de GIO op teken-nauwkeurigheid</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Valideer de GIO op juridische-nauwkeurigheid</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak de pagina af</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">De verwerking is voltooid.</td></tr>
 </table>
@@ -4270,7 +4270,7 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym11",`<FeatureTypeStyle version=
 
 window.addEventListener("load", function () {
 var kaart = new Kaart (250);
-kaart.VoegLaagToe ("Verdikte lijnen", "data4", "sym5", true, true);kaart.VoegLaagToe ("Gebieden waar afstanden kleiner zijn dan de teken-nauwkeurigheid", "data6", "sym7", true, true);kaart.VoegLaagToe ("Lijnen uit het GIO", "data8", "sym9", true, true);kaart.VoegLaagToe ("Lijnen die niet passen bij de teken-nauwkeurigheid", "data10", "sym11", true, true);
+kaart.VoegLaagToe ("Verdikte lijnen", "data4", "sym5", true, true);kaart.VoegLaagToe ("Gebieden waar afstanden kleiner zijn dan de juridische-nauwkeurigheid", "data6", "sym7", true, true);kaart.VoegLaagToe ("Lijnen uit het GIO", "data8", "sym9", true, true);kaart.VoegLaagToe ("Lijnen die niet passen bij de juridische-nauwkeurigheid", "data10", "sym11", true, true);
 kaart.Toon ("kaart_12", "900", "600");
 });
 </script>

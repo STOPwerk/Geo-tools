@@ -134,7 +134,7 @@ class GIOWijzigingMaker (GeoManipulatie):
                 for groepId, gioDeel in self._Was.GIODelen.items ():
                     nieuw = self._Wordt.GIODelen.get (groepId)
                     if not nieuw is None and nieuw.Label != gioDeel.Label:
-                        self.Log.Fout ("Label van GIO-deel verschilt: groepID '" + groepID + "' had label '" + gioDeel.Label + "' en dat wordt '" + nieuw.Label + "'")
+                        self.Log.Fout ("Label van GIO-deel verschilt: groepID '" + groepId + "' had label '" + gioDeel.Label + "' en dat wordt '" + nieuw.Label + "'")
                         succes = False
 
         if self._SymbolisatieNaam is None:
@@ -144,7 +144,7 @@ class GIOWijzigingMaker (GeoManipulatie):
                 self._SymbolisatieXML = symbolisatie
             self._SymbolisatieNaam = self.VoegDefaultSymbolisatieToe (self._Was) if symbolisatie is None else self.VoegSymbolisatieToe (symbolisatie)
 
-        if self.NauwkeurigheidInDecimeter (False) is None:
+        if self.NauwkeurigheidInDecimeter (True) is None:
             succes = False
 
         return succes
@@ -171,7 +171,7 @@ class GIOWijzigingMaker (GeoManipulatie):
 
             # De juridisch ongewijzigde locaties in de wordt-versie die een revisie 
             # zijn van de locaties in de was-versie, d.w.z. alleen van naam verschillen
-            # of waarvan de geometrie binnen de teken-nauwkeurigheid is gewijzigd.
+            # of waarvan de geometrie binnen de juridische nauwkeurigheid is gewijzigd.
             # Relatie tussen de wordt-revisie-locatie en de was-locatie waar het een revisie van is
             # Key is de basisgeometrie-ID wordt-locatie, value de basisgeo-ID van de was-versie.
             self.WordtRevisieLocaties : Dict[str,List[str]] = {}
@@ -310,7 +310,7 @@ Beweeg de schuif om meer of minder van elke versie te zien. Klik op een ''' + se
         drempel = self.NauwkeurigheidInMeter ()
         self.Generator.VoegHtmlToe ('<li>Vergelijk ' + str(len (self._ResterendWas.Locaties)) + ' locaties met ' + str(len(wasGeometrieen)) + ' punten uit de was-versie en ' + str(len (self._ResterendWordt.Locaties)) + ''''
 met ''' + str(len(wordtGeometrieen)) + ''' punten uit de wordt-versie paarsgewijs met elkaar.<ul>
-<li>Als de twee punten uit een paar op een afstand kleiner dan de teken-nauwkeurigheid (''' + '{:.1f}'.format (drempel) + ''''m) staan, dan
+<li>Als de twee punten uit een paar op een afstand kleiner dan de juridische nauwkeurigheid (''' + '{:.1f}'.format (drempel) + ''''m) staan, dan
 worden ze geacht dezelfde plaats te betreffen. ''')
         if not self._Was.AttribuutNaam is None:
             self.Generator.VoegHtmlToe ('Er is dan sprake van een wijziging als de bijbehorende locaties verschillen in ' + self._Was.AttribuutNaam + '''; 
@@ -423,7 +423,7 @@ locatie wordt aan de gewijzigde locaties toegevoegd, en het punt aan de wijzigma
 
         self.Generator.VoegHtmlToe ('''<li>Voer eventuele correcties door:
 <ul>
-<li>Als een of beide GIO-versies geometrieën bevat die minder dan de teken-nauwkeurigheid zijn gescheiden, dan kan dezelfde geometrie 
+<li>Als een of beide GIO-versies geometrieën bevat die minder dan de juridische nauwkeurigheid zijn gescheiden, dan kan dezelfde geometrie 
 uit de ene versie zowel als revisie van de ene als wijziging van de andere geometrie uit de andere GIO-versie gezien worden. Voer hiervoor een ontdubbeling uit.</li>''')
         if heeftMultiGeometrie:
             self.Generator.VoegHtmlToe ('''<li>Een of beide GIO-versies hebben locaties die multi-geometrieën bevatte. Het kan voorkomen dat van dezelfde locatie de ene geometrie 
@@ -487,7 +487,7 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
         self._Wijziging.AttribuutNaam = self._Was.AttribuutNaam
         self._Wijziging.Dimensie = self._Was.Dimensie
         self._Wijziging.Soort = 'GIO-wijziging'
-        self._Wijziging.Tekennauwkeurigheid = self.NauwkeurigheidInDecimeter ()
+        self._Wijziging.JuridischeNauwkeurigheid = self.NauwkeurigheidInDecimeter ()
         if self._Wordt.Vaststellingscontext is None:
             nu = date.today().strftime ("%Y-%m-%d")
             self._Wijziging.Vaststellingscontext = '''    <geo:context>
@@ -647,7 +647,7 @@ anders zou de revisie-geometrie bij de geo-renvooiweergave niet bij zowel de was
     def _ToonOvereenkomstigeLocaties (self, wasIdvoorwordtId : Dict[str,List[str]]):
         self.Log.Informatie ('Presenteer overeenkomstige basisgeometrie-IDs van locaties')
         self.Generator.VoegHtmlToe ('''<p>Er zijn locaties in de was- en wordt-versie van het GIO waarvan de geometrieën
-binnen de teken-nauwkeurigheid met elkaar overeenkomen. Omdat de basisgeometrie-ID van de locaties niet met elkaar overeenkomen,
+binnen de juridische nauwkeurigheid met elkaar overeenkomen. Omdat de basisgeometrie-ID van de locaties niet met elkaar overeenkomen,
 moet aangenomen worden dat de geometrieën toch van elkaar verschillen (want de geo-tools voeren geen vergelijking van
 geometrieën uit). Het advies is om de locaties in de wordt-versie te vervangen door de locaties uit de was-versie,
 zodat deze revisie niet meer nodig is. Of om, als de naam van de locatie wel moet wijzigen, dezelfde basisgeometrie-IDs

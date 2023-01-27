@@ -198,7 +198,7 @@ class Kaart {
             target: opties['kaartelementId'],
             view: view
         });
-        if ('teken-nauwkeurigheid' in opties) {
+        if ('juridische-nauwkeurigheid' in opties) {
             map.addControl(new ol.control.ScaleLine({ units: 'metric' }));
         }
         map.render();
@@ -243,7 +243,7 @@ class Kaart {
             }
         }
         var aanUitLagenElt = null;
-        if (aanUitLagen.length > 0 || 'teken-nauwkeurigheid' in opties) {
+        if (aanUitLagen.length > 0 || 'juridische-nauwkeurigheid' in opties) {
             var elt = document.createElement('p');
             kaartElement.insertAdjacentElement('afterend', elt); var parent = elt;
             elt = document.createElement('table'); parent.appendChild(elt); parent = elt;
@@ -253,10 +253,10 @@ class Kaart {
                 aanUitLagenElt = elt
                 aanUitLagenElt.innerHTML = 'Gegevens in de kaart die wel/niet zichtbaar gemaakt kunnen worden:</br>';
             }
-            if ('teken-nauwkeurigheid' in opties) {
+            if ('juridische-nauwkeurigheid' in opties) {
                 elt.width = '100%';
                 elt = document.createElement('td'); parent.appendChild(elt);
-                new TekenNauwkeurigheidSchaal(opties['teken-nauwkeurigheid'], elt, opties['kaartelementId'], view);
+                new TekenNauwkeurigheidSchaal(opties['juridische-nauwkeurigheid'], elt, opties['kaartelementId'], view);
             }
         }
 
@@ -297,11 +297,11 @@ class Kaart {
 }
 
 class TekenNauwkeurigheidSchaal {
-    constructor(tekennauwkeurigheid, inElement, kaartElementId, view) {
+    constructor(juridischeNauwkeurigheid, inElement, kaartElementId, view) {
         inElement.style.textAlign = 'center';
         inElement.style.whiteSpace = 'nowrap';
-        inElement.innerHTML = 'Teken-nauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="tekennauwkeurigheid"></div></br>' + tekennauwkeurigheid + '&nbsp;decimeter</br>';
-        this._TekenNauwkeurigheid = tekennauwkeurigheid / 10;
+        inElement.innerHTML = 'Juridische&nbsp;nauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="juridische_nauwkeurigheid"></div></br>' + juridischeNauwkeurigheid + '&nbsp;decimeter</br>';
+        this._JuridischeNauwkeurigheid = juridischeNauwkeurigheid / 10;
         this._View = view;
         this._SchaalElement = document.getElementById(kaartElementId + '_tn');
         this._Schaal();
@@ -313,7 +313,7 @@ class TekenNauwkeurigheidSchaal {
     _Schaal() {
         var resolution = this._View.getResolution();
         if (resolution) {
-            var pixels = this._TekenNauwkeurigheid / resolution;
+            var pixels = this._JuridischeNauwkeurigheid / resolution;
             if (pixels < 1) {
                 this._SchaalElement.style.display = 'none';
             } else {

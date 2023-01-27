@@ -1,12 +1,12 @@
 {
   "beschrijving": "Demonstratie van het maken en tonen van een GIO-wijziging voor een GIO die punten bevat.</p><p>Laat zien hoe een GIO-wijziging berekend kan worden voor een GIO waarin alle geometrieën bestaan uit punten.</p><p>Dit is slechts een van de mogelijke manieren om een GIO-wijziging te bepalen op basis van alleen de informatie die in een GIO-versie aanwezig is. Andere implementaties zijn mogelijk, zeker als ook de brondata voor de GIO-versies beschikbaar is.",
   "symbolisatie": "punten_symbolisatie.xml",
-  "teken-nauwkeurigheid": 30,
+  "juridische-nauwkeurigheid": 30,
   "geometrie": [
     {
       "pad": "Originele versie.gml",
-      "beschrijving": "Deze demo laat zien hoe een GIO-wijziging gemaakt wordt waarbij steeds dezelfde GIO-versie als uitgangspunt genomen wordt. De originele GIO-versie bestaat uit twee individuele punten (links) die altijd meer dan de teken-nauwkeurigheid uit elkaar staan, twee individuele punten (rechts) die meestal ver genoeg uit elkaar staan, en twee punten (midden) in een enkele locatie met een multi-geometrie. De punten zijn ondergebracht in drie GIO-delen.",
-      "teken-nauwkeurigheid": ""
+      "beschrijving": "Deze demo laat zien hoe een GIO-wijziging gemaakt wordt waarbij steeds dezelfde GIO-versie als uitgangspunt genomen wordt. De originele GIO-versie bestaat uit twee individuele punten (links) die altijd meer dan de juridische nauwkeurigheid uit elkaar staan, twee individuele punten (rechts) die meestal ver genoeg uit elkaar staan, en twee punten (midden) in een enkele locatie met een multi-geometrie. De punten zijn ondergebracht in drie GIO-delen.",
+      "juridische-nauwkeurigheid": ""
     }
   ],
   "wijziging": [

@@ -76,7 +76,7 @@ class GeoManipulatie:
 
     def VoerUit(self):
         """Maak de webpagina aan"""
-        self.Log.Informatie ("Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-01-27 12:35:17.")
+        self.Log.Informatie ("Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-01-27 12:38:01.")
         try:
             # _VoerUit moet in een afgeleide klasse worden geïmplementeerd
             if self._VoerUit ():

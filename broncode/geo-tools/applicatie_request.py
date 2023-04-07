@@ -11,6 +11,7 @@ from applicatie_meldingen import Meldingen
 
 class Parameters:
 
+#region Inlezen van parameters
     @staticmethod
     def Lees (log : Meldingen, specificatiePad : str) -> 'Parameters':
         """Probeer een specificatie te lezen en maak daar parameters van
@@ -31,17 +32,21 @@ class Parameters:
         if not isinstance (specificatie, dict):
             log.Fout ('Bestand "' + specificatiePad + '" is geen specificatie want de inhoud is geen JSON object')
             return
-        return Parameters (specificatie, None, os.path.dirname (specificatiePad))
+        return Parameters (log, specificatie, None, os.path.dirname (specificatiePad))
+#endregion
 
-    def __init__ (self, formdata : Dict[str,str], filedata, directory_pad: str):
+#region Initialisatie en algemene methoden
+    def __init__ (self, log : Meldingen, formdata : Dict[str,str], filedata, directory_pad: str):
         """Maak een instantie van de parameters aan
 
         Argumenten:
 
+        log Meldingen      Verzameling meldingen van de uitvoerende applicatie
         formdata {}        Key = value parameters die invoer zijn voor de operatie
         filedata           Bestanden die in een web request zijn meegegeven; None voor een test
         directory_pad str  Voor een test: pad waarin de bestanden staan; None voor een web request
         """
+        self.Log : Meldingen = log
         self._FormData = formdata
         self._FileData = filedata
         self._Pad = directory_pad
@@ -62,9 +67,13 @@ class Parameters:
         """
         waarde = None if self._FormData is None else self._FormData.get (key)
         if not waarde is None:
-            return str(waarde).lower () if lowercase else str(waarde)
+            waarde = str(waarde)
+            if len (waarde) > 0:
+                return waarde.lower () if lowercase else waarde
+#endregion
 
-    def LeesBestand (self, log : Meldingen, key: str, verplicht: bool):
+#region Ondersteuning voor bestanden
+    def LeesBestand (self, key: str, verplicht: bool):
         """Lees de inhoud van een bestand aan de hand van de specificatie key / input type="file" control naam.
 
         Argumenten:
@@ -79,39 +88,39 @@ class Parameters:
             filenaam = self._FormData.get (key)
             if filenaam is None:
                 if verplicht:
-                    log.Fout ('Geen bestand gespecificeerd voor "' + key + '"')
+                    self.Log.Fout ('Geen bestand gespecificeerd voor "' + key + '"')
                 else:
-                    log.Detail ('Geen bestand gespecificeerd voor "' + key + '"')
+                    self.Log.Detail ('Geen bestand gespecificeerd voor "' + key + '"')
                 return None
             pad = os.path.join (self._Pad, filenaam)
             if not os.path.isfile (pad):
-                log.Fout ('Bestand voor "' + key + '" niet gevonden: "' + filenaam + '"')
+                self.Log.Fout ('Bestand voor "' + key + '" niet gevonden: "' + filenaam + '"')
                 return None
             try:
                 with open (pad, 'r', encoding = 'utf-8') as dataFile:
                     data = dataFile.read ()
-                log.Detail ('Bestand "' + filenaam + '" voor "' + key + '" ingelezen')
+                self.Log.Detail ('Bestand "' + filenaam + '" voor "' + key + '" ingelezen')
                 return data
             except Exception as e:
-                log.Fout ('Bestand voor "' + key + '" ("' + filenaam + '") kan niet gelezen worden: ' + str(e))
+                self.Log.Fout ('Bestand voor "' + key + '" ("' + filenaam + '") kan niet gelezen worden: ' + str(e))
                 return None
 
         else:
             files = None if self._FileData is None or not key in self._FileData else self._FileData.getlist (key)
             if files is None:
-                log.Detail ('Geen bestand doorgegeven voor "' + key + '"')
+                self.Log.Detail ('Geen bestand doorgegeven voor "' + key + '"')
                 return None
             for fileData in files:
                 if fileData.filename != '':
                     try:
                         data = fileData.stream.read ().decode("utf-8").strip ()
                         if len(data) == 0:
-                            log.Waarschuwing ('Leeg bestand "' + fileData.filename + '" voor "' + key + '" genegeerd')
+                            self.Log.Waarschuwing ('Leeg bestand "' + fileData.filename + '" voor "' + key + '" genegeerd')
                         else:
-                            log.Detail ('Bestand "' + fileData.filename + '" voor "' + key + '" ingelezen')
+                            self.Log.Detail ('Bestand "' + fileData.filename + '" voor "' + key + '" ingelezen')
                             return data
                     except Exception as e:
-                        log.Fout ('Bestand "' + fileData.filename + '" bevat geen valide (utf-8) data: ' + str(e))
+                        self.Log.Fout ('Bestand "' + fileData.filename + '" bevat geen valide (utf-8) data: ' + str(e))
                     break
             return None
 
@@ -139,3 +148,62 @@ class Parameters:
                 return filenaam
             else:
                 return os.path.splitext (filenaam)[0]
+#endregion
+
+#region Ondersteuning voor nauwkeurigheden
+    def JuridischeNauwkeurigheidInDecimeter (self, verplicht: bool = True) -> int:
+        """Haal de nauwkeurigheid in decimeters uit de request parameters
+        
+        Argumenten:
+
+        verplicht bool  Geeft aan dat de juridische nauwkeurigheid een verplichte parameter is
+
+        Geeft de waarde als int terug, of None als de juridische nauwkeurigheid niet is opgegeven
+        """
+        if self.LeesString ("juridische-nauwkeurigheid") is None:
+            if verplicht:
+                self.Log.Fout ("De juridische nauwkeurigheid is niet opgegeven in de specificatie")
+            return None
+        try:
+            nauwkeurigheid = int (self.LeesString ("juridische-nauwkeurigheid"))
+        except:
+            self.Log.Fout ('De opgegeven juridische nauwkeurigheid is geen getal: "' + self.LeesString ("juridische-nauwkeurigheid") + '"')
+            return None
+        return nauwkeurigheid
+
+    def JuridischeNauwkeurigheidInMeter (self, verplicht: bool = True) -> float:
+        """Haal de nauwkeurigheid in meters uit de request parameters
+        
+        Argumenten:
+
+        verplicht bool  Geeft aan dat de juridische nauwkeurigheid een verplichte parameter is
+
+        Geeft de waarde als float terug, of None als de juridische nauwkeurigheid niet is opgegeven
+        """
+        nauwkeurigheid = self.JuridischeNauwkeurigheidInDecimeter (verplicht)
+        if not nauwkeurigheid is None:
+            try:
+                return 0.1 * float (nauwkeurigheid)
+            except:
+                self.Log.Fout ('De opgegeven juridische nauwkeurigheid is geen getal: "' + self.LeesString ("juridische-nauwkeurigheid") + '"')
+
+    def NormwaardeIncrement (self, verplicht: bool = False) -> int:
+        """Haal het normwaarde-increment uit de request parameters
+        
+        Argumenten:
+
+        verplicht bool  Geeft aan dat het normwaarde-increment een verplichte parameter is
+
+        Geeft de waarde terug, of None als het normwaarde-increment niet is opgegeven
+        """
+        if self.LeesString ("normwaarde-increment") is None:
+            if verplicht:
+                self.Log.Fout ("Het normwaarde-increment is niet opgegeven in de specificatie")
+            return None
+        try:
+            increment = float (self.LeesString ("normwaarde-increment"))
+        except:
+            self.Log.Fout ('Het opgegeven normwaarde-increment is geen getal: "' + self.LeesString ("normwaarde-increment") + '"')
+            return None
+        return increment
+#endregion

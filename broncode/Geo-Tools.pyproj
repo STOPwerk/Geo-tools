@@ -27,22 +27,23 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="geo-tools\geo_manipulatie_kaart.html" />
-    <Content Include="geo-tools\geo_manipulatie_kaart.css" />
-    <Content Include="geo-tools\geo_manipulatie_kaart.js" />
-    <Content Include="geo-tools\geo_manipulatie_ol.css" />
-    <Content Include="geo-tools\geo_manipulatie_ol.js" />
-    <Content Include="geo-tools\geo_manipulatie_sldreader.js" />
+    <Content Include="geo-tools\operatie_toon_geo_invoer.css" />
+    <Content Include="geo-tools\operatie_toon_geo_invoer.html" />
+    <Content Include="geo-tools\operatie_toon_geo_invoer.js" />
+    <Content Include="geo-tools\operatie_toon_geo_resultaat.css" />
+    <Content Include="geo-tools\weergave_kaart_kaart.html" />
+    <Content Include="geo-tools\weergave_kaart_kaart.css" />
+    <Content Include="geo-tools\weergave_kaart_kaart.js" />
+    <Content Include="geo-tools\weergave_kaart_ol.css" />
+    <Content Include="geo-tools\weergave_kaart_ol.js" />
+    <Content Include="geo-tools\weergave_kaart_sldreader.js" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.html" />
-    <Content Include="geo-tools\geo_manipulatie_resultaat.css" />
+    <Content Include="geo-tools\weergave_kaart_resultaat.css" />
     <Content Include="geo-tools\toon_gio_wijziging_resultaat.js" />
-    <Content Include="geo-tools\geo_manipulatie_resultaat.js" />
+    <Content Include="geo-tools\weergave_kaart_resultaat.js" />
     <Content Include="geo-tools\requirements.txt" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.css" />
     <Content Include="geo-tools\maak_gio_wijziging_invoer.js" />
-    <Content Include="geo-tools\toon_geo_invoer.css" />
-    <Content Include="geo-tools\toon_geo_invoer.js" />
-    <Content Include="geo-tools\toon_geo_invoer.html" />
     <Content Include="geo-tools\toon_gio_wijziging_invoer.css" />
     <Content Include="geo-tools\toon_gio_wijziging_invoer.js" />
     <Content Include="geo-tools\voer_tools_uit.bat" />
@@ -95,15 +96,16 @@
     <Compile Include="geo-tools\applicatie_request.py" />
     <Compile Include="geo-tools\applicatie.py" />
     <Compile Include="geo-tools\applicatie_meldingen.py" />
-    <Compile Include="geo-tools\geo_manipulatie.py" />
+    <Compile Include="geo-tools\data_gio.py" />
+    <Compile Include="geo-tools\applicatie_operatie.py" />
     <Compile Include="geo-tools\gio_wijziging.py" />
-    <Compile Include="geo-tools\toon_geo_resultaat.css" />
-    <Compile Include="geo-tools\toon_geo.py" />
+    <Compile Include="geo-tools\operatie_toon_geo.py" />
     <Compile Include="geo-tools\toon_gio_wijziging_invoer.html" />
     <Compile Include="geo-tools\toon_gio_wijziging.py" />
     <Compile Include="geo-tools\maak_gio_wijziging.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="geo-tools\weergave_kaart.py" />
     <Compile Include="geo-tools\weergave_webpagina.py">
       <SubType>Code</SubType>
     </Compile>

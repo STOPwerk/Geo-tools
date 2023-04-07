@@ -14,10 +14,10 @@ from weergave_webpagina import WebpaginaGenerator
 
 from gfs_maker import GFSMaker
 from sld_maker import SLDMaker
-from toon_geo import GeoViewer
-from maak_gio_wijziging import GIOWijzigingMaker
-from toon_gio_wijziging import GIOWijzigingViewer
-from voorbeeld import Voorbeeld
+from operatie_toon_geo import GeoViewer
+#from maak_gio_wijziging import GIOWijzigingMaker
+#from toon_gio_wijziging import GIOWijzigingViewer
+#from voorbeeld import Voorbeeld
 
 
 #----------------------------------------------------------------------
@@ -54,32 +54,32 @@ def toon_geo():
 
 @app.route('/toon_geo_resultaat', methods = ['POST'])
 def toon_geo_resultaat():
-    return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
+    return GeoViewer.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
 
-@app.route('/maak_gio_wijziging')
-def gio_wijziging():
-    return GIOWijzigingMaker.InvoerHtml ()
+#@app.route('/maak_gio_wijziging')
+#def gio_wijziging():
+#    return GIOWijzigingMaker.InvoerHtml ()
 
-@app.route('/maak_gio_wijziging_resultaat', methods = ['POST'])
-def gio_wijziging_resultaat():
-    return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
+#@app.route('/maak_gio_wijziging_resultaat', methods = ['POST'])
+#def gio_wijziging_resultaat():
+#    return GIOWijzigingMaker.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
 
 
-@app.route('/toon_gio_wijziging')
-def toon_gio_wijziging():
-    return GIOWijzigingViewer.InvoerHtml ()
+#@app.route('/toon_gio_wijziging')
+#def toon_gio_wijziging():
+#    return GIOWijzigingViewer.InvoerHtml ()
 
-@app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
-def toon_gio_wijziging_resultaat():
-    return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
+#@app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
+#def toon_gio_wijziging_resultaat():
+#    return GIOWijzigingViewer.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
 
-@app.route('/voorbeeld')
-def voorbeeld():
-    return Voorbeeld.SelectieHtml ()
+#@app.route('/voorbeeld')
+#def voorbeeld():
+#    return Voorbeeld.SelectieHtml ()
 
-@app.route('/start_voorbeeld')
-def start_voorbeeld():
-    return Voorbeeld.VoerUit (Parameters (request.args, None, None))
+#@app.route('/start_voorbeeld')
+#def start_voorbeeld():
+#    return Voorbeeld.VoerUit (Parameters (None, request.args, None, None))
 
 
 #----------------------------------------------------------------------

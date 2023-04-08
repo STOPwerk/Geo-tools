@@ -6,12 +6,31 @@ window.addEventListener('load', function () {
     const geometrieFile = document.getElementById('geometrie');
     const symbolisatieFile = document.getElementById('symbolisatie');
     const symbolisatieInvoer = document.getElementById('symbolisatie_invoer');
+    const juridischeNauwkeurigheidInvoer = document.getElementById('nauwkeurigheid_invoer');
+    const juridischeNauwkeurigheidWaarde = document.getElementById('juridische-nauwkeurigheid');
+    const kwaliteitscontroleInvoer = document.getElementById('kwaliteitscontrole_invoer');
+    const kwaliteitscontroleWaarde = document.getElementById('kwaliteitscontrole');
     const startknop = this.document.getElementById("startknop");
 
     var geoFileType = '';
     var symbolisatieNodig = false;
+    var juridischeNauwkeurigheidNodig = false;
+    var kwaliteitscontroleMogelijk = false;
     var teveelFiles = false;
     var geometrieOk = false;
+
+    function InvoerControlsStatus() {
+        juridischeNauwkeurigheidInvoer.style.display = (juridischeNauwkeurigheidNodig ? '' : 'none');
+        kwaliteitscontroleInvoer.style.display = (kwaliteitscontroleMogelijk ? '' : 'none');
+        if (kwaliteitscontroleMogelijk && juridischeNauwkeurigheidNodig) {
+            kwaliteitscontroleWaarde.disabled = (juridischeNauwkeurigheidWaarde.value == "");
+        } else {
+            kwaliteitscontroleWaarde.disabled = false;
+        }
+        symbolisatieInvoer.style.display = (symbolisatieNodig ? '' : 'none');
+        startknop.disabled = (teveelFiles || !geometrieOk);
+    }
+    InvoerControlsStatus();
 
     function FileLezer(file, line) {
         this._Line = line;
@@ -30,15 +49,9 @@ window.addEventListener('load', function () {
                 geometrieOk = true;
             }
             else {
-                if (gml.match(/\<([^:]+:){0,1}kwantitatieveNormwaarde[\s>]/)
-                    || gml.match(/\<([^:]+:){0,1}kwalitatieveNormwaarde[\s>]/)
-                    || gml.match(/\<([^:]+:){0,1}groepID[\s>]/)) {
-                    symbolisatieNodig = true;
-                }
                 if (gml.match(/\<([^:]+:){0,1}GeoInformatieObjectVaststelling[\s>]/)) {
                     if (gml.match(/\<([^:]+:){0,1}GeoInformatieObjectMutatie[\s>]/)) {
                         geoFileType = 'GIO-wijziging (wordt niet ondersteund!)';
-                        symbolisatieNodig = false;
                     } else {
                         geoFileType = 'GIO (vaststelling)';
                         geometrieOk = true;
@@ -50,12 +63,22 @@ window.addEventListener('load', function () {
                 }
                 else {
                     geoFileType = 'Onbekend dataformaat';
-                    symbolisatieNodig = false;
+                }
+                if (geometrieOk) {
+                    if (gml.match(/\<([^:]+:){0,1}kwantitatieveNormwaarde[\s>]/)
+                        || gml.match(/\<([^:]+:){0,1}kwalitatieveNormwaarde[\s>]/)
+                        || gml.match(/\<([^:]+:){0,1}groepID[\s>]/)) {
+                        symbolisatieNodig = true;
+                    }
+                    juridischeNauwkeurigheidNodig = true;
+                    if (gml.match(/\<([^:]+:){0,1}juridischeNauwkeurigheid[\s>]/)) {
+                        juridischeNauwkeurigheidNodig = false;
+                    }
+                    kwaliteitscontroleMogelijk = true;
                 }
             }
             line.innerText = geoFileType + ': ' + file.name;
-            symbolisatieInvoer.style.display = (symbolisatieNodig ? '' : 'none');
-            startknop.disabled = (teveelFiles || !geometrieOk);
+            InvoerControlsStatus();
         }
 
         const This = this;
@@ -74,8 +97,8 @@ window.addEventListener('load', function () {
 
         const container = document.getElementById('bestanden');
         container.innerHTML = '';
-		const titel = document.getElementById('titel');
-		titel.value = '';
+        const titel = document.getElementById('titel');
+        titel.value = '';
 
         if (geometrieGewijzigd) {
             geoFileType = '';
@@ -93,11 +116,11 @@ window.addEventListener('load', function () {
             if (i > 0) {
                 teveelFiles = true;
                 line.innerText = 'Extra bestand geselecteerd! ' + file.name;
-				titel.value = '';
+                titel.value = '';
             } else {
                 line.innerText = geoFileType + ': ' + file.name;
                 analyseline = line;
-				titel.value = file.name;
+                titel.value = file.name;
             }
             heeftGeometrie = file;
         }
@@ -148,5 +171,6 @@ window.addEventListener('load', function () {
     }
     InitBox(document.getElementById('geometrie_box'), geometrieFile, true);
     InitBox(document.getElementById('symbolisatie_box'), symbolisatieFile, false);
-
+    juridischeNauwkeurigheidWaarde.addEventListener('click', InvoerControlsStatus);
+    juridischeNauwkeurigheidWaarde.addEventListener('change', InvoerControlsStatus);
 });

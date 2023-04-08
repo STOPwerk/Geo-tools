@@ -21,7 +21,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
-                <geo:naam>Verstrookte cirkel; 5 meter nauwkeurig</geo:naam>
+                <geo:naam>Verstrookte cirkel; 10 meter nauwkeurig</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
                         <basisgeo:id>37b0a09f-36a0-4e69-80c2-000000000002</basisgeo:id>

@@ -780,20 +780,18 @@ class GeoData:
 #region Omzetten multi-geometrie naar enkele geometrieën
 
     class EnkeleGeometrie:
-        def __init__ (self, locatie, index, geometrie, attribuutwaarde : str):
+        def __init__ (self, locatie, geometrie, attribuutwaarde : str):
             """Een Point, LineString of Polygon geometrie die onderdeel is van de (multi-)geometrie van de locatie.
             
             Argumenten:
 
             locatie object  Locatie zoals ingelezen voor GeoData
-            index int       Index van de Locatie in de GeoData
             geometrie object  Een Point, LineString of Polygon
             attribuutwaarde str  Als het GIO normwaarden bevat: de normwaarde van de locatie.
                                  Als het GIO GIO-delen bevat: de groepID van de locatie.
             """
             self.ID = locatie['properties']['id']
             self.Locatie = locatie
-            self.LocatieIndex = index
             self.Geometrie = geometrie
             self.Attribuutwaarde = attribuutwaarde
 
@@ -809,7 +807,6 @@ class GeoData:
         """
         lijsten = {}
         isMulti = False
-        index = 0
         for dimensie, locaties in self.Locaties.items ():
             if len (locaties) > 0:
                 lijsten[dimensie] = lijst = []
@@ -819,13 +816,11 @@ class GeoData:
                         opgesplitst = GeoData.SplitsMultiGeometrie (locatie)
                         if len (opgesplitst) > 1:
                             isMulti = True
-                        lijst.extend (GeoData.EnkeleGeometrie(locatie, index, geom, attribuutwaarde) for geom in opgesplitst)
-                        index += 1
+                        lijst.extend (GeoData.EnkeleGeometrie(locatie, geom, attribuutwaarde) for geom in opgesplitst)
                 else:
                     for locatie in locaties:
                         attribuutwaarde = None if self.AttribuutNaam is None else locatie['properties'][self.AttribuutNaam]
-                        lijst.append (GeoData.EnkeleGeometrie(locatie, index, locatie, attribuutwaarde))
-                        index += 1
+                        lijst.append (GeoData.EnkeleGeometrie(locatie, locatie, attribuutwaarde))
         return lijsten, isMulti
 
     @staticmethod

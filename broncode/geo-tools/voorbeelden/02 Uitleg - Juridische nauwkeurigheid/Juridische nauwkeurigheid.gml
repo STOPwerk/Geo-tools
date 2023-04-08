@@ -36,7 +36,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
-                <geo:naam>Binnengebied; 5 meter nauwkeurig</geo:naam>
+                <geo:naam>Binnengebied; 10 meter nauwkeurig</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
                         <basisgeo:id>37b0a09f-36a0-4e69-80c2-100000000004</basisgeo:id>
@@ -49,7 +49,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
-                <geo:naam>Buitengebied; 5 meter nauwkeurig</geo:naam>
+                <geo:naam>Buitengebied; 10 meter nauwkeurig</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
                         <basisgeo:id>37b0a09f-36a0-4e69-80c2-100000000005</basisgeo:id>

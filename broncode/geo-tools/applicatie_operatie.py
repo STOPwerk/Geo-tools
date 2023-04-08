@@ -42,6 +42,12 @@ class Operatie:
         # Kaartgenerator
         self.Kaartgenerator = KaartGenerator (self.Request, self.Generator)
 
+    def IsVoortzettingVan (self, operatie : 'Operatie') -> 'Operatie':
+        """Laat deze operatie doorgaan waar de andere operatie opgehouden is"""
+        self.Kaartgenerator.IsVoortzettingVan (operatie.Kaartgenerator)
+        self.Generator = operatie.Generator
+        return self
+
     def VoerUit(self):
         """Maak de webpagina aan"""
         self.Log.Informatie ("Geo-tools (@@@GeoTools_Url@@@) versie @@@VERSIE@@@.")

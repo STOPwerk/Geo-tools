@@ -70,6 +70,25 @@ class Parameters:
             waarde = str(waarde)
             if len (waarde) > 0:
                 return waarde.lower () if lowercase else waarde
+
+    def IsOptie (self, naam: str, defaultWaarde: bool = False) -> bool:
+        """Haal de waarde voor een boolean optie uit de request parameters
+        
+        Argumenten:
+
+        naam str Naam van de optie
+        defaultWaarde bool  Geeft de waarde voor de optie als de optie niet in de request parameters aanwezig is
+
+        Geeft de waarde terug, of None als het normwaarde-increment niet is opgegeven
+        """
+        waarde = None if self._FormData is None else self._FormData.get (naam)
+        if waarde is None:
+            return defaultWaarde
+        try:
+            return bool (waarde)
+        except:
+            self.Log.Fout ('De opgegeven waarde voor optie "' + naam + '" is onbegrijpelijk: "' + self.LeesString ("normwaarde-increment") + '"')
+            return defaultWaarde
 #endregion
 
 #region Ondersteuning voor bestanden

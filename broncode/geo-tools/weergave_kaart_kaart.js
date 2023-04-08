@@ -198,9 +198,7 @@ class Kaart {
             target: opties['kaartelementId'],
             view: view
         });
-        if ('juridische-nauwkeurigheid' in opties) {
-            map.addControl(new ol.control.ScaleLine({ units: 'metric' }));
-        }
+        map.addControl(new ol.control.ScaleLine({ units: 'metric' }));
         map.render();
 
         if (this._LagenMetProperties > 0) {

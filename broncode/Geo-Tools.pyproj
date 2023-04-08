@@ -98,7 +98,7 @@
     <Compile Include="geo-tools\applicatie_meldingen.py" />
     <Compile Include="geo-tools\data_gio.py" />
     <Compile Include="geo-tools\applicatie_operatie.py" />
-    <Compile Include="geo-tools\gio_wijziging.py" />
+    <Compile Include="geo-tools\operatie_gio_wijziging.py" />
     <Compile Include="geo-tools\operatie_toon_geo.py" />
     <Compile Include="geo-tools\toon_gio_wijziging_invoer.html" />
     <Compile Include="geo-tools\toon_gio_wijziging.py" />

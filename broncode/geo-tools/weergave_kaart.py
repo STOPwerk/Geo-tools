@@ -860,7 +860,7 @@ class KaartGenerator:
                         if dx <= minimaleCelGrootte and dy <= minimaleCelGrootte:
                             # Ja, laat de geometrie weg
                             data = markeringenDitNiveau.get (cel)
-                            shape = GeoData.MaakShapelyShape (enkeleGeometrie)
+                            shape = GeoData.MaakShapelyShape (enkeleGeometrie.Geometrie)
                             if data is None:
                                 markeringenDitNiveau[cel] = KaartGenerator.CelData ((shape.bounds[0] + shape.bounds[2])/2, (shape.bounds[1] + shape.bounds[3])/2)
                             else:
@@ -868,7 +868,7 @@ class KaartGenerator:
                             locatiesAndersDanVoorgaande= cellenAndersDanVoorgaande = True # Dit niveau heeft minder geometrieën
                         else:
                             # Nee, simplificeer de geometrie
-                            vorigeShape = GeoData.MaakShapelyShape (enkeleGeometrie)
+                            vorigeShape = GeoData.MaakShapelyShape (enkeleGeometrie.Geometrie)
                             shape = vorigeShape.simplify (dpm)
                             if not shape.__eq__ (vorigeShape):
                                 locatiesAndersDanVoorgaande = True # Andere geometrie

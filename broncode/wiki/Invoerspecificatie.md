@@ -33,6 +33,8 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
     "geometrie": "geometrische_data.gml",
     "symbolisatie": "style.xml",
     "juridische-nauwkeurigheid": 1,
+    "toon-gio-schaalafhankelijk": true | false,
+    "kwaliteitscontrole": false | true,
     "beschrijving": "Optionele beschrijving"
 }
 ```
@@ -42,7 +44,9 @@ met:
 | --------- | ------------ |
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
 | `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html). Optioneel; als dit niet gegeven is worden alle gebieden/lijnen/punten op een standaard manier weergegeven. |
-| `juridische-nauwkeurigheid` | De [juridische nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. Als dit aanwezig is voor een GIO-versie dan wordt de geschikt |
+| `juridische-nauwkeurigheid` | Als de STOP-module een GIO-versie bevat: de [juridische nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in het GIO. Deze waarde wordt alleen gebruikt als de juridische nauwkeurigheid niet (conform STOP 2) in de GIO-versie is opgenomen. Optioneel. |
+| `toon-gio-schaalafhankelijk` |  Als de STOP-module een GIO-versie bevat en de juridische nauwkeurigheid bekend is: gebruik dit om de GIO-versie schaalafhankelijk weer te geven. Optioneel; default is true.|
+| `kwaliteitscontrole` |  Als de STOP-module een GIO-versie bevat en de juridische nauwkeurigheid bekend is: controleer dat de GIO-versie aan de kwaliteitseisen voor een muteerbare GIO voldoet. Optioneel; default is false.|
 | `beschrijving` | Optioneel: een beschrijving van het GIO die in de resultaatpagina wordt opgenomen |
 
 
@@ -100,6 +104,7 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
             "pad": "gio_1.gml", 
             "beschrijving": "Optionele beschrijving van de GIO",
             "juridische-nauwkeurigheid": 10,
+            "kwaliteitscontrole": false,
             "symbolisatie": "afwijkende_style.xml"
         },
         {"pad": "gio_2.gml" }
@@ -107,6 +112,7 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
     ]
     "symbolisatie": "style.xml",
     "juridische-nauwkeurigheid": 1,
+    "kwaliteitscontrole": true,
     "optimalisatie": false,
     "wijziging": [
         {
@@ -128,7 +134,8 @@ Elk `geometrie` element wordt omgevormd naar een [toon_geo.json](#toon-geo) spec
 | ---------------------- | --------------------- |
 | [toon_geo.json](#toon-geo): `geometrie` | `geometrie`: `pad` |
 | [toon_geo.json](#toon-geo): `symbolisatie` | `geometrie`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
-| [toon_geo.json](#toon-geo): `juridische-nauwkeurigheid` | `geometrie`: `juridische-nauwkeurigheid` indien aanwezig, anderd `juridische-nauwkeurigheid` |
+| [toon_geo.json](#toon-geo): `juridische-nauwkeurigheid` | `geometrie`: `juridische-nauwkeurigheid` indien aanwezig, anders `juridische-nauwkeurigheid` |
+| [toon_geo.json](#toon-geo): `kwaliteitscontrole` | `geometrie`: `kwaliteitscontrole` indien aanwezig, anders `kwaliteitscontrole` |
 | [toon_geo.json](#toon-geo): `beschrijving` | `geometrie`: `beschrijving` |
 
 Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak-gio-wijziging) en uitgevoerd:

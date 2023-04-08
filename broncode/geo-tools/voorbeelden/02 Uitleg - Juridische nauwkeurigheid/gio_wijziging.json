@@ -1,15 +1,17 @@
 {
   "beschrijving": "Uitleg van juridische nauwkeurigheid bij het opstellen en beoordelen van een GIO. Deze demonstratie laat zien:<ol><li>De geometrieën in een GIO zijn maar relevant tot een zeker niveau.</li><li>Dat kan grover/minder gedetailleerd zijn dan de geometrieën in de achtergrondkaart waarop het GIO getoond wordt.</li><li>De geometrieën uit het GIO kunnen heel gedetailleerd opgenomen zijn, maar juridisch kan er een ander detailniveau relevant zijn.</li><li>De keuze voor (het voorschrijven van) een teken-niveau is een bewuste keuze, ook al wordt die niet altijd expliciet opgeschreven.</li></ol>",
+  "toon-gio-schaalafhankelijk": false,
   "geometrie": [
     {
       "pad": "Technische nauwkeurigheid.gml",
-      "beschrijving": "Bij het samenstellen van een GIO bepaalt de technische nauwkeurigheid hoe gedetailleerd een GIO op een kaart weergegeven kan worden. Hoe nauwkeuriger een GIO is ingetekend of berekend, hoe verder de weergave ingezoomd kan worden. Deze GIO bevat twee cirkels die als veelhoek zijn getekend, links met een technische nauwkeurigheid van 1 decimeter (overeenkomstig de achtergrondkaart) en rechts 5 meter.",
+      "beschrijving": "Bij het samenstellen van een GIO bepaalt de technische nauwkeurigheid hoe gedetailleerd een GIO op een kaart weergegeven kan worden. Hoe nauwkeuriger een GIO is ingetekend of berekend, hoe verder de weergave ingezoomd kan worden. Deze GIO bevat twee cirkels die als veelhoek zijn getekend, links met een technische nauwkeurigheid van 1 decimeter (overeenkomstig de achtergrondkaart) en rechts 10 meter.",
       "symbolisatie": "vlakken_symbolisatie.xml"
     },
     {
       "pad": "Juridische nauwkeurigheid.gml",
-      "beschrijving": "De juridische betekenis van de inhoud van een GIO is niet gerelateerd aan de technische nauwkeurigheid of detaillering, maar aan de aard van de juridische regel. Als het bijvoorbeeld over iets grootschaligs als toestaan of verbieden van woningbouw gaat, dan zal de grens ervan niet op de decimeter nauwkeurig zijn afgewogen. De opsteller van de regel heeft misschien wel een dikke stift gepakt en een grens getekend op een kaartschaal waarbij de stift een dikte van meters heeft - in STOP heet dat de juridische nauwkeurigheid. Dat gebied ziet er met een hoge technische nauwkeurigheid (links, 1 technische decimeter) op de kaart beter uit dan een grover getekende versie (rechts, 5 meter technische nauwkeurigheid). Maar juridisch maakt dat geen verschil; de lege ruimtes in de rechter figuur zullen niet opgevat worden als gebieden waar opeens een andere regel gaat gelden.",
-      "symbolisatie": "vlakken_symbolisatie.xml"
+      "beschrijving": "De juridische betekenis van de inhoud van een GIO is niet gerelateerd aan de technische nauwkeurigheid of detaillering, maar aan de aard van de juridische regel. Als het bijvoorbeeld over iets grootschaligs als toestaan of verbieden van woningbouw gaat, dan zal de grens ervan niet op de decimeter nauwkeurig zijn afgewogen. De opsteller van de regel heeft misschien wel een dikke stift gepakt en een grens getekend op een kaartschaal waarbij de stift een dikte van meters heeft - in STOP heet dat de juridische nauwkeurigheid, in onderstaande kaart is de pen 10 meter dik. Dat gebied ziet er met een hoge technische nauwkeurigheid (links, 1 technische decimeter) op de kaart beter uit dan een grover getekende versie (rechts, 10 meter technische nauwkeurigheid). Maar juridisch maakt dat geen verschil; de lege ruimtes in de rechter figuur zullen niet opgevat worden als gebieden waar opeens een andere regel gaat gelden.",
+      "symbolisatie": "vlakken_symbolisatie.xml",
+	  "juridische-nauwkeurigheid": 100
     },
     {
       "pad": "Voorbeeld noodmaatregel.gml",
@@ -19,7 +21,8 @@
     {
       "pad": "Gebruik bestaande geometrie.gml",
       "beschrijving": "Een van de situaties waarin de technische nauwkeurigheid van een gebied groter is dan de juridische nauwkeurigheid is als een bestaande geometrie wordt overgenomen. In onderstaande kaart is de juridische nauwkeurigheid in de orde van kilometers, en een van de gebieden is het ambtsgebied van een gemeente. Het ambtsgebied is bekend tot op een technische nauwkeurigheid van een meter of beter. Het zou vreemd zijn om dat gebied voor gebruik in dit GIO opzettelijk minder gedetailleerd te gaan tekenen. In het GIO zal de bestaande geometrie gebruikt worden, omdat het er beter uitziet in een DSO-LV context waar een gebruiker tot op groot detailniveau kan inzoomen. Daarbij speelt soms het omgekeerde: de beschikbare geometrie is gedetailleerder dan nodig voor DSO-LV, zodat het bevoegd gezag gevraagd wordt de hoeveelheid details te reduceren om de datastromen minder omvangrijk te maken.",
-      "symbolisatie": "vlakken_symbolisatie.xml"
+      "symbolisatie": "vlakken_symbolisatie.xml",
+	  "juridische-nauwkeurigheid": 1000
     }
   ]
 }

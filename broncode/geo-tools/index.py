@@ -17,7 +17,7 @@ from sld_maker import SLDMaker
 from operatie_toon_geo import GeoViewer
 #from maak_gio_wijziging import GIOWijzigingMaker
 #from toon_gio_wijziging import GIOWijzigingViewer
-#from voorbeeld import Voorbeeld
+from voorbeeld import Voorbeeld
 
 
 #----------------------------------------------------------------------
@@ -73,18 +73,18 @@ def toon_geo_resultaat():
 #def toon_gio_wijziging_resultaat():
 #    return GIOWijzigingViewer.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
 
-#@app.route('/voorbeeld')
-#def voorbeeld():
-#    return Voorbeeld.SelectieHtml ()
+@app.route('/voorbeeld')
+def voorbeeld():
+    return Voorbeeld.SelectieHtml ()
 
-#@app.route('/start_voorbeeld')
-#def start_voorbeeld():
-#    return Voorbeeld.VoerUit (Parameters (None, request.args, None, None))
-
+@app.route('/start_voorbeeld')
+def start_voorbeeld():
+    return Voorbeeld.VoerUit (Parameters (None, request.args, None, None))
 
 #----------------------------------------------------------------------
 #
 # Flask server voor ontwikkeling
+# Wordt niet gebruikt bij starten vanuit Visual Studio
 #
 #----------------------------------------------------------------------
 if __name__ == '__main__':

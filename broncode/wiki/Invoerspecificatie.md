@@ -31,7 +31,7 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
 ```
 {
     "geometrie": "geometrische_data.gml",
-    "symbolisatie": "style.xml",
+    "symbolisatie": [ "punt_style.xml", "lijn_style.xml", "vlak_style.xml" ],
     "juridische-nauwkeurigheid": 1,
     "toon-gio-schaalafhankelijk": true | false,
     "kwaliteitscontrole": false | true,
@@ -43,7 +43,7 @@ met:
 | Parameter | Beschrijving |
 | --------- | ------------ |
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
-| `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html). Optioneel; als dit niet gegeven is worden alle gebieden/lijnen/punten op een standaard manier weergegeven. |
+| `symbolisatie` | Opsomming van de paden naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) voor de weergave van een punt, lijn of vlak van de geometrie. Optioneel; als dit niet gegeven is (of niet gegeven voor een punt/lijn of vlak) worden de gebieden, lijnen en/of punten op een standaard-manier weergegeven. |
 | `juridische-nauwkeurigheid` | Als de STOP-module een GIO-versie bevat: de [juridische nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in het GIO. Deze waarde wordt alleen gebruikt als de juridische nauwkeurigheid niet (conform STOP 2) in de GIO-versie is opgenomen. Optioneel. |
 | `toon-gio-schaalafhankelijk` |  Als de STOP-module een GIO-versie bevat en de juridische nauwkeurigheid bekend is: gebruik dit om de GIO-versie schaalafhankelijk weer te geven. Optioneel; default is true.|
 | `kwaliteitscontrole` |  Als de STOP-module een GIO-versie bevat en de juridische nauwkeurigheid bekend is: controleer dat de GIO-versie aan de kwaliteitseisen voor een muteerbare GIO voldoet. Optioneel; default is false.|
@@ -57,7 +57,8 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
     "was": "GIO_was_versie.gml",
     "wordt": "GIO_wordt_versie.gml",
     "juridische-nauwkeurigheid": 1,
-    "symbolisatie": "style.xml",
+    "symbolisatie": [ "style.xml" ],
+    "toon-gio-wijziging": true | false,
     "wijziging": "GIO_wijziging.gml",
     "beschrijving": "Optionele beschrijving"
 }
@@ -66,11 +67,12 @@ met:
 
 | Parameter | Beschrijving |
 | --------- | ------------ |
-| `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van de GIO bevat.|
-| `wordt` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de nieuwe (wordt-)versie van de GIO bevat.|
+| `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van het GIO bevat.|
+| `wordt` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de nieuwe (wordt-)versie van het GIO bevat.|
 | `juridische-nauwkeurigheid` | De (juridische) [juridische-nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
-| `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
+| `symbolisatie` | Opsomming van de paden naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) voor de weergave van een punt, lijn of vlak voor zowel de was- als de wordt-versie van het GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is (voor een geometrietype) worden alle gebieden, lijnen en/of punten op een standaard-manier weergegeven. |
 | `wijziging` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) met de GIO-wijziging. Dit bestand kan als invoer gebruikt worden voor de [Toon GIO wijziging](#toon-gio-wijziging) geo-tool. |
+| `toon-gio-wijziging` |  Toon de GIO-wijziging op de manier zoals een viewer dat zou (moeten) doen. Optioneel; default is true.|
 | `beschrijving` | Optioneel: een beschrijving van de GIO-wijziging die in de resultaatpagina wordt opgenomen |
 
 
@@ -80,7 +82,7 @@ Het specificatiebestand `toon_gio_wijziging.json` geeft de invoer voor de geo-to
 {
     "was": "GIO_was_versie.gml",
     "wijziging": "GIO_wijziging.gml",
-    "symbolisatie": "style.xml",
+    "symbolisatie": [ "style.xml" ],
     "wordt": "GIO_wordt_versie.gml"
 }
 ```
@@ -88,9 +90,9 @@ met:
 
 | Parameter | Beschrijving |
 | --------- | ------------ |
-| `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van de GIO bevat.|
+| `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van het GIO bevat.|
 | `wijziging` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) dat de GIO-wijziging bevat.|
-| `symbolisatie` | Pad naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) dat de symbolisatie voor zowel de was- als de wordt-versie van de GIO bevat. Verplicht voor een GIO met GIO-delen of normwaarden. Optioneel voor een GIO  met alleen geometrie; als dit niet gegeven is worden alle gebieden/lijnen/punten op dezelfde manier weergegeven. |
+| `symbolisatie` | Opsomming van de paden naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) voor de weergave van een punt, lijn of vlak voor zowel de was- als de wordt-versie van het GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is (voor een geometrietype) worden alle gebieden, lijnen en/of punten op een standaard-manier weergegeven. |
 | `wordt` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) met de wordt-versie van de GIO. |
 
 
@@ -105,12 +107,12 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
             "beschrijving": "Optionele beschrijving van de GIO",
             "juridische-nauwkeurigheid": 10,
             "kwaliteitscontrole": false,
-            "symbolisatie": "afwijkende_style.xml"
+            "symbolisatie": [ "afwijkende_style.xml" ]
         },
         {"pad": "gio_2.gml" }
         {"pad": "gio_3.gml" }
     ]
-    "symbolisatie": "style.xml",
+    "symbolisatie": [ "punt_style.xml", "vlak_style.xml"],
     "juridische-nauwkeurigheid": 1,
     "kwaliteitscontrole": true,
     "optimalisatie": false,
@@ -120,7 +122,7 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
             "wordt": "gio_2.gml", 
             "juridische-nauwkeurigheid": 10,
             "beschrijving": "Optionele beschrijving van de GIO-wijziging",
-            "toon": true | false,
+            "toon-gio-wijziging": true | false,
             "beschrijving_toon": "Optionele beschrijving van het tonen van de GIO-wijziging"
         },
         { "was": "gio_2.gml", "wordt": "gio_3.gml"},
@@ -152,7 +154,7 @@ Vervolgens wordt elk `wijziging` element omgevormd naar een [toon_gio_wijziging.
 
 | Parameter van operatie | In deze specificatie: |
 | ---------------------- | --------------------- |
-| toon-gio-wijziging niet uitvoeren | `wijziging`: `toon` = `false` (waarde van `toon` is `true` indien niet opgegeven) |
+| toon-gio-wijziging niet uitvoeren | `wijziging`: `toon-gio-wijziging` = `false` (waarde van `toon-gio-wijziging` is `true` indien niet opgegeven) |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `was` | `wijziging`: `was` |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 | [toon_gio_wijziging.json](#toon-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving_toon` |

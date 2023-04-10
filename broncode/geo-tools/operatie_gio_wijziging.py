@@ -17,10 +17,10 @@ from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
 from applicatie_operatie import Operatie
 from applicatie_request import Parameters
-from data_gio import GeoData
-#from maak_gio_wijziging import GIOWijzigingMaker
-from operatie_toon_geo import GeoViewer
-#from toon_gio_wijziging import GIOWijzigingViewer
+from data_geodata import GeoData
+from operatie_maak_gio_wijziging import MaakGIOWijziging
+from operatie_toon_geo import ToonGeo
+from operatie_toon_gio_wijziging import ToonGIOWijziging
 
 class GIOWijziging (Operatie):
 #======================================================================
@@ -41,8 +41,6 @@ class GIOWijziging (Operatie):
         super ().__init__ ("GIO-wijziging", "GIO-wijziging - geen resultaat", request, log)
         # Geometrie specificatie voor de GIO's
         self._Geometrie : Dict[str,GeoData] = {}
-        # Naam waaronder de te gebruiken symbolisatie is geregistreerd
-        self._SymbolisatieNaam : Dict[str,str] = {}
 
     def _VoerUit (self):
         self.Generator.VoegHtmlToe ('<p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.</p>')
@@ -79,18 +77,15 @@ class GIOWijziging (Operatie):
                 request.KanBestandenSchrijven = False
                 request._FormData["geometrie"] = gio["pad"]
                 request._FormData["beschrijving"] = gio.get ("beschrijving")
-                symbolisatie = __Waarde (gio, "symbolisatie")
-                request._FormData["symbolisatie"] = symbolisatie
+                request._FormData["symbolisatie"] = __Waarde (gio, "symbolisatie")
                 request._FormData["juridische-nauwkeurigheid"] = __Waarde (gio, "juridische-nauwkeurigheid")
                 request._FormData["toon-gio-schaalafhankelijk"] = __Waarde (gio, "toon-gio-schaalafhankelijk")
                 request._FormData["kwaliteitscontrole"] = __Waarde (gio, "kwaliteitscontrole")
 
                 self.Log.Informatie ("Toon GIO: '" + gio["pad"] + "'")
-                uitvoerder = GeoViewer (request, self.Log)
+                uitvoerder = ToonGeo (request, self.Log)
                 uitvoerder.IsVoortzettingVan (self)
                 uitvoerder._Geometrie = self._Geometrie.get (gio["pad"])
-                if not symbolisatie is None:
-                    uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
                 einde = self.Generator.StartSectie ("<h3>" + request.Bestandsnaam ('geometrie', False) + "</h3>", True)
                 succes = uitvoerder._VoerUit ()
@@ -99,8 +94,6 @@ class GIOWijziging (Operatie):
                     break
 
                 self._Geometrie[gio["pad"]] = uitvoerder._Geometrie
-                if not symbolisatie is None:
-                    self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
 
             self.Generator.VoegHtmlToe ('</div>')
 
@@ -126,18 +119,15 @@ class GIOWijziging (Operatie):
                 request._FormData["was"] = wijziging["was"]
                 request._FormData["wordt"] = wijziging["wordt"]
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
-                symbolisatie = __Waarde (gio, "symbolisatie")
-                request._FormData["symbolisatie"] = symbolisatie
+                request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
+                request._FormData["toon-gio-wijziging"] = False
                 request._FormData["juridische-nauwkeurigheid"] = __Waarde (wijziging, "juridische-nauwkeurigheid")
 
                 self.Log.Informatie ("Maak GIO-wijziging: '" + wijziging["was"] + "' &rarr; '" + wijziging["was"] + "'")
-                raise "GIOWijzigingMaker niet beschikbaar"
-                #uitvoerder = GIOWijzigingMaker (request, self.Log)
+                uitvoerder = MaakGIOWijziging (request, self.Log)
                 uitvoerder.IsVoortzettingVan (self)
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._Wordt = self._Geometrie.get (wijziging["wordt"])
-                if not symbolisatie is None:
-                    uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
                 wijziging["wijziging"] = request.Bestandsnaam ('was', False) + ' &rarr; ' + request.Bestandsnaam ('wordt', False)
                 succes = uitvoerder._VoerUit (wijziging["wijziging"])
@@ -145,10 +135,8 @@ class GIOWijziging (Operatie):
                     break
 
                 self._Geometrie[wijziging["was"]] = uitvoerder._Was
-                if not symbolisatie is None:
-                    self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
-                request._FormData["toon"] = wijziging.get ("toon")
-                if not uitvoerder._Wijziging is None and request.LeesString ("toon", True) != 'false':
+                request._FormData["toon"] = wijziging.get ("toon-gio-wijziging")
+                if not uitvoerder._Wijziging is None and request.IsOptie ("toon", False):
                     wijziging["data"] = uitvoerder._Wijziging
                     toonWijzigingLijst.append (wijziging)
 
@@ -172,24 +160,17 @@ class GIOWijziging (Operatie):
                 request = Parameters (self.Log, {}, None, self.Request._Pad)
                 request.KanBestandenSchrijven = False
                 request._FormData["was"] = wijziging["was"]
-                symbolisatie = __Waarde (gio, "symbolisatie")
-                request._FormData["symbolisatie"] = symbolisatie
+                request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
 
                 self.Log.Informatie ("Toon GIO-wijziging: '" + wijziging["wijziging"] + "'")
-                raise "GIOWijzigingViewer niet beschikbaar"
-                # uitvoerder = GIOWijzigingViewer (request, self.Log)
+                uitvoerder = ToonGIOWijziging (request, self.Log)
                 uitvoerder.IsVoortzettingVan (self)
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._Wijziging = wijziging["data"]
-                if not symbolisatie is None:
-                    uitvoerder._SymbolisatieNaam = self._SymbolisatieNaam.get (symbolisatie)
 
                 succes = uitvoerder._VoerUit (wijziging["wijziging"])
                 if not succes:
                     break
-
-                if not symbolisatie is None:
-                    self._SymbolisatieNaam[symbolisatie] = uitvoerder._SymbolisatieNaam
 
             self.Generator.VoegHtmlToe ('</div>')
 

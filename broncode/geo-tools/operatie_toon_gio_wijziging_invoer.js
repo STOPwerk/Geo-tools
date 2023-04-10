@@ -36,19 +36,24 @@ window.addEventListener('load', function () {
                 titel.value = file.name;
             }
         }
-        for (var i = 0; i < symbolisatieFile.files.length; i++) {
-            var file = symbolisatieFile.files[i];
+        if (symbolisatieFile.files.length > 0) {
             var line = document.createElement('div');
             container.appendChild(line);
-            line.innerText = 'Symbolisatie: ' + file.name;
-            heeftSymbolisatie++;
+            line.innerText = 'Symbolisatie';
+            var sep = ': '
+            for (var i = 0; i < symbolisatieFile.files.length; i++) {
+                var file = symbolisatieFile.files[i];
+                line.innerText += sep + file.name;
+                sep = ', ';
+                heeftSymbolisatie++;
+            }
         }
-        if (heeftWas > 1 || heeftWijziging > 1 || heeftSymbolisatie > 1) {
+        if (heeftWas > 1 || heeftWijziging > 1 || heeftSymbolisatie > 3) {
             var line = document.createElement('div');
             container.appendChild(line);
-            line.innerText = 'Er mag maar 1 was-versie, 1 GIO-wijziging en hooguit 1 symbolisatie geselecteerd zijn!';
+            line.innerText = 'Er mag maar 1 was-versie, 1 GIO-wijziging en hooguit 3 symbolisaties geselecteerd zijn!';
         }
-        startknop.disabled = heeftWas != 1 || heeftWijziging != 1 || heeftSymbolisatie > 1;
+        startknop.disabled = heeftWas != 1 || heeftWijziging != 1 || heeftSymbolisatie > 3;
     }
     UpdateControlStatus();
 

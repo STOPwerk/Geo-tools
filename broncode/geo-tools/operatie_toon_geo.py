@@ -16,16 +16,17 @@ from shapely.geometry import mapping
 from applicatie_meldingen import Meldingen
 from applicatie_operatie import Operatie
 from applicatie_request import Parameters
-from data_gio import GeoData, Attribuut
+from data_geodata import GeoData, Attribuut
 from weergave_kaart import KaartGenerator
 from weergave_webpagina import WebpaginaGenerator
 
-class GeoViewer (Operatie):
+class ToonGeo (Operatie):
 #======================================================================
 #
 # Webpagina's
 #
 #======================================================================
+#region Webpagina's
     @staticmethod
     def InvoerHtml():
         generator = WebpaginaGenerator ("Tonen van een GIO-versie of gebieden")
@@ -36,21 +37,21 @@ class GeoViewer (Operatie):
 
     @staticmethod
     def ResultaatHtml(request : Parameters, log: Meldingen = None):
-        return GeoViewer (request, log).VoerUit ()
+        return ToonGeo (request, log).VoerUit ()
+#endregion
 
 #======================================================================
 #
 # Implementatie
 #
 #======================================================================
-    def __init__(self, request : Parameters, log: Meldingen):
-        super ().__init__ ("Geo-informatie in beeld", "Geo-informatie - geen beeld", request, log)
+#region Implementatie
+    def __init__(self, request : Parameters, log: Meldingen, defaultTitel = None, titelBijFout = None):
+        super ().__init__ (request, log, "Geo-informatie in beeld" if defaultTitel is None else defaultTitel, "Geo-informatie - geen beeld" if titelBijFout is None else titelBijFout)
         # Geometrie specificatie
         self._Geometrie : GeoData = None
         # Namen van de geometrische data voor kaartweergave
         self._DataNamen : Dict[int,str] = None
-        # Namen waaronder de te gebruiken symbolisatie is geregistreerd
-        self._SymbolisatieNamen : Dict[int,str] = None
         # Naam van de "dikke pen"-randen afgeleid van de geometrische data
         self._RandDataNaam : str = None
         # Naam van de symbolisatie voor de "dikke pen"-randen afgeleid van de geometrische data
@@ -72,31 +73,14 @@ class GeoViewer (Operatie):
                 self.Log.Fout ("Kan deze geo-informatie niet weergeven: " + self._Geometrie.Soort)
                 return False
 
-        symbolisatieVereist = False
-        if self._Geometrie.Soort == 'GIO-versie' and not self._Geometrie.AttribuutNaam is None:
+        if self._Geometrie.Soort == GeoData.SOORT_GIOVersie and not self._Geometrie.AttribuutNaam is None:
             self.Log.Informatie ('GIO heeft per locatie een ' + self._Geometrie.AttribuutNaam + ' - een symbolisatie is nodig om dat weer te geven')
-            symbolisatieVereist = True
-
-        if self._SymbolisatieNamen is None:
-            self.Log.Informatie ("Lees de symbolisatie (indien aanwezig)")
-            symbolisatie = self.Request.LeesBestand ("symbolisatie", False)
-            if symbolisatie is None:
-                if symbolisatieVereist:
-                    self.Log.Waarschuwing ('Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën')
-                else:
-                    self.Log.Informatie ('Geen symbolisatie beschikbaar - gebruik de standaard symbolisatie voor geometrieën')
-            else:
-                self.Log.Informatie ("Symbolisatie ingelezen uit '" + self.Request.Bestandsnaam ("symbolisatie")+ "'")
-            if symbolisatie is None:
-                self._SymbolisatieNamen = self.Kaartgenerator.VoegDefaultSymbolisatieToe (self._Geometrie) 
-            else:
-                naam = self.Kaartgenerator.VoegSymbolisatieToe (symbolisatie)
-                self._SymbolisatieNamen = { 0: naam, 1: naam, 2: naam }
+        self._InitSymbolisatieNamen ([self._Geometrie])
 
         self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
 
 
-        if self._Geometrie.Soort == 'GIO-versie' and not self._Geometrie.JuridischeNauwkeurigheid is None:
+        if self._Geometrie.Soort == GeoData.SOORT_GIOVersie and not self._Geometrie.JuridischeNauwkeurigheid is None:
             self._MaakRanden ()
 
         self.Log.Informatie ('Maak de kaartweergave')
@@ -108,7 +92,7 @@ class GeoViewer (Operatie):
         kaart.VoegLagenToe (self._Geometrie.Soort, self._DataNamen, self._SymbolisatieNamen)
         kaart.Toon ()
 
-        if self._Geometrie.Soort == 'GIO-versie' and not self._Geometrie.JuridischeNauwkeurigheid is None:
+        if self._Geometrie.Soort == GeoData.SOORT_GIOVersie and not self._Geometrie.JuridischeNauwkeurigheid is None:
             if self.Request.IsOptie ("toon-gio-schaalafhankelijk", True):
                 self.Log.Informatie ('Toon GIO met schaalafhankelijkheid')
                 self.Generator.VoegHtmlToe ('<p>De GIO-versie is met een juridische nauwkeurigheid van ' + str(self._Geometrie.JuridischeNauwkeurigheid) +  ''' decimeter opgesteld.
@@ -117,9 +101,9 @@ class GeoViewer (Operatie):
 
                 kaart = KaartGenerator.Kaart (self.Kaartgenerator)
                 kaart.ZoomTotNauwkeurigheid (False)
-                schaalafhankelijk = self.Kaartgenerator.MaakSchaalafhankelijkeGeometrie (self._Geometrie)
-                self.Kaartgenerator.VoegSchaalafhankelijkeLocatiesToe (kaart, self._Geometrie.Soort, schaalafhankelijk, self._SymbolisatieNamen)
-                self.Kaartgenerator.VoegSchaalafhankelijkeMarkeringenToe (kaart, self._Geometrie.Soort, schaalafhankelijk, self.Kaartgenerator.VoegWijzigMarkeringToe (0, True))
+                schaalafhankelijk = self.Kaartgenerator.MaakSchaalafhankelijkeGeometrie (self._Geometrie, self._Geometrie.Soort)
+                self.Kaartgenerator.VoegSchaalafhankelijkeLocatiesToe (kaart, schaalafhankelijk, self._SymbolisatieNamen)
+                self.Kaartgenerator.VoegSchaalafhankelijkeMarkeringenToe (kaart, schaalafhankelijk, self.Kaartgenerator.VoegWijzigMarkeringToe (0, True))
                 kaart.Toon ()
 
             if self.Request.IsOptie ("kwaliteitscontrole", False):
@@ -143,12 +127,14 @@ class GeoViewer (Operatie):
         self.Log.Detail ('Maak de pagina af')
         self.Generator.LeesCssTemplate ('resultaat')
         return True
+#endregion
 
 #======================================================================
 #
-# Maak de "dikke randen" voor de juridische nauwkeurigheid
+# Rekenen met juridische nauwkeurigheid
 #
 #======================================================================
+#region Rekenen met juridische nauwkeurigheid
     def _MaakRanden (self):
         if self._RandSymbolisatieNaam is None:
             self._RandSymbolisatieNaam = self.Kaartgenerator.VoegUniformeSymbolisatieToe (2, '#cccccc', '#000000', '0.5')
@@ -170,16 +156,14 @@ class GeoViewer (Operatie):
         self.Log.Detail ('Randen zijn bepaald')
         self._RandDataNaam = self.Kaartgenerator.VoegGeoDataToe (randen)[2]
 
-#======================================================================
-#
-# Kwaliteitscontrole
-#
-#======================================================================
     def _VoerKwaliteitscontroleUit (self):
 
-        self.Generator.VoegHtmlToe ('''<p>Om de kwaliteit van de GIO te bepalen worden de volgende stappen doorlopen:.</p>
-        <p><ol><li>Bepaal voor elke losse geometrie de "buitenrand": de buitenste rand van de geometrie met een "dikke rand"</li>
-        <li>Bepaal voor elke losse geometrie het "binnengebied": de geometrie zelf voor een punt of lijn, en de binnenste rand van de geometrie met een "dikke rand" voor vlakken.''')
+        self.Generator.VoegHtmlToe ('''<p>Om de kwaliteit van de GIO-versie te bepalen worden de volgende stappen doorlopen:.</p>
+        <p><ol><li>Bepaal voor elke losse geometrie de "buitenrand": de buitenste rand van de geometrie met een "dikke rand":<br/>
+        <code>buitenrand = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+        <li>Bepaal voor elke losse geometrie het "binnengebied": de binnenste rand van de geometrie met een "dikke rand":<br/>
+        <code>binnengebied = geometrie</code> voor een punt of lijn,<br/>
+        <code>binnengebied = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.<br/>''')
 
         self.Log.Detail ('Maak binnengebieden en buitenranden voor losse geometrieën')
 
@@ -225,14 +209,18 @@ class GeoViewer (Operatie):
 
         if numGeometrieMetGebrek > 0:
             geenProblemen = False
-            self.Generator.VoegHtmlToe (' Voor ' + str(numGeometrieMetGebrek) + ' losse geometrie' + ('' if numGeometrieMetGebrek == 1 else 'ën') + '  is er geen "binnengebied" omdat de geometrie te smal of klein is in vergelijking met de juridische nauwkeurigheid. Het wijzigen van deze vlakken zal niet worden gedetecteerd.')
+            self.Generator.VoegHtmlToe ('Voor ' + str(numGeometrieMetGebrek) + ' vlak' + ('' if numGeometrieMetGebrek == 1 else 'ken') + '''  is er geen "binnengebied" omdat de geometrie 
+            te smal of klein is in vergelijking met de juridische nauwkeurigheid. Het wijzigen van zo\'n vlak zal niet worden gedetecteerd.''')
         self.Generator.VoegHtmlToe ('</li>')
 
         if len (binnengebieden) == 0:
             self.Generator.VoegHtmlToe ('<li>Er zijn geen losse geometrieën die een "binnengebied" hebben. De overige stappen in de kwaliteitscontrole worden overgeslagen.</li>')
         else:
             if len (locatieVlakken) > 0:
-                self.Generator.VoegHtmlToe ('''<li>Verifieer dat locaties met vlakken geen uitstulpingen hebben die dunner zijn dan de juridische nauwkeurigheid en significant uitsteken buiten het binnengebied. Het wijzigen van deze uitstulpingen zal niet worden gedetecteerd.''')
+                self.Generator.VoegHtmlToe ('''<li>Verifieer dat locaties met vlakken geen uitstulpingen hebben die dunner zijn dan de juridische nauwkeurigheid
+                en significant uitsteken buiten het binnengebied:<br/>
+                <code>locatie_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (locatie_binnengebied.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (2 * juridische nauwkeurigheid)) moet leeg zijn</code> 
+                <br/>Het wijzigen van deze uitstulpingen zal niet worden gedetecteerd.''')
                 
                 self.Log.Detail ('Bepaal vergroot binnengebied per locatie-met-vlakken, en verifieer dat alle vlakken daar binnen liggen')
                 numGeometrieMetGebrek = 0
@@ -264,7 +252,11 @@ class GeoViewer (Operatie):
                 self.Generator.VoegHtmlToe ('</li>')
 
             self.Generator.VoegHtmlToe ('''<li>Verifieer dat er geen geometrieën zijn waarvan het binnengebied geheel binnen de buitenrand van een of meer andere geometrieën
-           ligt. Er zijn situaties dat het wijzigen van deze geometrieën niet gedetecteerd zal worden.''')
+            ligt.<br/>
+            <code>gebied = binnengebied</code><br/>
+            <code>gebied = gebied.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (buitenrand)</code> voor alle buitenranden behalve die behorend bij het binnengebied <br/>
+            <code>gebied mag niet leeg zijn</code><br/>
+            Er zijn situaties dat het wijzigen van deze geometrieën niet gedetecteerd zal worden.''')
             self.Log.Detail ('Bepaal welke binnengebieden geheel binnen een buitenrand van een of meer andere geometrieën ligt')
             numGeometrieMetGebrek = 0
             for binnengebied in binnengebieden:
@@ -283,7 +275,10 @@ class GeoViewer (Operatie):
                 self.Generator.VoegHtmlToe (' Bij ' + str(numGeometrieMetGebrek) + ' geometrie' + ('' if numGeometrieMetGebrek == 1 else 'ën') + ' is dit het geval.')
             self.Generator.VoegHtmlToe ('</li>')
 
-            self.Generator.VoegHtmlToe ('''<li>Verifieer dat er geen overlap in de geometrieën bestaat, waarbij het binnengebied van twee geometrieën punten gemeen hebben. Snijdende lijnen binnen dezelfde locatie worden niet gerapporteerd.''')
+            self.Generator.VoegHtmlToe ('''<li>Verifieer dat er geen overlap in de geometrieën bestaat, waarbij het binnengebied van twee geometrieën
+            punten gemeen hebben. Snijdende lijnen binnen dezelfde locatie worden niet gerapporteerd.<br/>
+            <code>binnengebied1.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.intersection.html#shapely.intersection" target="_blank">intersection</a> (binnengebied2) moet leeg zijn</code> <br/>
+            ''')
             self.Log.Detail ('Bepaal welke binnengebieden gedeeltelijk overlappen')
             numGeometrieMetGebrek = 0
             numGeometrieTegenstrijdig = 0
@@ -340,3 +335,4 @@ class GeoViewer (Operatie):
                 if not geometrie._Dimensie in self._AnalyseResultaat.Locaties:
                     self._AnalyseResultaat.Locaties[geometrie._Dimensie] = []
                 self._AnalyseResultaat.Locaties[geometrie._Dimensie].append (geometrie.Geometrie)
+#endregion

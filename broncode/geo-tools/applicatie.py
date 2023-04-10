@@ -80,9 +80,9 @@ from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
 from weergave_webpagina import WebpaginaGenerator
 
-from toon_geo import GeoViewer
-from maak_gio_wijziging import GIOWijzigingMaker
-from toon_gio_wijziging import GIOWijzigingViewer
+from toon_geo import ToonGeo
+from maak_gio_wijziging import MaakGIOWijziging
+from toon_gio_wijziging import ToonGIOWijziging
 from gio_wijziging import GIOWijziging
 
 log = Meldingen (True)
@@ -189,9 +189,9 @@ class JsonClassEncoder(json.JSONEncoder):
 
 
 for directory_pad in directory_paden:
-    __VoerTestUit (directory_pad, 'toon_geo', GeoViewer.ResultaatHtml)
-    __VoerTestUit (directory_pad, 'maak_gio_wijziging', GIOWijzigingMaker.ResultaatHtml)
-    __VoerTestUit (directory_pad, 'toon_gio_wijziging', GIOWijzigingViewer.ResultaatHtml)
+    __VoerTestUit (directory_pad, 'toon_geo', ToonGeo.ResultaatHtml)
+    __VoerTestUit (directory_pad, 'maak_gio_wijziging', MaakGIOWijziging.ResultaatHtml)
+    __VoerTestUit (directory_pad, 'toon_gio_wijziging', ToonGIOWijziging.ResultaatHtml)
     __VoerTestUit (directory_pad, 'gio_wijziging', GIOWijziging.ResultaatHtml)
 
 log.ToonHtml (meldingen_pad)

@@ -37,15 +37,15 @@
     <Content Include="geo-tools\weergave_kaart_ol.css" />
     <Content Include="geo-tools\weergave_kaart_ol.js" />
     <Content Include="geo-tools\weergave_kaart_sldreader.js" />
-    <Content Include="geo-tools\maak_gio_wijziging_invoer.html" />
+    <Content Include="geo-tools\operatie_maak_gio_wijziging_invoer.html" />
     <Content Include="geo-tools\weergave_kaart_resultaat.css" />
-    <Content Include="geo-tools\toon_gio_wijziging_resultaat.js" />
+    <Content Include="geo-tools\operatie_toon_gio_wijziging_resultaat.js" />
     <Content Include="geo-tools\weergave_kaart_resultaat.js" />
     <Content Include="geo-tools\requirements.txt" />
-    <Content Include="geo-tools\maak_gio_wijziging_invoer.css" />
-    <Content Include="geo-tools\maak_gio_wijziging_invoer.js" />
-    <Content Include="geo-tools\toon_gio_wijziging_invoer.css" />
-    <Content Include="geo-tools\toon_gio_wijziging_invoer.js" />
+    <Content Include="geo-tools\operatie_maak_gio_wijziging_invoer.css" />
+    <Content Include="geo-tools\operatie_maak_gio_wijziging_invoer.js" />
+    <Content Include="geo-tools\operatie_toon_gio_wijziging_invoer.css" />
+    <Content Include="geo-tools\operatie_toon_gio_wijziging_invoer.js" />
     <Content Include="geo-tools\voer_tools_uit.bat" />
     <Content Include="README.md" />
     <Content Include="geo-tools\applicatie_meldingen_einde.html" />
@@ -96,13 +96,13 @@
     <Compile Include="geo-tools\applicatie_request.py" />
     <Compile Include="geo-tools\applicatie.py" />
     <Compile Include="geo-tools\applicatie_meldingen.py" />
-    <Compile Include="geo-tools\data_gio.py" />
+    <Compile Include="geo-tools\data_geodata.py" />
     <Compile Include="geo-tools\applicatie_operatie.py" />
     <Compile Include="geo-tools\operatie_gio_wijziging.py" />
     <Compile Include="geo-tools\operatie_toon_geo.py" />
-    <Compile Include="geo-tools\toon_gio_wijziging_invoer.html" />
-    <Compile Include="geo-tools\toon_gio_wijziging.py" />
-    <Compile Include="geo-tools\maak_gio_wijziging.py">
+    <Compile Include="geo-tools\operatie_toon_gio_wijziging_invoer.html" />
+    <Compile Include="geo-tools\operatie_toon_gio_wijziging.py" />
+    <Compile Include="geo-tools\operatie_maak_gio_wijziging.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="geo-tools\weergave_kaart.py" />

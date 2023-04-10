@@ -36,7 +36,7 @@ Als een GIO voor een gegeven juridische nauwkeurigheid niet voldoet aan deze voo
 
 Hieruit zijn randvoorwaarden voor een GIO af te leiden:
 * Als twee punten dezelfde positie hebben zal een GIO nooit geschikt zijn.
-* Als twee lijnen elkaar snijden zal de GIO nooit geschikt zijn.
+* Als twee lijnen elkaar snijden zal het GIO nooit geschikt zijn.
 * Als de vlakken in het GIO een overlap kennen die groter is dan de kleinste afstand tussen niet-overlappende vlakken, dan bestaat er geen juridische nauwkeurigheid waarvoor het GIO geschikt is.
 
 ## Algoritme
@@ -49,15 +49,15 @@ De ondersteunde geometrieën zijn _Point_, _LineString_ en _Polygon_ en de meerv
 In het geval van punten wordt van elk paar punten de afstand berekend. Punten die een onderlinge afstand kleiner dan de _juridische nauwkeurigheid_ hebben, worden gerapporteerd en leiden tot ongeschiktheid van het GIO. Het kan dus gaan om punten van dezelfde _MultiPoint_ geometrie. Voor een ongeschikte GIO wordt daarne de minimale afstand van de puntparen bepaald. Mits groter dan nul is dit de juridische nauwkeurigheid waarbij het GIO wel geldig is.
 
 ### Lijnen
-In geval van lijnen wordt vppr elk paar lijnstukken in de GIO de onderlinge afstand bepaald. Als die kleiner is dan de _juridische nauwkeurigheid_ hebben, dan worden de lijnen gerapporteerd en leidt dat tot ongeschiktheid van het GIO. Voor een ongeschikte GIO wordt daarne de minimale afstand van de lijnparen bepaald. Mits groter dan nul is dit de juridische nauwkeurigheid waarbij het GIO wel geldig is.
+In geval van lijnen wordt vppr elk paar lijnstukken in het GIO de onderlinge afstand bepaald. Als die kleiner is dan de _juridische nauwkeurigheid_ hebben, dan worden de lijnen gerapporteerd en leidt dat tot ongeschiktheid van het GIO. Voor een ongeschikte GIO wordt daarne de minimale afstand van de lijnparen bepaald. Mits groter dan nul is dit de juridische nauwkeurigheid waarbij het GIO wel geldig is.
 
 Om inzicht te krijgen waar de afstand te klein is wordt om elke lijn een buffer gelegd met als afstand de halve _juridische nauwkeurigheid_. Daarna wordt voor elk paar gebufferde lijnen de intersectie bepaald. Waar de intersectie een resultaatgebied oplevert bevinden de lijnen zich niet ver genoeg van elkaar.
 
 ![Controle lijnen](DetectieOverlappendeLijnen.svg)
 
 ### Vlakken
-In geval van vlakken is het niet relevant om te weten of twee vlakken elkaar een beetje overlappen. Elk vlak wordt verkleind met als afstand een halve  _juridische nauwkeurigheid_ - er wordt dus een buffer om het vlak gelegd van (-_juridische nauwkeurigheid_/2). Als er geen vlak overblijft is het vlak te klein en is de GIO ongeschikt.
+In geval van vlakken is het niet relevant om te weten of twee vlakken elkaar een beetje overlappen. Elk vlak wordt verkleind met als afstand een halve  _juridische nauwkeurigheid_ - er wordt dus een buffer om het vlak gelegd van (-_juridische nauwkeurigheid_/2). Als er geen vlak overblijft is het vlak te klein en is het GIO ongeschikt.
 
-Vervolgens wordt van elk paar van de verkleinde vlakken bepaald of er een intersectie bestaat. Dat zal zo zijn als de oorspronkelijke vlakken meer dan de _juridische nauwkeurigheid_ overlappen. In dat geval is de GIO ongeschikt. Om inzicht te krijgen waar dat het geval is, wordt ook de intersectie berekend en weergegeven.
+Vervolgens wordt van elk paar van de verkleinde vlakken bepaald of er een intersectie bestaat. Dat zal zo zijn als de oorspronkelijke vlakken meer dan de _juridische nauwkeurigheid_ overlappen. In dat geval is het GIO ongeschikt. Om inzicht te krijgen waar dat het geval is, wordt ook de intersectie berekend en weergegeven.
 
 ![Controle vlakken](DetectieOverlappendeVlakken.svg)

@@ -79,7 +79,7 @@ class Parameters:
         naam str Naam van de optie
         defaultWaarde bool  Geeft de waarde voor de optie als de optie niet in de request parameters aanwezig is
 
-        Geeft de waarde terug, of None als het normwaarde-increment niet is opgegeven
+        Geeft de waarde terug, of defaultWaarde als het optie niet is opgegeven
         """
         waarde = None if self._FormData is None else self._FormData.get (naam)
         if waarde is None:
@@ -87,12 +87,12 @@ class Parameters:
         try:
             return bool (waarde)
         except:
-            self.Log.Fout ('De opgegeven waarde voor optie "' + naam + '" is onbegrijpelijk: "' + self.LeesString ("normwaarde-increment") + '"')
+            self.Log.Fout ('De opgegeven waarde voor optie "' + naam + '" is onbegrijpelijk: "' + str(waarde) + '"')
             return defaultWaarde
 #endregion
 
 #region Ondersteuning voor bestanden
-    def LeesBestand (self, key: str, verplicht: bool):
+    def LeesBestand (self, key: str, verplicht: bool) -> str:
         """Lees de inhoud van een bestand aan de hand van de specificatie key / input type="file" control naam.
 
         Argumenten:
@@ -142,6 +142,52 @@ class Parameters:
                         self.Log.Fout ('Bestand "' + fileData.filename + '" bevat geen valide (utf-8) data: ' + str(e))
                     break
             return None
+
+    def LeesBestanden (self, key: str, verwerkBestand):
+        """Lees de inhoud van een of meer bestanden aan de hand van de specificatie key / input type="file" control naam.
+
+        Argumenten:
+
+        log Meldingen  Verzameling meldingen voor de uitvoering van dit request
+        key str        Key waarvoor de data opgehaald moet worden
+        verwerkBestand lambda Methode die aangeroepen wordt met de naam en inhoud van elk gevonden bestand
+        """
+        if not self._Pad is None:
+            filenamen = self._FormData.get (key)
+            if filenamen is None:
+                self.Log.Detail ('Geen bestand(en) gespecificeerd voor "' + key + '"')
+                return
+            if isinstance (filenamen, str):
+                filenamen = [filenamen]
+            for filenaam in filenamen:
+                pad = os.path.join (self._Pad, filenaam)
+                if not os.path.isfile (pad):
+                    self.Log.Fout ('Bestand voor "' + key + '" niet gevonden: "' + filenaam + '"')
+                    return
+                try:
+                    with open (pad, 'r', encoding = 'utf-8') as dataFile:
+                        data = dataFile.read ()
+                    self.Log.Detail ('Bestand "' + filenaam + '" voor "' + key + '" ingelezen')
+                    verwerkBestand (filenaam, data)
+                except Exception as e:
+                    self.Log.Fout ('Bestand voor "' + key + '" ("' + filenaam + '") kan niet gelezen worden: ' + str(e))
+
+        else:
+            files = None if self._FileData is None or not key in self._FileData else self._FileData.getlist (key)
+            if files is None:
+                self.Log.Detail ('Geen bestand(en) doorgegeven voor "' + key + '"')
+                return
+            for fileData in files:
+                if fileData.filename != '':
+                    try:
+                        data = fileData.stream.read ().decode("utf-8").strip ()
+                        if len(data) == 0:
+                            self.Log.Waarschuwing ('Leeg bestand "' + fileData.filename + '" voor "' + key + '" genegeerd')
+                        else:
+                            self.Log.Detail ('Bestand "' + fileData.filename + '" voor "' + key + '" ingelezen')
+                            verwerkBestand (fileData.filename, data)
+                    except Exception as e:
+                        self.Log.Fout ('Bestand "' + fileData.filename + '" bevat geen valide (utf-8) data: ' + str(e))
 
     def Bestandsnaam (self, key: str, inclusiefExtensie : bool = True):
         """Geef de bestandnaam van een bestand aan de hand van de specificatie key / input type="file" control naam.  
@@ -205,24 +251,4 @@ class Parameters:
                 return 0.1 * float (nauwkeurigheid)
             except:
                 self.Log.Fout ('De opgegeven juridische nauwkeurigheid is geen getal: "' + self.LeesString ("juridische-nauwkeurigheid") + '"')
-
-    def NormwaardeIncrement (self, verplicht: bool = False) -> int:
-        """Haal het normwaarde-increment uit de request parameters
-        
-        Argumenten:
-
-        verplicht bool  Geeft aan dat het normwaarde-increment een verplichte parameter is
-
-        Geeft de waarde terug, of None als het normwaarde-increment niet is opgegeven
-        """
-        if self.LeesString ("normwaarde-increment") is None:
-            if verplicht:
-                self.Log.Fout ("Het normwaarde-increment is niet opgegeven in de specificatie")
-            return None
-        try:
-            increment = float (self.LeesString ("normwaarde-increment"))
-        except:
-            self.Log.Fout ('Het opgegeven normwaarde-increment is geen getal: "' + self.LeesString ("normwaarde-increment") + '"')
-            return None
-        return increment
 #endregion

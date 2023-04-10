@@ -14,7 +14,7 @@ Python script: [toon_geo.py](../blob/main/broncode/geo-tools/maak_gio_wijziging.
 De uitgangspunten voor dit algeoritme zijn:
 * De geo-tools werken alleen als een GIO uitsluitend punten, lijnen of vlakken hebben. Dit is een implementatiebeperking. Het algoritme kan uitgebreid worden naar GIO's waarin een mix van punten, lijnen en vlakken voorkomen.
 * Beide GIO-versies zijn [geschikt bevonden](Toon-controleer-gio) voor dezelfde juridische nauwkeurigheid die gebruikt wordt bij deze operatie.
-* Als het een GIO betreft met GIO-delen, dan zijn de groepID en bijbehorende naam onveranderlijk in de tijd en onderanderlijk aan elkaar gekoppeld. Als in de was- en wordt-versie van de GIO dezelfde groepID voorkomt, dan hoort daar dezelfde naam bij. Als dezelfde naam voorkomt, dan heeft die dezelfde groepID. 
+* Als het een GIO betreft met GIO-delen, dan zijn de groepID en bijbehorende naam onveranderlijk in de tijd en onderanderlijk aan elkaar gekoppeld. Als in de was- en wordt-versie van het GIO dezelfde groepID voorkomt, dan hoort daar dezelfde naam bij. Als dezelfde naam voorkomt, dan heeft die dezelfde groepID. 
 
 De bepaling van de GIO-wijziging kan opgesplitst worden in:
 
@@ -27,11 +27,8 @@ De uitkomst van het algoritme is een GIO-wijziging die bestaat uit:
 
 * GIO-Locaties uit de was-versie waarvan ofwel de geometrie, ofwel het groepID, ofwel de normwaarde is gewijzigd in de wordt-versie van de GIO.
 * GIO-Locaties uit de wordt-versie waarvan ofwel de geometrie, ofwel het groepID, ofwel de normwaarde is gewijzigd ten opzichte van de was-versie van de GIO.
-* GIO-Locaties uit de wordt-versie die juridisch niet zijn gewijzigd ten opzichte van de was-versie van de GIO maar die wel een andere naam hebben (revisies).
-* Wijzigmarkeringen die geografisch aangeven waar de wijzigingen in de GIO-versies optreden. Dit zijn enkelvoudige (geen multi-)geometrieën zonder verdere eigenschappen:
-    * Als de GIO uit punten bestaat, dan zijn de wijzigmarkeringen ook punten.
-    * Als de GIO uit lijnen bestaat, dan zijn de wijzigmarkeringen lijnen (overeenkomend met manifest ongewijzigde geometrieën) en/of vlakken. 
-    * Als de GIO uit lijnen bestaat, dan zijn de wijzigmarkeringen vlakken. 
+* GIO-Locaties uit de wordt-versie die juridisch niet zijn gewijzigd ten opzichte van de was-versie van het GIO maar die wel een andere naam hebben (revisies).
+* Wijzigmarkeringen die geografisch aangeven waar de wijzigingen in de GIO-versies optreden. Dit zijn enkelvoudige (geen multi-)geometrieën zonder verdere eigenschappen. Het type geometrie (punt, lijn, vlak) komt overeen met het type geometrie dat gewijzigd is. 
 
 ### GIO-locaties met een manifest ongewijzigde geometrie
 Als dezelfde basisgeometrie-ID zowel in de was- als wordt-versie bij een GIO-Locatie voorkomt, dan:

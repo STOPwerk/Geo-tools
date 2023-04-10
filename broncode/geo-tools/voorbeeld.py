@@ -17,9 +17,9 @@ import os
 from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
 from operatie_gio_wijziging import GIOWijziging
-#from maak_gio_wijziging import GIOWijzigingMaker
-from operatie_toon_geo import GeoViewer
-#from toon_gio_wijziging import GIOWijzigingViewer
+from operatie_maak_gio_wijziging import MaakGIOWijziging
+from operatie_toon_geo import ToonGeo
+from operatie_toon_gio_wijziging import ToonGIOWijziging
 from weergave_webpagina import WebpaginaGenerator
 
 class Voorbeeld:
@@ -112,9 +112,9 @@ class Voorbeeld:
 
         _Specs = {
                 'gio_wijziging.json' : (1, GIOWijziging.ResultaatHtml),
-                'toon_geo.json' : (2, GeoViewer.ResultaatHtml) #, 
-                #'maak_gio_wijziging.json' : (3, GIOWijzigingMaker.ResultaatHtml), 
-                #'toon_gio_wijziging.json' : (4, GIOWijzigingViewer.ResultaatHtml)
+                'toon_geo.json' : (2, ToonGeo.ResultaatHtml), 
+                'maak_gio_wijziging.json' : (3, MaakGIOWijziging.ResultaatHtml), 
+                'toon_gio_wijziging.json' : (4, ToonGIOWijziging.ResultaatHtml)
             } 
 
         def Html (self):

@@ -10,17 +10,13 @@ import pygml
 from pygml.v32 import encode_v32, GML32_ENCODER
 GML32_ENCODER.id_required = False # Basisgeometrie gebruikt geen gml:id
 from lxml import etree as lxml_etree
-from shapely.geometry import shape, mapping
+from shapely.geometry import shape
 
-import json
-import math
-import re
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
 from applicatie_meldingen import Meldingen
 from applicatie_request import Parameters
-from weergave_webpagina import WebpaginaGenerator
 
 
 #----------------------------------------------------------------------
@@ -58,14 +54,17 @@ class GIODeel:
         # Als onderdeel van de GIO-Wijziging: wat moet er mee gebeuren?
         self.WijzigActie = None
 
+    _WIJZIGACTIE_VOEGTOE = "voegtoe"
+    _WIJZIGACTIE_VERWIJDER = "verwijder"
+
 class GeoData:
     def __init__(self):
-        # Geeft de bron aan: Gebied, GIO-versie of GIO-wijziging
+        # Geeft de bron aan: Gebiedsmarkering, Effectgebied, GIO-versie of GIO-wijziging
         self.Soort : str = None
         #----------------------------------------------------------
         # Voor een GIO-versie of GIO-wijziging
         #----------------------------------------------------------
-        # De work-identificatie van de GIO
+        # De work-identificatie van het GIO
         self.WorkId : str = None
         # Geeft aan of er een waarde met de locatie geassocieerd is (groepID, normwaarde).
         # Zo nee, dan is dit None. Zo ja, dan staat er de naam van het waarde-element
@@ -80,16 +79,14 @@ class GeoData:
         self.EenheidLabel = None
         # ID voor de eenheid van de normwaarden
         self.EenheidID = None
-        # Increment voor kwantitatieve normwaarde
-        self.NormwaardeIncrement : int = None
         # Juridische nauwkeurigheid in decimeter
         self.JuridischeNauwkeurigheid : int = None
         #----------------------------------------------------------
         # Voor een GIO-versie
         #----------------------------------------------------------
-        # De expression-identificatie van de GIO
+        # De expression-identificatie van het GIO
         self.ExpressionId : str = None
-        # De vaststellingscontext van de GIO (indien bekend)
+        # De vaststellingscontext van het GIO (indien bekend)
         self.Vaststellingscontext : str = None
         #----------------------------------------------------------
         # Voor een GIO-versie, effectgebied, gebiedsmarkering
@@ -112,8 +109,7 @@ class GeoData:
         # De wordt-locaties die uitsluitend als revisie voorkomen
         self.WordtRevisies : GeoData = None 
         # De wijzig-markering indien aanwezig.
-        # Key is dimensie van de geometrie: 0 = punt, 1 = lijn, 2 = vlak
-        self.WijzigMarkering : Dict[int,GeoData] = None
+        self.WijzigMarkering : GeoData = None
         #----------------------------------------------------------
         # Voor weergave op de kaart
         #----------------------------------------------------------
@@ -136,6 +132,11 @@ class GeoData:
             return "lijnen" if meervoud else "lijn"
         if dimensie == 2:
             return "vlakken" if meervoud else "vlak"
+
+    SOORT_Gebiedsmarkering = 'Gebiedsmarkering'
+    SOORT_Effectgebied = 'Effectgebied'
+    SOORT_GIOVersie = 'GIO-versie'
+    SOORT_GIOWijziging = 'GIO-Wijziging'
 
     _GeoNS = '{https://standaarden.overheid.nl/stop/imop/geo/}'
     _BasisgeoNS = '{http://www.geostandaarden.nl/basisgeometrie/1.0}'
@@ -182,8 +183,6 @@ class GeoData:
                 request.Log.Informatie (data.Soort + " ingelezen uit '" + request.Bestandsnaam (key) + "'")
                 if data.JuridischeNauwkeurigheid is None:
                     data.JuridischeNauwkeurigheid = request.JuridischeNauwkeurigheidInDecimeter (False)
-                if data.NormwaardeIncrement is None and data.AttribuutNaam == 'kwantitatieveNormwaarde':
-                    data.NormwaardeIncrement = request.NormwaardeIncrement (False)
                 return data
 
     @staticmethod
@@ -202,7 +201,7 @@ class GeoData:
         # Vertaal naar GeoData afhankelijk van het bronformaat
         if geoXml.tag == GeoData._GeoNS + 'Gebiedsmarkering' or geoXml.tag == GeoData._GeoNS + 'Effectgebied':
             # Gebiedsmarkering of effectgebied: alleen geometrie met optioneel een label
-            data.Soort = 'Gebiedsmarkering' if geoXml.tag == GeoData._GeoNS + 'Gebiedsmarkering' else 'Effectgebied'
+            data.Soort = GeoData.SOORT_Gebiedsmarkering if geoXml.tag == GeoData._GeoNS + 'Gebiedsmarkering' else GeoData.SOORT_Effectgebied
             if not data._LeesLocaties (log, geoXml, GeoData._GeoNS + 'Gebied', 'label'):
                 succes = False
             elif len (data.Locaties.keys ()) == 0:
@@ -276,17 +275,10 @@ class GeoData:
                     elt = geoXml.find (GeoData._GeoNS + 'eenheidID')
                     if not elt is None:
                         data.EenheidID = elt.text
-                    elt = geoXml.find (GeoData._GeoNS + 'normwaardeIncrement')
-                    if not elt is None:
-                        try:
-                            data.NormwaardeIncrement = float (elt.text)
-                        except:
-                            log.Fout ("Normwaarde-increment moet een getal zijn in plaats van '" + elt.text + "'")
-                            succes = False
 
             if gioMutatie is None:
                 # Het is een GIO-versie
-                data.Soort = 'GIO-versie'
+                data.Soort = GeoData.SOORT_GIOVersie
                 elt = geoXml.find (GeoData._GeoNS + 'FRBRExpression')
                 if not elt is None:
                     data.ExpressionId = elt.text
@@ -321,12 +313,9 @@ class GeoData:
                     if data.NormLabel is None:
                         log.Fout ("GIO heeft geen label voor de norm")
                         succes = False
-                    if not data.NormwaardeIncrement is None and data.AttribuutNaam != 'kwantitatieveNormwaarde':
-                        log.Waarschuwing ("GIO bevat een normwaarde-increment maar de normwaarden zijn niet kwantitatief")
-                        data.NormwaardeIncrement = None
             else:
                 # Het is een GIO-wijziging
-                data.Soort = 'GIO-wijziging'
+                data.Soort = GeoData.SOORT_GIOWijziging
 
                 data.Was = GeoData ()
                 data.Was.WorkId = data.WorkId
@@ -379,21 +368,11 @@ class GeoData:
 
                     # Lees de wijzigmarkering in
                     geoXml = gioMutatie.find (GeoData._GeoNS + 'wijzigmarkeringen')
-                    data.WijzigMarkering = {}
+                    data.WijzigMarkering = GeoData ()
                     if not geoXml is None:
-                        for dimensie in [0,1,2]:
-                            markeringen = GeoData ()
-                            geometrietype = 'Punt' if dimensie == 0 else 'Lijn' if dimensie == 1 else 'Vlak'
-                            if not markeringen._LeesLocaties (log, geoXml, GeoData._GeoNS + geometrietype):
+                        for geometrietype in ['Punt', 'Lijn', 'Vlak']:
+                            if not data.WijzigMarkering._LeesLocaties (log, geoXml, GeoData._GeoNS + geometrietype):
                                 succes = False
-                                meldGeenMarkeringen = False
-                            elif len (markeringen.Locaties) > 0:
-                                meldGeenMarkeringen = False
-                                if len (markeringen.Locaties) > 1 or not dimensie in markeringen.Locaties:
-                                    log.Fout ("wijzigmarkeringen bevat " + geometrietype + "-elementen die geen " + GeoData.GeometrieNaam(dimensie, False) + " zijn")
-                                    succes = False
-                                if dimensie in markeringen.Locaties:
-                                    data.WijzigMarkering[dimensie] = markeringen
 
             if data.AttribuutNaam == 'groepID':
                 data.Attributen[data.AttribuutNaam] = Attribuut (data.AttribuutNaam, 'groepID')
@@ -510,7 +489,7 @@ class GeoData:
                 for naam in attribuutNamen:
                     elt = locatie.find (GeoData._GeoNS + naam)
                     if not elt is None:
-                        geoLocatie['properties'][naam] = elt.text
+                        geoLocatie['properties'][naam] = float (elt.text) if naam == 'kwantitatieveNormwaarde' else elt.text
                         self.AttribuutNaam = naam
                         heeftAttribuut = True
             elif heeftAttribuut:
@@ -519,7 +498,7 @@ class GeoData:
                     foutmeldingen.add ('Alle locaties moeten een waarde voor "' + self.AttribuutNaam + '" hebben')
                     succes = False
                 else:
-                    geoLocatie['properties'][self.AttribuutNaam] = elt.text
+                    geoLocatie['properties'][self.AttribuutNaam] = float (elt.text) if self.AttribuutNaam == 'kwantitatieveNormwaarde' else elt.text
             else:
                 for naam in attribuutNamen:
                     elt = locatie.find (GeoData._GeoNS + naam)
@@ -581,9 +560,6 @@ class GeoData:
             if not self.EenheidID is None:
                 gioGML += '''
     <geo:eenheidID>''' + self.EenheidID + '''</geo:eenheidID>'''
-            if not self.NormwaardeIncrement is None:
-                gioGML += '''
-    <geo:normwaardeIncrement>''' + self.NormwaardeIncrement + '''</geo:normwaardeIncrement>'''
 
 
         gioGML += '''
@@ -624,7 +600,7 @@ class GeoData:
 
         wijzigingGML = '''<geo:GeoInformatieObjectVaststelling schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
   https://standaarden.overheid.nl/stop/@@@IMOP_Versie@@@/imop-geo.xsd">
-''' + self.Vaststellingscontext + '''
+''' + ('' if self.Vaststellingscontext is None else self.Vaststellingscontext) + '''
     <geo:vastgesteldeVersie>
         <geo:GeoInformatieObjectMutatie>
             <geo:FRBRWork>''' + self.WorkId + '''</geo:FRBRWork>
@@ -659,9 +635,6 @@ class GeoData:
             if not self.EenheidID is None:
                 wijzigingGML += '''
                     <geo:eenheidID>''' + self.EenheidID + '''</geo:eenheidID>'''
-            if not self.NormwaardeIncrement is None:
-                wijzigingGML += '''
-                    <geo:normwaardeIncrement>''' + self.NormwaardeIncrement + '''</geo:normwaardeIncrement>'''
 
 
         wijzigingGML += '''
@@ -707,13 +680,13 @@ class GeoData:
         wijzigingGML += '''
             </geo:locatieMutaties>'''
 
-        if len (self.WijzigMarkering) > 0:
+        if not self.WijzigMarkering is None and len (self.WijzigMarkering.Locaties) > 0:
             wijzigingGML += '''
                 <geo:wijzigmarkeringen>'''
 
-            for dimensie, markeringen in self.WijzigMarkering.items ():
+            for dimensie, markeringen in self.WijzigMarkering.Locaties.items ():
                 markeringType = ('Punt' if dimensie == 0 else 'Lijn' if dimensie == 1 else 'Vlak')
-                for markering in markeringen.Locaties:
+                for markering in markeringen:
                     wijzigingGML += '''
                     <geo:''' + markeringType + '''>
                         <geo:geometrie>

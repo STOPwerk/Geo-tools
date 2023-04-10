@@ -13,7 +13,7 @@ import math
 import re
 
 from applicatie_request import Parameters
-from data_gio import GeoData, Attribuut
+from data_geodata import GeoData, Attribuut
 from weergave_webpagina import WebpaginaGenerator
 
 #----------------------------------------------------------------------
@@ -161,19 +161,16 @@ class KaartGenerator:
 #----------------------------------------------------------------------
 #region Symbolisatie
 
-    def VoegDefaultSymbolisatieToe (self, geoData : GeoData) -> Dict[int,str]:
+    def VoegDefaultSymbolisatieToe (self, dimensie) -> str:
         """Voeg de default symbolisatie toe voor de geodata
         
         Argumenten:
 
-        geoData GeoData  Eerdef ingelezen data
+        dimensie int  Dimensie waarvoor de default symbolisatie toegevoegd moet worden
 
-        Geeft de namen terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
+        Geeft de naam terug die gebruikt moet worden om de symbolisatie aan geodata voor een kaart te koppelen
         """
-        namen = {}
-        for dimensie in geoData.Locaties.keys ():
-            namen[dimensie] = self.VoegUniformeSymbolisatieToe (dimensie, "#0000FF", "#0000CD")
-        return namen
+        return self.VoegUniformeSymbolisatieToe (dimensie, "#0000FF", "#0000CD")
 
     def VoegUniformeSymbolisatieToe (self, dimensie : int, vulkleur: str, randkleur: str, opacity : str = '1') -> str:
         """Voeg een STOP symbolisatie toe voor gebruik in kaarten.
@@ -232,7 +229,7 @@ class KaartGenerator:
         <PolygonSymbolizer>
             <Fill>
                 <SvgParameter name="fill">''' + vulkleur + '''</SvgParameter>
-                <SvgParameter name="fill-opacity">0.8</SvgParameter>
+                <SvgParameter name="fill-opacity">''' + opacity + '''</SvgParameter>
             </Fill>
             <Stroke>
                 <SvgParameter name="stroke">''' + randkleur + '''</SvgParameter>
@@ -780,25 +777,37 @@ class KaartGenerator:
             self.Nauwkeurigheid : float = None
             # De schaalafhankelijke geodata per zomlevel, voor oplopende zoomlevel. De brondata is hierin als eerste opgenomen.
             self.ZoomLevels : List[KaartGenerator.SchaalafhankelijkeGeometrie] = []
+            # Naam van de kaart zoals gebruikt bij het aan/uit zetten van lagen
+            self.Naam = None
+            # Geeft aan dat de laag aan/uit gezet kan worden door de eindgebruiker
+            self.InControls = False
+            # Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
+            self.ToonInitieel = False
 
-    def MaakSchaalafhankelijkeGeometrie (self, geoData : GeoData) -> SchaalafhankelijkeGeoData:
+    def MaakSchaalafhankelijkeGeometrie (self, geoData : GeoData, naam : str, inControls : bool = False, toonInitieel : bool = True) -> SchaalafhankelijkeGeoData:
         """Vereenvoudig de geometrieën in de locaties voor weergave, waarbij
         voor lagere zoom-levels (verder uitgezoomd) minder detail getoond wordt.
 
         Argumenten:
 
         geoData GeoData  De geoData die schaalafhankelijk weergegeven moeten worden.
+        naam str  Naam van de kaart zoals gebruikt bij de weergave van properties (wordt " (nieuw)" achter gezet) en bij het aan/uit zetten van lagen
+        inControls bool  Geeft aan dat de laag aan/uit gezet kan worden door de eindgebruiker
+        toonInitieel bool  Geeft aan dat de kaart bij weergave ven de kaart zichtbaar moet zijn.
 
         Geeft de vereenvoudigde geometrieën en markers als GeoData terug.
         """
         nauwkeurigheid = geoData.JuridischeNauwkeurigheid
         if nauwkeurigheid is None:
-            nauwkeurigheid = self._Request.NauwkeurigheidInDecimeter (False)
+            nauwkeurigheid = self._Request.JuridischeNauwkeurigheidInDecimeter (False)
             if nauwkeurigheid is None:
                 nauwkeurigheid = 1
         self._Log.Detail ("Maak schaalafhankelijke geometrie met juridische nauwkeurigheid " + str (nauwkeurigheid) + " decimeter")
         resultaat = KaartGenerator.SchaalafhankelijkeGeoData (geoData)
         resultaat.Nauwkeurigheid = nauwkeurigheid
+        resultaat.Naam = naam
+        resultaat.InControls = inControls
+        resultaat.ToonInitieel = toonInitieel
 
         # Meest ingezoomde laag zijn de originele features
         ditNiveau = KaartGenerator.SchaalafhankelijkeGeometrie ()
@@ -941,17 +950,14 @@ class KaartGenerator:
 
         return resultaat
 
-    def VoegSchaalafhankelijkeLocatiesToe (self, kaart : Kaart, naam: str, schaalafhankelijk: SchaalafhankelijkeGeoData, symbolisatieNamen : Dict[int,str], postLaag = None):
+    def VoegSchaalafhankelijkeLocatiesToe (self, kaart : Kaart, schaalafhankelijk: SchaalafhankelijkeGeoData, symbolisatieNamen : Dict[int,str]):
         """Voeg de schaalafhankelijke kaartlagen aan de kaart toe; ze moeten eerder zijn gemaakt via MaakSchaalafhankelijkeGeometrie.
 
         Argumenten:
 
         kaart Kaart  Kaart waaraan de locaties toegevoegd moeten worden
-        naam str  Naam van de kaartlaag
         schaalafhankelijk SchaalafhankelijkeGwoData De schaalafhankelijke geo-informatie waarvan de locaties aan de kaart toegevoegd moeten worden.
         symbolisatieNamen Dict[int,str] De namen van de symbolisatie (verkregen via een van de Voeg*Toe methoden) teruggeeft.
-        postLaag lambda  Methode die aangeroepen wordt nadat een kaartlaag is toegevoegd, met als argument de geoData 
-                         die voor de laag als bron heeft gediend bij het maken van de schaalafhankelijke geometrieën.
         """
         def __PostLaag (dimensie):
             if not postLaag is None:
@@ -965,17 +971,16 @@ class KaartGenerator:
                     kaart.LaatsteLaagZoomLevel (geschaald.VoorZoomLevel, voorgaandeZoom)
                 voorgaandeZoom = geschaald.VoorZoomLevel
                 dataNamen = self.VoegGeoDataToe (geschaald.Features)
-                kaart.VoegLagenToe (naam, dataNamen, symbolisatieNamen, postLaag=__PostLaag)
+                kaart.VoegLagenToe (schaalafhankelijk.Naam, dataNamen, symbolisatieNamen, schaalafhankelijk.InControls, schaalafhankelijk.ToonInitieel)
         if not voorgaandeZoom is None:
             kaart.LaatsteLaagZoomLevel (None, voorgaandeZoom)
 
-    def VoegSchaalafhankelijkeMarkeringenToe (self, kaart : Kaart, naam: str, schaalafhankelijk : SchaalafhankelijkeGeoData, symbolisatieNaam :  str):
+    def VoegSchaalafhankelijkeMarkeringenToe (self, kaart : Kaart, schaalafhankelijk : SchaalafhankelijkeGeoData, symbolisatieNaam :  str):
         """Voeg de schaalafhankelijke (punt)markeringen aan de kaart toe; ze moeten eerder zijn gemaakt via MaakSchaalafhankelijkeGeometrie.
 
         Argumenten:
 
         kaart Kaart  Kaart waaraan de markeringen toegevoegd moeten worden
-        naam str  Naam van de kaartlaag
         schaalafhankelijk SchaalafhankelijkeGeoData De schaalafhankelijke geo-informatie waarvan de markeringen aan de kaart toegevoegd moeten worden.
         symbolisatieNaam str  Naam van de (punt)symbolisatie (verkregen via een van de Voeg*Toe methoden).
         """
@@ -985,7 +990,7 @@ class KaartGenerator:
                 if not voorgaandeZoom is None:
                     kaart.LaatsteLaagZoomLevel (geschaald.VoorZoomLevel, voorgaandeZoom)
                 dataNamen = self.VoegGeoDataToe (geschaald.MarkeringenGridCel)
-                kaart.VoegLagenToe (naam, dataNamen, { 0: symbolisatieNaam }, False, False, True)
+                kaart.VoegLagenToe (schaalafhankelijk.Naam, dataNamen, { 0: symbolisatieNaam }, schaalafhankelijk.InControls, schaalafhankelijk.ToonInitieel)
                 voorgaandeZoom = geschaald.VoorZoomLevel
         if not voorgaandeZoom is None:
             kaart.LaatsteLaagZoomLevel (None, voorgaandeZoom)

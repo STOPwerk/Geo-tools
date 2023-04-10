@@ -23,7 +23,7 @@
     </div>
     <p>
         <label for="juridische-nauwkeurigheid"><b>Juridische nauwkeurigheid</b></label>&nbsp;<input type="number" name="juridische-nauwkeurigheid" id="juridische-nauwkeurigheid" value="1" min="1"></input>&nbsp;<label for="juridische-nauwkeurigheid"><b>decimeter</b></label><br>
-        De juridische nauwkeurigheid van de geometrieën in de GIO ([zie documentatie](@@@GeoTools_Url@@@wiki/Toon-controleer-gio)).
+        De juridische nauwkeurigheid van de geometrieën in het GIO ([zie documentatie](@@@GeoTools_Url@@@wiki/Toon-controleer-gio)).
     </p>
     <p>
         Voor een geo-informatieobject met GIO-delen of met normwaarden is een symbolisatie conform
@@ -34,8 +34,9 @@
     <div class="box" id="symbolisatie_box">
         <label>
             <span class="link">Selecteer de symbolisatie voor het geo-informatieobject</span>
-            <span>of sleep het bestand hier naar toe.</span>
-            <input class="box__file" type="file" name="symbolisatie" id="symbolisatie" accept="application/xml" />
+            <span>of sleep het bestand hier naar toe.
+			<br/>Als het geo-informatieobject meerdere typen geometrie heeft (punt/lijn/vlak), dan een bestand per type geometrie.</span>
+            <input class="box__file" type="file" name="symbolisatie" id="symbolisatie" multiple accept="application/xml" />
         </label>
     </div>
     <button id="startknop">Maak GIO-wijziging</button>

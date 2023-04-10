@@ -129,15 +129,22 @@ window.addEventListener('load', function () {
             analyseline.innerText = 'Analyseer ' + heeftGeometrie.name + '...';
             new FileLezer(heeftGeometrie, analyseline).VoerUit();
         }
-        for (var i = 0; i < symbolisatieFile.files.length; i++) {
-            var file = symbolisatieFile.files[i];
+        if (symbolisatieFile.files.length > 0) {
             var line = document.createElement('div');
             container.appendChild(line);
-            if (i > 0) {
-                teveelFiles = true;
-                line.innerText = 'Extra bestand geselecteerd! ' + file.name;
-            } else {
-                line.innerText = 'Symbolisatie: ' + file.name;
+            line.innerText = 'Symbolisatie';
+            var sep = ': '
+            for (var i = 0; i < symbolisatieFile.files.length; i++) {
+                var file = symbolisatieFile.files[i];
+                if (i == 3) {
+                    teveelFiles = true;
+                    line = document.createElement('div');
+                    container.appendChild(line);
+                    line.innerText = 'Extra symbolisatie bestand';
+                    sep = ': '
+                }
+                line.innerText += sep + file.name;
+                sep = ', ';
             }
         }
         startknop.disabled = (teveelFiles || !geometrieOk);

@@ -37,8 +37,8 @@ class GIOWijziging (Operatie):
 # Implementatie
 #
 #======================================================================
-    def __init__(self, request : Parameters, log: Meldingen):
-        super ().__init__ ("GIO-wijziging", "GIO-wijziging - geen resultaat", request, log)
+    def __init__(self, request : Parameters, log: Meldingen, defaultTitel = None, titelBijFout = None):
+        super ().__init__ (request, log, "GIO-wijziging" if defaultTitel is None else defaultTitel, "GIO-wijziging - geen resultaat" if titelBijFout is None else titelBijFout)
         # Geometrie specificatie voor de GIO's
         self._Geometrie : Dict[str,GeoData] = {}
 
@@ -53,7 +53,7 @@ class GIOWijziging (Operatie):
             x = spec.get (key)
             if x is None:
                 x = self.Request._FormData.get (key)
-            return x if not x is None and x else None
+            return x
 
         succes = True
 
@@ -120,7 +120,7 @@ class GIOWijziging (Operatie):
                 request._FormData["wordt"] = wijziging["wordt"]
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
                 request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
-                request._FormData["toon-gio-wijziging"] = False
+                request._FormData["toon-gio-wijziging"] = __Waarde (wijziging, "toon-gio-wijziging")
                 request._FormData["juridische-nauwkeurigheid"] = __Waarde (wijziging, "juridische-nauwkeurigheid")
 
                 self.Log.Informatie ("Maak GIO-wijziging: '" + wijziging["was"] + "' &rarr; '" + wijziging["was"] + "'")

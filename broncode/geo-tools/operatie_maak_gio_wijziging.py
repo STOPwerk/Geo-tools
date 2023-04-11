@@ -64,9 +64,15 @@ class MaakGIOWijziging (ToonGIOWijziging):
         if self.Request.LeesString ("beschrijving"):
             self.Generator.VoegHtmlToe ('<p>' + self.Request.LeesString ("beschrijving") + '</p>') 
 
+        eindeToelichting = self.Generator.StartToelichting ("Bepaling GIO-Wijziging", False)
         self._BepaalWijzigingen ()
+        self.Generator.VoegHtmlToe (eindeToelichting)
+
         self._ToonGIOWijzigingOnderdelen ();
+        
+        eindeToelichting = self.Generator.StartToelichting ("GML voor GIO-Wijziging", False)
         self._ToonGIOWinzigingGML ()
+        self.Generator.VoegHtmlToe (eindeToelichting)
 
         self.Generator.VoegHtmlToe (einde)
 

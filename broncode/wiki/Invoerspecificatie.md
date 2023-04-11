@@ -115,7 +115,6 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
     "symbolisatie": [ "punt_style.xml", "vlak_style.xml"],
     "juridische-nauwkeurigheid": 1,
     "kwaliteitscontrole": true,
-    "optimalisatie": false,
     "wijziging": [
         {
             "was": "gio_1.gml", 

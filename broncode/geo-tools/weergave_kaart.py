@@ -905,7 +905,7 @@ class KaartGenerator:
                             if data.Combineer (markeringenDitNiveau.pop (buur, None)):
                                 cellenAndersDanVoorgaande = True
 
-                    if data.Aantal == 1:
+                    if data.Aantal == 1 and cel in puntCellen:
                         # Dit moet een punt in een enkele grid cel zijn
                         geometrieDitNiveau[0].append (puntCellen.pop (cel))
                     else:

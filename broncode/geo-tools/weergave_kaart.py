@@ -215,7 +215,7 @@ class KaartGenerator:
         <Name>Lijn</Name>
         <LineSymbolizer>
             <Stroke>
-                <SvgParameter name="stroke">''' + vulkleur + '''</SvgParameter>
+                <SvgParameter name="stroke">''' + randkleur + '''</SvgParameter>
                 <SvgParameter name="stroke-opacity">1</SvgParameter>
                 <SvgParameter name="stroke-width">3</SvgParameter>
                 <SvgParameter name="stroke-linecap">butt</SvgParameter>

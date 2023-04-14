@@ -90,7 +90,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
         valideerGIOs = True
         if self._Was is None:
-            self.Log.Informatie ("Lees de was-versie van de GIO")
+            self.Log.Informatie ("Lees de originele versie van de GIO")
             self._Was = GeoData.LeesGeoBestand (self.Request, 'was', True)
             if self._Was is None:
                 return False
@@ -100,7 +100,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
                 valideerGIOs = False
 
         if self._Wordt is None:
-            self.Log.Informatie ("Lees de wordt-versie van de GIO")
+            self.Log.Informatie ("Lees de nieuwe versie van de GIO")
             self._Wordt = GeoData.LeesGeoBestand (self.Request, 'wordt', True)
             if self._Wordt is None:
                 return False
@@ -111,7 +111,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
         if valideerGIOs:
             if self._Was.AttribuutNaam != self._Wordt.AttribuutNaam:
-                self.Log.Fout ("De was- en wordt-versie moeten allebei uitsluitend geometrie, GIO-delen of normwaarden hebben")
+                self.Log.Fout ("De originele en nieuwe versie moeten allebei uitsluitend geometrie, GIO-delen of normwaarden hebben")
                 succes = False
             elif not self._Was.GIODelen is None:
                 for groepId, gioDeel in self._Was.GIODelen.items ():
@@ -122,17 +122,17 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
             nauwkeurigheid = self.Request.JuridischeNauwkeurigheidInDecimeter (False)
             if self._Wordt.JuridischeNauwkeurigheid is None and self._Was.JuridischeNauwkeurigheid is None:
-                self.Log.Fout ("De juridische nauwkeurigheid van de was- en wordt-versie is onbekend en moet opgegeven worden")
+                self.Log.Fout ("De juridische nauwkeurigheid van de originele en nieuwe versie is onbekend en moet opgegeven worden")
                 succes = False
             elif nauwkeurigheid is None and self._Wordt.JuridischeNauwkeurigheid != self._Was.JuridischeNauwkeurigheid:
-                self.Log.Fout ("De juridische nauwkeurigheid van de was- en wordt-versie is verschillend en moet daarom opgegeven worden")
+                self.Log.Fout ("De juridische nauwkeurigheid van de originele en nieuwe versie is verschillend en moet daarom opgegeven worden")
                 succes = False
             elif not nauwkeurigheid is None:
                 if self._Wordt.JuridischeNauwkeurigheid != nauwkeurigheid:
-                    self.Log.Informatie ("Als juridische nauwkeurigheid van de wordt-versie wordt " + str(nauwkeurigheid) + " decimeter gebruikt in plaats van " + str (self._Wordt.JuridischeNauwkeurigheid))
+                    self.Log.Informatie ("Als juridische nauwkeurigheid van de nieuwe versie wordt " + str(nauwkeurigheid) + " decimeter gebruikt in plaats van " + str (self._Wordt.JuridischeNauwkeurigheid))
                     self._Wordt.JuridischeNauwkeurigheid = nauwkeurigheid
                 if self._Was.JuridischeNauwkeurigheid != nauwkeurigheid:
-                    self.Log.Informatie ("Als juridische nauwkeurigheid van de was-versie wordt " + str(nauwkeurigheid) + " decimeter gebruikt in plaats van " + str (self._Was.JuridischeNauwkeurigheid))
+                    self.Log.Informatie ("Als juridische nauwkeurigheid van de originele versie wordt " + str(nauwkeurigheid) + " decimeter gebruikt in plaats van " + str (self._Was.JuridischeNauwkeurigheid))
                     self._Was.JuridischeNauwkeurigheid = nauwkeurigheid
 
             self._InitSymbolisatieNamen ([self._Was, self._Wordt])
@@ -188,7 +188,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
         Deze kunnen gecontroleerd worden als onderdeel van het <a href="@@@GeoTools_Url@@@/toon_geo" target="_blank">tonen van een GIO-versie</a>.
         De bepaling bestaat uit de volgende stappen:</p>
         <p><ol><li>Bepaal de te verwijderen en toe te voegen locaties waarvan de geometrie is gewijzigd.
-        Dit zijn alle locaties met een basisgeometrie-id die alleen in de was- of wordt-versie terugkomt.''')
+        Dit zijn alle locaties met een basisgeometrie-id die alleen in de originele en nieuwe versie terugkomt.''')
         self._WasLocaties = { locatie["properties"]["id"] : (dimensie, locatie) for dimensie, locaties in self._Was.Locaties.items () for locatie in locaties }
         self._WordtLocaties = { locatie["properties"]["id"] : (dimensie, locatie) for dimensie, locaties in self._Wordt.Locaties.items () for locatie in locaties }
         numWas = 0
@@ -201,7 +201,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
             if not id in self._WasLocaties:
                 _VoegLocatieToe (self._Wijziging.Wordt.Locaties, dimensie, locatie)
                 numWordt += 1
-        self.Generator.VoegHtmlToe (' Het gaat om ' + str(numWas) + ' locatie' + ('' if numWas == 1 else 's') + ' uit de was-versie en ' + str(numWordt) + ' locatie' + ('' if numWordt == 1 else 's') + ' uit de wordt-versie</li>')
+        self.Generator.VoegHtmlToe (' Het gaat om ' + str(numWas) + ' locatie' + ('' if numWas == 1 else 's') + ' uit de originele versie en ' + str(numWordt) + ' locatie' + ('' if numWordt == 1 else 's') + ' uit de nieuwe versie</li>')
 
         numWaarde = 0
         numLabel = 0
@@ -220,8 +220,8 @@ class MaakGIOWijziging (ToonGIOWijziging):
                     _VoegLocatieToe (self._Wijziging.WordtRevisies.Locaties, dimensie, locatie)
                     continue
         if not self._Wijziging.AttribuutNaam is None:
-            self.Generator.VoegHtmlToe ('''<li>Van de locaties met een manifest ongewijzigde geometrie (basisgeometrie-id komt in zowel de was- als wordt-versie voor) 
-            die in beide versies een verschillende waarde voor ''' + self._Wijziging.AttribuutNaam + ''' hebben moet de oude verwijderd en de nieuwe toegevoegd worden.
+            self.Generator.VoegHtmlToe ('''<li>Van de locaties met een manifest ongewijzigde geometrie (basisgeometrie-id komt in zowel de originele als nieuwe versie voor) 
+            die in beide versies een verschillende waarde voor ''' + self._Wijziging.AttribuutNaam + ''' hebben moet de originele verwijderd en de nieuwe toegevoegd worden.
             Het betreft ''' + str(numWaarde) + ' locatie' + ('' if numWaarde == 1 else 's') + '.</li>')
         self.Generator.VoegHtmlToe ('''<li>De locaties met een manifest ongewijzigde geometrie die in beide versies een verschillende waarde voor het label hebben 
         moet als revisie toegevoegd worden. Het betreft ''' + str(numLabel) + ' locatie' + ('' if numLabel == 1 else 's') + '.</li>')
@@ -232,7 +232,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
             if self._Wijziging.AttribuutNaam == 'groepID':
                 self.Log.Detail ("Neem gebruikte GIO-delen over")
-                self.Generator.VoegHtmlToe ('''<li>Maak een lijst van alle GIO-delen die in de opgenomen locaties voorkomen en geef aan welke oud of nieuw zijn.''')
+                self.Generator.VoegHtmlToe ('''<li>Maak een lijst van alle GIO-delen die in de opgenomen locaties voorkomen en geef aan welke origneel of nieuw zijn.''')
                 wasGroepID = set (locatie["properties"]["groepID"] for locaties in self._Wijziging.Was.Locaties.values () for locatie in locaties)
                 wordtGroepID = set (locatie["properties"]["groepID"] for locaties in self._Wijziging.Wordt.Locaties.values () for locatie in locaties)
                 wordtGroepID = wordtGroepID.union (set (locatie["properties"]["groepID"] for locaties in self._Wijziging.WordtRevisies.Locaties.values () for locatie in locaties))
@@ -258,7 +258,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
             else:
                 self.Log.Detail ("Neem norm-eigenschappen over")
-                self.Generator.VoegHtmlToe ('''<li>Neem de eigenschappen van de norm en eenheid over uit de wordt-versie.</li>''')
+                self.Generator.VoegHtmlToe ('''<li>Neem de eigenschappen van de norm en eenheid over uit de nieuwe versie.</li>''')
                 self._Wijziging.EenheidID = self._Wordt.EenheidID
                 self._Wijziging.EenheidLabel = self._Wordt.EenheidLabel
                 self._Wijziging.NormID = self._Wordt.NormID
@@ -267,11 +267,16 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
 #region Bepaling GIO-wijzigingen
         self.Generator.VoegHtmlToe ('''<li>Bepaal de wijzigmarkeringen. Hierbij wordt bedoeld met:<ul>
-        <li>De "buitenrand": de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
+        <li>De "buitenrand" van een geometrie: de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
         <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+        <li>De "buitenrand" van meerdere geometrieën: de "buitenrand" van de <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (geometrieën)
         <li>Het "binnengebied": de binnenste rand van de geometrie getekend met een "dikke pen":<br/>
         <code>binnengebied = locatie.geometrie</code> voor een punt of lijn,<br/>
         <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.</li></ul>
+        <li>Het "binnengebied" van meerdere geometrieën:<br/>
+        <code>binnengebied = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (binnengebieden van de geometrieën)</code> voor punten of lijnen,<br/>
+        <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid)</code> voor vlakken.<br/>
+        De manier van samenvoegen van vlakken zorgt ervoor dat vlakken die net niet op elkaar aansluiten toch als aansluitend gezien worden.</li></ul>
         De wijzigmarkeringen worden opgesplitst in enkelvoudige geometrieën (punt, lijn, vlak) om bij weergave clustering te vereenvoudigen. Ze worden in meerdere stappen bepaald:
         <ol>''')
 
@@ -282,21 +287,36 @@ class MaakGIOWijziging (ToonGIOWijziging):
             if gebied is None:
                 return buitenrand
             else:
-                return gebied.union (buitenrand)
+                try:
+                    return gebied.union (buitenrand)
+                except Exception as e:
+                    self.Log.Fout ("Het binnengebied van locatie " + locatie['properties']['id'] + " levert problemen op. Is er iets mis met de geometrie?")
+                    raise e
 
         # Voeg de geometrieën per type samen voor alle locaties waarvoor de wijziging bepaald moet worden
         def _VoegGeometrieToe (gebieden : Dict[int,object], dimensie : int, locatie):
+            binnengebied = GeoData.MaakShapelyShape (locatie)
+            if dimensie == 2:
+                # Truukje om net niet helemaal aansluitende gebieden toch aansluitend te maken:
+                # voeg de buitenrand toe, in _BepaalWijzigmarkeringen wordt daarvan de binnenrand gemaakt.
+                binnengebied = binnengebied.buffer (0.05 * self._Wijziging.JuridischeNauwkeurigheid)
             if dimensie in gebieden:
-                gebieden[dimensie] = gebieden[dimensie].union (GeoData.MaakShapelyShape (locatie))
+                try:
+                    gebieden[dimensie] = gebieden[dimensie].union (binnengebied)
+                except Exception as e:
+                    self.Log.Fout ("Het binnengebied van locatie " + locatie['properties']['id'] + " levert problemen op. Is er iets mis met de geometrie?")
+                    raise e
             else:
-                gebieden[dimensie] = GeoData.MaakShapelyShape (locatie)
+                gebieden[dimensie] = binnengebied
 
         # De wijzigmarkeringen zijn het binnengebied van de samengevoegde geometrieën per type geometrie minus de buitenranden
         def _BepaalWijzigmarkeringen (gebieden : Dict[int,object], buitenranden) -> int:
             binnengebieden = None
             for dimensie, gebied in gebieden.items ():
                 if dimensie == 2:
-                    binnengebied = gebied.buffer (- 0.05 * self._Wijziging.JuridischeNauwkeurigheid)
+                    # Gebruik volledige juridische nauwkeurigheid omdat in _VoegGeometrieToe 
+                    # niet het binnengebied maar de buitenrand is gebruikt.
+                    binnengebied = gebied.buffer (- 0.1 * self._Wijziging.JuridischeNauwkeurigheid)
                     if binnengebied.is_empty:
                         continue
                 else:
@@ -334,11 +354,11 @@ class MaakGIOWijziging (ToonGIOWijziging):
                     return len (markeringen)
             return 0
 
-        self.Generator.VoegHtmlToe ('''<li>De delen van de locaties uit de was-versie waar geen enkele juridische regel meer geldt.
-        Oftewel: het deel van de binnengebieden van locaties uit de was-versie dat niet binnen de buitenranden ligt van de locaties uit de wordt-versie:<br/>
-        <code>was_geometrie = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (elke geometrie uit was-versie)</code><br/>
-        <code>buitenranden = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (elke buitenrand uit wordt-versie)</code><br/>
-        <code>wijzigmarkering = (binnengebied van was_geometrie).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (buitenranden)</code><br/>
+        self.Generator.VoegHtmlToe ('''<li>De delen van de locaties uit de originele versie waar geen enkele juridische regel meer geldt.
+        Oftewel: het deel van de binnengebieden van locaties uit de originele versie dat niet binnen de buitenranden ligt van de locaties uit de nieuwe versie:<br/>
+        <code>was_geometrie = binnengebied van alle geometrieën uit originele versie</code><br/>
+        <code>wordt_geometrie = de buitenrand van alle geometrieën uit de nieuwe versie</code><br/>
+        <code>wijzigmarkering = was_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (wordt_geometrie)</code><br/>
         ''')
         self.Log.Detail ("Bepaal de wijzigmarkering voor de verwijderde gebieden")
 
@@ -353,11 +373,11 @@ class MaakGIOWijziging (ToonGIOWijziging):
         self.Generator.VoegHtmlToe ('Dit levert ' + str(numMarkeringen) + ' markering' + ('' if numMarkeringen == 1 else 'en') + ' op.</li>')
 
         if self._Wijziging.AttribuutNaam is None:
-            self.Generator.VoegHtmlToe ('''<li>De delen van de locaties uit de wordt-versie waar de juridische regel voor het eerst gaan gelden.
-            Oftewel: het deel van de binnengebieden van locaties uit de wordt-versie dat niet binnen de buitenranden ligt van de locaties uit de was-versie:<br/>
-            <code>wordt_geometrie = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (elke geometrie uit wordt-versie)</code><br/>
-            <code>buitenranden = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (elke buitenrand uit was-versie)</code><br/>
-            <code>wijzigmarkering = (binnengebied van wordt_geometrie).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (buitenranden)</code><br/>
+            self.Generator.VoegHtmlToe ('''<li>De delen van de locaties uit de nieuwe versie waar de juridische regel voor het eerst gaan gelden.
+            Oftewel: het deel van de binnengebieden van locaties uit de nieuwe versie dat niet binnen de buitenranden ligt van de locaties uit de originele versie:<br/>
+            <code>wordt_geometrie = binnenebied van alle geometrieën uit nieuwe versie</code><br/>
+            <code>was_geometrie = buitenrand van alle geometrieën uit originele versie</code><br/>
+            <code>wijzigmarkering = wordt_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (was_geometrie)</code><br/>
             ''')
             self.Log.Detail ("Bepaal de wijzigmarkering voor de toegevoegde gebieden")
 
@@ -373,13 +393,13 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
         else:
             waarde = ('GIO-deel naam' if self._Wijziging.AttribuutNaam == 'groepID' else 'normwaarde')
-            self.Generator.VoegHtmlToe ('''<li>Per voorkomende ''' + waarde + ''' in de wordt-versie:
-            de delen van de locaties uit de wordt-versie met die ''' + waarde + ''' waar de juridische regels voor het eerst gelden.
-            Oftewel: het deel van de binnengebieden van locaties uit de wordt-versie met een specifieke ''' + waarde + ''' dat niet binnen de buitenranden ligt van de locaties 
-            uit de was-versie met dezelfde ''' + waarde + ''':<br/>
-            <code>wordt_geometrie = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (elke geometrie uit wordt-versie voor een specifieke ''' + waarde + ''')</code><br/>
-            <code>buitenranden = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (elke buitenrand uit was-versie met dezelfde specifieke ''' + waarde + ''')</code><br/>
-            <code>wijzigmarkering = (binnengebied van wordt_geometrie).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (buitenranden)</code><br/>
+            self.Generator.VoegHtmlToe ('''<li>Per voorkomende ''' + waarde + ''' in de nieuwe versie:
+            de delen van de locaties uit de nieuwe versie met die ''' + waarde + ''' waar de juridische regels voor het eerst gelden.
+            Oftewel: het deel van de binnengebieden van locaties uit de nieuwe versie met een specifieke ''' + waarde + ''' dat niet binnen de buitenranden ligt van de locaties 
+            uit de originele versie met dezelfde ''' + waarde + ''':<br/>
+            <code>wordt_geometrie = binnengebied van alle geometrieën uit de nieuwe versie waarvoor een specifieke ''' + waarde + ''' geldt</code><br/>
+            <code>was_geometrie = buitenrand van alle geometrieën uit originele versie waarvoor dezelfde specifieke ''' + waarde + ''' geldt</code><br/>
+            <code>wijzigmarkering = wordt_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (was_geometrie)</code><br/>
             ''')
             sep = 'Dit levert als wijzigmarkeringen op: '
 
@@ -458,8 +478,8 @@ class MaakGIOWijziging (ToonGIOWijziging):
         # Voeg de originelen toe
         namen_was = self.Kaartgenerator.VoegGeoDataToe (self._Was)
         namen_wordt = self.Kaartgenerator.VoegGeoDataToe (self._Wordt)
-        kaart.VoegLagenToe ('Originelen', namen_was, self._SymbolisatieNamen, True, False, postLaag = lambda _: kaart.LaatsteLaagAlsOud ())
-        kaart.VoegLagenToe ('Originelen', namen_wordt, self._SymbolisatieNamen, True, False, postLaag = lambda _: kaart.LaatsteLaagAlsNieuw ())
+        kaart.VoegLagenToe ('GIO-versies', namen_was, self._SymbolisatieNamen, True, False, postLaag = lambda _: kaart.LaatsteLaagAlsOud ())
+        kaart.VoegLagenToe ('GIO-versies', namen_wordt, self._SymbolisatieNamen, True, False, postLaag = lambda _: kaart.LaatsteLaagAlsNieuw ())
 
         # Voeg de niet-revisie-mutaties toe
 #region Maak de mutaties met wijzigactie als attribuut

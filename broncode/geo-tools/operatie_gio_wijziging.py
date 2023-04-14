@@ -120,7 +120,7 @@ class GIOWijziging (Operatie):
                 request._FormData["wordt"] = wijziging["wordt"]
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
                 request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
-                request._FormData["toon-gio-wijziging"] = __Waarde (wijziging, "toon-gio-wijziging")
+                request._FormData["toon-gio-wijziging"] = False
                 request._FormData["juridische-nauwkeurigheid"] = __Waarde (wijziging, "juridische-nauwkeurigheid")
 
                 self.Log.Informatie ("Maak GIO-wijziging: '" + wijziging["was"] + "' &rarr; '" + wijziging["was"] + "'")
@@ -135,8 +135,8 @@ class GIOWijziging (Operatie):
                     break
 
                 self._Geometrie[wijziging["was"]] = uitvoerder._Was
-                request._FormData["toon"] = wijziging.get ("toon-gio-wijziging")
-                if not uitvoerder._Wijziging is None and request.IsOptie ("toon", False):
+                request._FormData["toon-gio-wijziging"] = __Waarde (wijziging, "toon-gio-wijziging")
+                if not uitvoerder._Wijziging is None and request.IsOptie ("toon-gio-wijziging", False):
                     wijziging["data"] = uitvoerder._Wijziging
                     toonWijzigingLijst.append (wijziging)
 

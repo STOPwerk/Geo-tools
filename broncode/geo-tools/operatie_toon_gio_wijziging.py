@@ -64,7 +64,7 @@ class ToonGIOWijziging (Operatie):
             self.Generator.VoegHtmlToe ('<p>' + self.Request.LeesString ("beschrijving") + '</p>') 
         self._ToonGIOWijziging ()
 
-        einde = self.Generator.StartSectie ("Reconstructie van de wordt-versie", True)
+        einde = self.Generator.StartSectie ("Reconstructie van de wordt-versie", False)
         self._ToonWordtVersie ()
         self.Generator.VoegHtmlToe (einde);
 
@@ -138,7 +138,7 @@ class ToonGIOWijziging (Operatie):
                     self._Wordt.GIODelen[i]= GIODeel(i, g.Label)
         self._Wordt.JuridischeNauwkeurigheid = self._Wijziging.JuridischeNauwkeurigheid
 
-        wordtLocaties = {locatie['properties']['id'] : (dimensie, locatie) for dimensie, locaties in self._Was.Locaties for locatie in locaties}
+        wordtLocaties = {locatie['properties']['id'] : (dimensie, locatie) for dimensie, locaties in self._Was.Locaties.items () for locatie in locaties}
 
         for locaties in self._Wijziging.Was.Locaties.values ():
             for locatie in locaties:
@@ -178,9 +178,9 @@ class ToonGIOWijziging (Operatie):
 
         for dimensie, locatie in wordtLocaties.values ():
             if dimensie in self._Wordt.Locaties:
-                self._Wordt.Locaties.append (locatie)
+                self._Wordt.Locaties[dimensie].append (locatie)
             else:
-                self._Wordt.Locaties = [locatie]
+                self._Wordt.Locaties[dimensie] = [locatie]
 
         return succes
 

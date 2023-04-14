@@ -136,6 +136,7 @@ class GIOWijziging (Operatie):
 
                 self._Geometrie[wijziging["was"]] = uitvoerder._Was
                 request._FormData["toon-gio-wijziging"] = __Waarde (wijziging, "toon-gio-wijziging")
+                request._FormData["beschrijving"] = wijziging.get ("beschrijving-toon")
                 if not uitvoerder._Wijziging is None and request.IsOptie ("toon-gio-wijziging", False):
                     wijziging["data"] = uitvoerder._Wijziging
                     toonWijzigingLijst.append (wijziging)

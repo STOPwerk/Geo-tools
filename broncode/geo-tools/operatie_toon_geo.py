@@ -177,7 +177,7 @@ class ToonGeo (Operatie):
         locatieVlakken : Dict[str,List[GeoData.EnkeleGeometrie]] = {}
         for dimensie, geometrieen in self._Geometrie.MaakLijstVanGeometrieen ()[0].items ():
             for geometrie in geometrieen:
-                geometrie._Analyse : List[str] = []
+                geometrie._Analyse : Set[str] = set()
                 geometrie._Dimensie = dimensie
                 geometrie._Index = len (enkeleGeometrieen)
                 enkeleGeometrieen.append (geometrie)
@@ -193,7 +193,7 @@ class ToonGeo (Operatie):
                 if dimensie == 2:
                     binnengebied = binnengebied.buffer (-0.05 * self._Geometrie.JuridischeNauwkeurigheid)
                     if binnengebied.is_empty:
-                        geometrie._Analyse.append ('Vlak heeft geen binnengebied')
+                        geometrie._Analyse.add ('Vlak heeft geen binnengebied')
                         numGeometrieMetGebrek += 1
                         continue
                     lijst = locatieVlakken.get (geometrie.ID)
@@ -231,20 +231,26 @@ class ToonGeo (Operatie):
                             if binnengebied is None:
                                 binnengebied = geometrie._Binnengebied.Geometrie
                             else:
-                                binnengebied = binnengebied.union (geometrie._Binnengebied.Geometrie)
+                                try:
+                                    binnengebied = binnengebied.union (geometrie._Binnengebied.Geometrie)
+                                except Exception as e:
+                                    self.Log.Fout ("Kan geen union uitvoeren met het binnengebied van de locatie " + geometrie.ID + ". Klopt de geometrie wel?")
+                                    raise e
                     if not binnengebied is None:
                         # Maak het binnengebied groter
                         binnengebied = binnengebied.buffer (0.2 * self._Geometrie.JuridischeNauwkeurigheid)
-                        isOK = True
                         for geometrie in vlakken:
-                            uitstulpingen = GeoData.MaakShapelyShape (geometrie.Geometrie).difference (binnengebied)
+                            try:
+                                uitstulpingen = GeoData.MaakShapelyShape (geometrie.Geometrie).difference (binnengebied)
+                            except Exception as e:
+                                self.Log.Fout ("Kan geen difference uitvoeren met de geometrie/binnengebied van de locatie " + geometrie.ID + ". Klopt de geometrie wel?")
+                                raise e
                             if not uitstulpingen.is_empty:
                                 uitstulpingen = GeoData.EnkeleGeometrie (geometrie.Locatie, uitstulpingen, geometrie.Attribuutwaarde) # Geometrie is hier een shape
                                 uitstulpingen._Dimensie = geometrie._Dimensie
                                 uitstulpingen._Analyse = ['Locatie-geometrie heeft uitstulpingen']
                                 rapporteerGeometrieen.append (uitstulpingen)
-                        if not isOK:
-                            numGeometrieMetGebrek += 1
+                                numGeometrieMetGebrek += 1
 
                 if numGeometrieMetGebrek > 0:
                     geenProblemen = False
@@ -263,11 +269,15 @@ class ToonGeo (Operatie):
                 nietInRand = binnengebied.Geometrie
                 for buitenrand in buitenranden:
                     if buitenrand._Bron._Index != binnengebied._Bron._Index:
-                        nietInRand = nietInRand.difference (buitenrand.Geometrie)
+                        try:
+                            nietInRand = nietInRand.difference (buitenrand.Geometrie)
+                        except Exception as e:
+                            self.Log.Fout ("Kan geen difference uitvoeren met de buitenrand van locatie " + buitenrand.ID + " en binnengebied van " + binnengebied.ID + ". Klopt de geometrie wel?")
+                            raise e
                         if nietInRand.is_empty:
                             break
                 if nietInRand.is_empty:
-                    binnengebied._Bron._Analyse.append ('Binnengebied geheel in buitenrand andere geometrieën')
+                    binnengebied._Bron._Analyse.add ('Binnengebied geheel in buitenrand andere geometrieën')
                     numGeometrieMetGebrek += 1
 
             if numGeometrieMetGebrek > 0:
@@ -288,14 +298,18 @@ class ToonGeo (Operatie):
                 binnengebiedShape = binnengebied1.Geometrie
                 for binnengebied2 in [binnengebieden[i] for i in range (indexVolgende, len (binnengebieden))]:
                     if binnengebied1._Bron._Dimensie != 1 or binnengebied1.Locatie != binnengebied2.Locatie:
-                        overlap = binnengebiedShape.intersection (binnengebied2.Geometrie)
+                        try:
+                            overlap = binnengebiedShape.intersection (binnengebied2.Geometrie)
+                        except Exception as e:
+                            self.Log.Fout ("Kan geen intersection uitvoeren met de binnengebieden van locaties " + binnengebied1.ID + " en " + binnengebied2.ID + ". Klopt de geometrie wel?")
+                            raise e
                         if not overlap.is_empty:
                             numGeometrieMetGebrek += 1
-                            binnengebied1._Bron._Analyse.append ('Binnengebied overlapt met binnengebied andere geometrie')
-                            binnengebied2._Bron._Analyse.append ('Binnengebied overlapt met binnengebied andere geometrie')
+                            binnengebied1._Bron._Analyse.add ('Binnengebied overlapt met binnengebied andere geometrie')
+                            binnengebied2._Bron._Analyse.add ('Binnengebied overlapt met binnengebied andere geometrie')
                             if binnengebied1.Attribuutwaarde != binnengebied2.Attribuutwaarde:
-                                binnengebied1._Bron._Analyse.append ('Overlappend binnengebied met verschillende warde voor ' + self._Geometrie.AttribuutNaam)
-                                binnengebied2._Bron._Analyse.append ('Overlappend binnengebied met verschillende warde voor ' + self._Geometrie.AttribuutNaam)
+                                binnengebied1._Bron._Analyse.add ('Overlappend binnengebied met verschillende waarde voor ' + self._Geometrie.AttribuutNaam)
+                                binnengebied2._Bron._Analyse.add ('Overlappend binnengebied met verschillende waarde voor ' + self._Geometrie.AttribuutNaam)
                                 numGeometrieTegenstrijdig += 1
 
             if numGeometrieMetGebrek > 0:

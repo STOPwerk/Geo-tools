@@ -106,28 +106,32 @@ class GIOWijziging (Operatie):
         voegSectieToe = True
         if succes and not maakWijzigingLijst is None and len (maakWijzigingLijst) > 0:
             for wijziging in maakWijzigingLijst:
-                if voegSectieToe:
-                    self.Generator.VoegHtmlToe ('<div class="sectie_maak_gio_wijziging"><h2>Maak GIO-wijziging</h2>')
-                    altDiv = 0
-                    voegSectieToe = False
-                if altDiv == 0:
-                    altDiv = 1
-                else:
-                    self.Generator.VoegHtmlToe ('</div><div class="sectie_maak_gio_wijziging_alt' + str(altDiv) + '">')
-                    altDiv = 3 - altDiv
-
                 request = Parameters (self.Log, {}, None, self.Request._Pad)
                 request.KanBestandenSchrijven = False
                 request._FormData["was"] = wijziging["was"]
                 request._FormData["wordt"] = wijziging["wordt"]
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
                 request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
+                request._FormData["toon-maken"] = __Waarde (wijziging, "toon-maken")
                 request._FormData["toon-gio-wijziging"] = False
                 request._FormData["juridische-nauwkeurigheid"] = __Waarde (wijziging, "juridische-nauwkeurigheid")
+                toonMaken = request.IsOptie ("toon-maken", True)
+
+                if toonMaken:
+                    if voegSectieToe:
+                        self.Generator.VoegHtmlToe ('<div class="sectie_maak_gio_wijziging"><h2>Maak GIO-wijziging</h2>')
+                        altDiv = 0
+                        voegSectieToe = False
+                    if altDiv == 0:
+                        altDiv = 1
+                    else:
+                        self.Generator.VoegHtmlToe ('</div><div class="sectie_maak_gio_wijziging_alt' + str(altDiv) + '">')
+                        altDiv = 3 - altDiv
 
                 self.Log.Informatie ("Maak GIO-wijziging: '" + wijziging["was"] + "' &rarr; '" + wijziging["was"] + "'")
                 uitvoerder = MaakGIOWijziging (request, self.Log)
                 uitvoerder.IsVoortzettingVan (self)
+                uitvoerder._Toon = toonMaken
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._Wordt = self._Geometrie.get (wijziging["wordt"])
 
@@ -140,7 +144,8 @@ class GIOWijziging (Operatie):
                 self._Geometrie[wijziging["wordt"]] = uitvoerder._Wordt
                 request._FormData["toon-gio-wijziging"] = __Waarde (wijziging, "toon-gio-wijziging")
                 if not uitvoerder._Wijziging is None and request.IsOptie ("toon-gio-wijziging", False):
-                    self.Generator.VoegHtmlToe ('</div>')
+                    if not voegSectieToe:
+                        self.Generator.VoegHtmlToe ('</div>')
                     voegSectieToe = True
 
         #--------------------------------------------------------------

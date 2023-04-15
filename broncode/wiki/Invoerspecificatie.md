@@ -121,6 +121,7 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
             "wordt": "gio_2.gml", 
             "juridische-nauwkeurigheid": 10,
             "beschrijving": "Optionele beschrijving van de GIO-wijziging",
+            "toon-maken": true | false,
             "toon-gio-wijziging": true | false,
             "beschrijving_toon": "Optionele beschrijving van het tonen van de GIO-wijziging"
         },
@@ -148,6 +149,7 @@ Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `juridische-nauwkeurigheid` | `wijziging`: `juridische-nauwkeurigheid` indien aanwezig, anders `juridische-nauwkeurigheid` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving` |
+| beschrijving van maken niet opnemen in resultaat | `wijziging`: `toon-maken` = `false` (waarde van `toon-maken` is `true` indien niet opgegeven) |
 
 Vervolgens wordt elk `wijziging` element omgevormd naar een [toon_gio_wijziging.json](#toon-gio-wijziging) specificatie en uitgevoerd:
 

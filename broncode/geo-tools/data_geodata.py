@@ -741,7 +741,7 @@ class GeoData:
         locatie {}  Een locatie voals die eerder is ingelezen
         """
         if not '_shape' in locatie or locatie['_shape'] is None:
-            locatie['_shape'] = shape (locatie['geometry']).normalize ()
+            locatie['_shape'] = shape (locatie['geometry'])
         return locatie['_shape']
 #endregion
 

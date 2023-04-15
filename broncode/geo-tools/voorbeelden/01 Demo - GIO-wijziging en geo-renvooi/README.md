@@ -1,4 +1,4 @@
-# GIO met de gemeentegrenzen
+# GIO-wijziging en geo-renvooi
 
 Demonstratie van een GIO-wijziging die met geo-renvooi wordt weergegeven. Als er relatief kleine wijzigingen in een 
 GIO worden vastgesteld, dan is het voor eenieder lastig te doorgronden wat er gewijzigd is. Door

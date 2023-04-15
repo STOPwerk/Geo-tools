@@ -1,0 +1,15 @@
+{
+  "beschrijving": "Demonstratie van de GIO-wijziging en geo-renvooi voor een GIO met vlakken waarin elke GIO-locatie een GIO-deel is.",
+  "symbolisatie": "gemeenten_symbolisatie.xml",
+  "juridische-nauwkeurigheid": 30,
+  "toon-maken": false,
+  "toon-gio-wijziging": true,
+  "wijziging": [
+    {
+      "was": "gemeenten_2017.gml",
+      "wordt": "gemeenten_2023.gml",
+      "wijziging": "gio_wijziging.gml",
+      "beschrijving": "Verandering van de gemeentelijke indeling tussen eind 2017 en begin 2023 als GIO-wijziging."
+    }
+  ]
+}

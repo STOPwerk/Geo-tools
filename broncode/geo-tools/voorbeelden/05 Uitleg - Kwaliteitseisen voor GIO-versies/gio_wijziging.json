@@ -1,9 +1,9 @@
 {
-  "beschrijving": "Uitleg van de juridische nauwkeurigheid toegepast op een punt, lijn en vlak, en de manier waarop bepaald wordt waar de wijzigingen zitten.",
+  "beschrijving": "STOP stelt eisen aan de inhoud van de GIO-versies van een muteerbare GIO om het opstellen van een GIO-wijziging eenvoudig te houden en niet verzeild te raken in complexe geo-berekeningen. Deze kwaliteitseisen worden hier nader toegelicht.",
   "juridische-nauwkeurigheid": 50,
   "toon-gio-schaalafhankelijk": false,
   "toon-gio-wijziging": false,
-  "symbolisatie": "symbolisatie.xml",
+  "symbolisatie": [ "symbolisatie_punten.xml", "symbolisatie_lijnen.xml", "symbolisatie_vlakken.xml" ],
   "geometrie": [
     {
       "pad": "1. Kwaliteitscontrole.gml",

@@ -133,7 +133,7 @@ class ToonGIOWijziging (Operatie):
             self._Wordt.GIODelen = { i : GIODeel(i, g.Label) for i, g in self._Was.GIODelen.items () }
             for i, g in self._Wijziging.GIODelen.items ():
                 if g.WijzigActie == GIODeel._WIJZIGACTIE_VERWIJDER:
-                    del[self._Wordt.GIODelen]
+                    del self._Wordt.GIODelen[i]
                 elif g.WijzigActie == GIODeel._WIJZIGACTIE_VOEGTOE:
                     self._Wordt.GIODelen[i]= GIODeel(i, g.Label)
         self._Wordt.JuridischeNauwkeurigheid = self._Wijziging.JuridischeNauwkeurigheid
@@ -199,11 +199,14 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 #======================================================================
     def _ToonGIOWijziging (self):
         self.Generator.VoegHtmlToe ('''<p>Net als bij tekst-renvooi geeft de geo-renvooi aan <i>waar</i> de verschillen te vinden zijn.
-<i>Wat</i> de verschillen zijn blijkt uit de vergelijking van de originele en nieuwe versie. Als de aandacht meteen op de verschillen
-gevestigd wordt door de niet-gewijzigde kleinste eenheden van mutatie (GIO-locaties) weg te laten. Om de wijzigingen in hun context
+<i>Wat</i> de verschillen zijn blijkt uit de vergelijking van de originele en nieuwe versie. De aandacht wordt meteen op de verschillen
+gevestigd door de niet-gewijzigde of gereviseerde kleinste eenheden van mutatie (GIO-locaties) weg te laten. Om de wijzigingen in hun context
 te zien moeten ook de niet-gewijzigde locaties te zien zijn, als de eindgebruiker daarom vraagt.</p>
+<p>De geometrieën die altijd in beeld zijn maar die geen geo-renvooi markering hebben zijn ofwel onderdeel van een GIO-locatie met een geometrie 
+die wel een geo-renvooi markering heeft, of zijn gewijzigd op een manier die de geldigheid van de juridische regels niet verandert. Bijvoorbeeld 
+omdat een grens tussen twee gebieden is aangepast.</p>
 <p>Wat wel verschilt van de tekst-renvooi is dat de kaart zover uitgezoomd is dat sommige verschillen niet zichtbaar zijn.
-Bij het tonen van de GIO-wijziging moet daarom via de markeringen ervoor gezorgd worden dat er geen wijzigingen buiten beeld raken.</p>''')
+Bij het tonen van de GIO-wijziging moet daarom via schaalafhankelijke markeringen ervoor gezorgd worden dat er geen wijzigingen buiten beeld raken.</p>''')
 
         self.Log.Detail ("Toon de onderdelen van de GIO-wijziging in een kaart")
         kaart = KaartGenerator.Kaart (self.Kaartgenerator)

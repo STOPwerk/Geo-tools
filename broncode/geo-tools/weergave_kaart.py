@@ -313,7 +313,7 @@ class KaartGenerator:
                 <Mark>
                     <WellKnownName>star</WellKnownName>
                     <Fill>
-                        <SvgParameter name="fill">#F8CECC</SvgParameter><!--#B85450-->
+                        <SvgParameter name="fill">#00A800</SvgParameter>
                         <SvgParameter name="fill-opacity">1</SvgParameter>
                     </Fill>
                 </Mark>
@@ -326,7 +326,7 @@ class KaartGenerator:
                 <Mark>
                     <WellKnownName>circle</WellKnownName>
                     <Fill>
-                        <SvgParameter name="fill">#82B366</SvgParameter><!--#D5E8D4-->
+                        <SvgParameter name="fill">#A80000</SvgParameter>
                         <SvgParameter name="fill-opacity">1</SvgParameter>
                     </Fill>
                 </Mark>
@@ -347,18 +347,17 @@ class KaartGenerator:
         </LineSymbolizer>
         <LineSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#F8CECC</CssParameter>
+                <CssParameter name="stroke">#A80000</CssParameter>
                 <CssParameter name="stroke-width">3</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
-                <CssParameter name="stroke-dasharray">5 5</CssParameter>
             </Stroke>
         </LineSymbolizer>
         <LineSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#82B366</CssParameter>
+                <CssParameter name="stroke">#00A800</CssParameter>
                 <CssParameter name="stroke-width">3</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
-                <CssParameter name="stroke-dasharray">0 5 5</CssParameter>
+                <CssParameter name="stroke-dasharray">5 8</CssParameter>
             </Stroke>
         </LineSymbolizer>
     </Rule>''',
@@ -374,18 +373,17 @@ class KaartGenerator:
         </PolygonSymbolizer>
         <PolygonSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#F8CECC</CssParameter>
+                <CssParameter name="stroke">#A80000</CssParameter>
                 <CssParameter name="stroke-width">3</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
-                <CssParameter name="stroke-dasharray">5 5</CssParameter>
             </Stroke>
         </PolygonSymbolizer>
         <PolygonSymbolizer>
             <Stroke>
-                <CssParameter name="stroke">#82B366</CssParameter>
+                <CssParameter name="stroke">#00A800</CssParameter>
                 <CssParameter name="stroke-width">3</CssParameter>
                 <CssParameter name="stroke-linecap">round</CssParameter>
-                <CssParameter name="stroke-dasharray">0 5 5</CssParameter>
+                <CssParameter name="stroke-dasharray">5 8</CssParameter>
             </Stroke>
         </PolygonSymbolizer>
     </Rule>'''

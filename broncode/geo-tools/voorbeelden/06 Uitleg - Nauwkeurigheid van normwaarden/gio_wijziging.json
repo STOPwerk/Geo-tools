@@ -1,5 +1,5 @@
 {
-  "beschrijving": "Uitleg van de juridische nauwkeurigheid toegepast op een punt, lijn en vlak, en de manier waarop bepaald wordt waar de wijzigingen zitten.",
+  "beschrijving": "Ook kwantitatieve normwaarden kennen een (on)nauwkeurigheid, maar die speelt in de (juridische) praktijk geen rol, als STOP-gebruikende software tenminste deze waarden altijd als getal behandelen.",
   "juridische-nauwkeurigheid": 50,
   "toon-gio-schaalafhankelijk": false,
   "toon-gio-wijziging": false,

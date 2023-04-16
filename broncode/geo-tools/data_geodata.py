@@ -586,7 +586,7 @@ class GeoData:
                 waarde = None if self.AttribuutNaam is None else props.get(self.AttribuutNaam)
                 if not waarde is None:
                     gioGML += '''
-                <geo:''' + self.AttribuutNaam + '>' + waarde + '</geo:' + self.AttribuutNaam + '>'
+                <geo:''' + self.AttribuutNaam + '>' + str(waarde) + '</geo:' + self.AttribuutNaam + '>'
                 gioGML += '''
             </geo:Locatie>'''
 
@@ -660,7 +660,7 @@ class GeoData:
             waarde = None if self.AttribuutNaam is None else props.get(self.AttribuutNaam)
             if not waarde is None:
                 wijzigingGML += '''
-                    <geo:''' + self.AttribuutNaam + '>' + waarde + '</geo:' + self.AttribuutNaam + '>'
+                    <geo:''' + self.AttribuutNaam + '>' + str(waarde) + '</geo:' + self.AttribuutNaam + '>'
             wijzigingGML += '''
                     <geo:wijzigactie>''' + actie + '''</geo:wijzigactie>'''
             wijzigingGML += '''

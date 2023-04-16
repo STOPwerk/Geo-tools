@@ -549,7 +549,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
                 self.Log.Detail ("Bewaar GIO-wijzjging in bestand '" + fileNaam + "'")
                 filePad = os.path.join (self.Request._Pad, fileNaam)
                 try:
-                    os.makedirs (os.path.dirname (filePad))
+                    os.makedirs (os.path.dirname (filePad), exist_ok=True)
                     with open (filePad, 'w', encoding='utf-8') as gml_file:
                         gml_file.write (wijzigingGML)
                 except Exception as e:

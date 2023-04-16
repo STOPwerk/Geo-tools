@@ -74,7 +74,7 @@ class GIOWijziging (Operatie):
                     altDiv = 3 - altDiv
 
                 request = Parameters (self.Log, {}, None, self.Request._Pad)
-                request.KanBestandenSchrijven = False
+                request.KanBestandenSchrijven = self.Request.KanBestandenSchrijven
                 request._FormData["geometrie"] = gio["pad"]
                 request._FormData["beschrijving"] = gio.get ("beschrijving")
                 request._FormData["symbolisatie"] = __Waarde (gio, "symbolisatie")
@@ -107,9 +107,10 @@ class GIOWijziging (Operatie):
         if succes and not maakWijzigingLijst is None and len (maakWijzigingLijst) > 0:
             for wijziging in maakWijzigingLijst:
                 request = Parameters (self.Log, {}, None, self.Request._Pad)
-                request.KanBestandenSchrijven = False
+                request.KanBestandenSchrijven = self.Request.KanBestandenSchrijven
                 request._FormData["was"] = wijziging["was"]
                 request._FormData["wordt"] = wijziging["wordt"]
+                request._FormData["wijziging"] = wijziging.get ("wijziging")
                 request._FormData["beschrijving"] = wijziging.get ("beschrijving")
                 request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
                 request._FormData["toon-maken"] = __Waarde (wijziging, "toon-maken")
@@ -128,15 +129,15 @@ class GIOWijziging (Operatie):
                         self.Generator.VoegHtmlToe ('</div><div class="sectie_maak_gio_wijziging_alt' + str(altDiv) + '">')
                         altDiv = 3 - altDiv
 
-                self.Log.Informatie ("Maak GIO-wijziging: '" + wijziging["was"] + "' &rarr; '" + wijziging["was"] + "'")
+                gioWijzigingTitel = request.Bestandsnaam ('was', False) + ' &rarr; ' + request.Bestandsnaam ('wordt', False)
+                self.Log.Informatie ("Maak GIO-wijziging: '" + gioWijzigingTitel + "'")
                 uitvoerder = MaakGIOWijziging (request, self.Log)
                 uitvoerder.IsVoortzettingVan (self)
                 uitvoerder._Toon = toonMaken
                 uitvoerder._Was = self._Geometrie.get (wijziging["was"])
                 uitvoerder._Wordt = self._Geometrie.get (wijziging["wordt"])
 
-                wijziging["wijziging"] = request.Bestandsnaam ('was', False) + ' &rarr; ' + request.Bestandsnaam ('wordt', False)
-                succes = uitvoerder._VoerUit (wijziging["wijziging"])
+                succes = uitvoerder._VoerUit (gioWijzigingTitel)
                 if not succes:
                     break
 
@@ -160,13 +161,13 @@ class GIOWijziging (Operatie):
                     request._FormData["was"] = wijziging["was"]
                     request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
 
-                    self.Log.Informatie ("Toon GIO-wijziging: '" + wijziging["wijziging"] + "'")
+                    self.Log.Informatie ("Toon GIO-wijziging: '" + gioWijzigingTitel + "'")
                     uitvoerder_toon = ToonGIOWijziging (request, self.Log)
                     uitvoerder_toon.IsVoortzettingVan (self)
                     uitvoerder_toon._Was = uitvoerder._Was
                     uitvoerder_toon._Wijziging = uitvoerder._Wijziging
 
-                    succes = uitvoerder_toon._VoerUit (wijziging["wijziging"])
+                    succes = uitvoerder_toon._VoerUit (gioWijzigingTitel)
                     self.Generator.VoegHtmlToe ('</div>')
 
                     if not succes:

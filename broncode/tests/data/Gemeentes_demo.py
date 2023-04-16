@@ -10,7 +10,8 @@
 # Symbolen uit de STOP-TPOD symbolenbibliotheek
 #
 #==============================================================================
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List
+
 import os
 from xml.etree import ElementTree as ET
 
@@ -38,7 +39,7 @@ symbolisatie = Symbolisatie (os.path.join (datadir, 'Gemeentes_Vlaksymbolen.json
 ns_gml="{http://www.opengis.net/gml/3.2}"
 ns_kad="{http://www.kadaster.nl/kad/pdok}"
 
-# key = jaar, value = info over gemeente
+# key = jaar, value = info + geometrie van gemeente
 gemeenten : Dict[int,List[object]]= {}
 # key = groepID, value = naam
 alle_gio_delen : Dict[str,str] = {}
@@ -78,6 +79,7 @@ for jaar in [was_jaar, wordt_jaar]:
     ditJaar_gemeenten : List[object] = []
     # key is GM-code, value is groepID
     ditJaar_gio_delen : Dict[str,str] = {}
+    # key is GM-code, value is groepID
     ditJaar_shapes : Dict[str,str] = {}
     for gem in gml.findall (ns_kad + 'Gemeenten'):
         code = int (gem.find (ns_kad + 'Code').text)
@@ -96,7 +98,7 @@ for jaar in [was_jaar, wordt_jaar]:
                 alle_gio_delen[groepID] = naam
             ditJaar_gio_delen[gmcode] = groepID
         else:
-            raise "Dubbele GMcode " + gmcode + " in " + jaar
+            raise "Dubbele GMcode " + gmcode + " in " + str(jaar)
 
         geo = gem.find (ns_gml + 'MultiSurface')
         members = geo.findall (ns_gml + 'surfaceMember')
@@ -165,11 +167,7 @@ def __GIO (jaar, geometrie_index):
       xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/"
       xmlns:gml="http://www.opengis.net/gml/3.2">
     <geo:FRBRWork>/join/id/regdata/mnre0001/1851/gemeenten</geo:FRBRWork>
-    <geo:FRBRExpression>/join/id/regdata/mnre0001/1851/gemeenten/nld@''' + str(jaar) + '''</geo:FRBRExpression>''')
-
-        symbolisatie.StartGio (gioPad, 'groepID')
-
-        gml_file.write ('''
+    <geo:FRBRExpression>/join/id/regdata/mnre0001/1851/gemeenten/nld@''' + str(jaar) + '''</geo:FRBRExpression>
     <geo:groepen>''')
         for code in gio_delen[jaar].values ():
             gml_file.write ('''
@@ -191,8 +189,7 @@ def __GIO (jaar, geometrie_index):
                 index = geometrie_index
             gml_file.write ('''
             <geo:Locatie>
-                <geo:naam>''' + gem['Naam'] + '</geo:naam>')
-            gml_file.write ('''
+                <geo:naam>''' + gem['Naam'] + '''</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
                         <basisgeo:id>37b0a09f-36a0-4e69-80c2-''' + str(index).zfill(12) + '''</basisgeo:id>

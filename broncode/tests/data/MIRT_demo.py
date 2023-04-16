@@ -1,20 +1,17 @@
 #==============================================================================
 #
-# Omzetting van vlak-data naar GIO's en symbolisatie voor testen en voorbeelden
-#
-# Bron: PDOK en OpenDataSoft (relatie gemeente - provincie)
-# Opgehaald op 02-12-2022
-#
-# Gemeentes als vlakken; multi-vlakken gegroepeerd per provincie
+# Omzetting van lijn-data naar GIO's en symbolisatie voor testen en voorbeelden
 #
 # Symbolen uit de STOP-TPOD symbolenbibliotheek
 #
 #==============================================================================
-import json
+from typing import Dict, List, Set
+
 import os
 from xml.etree import ElementTree as ET
 
 from pygml.parse import parse
+from shapely.geometry import shape
 
 from symbolisatie import Symbolisatie
 
@@ -26,17 +23,25 @@ from symbolisatie import Symbolisatie
 datadir = os.path.dirname (os.path.realpath (__file__))
 testscenario_dir = os.path.join (datadir, "..", "..", "geo-tools", "voorbeelden", "01 Demo - GIO-wijziging en geo-renvooi", "MIRT 2017-2022")
 
-symbolisatie = Symbolisatie (os.path.join (datadir, 'MIRT_Lijnsymbolen.json'))
+was_jaar = 2019
+wordt_jaar = 2022
 
-jaren = [2017, 2018, 2019, 2020, 2021, 2022]
+juridischeNauwkeurigheid = 50 # decimeter
+
+met_normwaarde = False
+
+
+symbolisatie = Symbolisatie (os.path.join (datadir, 'MIRT_Lijnsymbolen.json'))
 
 ns_gml="{http://www.opengis.net/gml/3.2}"
 ns_mirt="{http://mirt}"
 
-mirt = {}
-realisatie_jaar = {}
-gio_delen = set ()
-for jaar in jaren:
+# key = jaar, value = info + geometrie van project
+mirt : Dict[int,List[object]] = {}
+# key = jaar, key = gmcode, value = shapely-geometrie
+shapes : Dict[int,Dict[str,object]]= {}
+alle_realisatie : Set[int] = set ()
+for jaar in [was_jaar, wordt_jaar]:
     # Vereenvoudig de XML eerst
     with open (os.path.join (datadir, 'MIRT_' + str(jaar) + '.gml'), 'r') as gml_file:
         xml = gml_file.read ()
@@ -52,65 +57,75 @@ for jaar in jaren:
             xml_file.write (xml)
         raise str(e)
 
-    ditJaar = {}
-    index = 0
-    projectIndex = 0
-    for gem in gml:
-        code = gem.find (ns_mirt + 'mirtnrid').text.strip ()
-        realisatie = gem.find (ns_mirt + 'startreali').text.strip ()
-        fase = gem.find (ns_mirt + 'fase').text
+    ditJaar : List[object] = []
+    # key is code, value is shape
+    ditJaar_shapes : Dict[str,str] = {}
+
+    for prj in gml:
+        code = prj.find (ns_mirt + 'mirtnrid').text.strip ()
+        if code in ditJaar_shapes:
+            raise "Dubbele code " + code + " in " + str(jaar)
+
+        realisatie = prj.find (ns_mirt + 'startreali').text.strip ()
+        fase = prj.find (ns_mirt + 'fase').text
         if fase == "Realisatie" or fase == "Aanleg" or realisatie != '':
             if realisatie == '':
-                realisatie = realisatie_jaar.get (code)
-                if realisatie is None:
-                    realisatie = jaar
+                realisatie = jaar
             try:
                 realisatie = int (realisatie)
             except:
                 realisatie = jaar
-            realisatie_jaar[code] = realisatie
         else:
-            realisatie = None
-        onderwerp = gem.find (ns_mirt + 'onderwerp').text
-        gio_delen.add (onderwerp)
-        lijst = ditJaar.get (onderwerp)
-        if lijst is None:
-            ditJaar[onderwerp] = lijst = []
+            realisatie = jaar + 5
+        alle_realisatie.add (realisatie)
 
-        geo = list(gem.find (ns_mirt + 'shape'))[0]
-        if geo.tag == ns_gml + 'MultiCurve':
-            geo = [m.find (ns_gml + 'LineString') for m in geo.findall (ns_gml + 'curveMember')]
-        else:
-            geo = [geo]
+        geo = list(prj.find (ns_mirt + 'shape'))[0]
+        geo.attrib["srsName"] = "urn:ogc:def:crs:EPSG::28992"
+        geoXml = ET.tostring (geo, encoding='unicode')
+        try:
+            ditJaar_shapes[code] = shape (parse (geoXml))
+        except Exception as e:
+            raise Exception (str(jaar) + '/' + code + ' gml: ' + str (e))
 
-        projectIndex += 1
-        for lijn in geo:
-            lijn.attrib["srsName"] = "urn:ogc:def:crs:EPSG::28992"
-            lijnXml = ET.tostring (lijn, encoding='unicode')
-            try:
-                parse (lijnXml)
-            except Exception as e:
-                raise jaar + '/' + str(code) + ' gml: ' + str (e)
-            lijst.append ({
-                'ID': index,
-                'Project': projectIndex,
-                'Naam': gem.find (ns_mirt + 'project').text,
-                'GIOdeel' : onderwerp,
-                'Geometrie': lijnXml,
-                'Normwaarde': realisatie
-            })
-            index += 1
+        ditJaar.append ({
+            'Code' : code,
+            'Naam': prj.find (ns_mirt + 'project').text,
+            'Geometrie': geoXml,
+            'Normwaarde': realisatie
+        })
+
     mirt[jaar] = ditJaar
+    shapes[jaar] = ditJaar_shapes
 
-gio_delen = { gd: idx for idx, gd in enumerate (sorted (gio_delen)) }
+#==============================================================================
+#
+# Bepaal gewijzigde shapes
+#
+#==============================================================================
+
+geometrie_index = 0
+# key is code, value is geometrie_index
+manifestOngewijzigd : Dict[str,int] = {}
+
+for code in sorted (shapes[was_jaar].keys ()):
+    wordt_shape = shapes[wordt_jaar].get (code)
+    if not wordt_shape is None:
+        was_shape = shapes[was_jaar][code]
+        if not was_shape.difference (wordt_shape.buffer (0.05 * juridischeNauwkeurigheid)).is_empty:
+            continue
+        if not wordt_shape.difference (was_shape.buffer (0.05 * juridischeNauwkeurigheid)).is_empty:
+            continue
+        geometrie_index += 1
+        manifestOngewijzigd[code] = geometrie_index
+
 
 #==============================================================================
 #
 # Schrijf GIO's
 #
 #==============================================================================
-def __GIO (subdir, jaar, multiLijnen, attribuut):
-    gioPad = os.path.join (testscenario_dir, subdir, 'mirt_' + str(jaar) + '.gml')
+def __GIO (jaar, geometrie_index : int):
+    gioPad = os.path.join (testscenario_dir, 'mirt_' + str(jaar) + '.gml')
     os.makedirs (os.path.dirname (gioPad), exist_ok=True)
     with open (gioPad, 'w', encoding='utf-8') as gml_file:
         gml_file.write ('''<?xml version="1.0" encoding="UTF-8"?>
@@ -119,180 +134,71 @@ def __GIO (subdir, jaar, multiLijnen, attribuut):
       xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/"
       xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/"
       xmlns:gml="http://www.opengis.net/gml/3.2">
-    <geo:FRBRWork>/join/id/regdata/mnre9999/1839/mirt</geo:FRBRWork>
-    <geo:FRBRExpression>/join/id/regdata/mnre9999/1839/mirt/nld@''' + str(jaar) + '''</geo:FRBRExpression>''')
-
-        symbolisatie.StartGio (gioPad, 'groepID' if attribuut == 1 else 'kwantitatieveNormwaarde' if attribuut == 2 else None)
-
-        if attribuut == 1:
-            gml_file.write ('''
-    <geo:groepen>''')
-            for naam, code in gio_delen.items ():
-                gml_file.write ('''
-        <geo:Groep>
-            <geo:groepID>Onderwerp''' + str(code) + '''</geo:groepID>
-            <geo:label>''' + naam + '''</geo:label>
-        </geo:Groep>''')
-            gml_file.write ('''
-    </geo:groepen>''')
-
-        elif attribuut == 2:
+    <geo:FRBRWork>/join/id/regdata/mnre1130/1839/mirt</geo:FRBRWork>
+    <geo:FRBRExpression>/join/id/regdata/mnre1130/1839/mirt/nld@''' + str(jaar) + '''</geo:FRBRExpression>''')
+        if met_normwaarde:
             gml_file.write ('''
     <geo:normlabel>Realisatie</geo:normlabel>''')
-
         gml_file.write ('''
     <geo:locaties>''')
 
-        def __Locatie (onderwerpIndex, projecten):
+        for prj in mirt[jaar]:
+            index = manifestOngewijzigd.get (prj['Code'])
+            if index is None:
+                geometrie_index += 1
+                index = geometrie_index
             gml_file.write ('''
-            <geo:Locatie>''')
-            if not multiLijnen:
-                gml_file.write ('''
-                <geo:naam>''' + projecten[0]['Naam'] + '</geo:naam>')
-            gml_file.write ('''
+            <geo:Locatie>
+                <geo:naam>''' + prj['Naam'] + '''</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
-                        <basisgeo:id>37b0a09f-36a0-4e69-80c2-''' + str(jaar).zfill(6) + str(projecten[0]['ID']).zfill(6) + '''</basisgeo:id>
+                        <basisgeo:id>37b0a09f-36a0-4e69-80c2-''' + str(index).zfill(12) + '''</basisgeo:id>
                         <basisgeo:geometrie>''')
-            if len(projecten) > 1:
-                geometrie = ET.fromstring ('<MultiCurve srsName="urn:ogc:def:crs:EPSG::28992" xmlns="http://www.opengis.net/gml/3.2"><curveMembers></curveMembers></MultiCurve>')
-                members = geometrie.find (ns_gml + 'curveMembers')
-                for gem in projecten:
-                    members.append (ET.fromstring (gem['Geometrie']))
-                geometrie = ET.tostring (geometrie, encoding='unicode')
-            else:
-                geometrie = projecten[0]['Geometrie']
-            gml_file.write (geometrie)
+            gml_file.write (prj['Geometrie'])
             gml_file.write ('''
                         </basisgeo:geometrie>
                     </basisgeo:Geometrie>
                 </geo:geometrie>''')
-            if attribuut == 1:
-                gml_file.write (symbolisatie.GIOWaarde ('Onderwerp' + str(onderwerpIndex)))
-            elif attribuut == 2:
-                gml_file.write (symbolisatie.GIOWaarde (projecten[0]['Normwaarde']))
+            if met_normwaarde:
+                gml_file.write ('''
+                <geo:kwantitatieveNormwaarde>''' + str(prj['Normwaarde']) + '''</geo:kwantitatieveNormwaarde>''')
             gml_file.write ('''
             </geo:Locatie>''')
-
-        if multiLijnen:
-            if attribuut == 0:
-                alle = []
-                for m in mirt[jaar].values ():
-                    alle.extend (m)
-                __Locatie (1, alle)
-            elif attribuut == 1:
-                for onderwerp, projecten in mirt[jaar].items ():
-                    __Locatie (gio_delen[onderwerp], projecten)
-            else:
-                projectPerNormwaarde = {}
-                for onderwerp, projecten in mirt[jaar].items ():
-                    for project in projecten:
-                        if not project["Normwaarde"] is None:
-                            lijst = projectPerNormwaarde.get (project["Normwaarde"])
-                            if lijst is None:
-                                projectPerNormwaarde[project["Normwaarde"]] = [project]
-                            else:
-                                lijst.append (project)
-                for projecten in projectPerNormwaarde.values ():
-                    __Locatie (None, projecten)
-        else:
-            if attribuut == 2:
-                for onderwerp, projecten in mirt[jaar].items ():
-                    for project in projecten:
-                        if not project["Normwaarde"] is None:
-                            __Locatie (gio_delen[onderwerp], [project])
-            else:
-                for onderwerp, projecten in mirt[jaar].items ():
-                    geoPerLocatie = {}
-                    for project in projecten:
-                        lijst = geoPerLocatie.get (project["Project"])
-                        if lijst is None:
-                            geoPerLocatie[project["Project"]] = [project]
-                        else:
-                            lijst.append (project)
-                    for projecten in geoPerLocatie.values ():
-                        __Locatie (gio_delen[onderwerp], projecten)
 
         gml_file.write ('''
     </geo:locaties>
 </geo:GeoInformatieObjectVersie>
     ''')
+        return geometrie_index
 
-symbolisatie.MaakReadme ([testscenario_dir, '05 lijnen - geometrie'], '''#GIO met alleen geometrie
+for jaar in [was_jaar, wordt_jaar]:
+    geometrie_index = __GIO (jaar, geometrie_index)
 
-Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met alleen geometrie bestaande uit lijnen.
-
-De geometrieën bestaan uit lijnen. Elke lijn is een aparte GIO-Locatie.
-Ook als de geometrie van een lijn niet wijzigt in een volgende versie, dan heeft de lijn toch een andere basisgeometrie-ID.
-''')
-symbolisatie.MaakReadme ([testscenario_dir, '05 lijnen - geometrie - multi-geometrie'], '''#GIO met alleen geometrie
-
-Dit is een technisch voorbeeld om voor een GIO met alleen geometrie te demonstreren dat het combineren van alle geometrie
-in een enkele multi-geometrie tot een onnodig druk kaartbeeld leidt.
-
-De geometrieën bestaan uit lijnen. Alle lijnen zijn ondergebracht in een enkele GIO-Locatie.
-De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
-''')
-for jaar in jaren:
-    __GIO ('05 lijnen - geometrie', jaar, False, 0)
-    __GIO ('05 lijnen - geometrie - multi-geometrie', jaar, True, 0)
-
-
-symbolisatie.MaakReadme ([testscenario_dir, '05 lijnen - GIO-delen'], '''#GIO met GIO-delen
-
-Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met GIO-delen bestaande uit lijnen.
-
-De geometrieën bestaan uit lijnen. Elke lijn is een aparte GIO-Locatie.
-Ook als de geometrie van een lijn niet wijzigt in een volgende versie, dan heeft de lijn toch een andere basisgeometrie-ID.
-''')
-symbolisatie.MaakReadme ([testscenario_dir, '05 lijnen - GIO-delen - multi-geometrie'], '''#GIO met GIO-delen
-
-Dit is een technisch voorbeeld om voor een GIO met GIO-delen te demonstreren dat het combineren van alle geometrie
-in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
-
-De geometrieën bestaan uit lijnen. Alle lijnen zijn ondergebracht in een enkele GIO-Locatie per GIO-deel.
-De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
-''')
-for jaar in jaren:
-    __GIO ('05 lijnen - GIO-delen', jaar, False, 1)
-    __GIO ('05 lijnen - GIO-delen - multi-geometrie', jaar, True, 1)
-
-
-symbolisatie.MaakReadme ([testscenario_dir, '07 lijnen - normwaarden'], '''#GIO met normwaarden
-
-Dit is een technisch voorbeeld om geo-renvooi te demonstreren voor een GIO met normwaarden voor lijnen.
-
-De geometrieën bestaan uit lijnen. Elke lijn is een aparte GIO-Locatie.
-Ook als de geometrie van een lijn niet wijzigt in een volgende versie, dan heeft de lijn toch een andere basisgeometrie-ID.
-''')
-symbolisatie.MaakReadme ([testscenario_dir, '07 lijnen - normwaarden - multi-geometrie'], '''#GIO met normwaarden
-
-Dit is een technisch voorbeeld om voor een GIO met normwaarden te demonstreren dat het combineren van alle geometrie
-in multi-geometrieën tot een onnodig druk kaartbeeld leidt.
-
-De geometrieën bestaan uit lijnen. Alle lijnen zijn ondergebracht in een enkele GIO-Locatie per normwaarde.
-De basisgeo-ID van de geometrie is in elke GIO-versie verschillend.
-''')
-for jaar in jaren:
-    __GIO ('07 lijnen - normwaarden', jaar, False, 2)
-    __GIO ('07 lijnen - normwaarden - multi-geometrie', jaar, True, 2)
 
 #==============================================================================
 #
-# Symbolisaties en specificaties
+# Symbolisatie
 #
 #==============================================================================
-symbolisatie.MaakSymbolisaties ('mirt_alle_jaren_symbolisatie.xml')
-
-nauwkeurigheid = 10
-
-for mapPad in symbolisatie.GIOMappen ():
-    symbolisatie.MaakSpecificatie (mapPad, ['gio_wijziging.json'], {
-        'geometrie': [{ "pad": 'mirt_' + str(jaar) + '.gml' } for jaar in jaren],
-        "wijziging": [
-            *[{ "was": 'mirt_' + str(jaar-1) + '.gml', "wordt": 'mirt_' + str(jaar) + '.gml' } for jaar in jaren if jaar != jaren[0]],
-            { "was": 'mirt_' + str(jaren[0]) + '.gml', "wordt": 'mirt_' + str(jaren[-1]) + '.gml' }
-        ],
-        'symbolisatie': symbolisatie.SymbolisatiePad (mapPad, ''),
-        'juridische-nauwkeurigheid': nauwkeurigheid
-    })
+symPad = os.path.join (testscenario_dir,'mirt_symbolisatie.xml')
+if met_normwaarde:
+    symbolisatie.MaakSymbolisatie (symPad, 'kwantitatieveNormwaarde', { str(r): str(r) for r in sorted (alle_realisatie) })
+else:
+    with open (symPad, 'w', encoding='utf-8') as sym_file:
+        sym_file.write ('''<?xml version="1.0" encoding="UTF-8"?>
+<FeatureTypeStyle version="1.1.0" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
+	<FeatureTypeName>geo:Locatie</FeatureTypeName>
+	<SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+	<Rule>
+		<Name>Lijn</Name>
+		<LineSymbolizer>
+			<Name>Lijn</Name>
+			<Stroke>
+				<SvgParameter name="stroke">#6c8ebf</SvgParameter>
+				<SvgParameter name="stroke-opacity">1</SvgParameter>
+				<SvgParameter name="stroke-width">3</SvgParameter>
+				<SvgParameter name="stroke-linejoin">round</SvgParameter>
+			</Stroke>
+		</LineSymbolizer>
+	</Rule>
+</FeatureTypeStyle>''')

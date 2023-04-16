@@ -62,6 +62,7 @@ class Voorbeeld:
             # Voer het voorbeeld uit
             request = Parameters.Lees (log, specificatie.Pad)
             if not request is None:
+                request.KanBestandenSchrijven = False
                 log.Informatie ('Voer het voorbeeld "' + specificatie.Titel + '" uit')
                 request._FormData["titel"] = specificatie.Titel
                 return specificatie.VoerUit (request, log)

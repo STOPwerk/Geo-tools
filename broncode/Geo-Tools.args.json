@@ -29,6 +29,14 @@
     {
       "Id": "b94503cb-0f9a-4dfb-a3e9-4488613f90d0",
       "Command": "-t \"tests\\maak-gio-wijziging\\Punten\\21 Geometrie wijzigingen\""
+    },
+    {
+      "Id": "70da0427-1ff8-4986-b4d1-e07f6075f33d",
+      "Command": "geo-tools\\voorbeelden"
+    },
+    {
+      "Id": "eea34192-19a3-404b-b58a-5c5a0295fdc6",
+      "Command": "\"geo-tools\\voorbeelden\\01 Demo - GIO-wijziging en geo-renvooi\\STOP borden\""
     }
   ]
 }

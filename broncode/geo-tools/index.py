@@ -14,10 +14,9 @@ from weergave_webpagina import WebpaginaGenerator
 
 from gfs_maker import GFSMaker
 from sld_maker import SLDMaker
-from toon_geo import GeoViewer
-from maak_gio_wijziging import GIOWijzigingMaker
-from toon_gio_wijziging import GIOWijzigingViewer
-from voorbeeld import Voorbeeld
+from operatie_toon_geo import ToonGeo
+from operatie_maak_gio_wijziging import MaakGIOWijziging
+from operatie_toon_gio_wijziging import ToonGIOWijziging
 
 
 #----------------------------------------------------------------------
@@ -50,41 +49,33 @@ def sld_maker():
 
 @app.route('/toon_geo')
 def toon_geo():
-    return GeoViewer.InvoerHtml ()
+    return ToonGeo.InvoerHtml ()
 
 @app.route('/toon_geo_resultaat', methods = ['POST'])
 def toon_geo_resultaat():
-    return GeoViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
+    return ToonGeo.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
 
 @app.route('/maak_gio_wijziging')
 def gio_wijziging():
-    return GIOWijzigingMaker.InvoerHtml ()
+    return MaakGIOWijziging.InvoerHtml ()
 
 @app.route('/maak_gio_wijziging_resultaat', methods = ['POST'])
 def gio_wijziging_resultaat():
-    return GIOWijzigingMaker.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
+    return MaakGIOWijziging.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
 
 
 @app.route('/toon_gio_wijziging')
 def toon_gio_wijziging():
-    return GIOWijzigingViewer.InvoerHtml ()
+    return ToonGIOWijziging.InvoerHtml ()
 
 @app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
 def toon_gio_wijziging_resultaat():
-    return GIOWijzigingViewer.ResultaatHtml (Parameters (request.form, request.files, None), Meldingen (True))
-
-@app.route('/voorbeeld')
-def voorbeeld():
-    return Voorbeeld.SelectieHtml ()
-
-@app.route('/start_voorbeeld')
-def start_voorbeeld():
-    return Voorbeeld.VoerUit (Parameters (request.args, None, None))
-
+    return ToonGIOWijziging.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
 
 #----------------------------------------------------------------------
 #
 # Flask server voor ontwikkeling
+# Wordt niet gebruikt bij starten vanuit Visual Studio
 #
 #----------------------------------------------------------------------
 if __name__ == '__main__':

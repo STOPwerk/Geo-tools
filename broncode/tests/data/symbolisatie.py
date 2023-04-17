@@ -3,6 +3,8 @@
 # Maken van symbolisatie, gebruikt door de data conversie scripts
 #
 #==============================================================================
+from typing import Dict, List, Set, Tuple
+
 import json
 import os
 
@@ -87,6 +89,35 @@ class Symbolisatie:
     </Rule>''')
 
                 xml_file.write ('''
+</FeatureTypeStyle>''')
+
+    def MaakSymbolisatie (self, symbolisatiePad : str, attribuutnaam : str, waardeNaam : Dict[str,str]):
+        with open (symbolisatiePad, 'w', encoding='utf-8') as xml_file:
+            xml_file.write ('''<?xml version="1.0" encoding="UTF-8"?>
+<FeatureTypeStyle version="1.1.0" 
+    xmlns="http://www.opengis.net/se"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <FeatureTypeName>geo:Locatie</FeatureTypeName>
+    <SemanticTypeIdentifier>geo:''' + attribuutnaam + '</SemanticTypeIdentifier>')
+
+            symIndex = 0
+            for waarde, naam in waardeNaam.items ():
+                xml_file.write ('''
+    <Rule>
+        <Name>''' + naam + '''</Name>
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>''' + attribuutnaam + '''</ogc:PropertyName> 
+                <ogc:Literal>''' + waarde + '''</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        ''' + self._Symbolen[symIndex] + '''
+    </Rule>''')
+                symIndex += 1
+                if symIndex >= len (self._Symbolen):
+                    symIndex = 0
+
+            xml_file.write ('''
 </FeatureTypeStyle>''')
 
     def MaakReadme (self, mapPad, tekst):

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FeatureTypeStyle version="1.1.0" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
+	<FeatureTypeName>geo:Locatie</FeatureTypeName>
+	<SemanticTypeIdentifier>geo:geometrie</SemanticTypeIdentifier>
+	<Rule>
+		<Name>Punt</Name>
+		<PointSymbolizer>
+			<Name>Punt</Name>
+			<Graphic>
+				<Mark>
+					<WellKnownName>circle</WellKnownName>
+					<Fill>
+						<SvgParameter name="fill">#6C8EBF</SvgParameter>
+						<SvgParameter name="fill-opacity">1</SvgParameter>
+					</Fill>
+				</Mark>
+				<Size>12</Size>
+				<Rotation>0</Rotation>
+			</Graphic>
+		</PointSymbolizer>
+	</Rule>
+</FeatureTypeStyle>

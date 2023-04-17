@@ -1,0 +1,41 @@
+<p>
+    Toon een GIO-wijziging: een <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html">vaststelling</a>
+    met daarin een <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/geo_xsd_Element_geo_GeoInformatieObjectMutatie.html">mutatie</a> van een STOP geo-informatieobject.
+    Aan de hand van de GIO-Wijziging en de originele <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/geo_xsd_Element_geo_GeoInformatieObjectVersie.html">GIO-versie</a>
+    wordt ook de GIO-versie na de wijziging geconstrueerd.
+</p>
+<h3>Bestanden</h3>
+<p id="bestanden">
+</p>
+<form id="upload_form" action="maak_gio_wijziging_resultaat" method="post" enctype="multipart/form-data">
+    <div id="was_box" class="box">
+        <label>
+            <span class="link">Selecteer de originele (was-)versie van het geo-informatieobject</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <input class="box__file" type="file" name="was" id="was" accept="application/gml+xml,application/xml" />
+        </label>
+    </div>
+    <div id="wijziging_box" class="box">
+        <label>
+            <span class="link">Selecteer de GIO-wijziging met daarin de mutatie van het geo-informatieobject</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <input class="box__file" type="file" name="wijziging" id="wijziging" accept="application/gml+xml,application/xml" />
+        </label>
+    </div>
+    <p>
+        Voor een geo-informatieobject met GIO-delen of met normwaarden is een symbolisatie conform
+        <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/">STOP</a> vereist. Als die niet wordt meegegeven worden de
+        GIO-delen en normwaarden niet gevisualiseerd, maar ze zijn wel opvraagbaar door op een positie in
+        de kaart te klikken. Voor een GIO met alleen geometrie of voor een gebiedsmarkering/effectgebied mag een symbolisatie worden meegegeven maar dat hoeft niet.
+    </p>
+    <div class="box" id="symbolisatie_box">
+        <label>
+            <span class="link">Selecteer de symbolisatie voor het geo-informatieobject</span>
+            <span>of sleep het bestand hier naar toe.</span>
+            <span>Als het geo-informatieobject meerdere typen geometrie heeft (punt/lijn/vlak), dan een bestand per type geometrie.</span>
+            <input class="box__file" type="file" name="symbolisatie" id="symbolisatie" multiple accept="application/xml" />
+        </label>
+    </div>
+    <button id="startknop">Toon GIO-wijziging</button>
+    <input type="hidden" name="titel" id="titel">
+</form>

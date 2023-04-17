@@ -43,8 +43,12 @@ python.exe pas_configuratie_toe.py . ..\..
 @if errorlevel 1 goto Pause
 python.exe pas_configuratie_toe.py . ..\geo-tools r
 @if errorlevel 1 goto Pause
-call ..\geo-tools\voer_tools_uit.bat ..\geo-tools\voorbeelden
+python.exe pas_configuratie_toe.py . ..\..\docs r
 @if errorlevel 1 goto Pause
+echo.
+echo De main branch bevat de nieuwe bestanden.
+echo Dit is het moment om compleetheid te controleren
+pause
 rd /s /q ..\wiki
 git add -A
 @if errorlevel 1 goto Pause
@@ -58,8 +62,8 @@ git switch development
 @echo off
 echo.
 echo Alles staat klaar voor de release.
-set /P gitpush=Push naar github (J/[N])?
-if /I "%gitpush%" NEQ "J" goto End
+set /P yesno=Push naar github (J/[N])?
+if /I "%yesno%" NEQ "J" goto End
 @echo Push naar deze repo en naar wiki-repo
 git push --all
 @if errorlevel 1 goto Pause

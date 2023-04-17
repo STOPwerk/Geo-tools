@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests\maak-gio-wijziging\Punten</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  "geo-tools\voorbeelden\02 Uitleg - Noodzaak juridische nauwkeurigheid"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -27,24 +27,25 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="geo-tools\geo_manipulatie_kaart.html" />
-    <Content Include="geo-tools\geo_manipulatie_kaart.css" />
-    <Content Include="geo-tools\geo_manipulatie_kaart.js" />
-    <Content Include="geo-tools\geo_manipulatie_ol.css" />
-    <Content Include="geo-tools\geo_manipulatie_ol.js" />
-    <Content Include="geo-tools\geo_manipulatie_sldreader.js" />
-    <Content Include="geo-tools\maak_gio_wijziging_invoer.html" />
-    <Content Include="geo-tools\geo_manipulatie_resultaat.css" />
-    <Content Include="geo-tools\toon_gio_wijziging_resultaat.js" />
-    <Content Include="geo-tools\geo_manipulatie_resultaat.js" />
+    <Content Include="geo-tools\operatie_toon_geo_invoer.css" />
+    <Content Include="geo-tools\operatie_toon_geo_invoer.html" />
+    <Content Include="geo-tools\operatie_toon_geo_invoer.js" />
+    <Content Include="geo-tools\operatie_toon_geo_resultaat.css" />
+    <Content Include="geo-tools\weergave_kaart_kaart.html" />
+    <Content Include="geo-tools\weergave_kaart_kaart.css" />
+    <Content Include="geo-tools\weergave_kaart_kaart.js" />
+    <Content Include="geo-tools\weergave_kaart_ol.css" />
+    <Content Include="geo-tools\weergave_kaart_ol.js" />
+    <Content Include="geo-tools\weergave_kaart_sldreader.js" />
+    <Content Include="geo-tools\operatie_maak_gio_wijziging_invoer.html" />
+    <Content Include="geo-tools\weergave_kaart_resultaat.css" />
+    <Content Include="geo-tools\operatie_toon_gio_wijziging_resultaat.js" />
+    <Content Include="geo-tools\weergave_kaart_resultaat.js" />
     <Content Include="geo-tools\requirements.txt" />
-    <Content Include="geo-tools\maak_gio_wijziging_invoer.css" />
-    <Content Include="geo-tools\maak_gio_wijziging_invoer.js" />
-    <Content Include="geo-tools\toon_geo_invoer.css" />
-    <Content Include="geo-tools\toon_geo_invoer.js" />
-    <Content Include="geo-tools\toon_geo_invoer.html" />
-    <Content Include="geo-tools\toon_gio_wijziging_invoer.css" />
-    <Content Include="geo-tools\toon_gio_wijziging_invoer.js" />
+    <Content Include="geo-tools\operatie_maak_gio_wijziging_invoer.css" />
+    <Content Include="geo-tools\operatie_maak_gio_wijziging_invoer.js" />
+    <Content Include="geo-tools\operatie_toon_gio_wijziging_invoer.css" />
+    <Content Include="geo-tools\operatie_toon_gio_wijziging_invoer.js" />
     <Content Include="geo-tools\voer_tools_uit.bat" />
     <Content Include="README.md" />
     <Content Include="geo-tools\applicatie_meldingen_einde.html" />
@@ -95,22 +96,26 @@
     <Compile Include="geo-tools\applicatie_request.py" />
     <Compile Include="geo-tools\applicatie.py" />
     <Compile Include="geo-tools\applicatie_meldingen.py" />
-    <Compile Include="geo-tools\geo_manipulatie.py" />
-    <Compile Include="geo-tools\gio_wijziging.py" />
-    <Compile Include="geo-tools\toon_geo_resultaat.css" />
-    <Compile Include="geo-tools\toon_geo.py" />
-    <Compile Include="geo-tools\toon_gio_wijziging_invoer.html" />
-    <Compile Include="geo-tools\toon_gio_wijziging.py" />
-    <Compile Include="geo-tools\maak_gio_wijziging.py">
+    <Compile Include="geo-tools\data_geodata.py" />
+    <Compile Include="geo-tools\applicatie_operatie.py" />
+    <Compile Include="geo-tools\operatie_gio_wijziging.py" />
+    <Compile Include="geo-tools\operatie_toon_geo.py" />
+    <Compile Include="geo-tools\operatie_toon_gio_wijziging_invoer.html" />
+    <Compile Include="geo-tools\operatie_toon_gio_wijziging.py" />
+    <Compile Include="geo-tools\operatie_maak_gio_wijziging.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="geo-tools\weergave_kaart.py" />
     <Compile Include="geo-tools\weergave_webpagina.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\data\CirkelNaarPolygon.py" />
+    <Compile Include="tests\data\Gemeentes_demo.py" />
+    <Compile Include="tests\data\MIRT_demo.py" />
     <Compile Include="tests\data\MIRT.py" />
     <Compile Include="tests\data\Gemeentes.py" />
     <Compile Include="tests\data\symbolisatie.py" />
+    <Compile Include="tests\data\verkeersborden_demo.py" />
     <Compile Include="tests\data\verkeersborden.py" />
     <Compile Include="uitleveren\maak_release_artefacts.py" />
     <Compile Include="uitleveren\pas_configuratie_toe.py" />

@@ -10,6 +10,7 @@ goto Pause
 :Start
 echo on
 @echo Commit naar development
+git add -A
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 

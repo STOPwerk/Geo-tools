@@ -21,7 +21,7 @@ from symbolisatie import Symbolisatie
 #
 #==============================================================================
 datadir = os.path.dirname (os.path.realpath (__file__))
-testscenario_dir = os.path.join (datadir, "..", "..", "geo-tools", "voorbeelden", "01 Demo - GIO-wijziging en geo-renvooi", "MIRT 2017-2022")
+testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "01 Demo - GIO-wijziging en geo-renvooi", "MIRT 2017-2022")
 
 was_jaar = 2019
 wordt_jaar = 2022

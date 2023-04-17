@@ -17,7 +17,6 @@ from sld_maker import SLDMaker
 from operatie_toon_geo import ToonGeo
 from operatie_maak_gio_wijziging import MaakGIOWijziging
 from operatie_toon_gio_wijziging import ToonGIOWijziging
-from voorbeeld import Voorbeeld
 
 
 #----------------------------------------------------------------------
@@ -72,14 +71,6 @@ def toon_gio_wijziging():
 @app.route('/toon_gio_wijziging_resultaat', methods = ['POST'])
 def toon_gio_wijziging_resultaat():
     return ToonGIOWijziging.ResultaatHtml (Parameters (None, request.form, request.files, None), Meldingen (True))
-
-@app.route('/voorbeeld')
-def voorbeeld():
-    return Voorbeeld.SelectieHtml ()
-
-@app.route('/start_voorbeeld')
-def start_voorbeeld():
-    return Voorbeeld.VoerUit (Parameters (None, request.args, None, None))
 
 #----------------------------------------------------------------------
 #

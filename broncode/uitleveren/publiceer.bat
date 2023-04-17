@@ -36,6 +36,13 @@ goto Pause
 
 @rem ===== Script
 :Start
+echo.
+set /P yesno=Voorbeelden opnieuw maken (J/[N])?
+if /I "%yesno%" NEQ "J" goto GaVerder
+call ..\geo-tools\voer_tools_uit.bat -a ..\..\docs
+@if errorlevel 1 goto Pause
+:GaVerder
+
 rd /s /q wiki
 git clone https://github.com/STOPwerk/Geo-tools.wiki.git wiki
 if errorlevel 1 goto Pause

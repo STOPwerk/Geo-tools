@@ -21,7 +21,7 @@ from symbolisatie import Symbolisatie
 #
 #==============================================================================
 datadir = os.path.dirname (os.path.realpath (__file__))
-testscenario_dir = os.path.join (datadir, "..", "..", "geo-tools", "voorbeelden", "01 Demo - GIO-wijziging en geo-renvooi", "STOP borden")
+testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "01 Demo - GIO-wijziging en geo-renvooi", "STOP borden")
 
 normwaarde = lambda jaar: 2024 if jaar < 2004 else jaar + 20
 

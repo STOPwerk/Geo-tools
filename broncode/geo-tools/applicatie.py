@@ -14,8 +14,8 @@
 import getopt
 import inspect
 import json
+import os
 import os.path
-from pickle import NONE
 import sys
 
 #======================================================================
@@ -26,7 +26,7 @@ script_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 sys.path.append (script_dir)
 
 helptekst = '''
-applicatie_test.py [--help|-h] [--alle|-a] [--performantie|-p] [--meldingen|-m meldingen_pad] directory_pad [directory_pad ..]
+applicatie_test.py [--help|-h] [--alle|-a] [--performantie|-p] [--meldingen|-m meldingen_pad] [--resultaat|-r resultaat_pad] directory_pad [directory_pad ..]
 
 directory_pad        Pad naar een directory met een test waarvoor de applicatie uitgevoerd moet worden
 -h of --help         Toon deze tekst
@@ -34,6 +34,7 @@ directory_pad        Pad naar een directory met een test waarvoor de applicatie 
 -t of --testen       De scenario's zijn unit testen. Sla resultaten op als json en vergelijk ze met de verwachte resultaten.
 -m of --meldingen    Bewaar de log van de uitvoering van de applicatie in de meldingen_pad directory, niet in de systeem-tempdirectory
 -p of --performantie Neem de verstreken tijd sinds de start van de applicatie op bij de meldingen in de resultaatpagina; genegeerd bij testen
+-r or --resultaat    Plaats de resulterende HTML pagina in de resultaat_pad directory
 '''
 # De paden naar de directories
 directory_paden = []
@@ -43,10 +44,12 @@ testen = False
 recursie = False
 # Pad waar de meldingen terecht moeten komen; None is tempdir
 meldingen_pad = None
+# Pad waar de resultaten terecht moeten komen; None is directory van de specificatie
+resultaat_pad = None
 # Tijd opnemen in de meldingen?
 tijdInMeldingen = False
 try:
-    (opts, args) = getopt.getopt(sys.argv[1:], "ahm:pt", ["alle", "help", "meldingen=", "performantie", "testen"])
+    (opts, args) = getopt.getopt(sys.argv[1:], "ahm:pr:t", ["alle", "help", "meldingen=", "performantie", "resultaat=", "testen"])
 except getopt.GetoptError:
     print (helptekst)
     sys.exit(2)
@@ -63,6 +66,8 @@ for opt, arg in opts:
         meldingen_pad = arg
     elif opt in ('-p', '--performantie'):
         tijdInMeldingen = True
+    elif opt in ('-r', '--resultaat'):
+        resultaat_pad = arg
 for arg in args:
     if not os.path.isdir (arg):
         print ("Geen directory: " + arg)
@@ -87,7 +92,7 @@ from operatie_gio_wijziging import GIOWijziging
 
 log = Meldingen (True)
 
-def __VoerTestUit (directory_pad, operatieNaam, methode):
+def __VoerTestUit (directory_pad, resultaat_pad, operatieNaam, methode):
     specificatiePad = os.path.join (directory_pad, operatieNaam + '.json')
     if os.path.exists (specificatiePad):
         # Potentiële test gevonden; lees specificatie
@@ -98,7 +103,7 @@ def __VoerTestUit (directory_pad, operatieNaam, methode):
         # Voer de operatie uit
         log.Informatie ('Voer ' + operatieNaam + ' uit met specificatie "' + specificatiePad + '"')
         testlog = Meldingen (False) if testen else None
-        actueelPad = os.path.join (directory_pad, operatieNaam + '_' + ('actueel' if testen else 'resultaat') + '.html')
+        actueelPad = os.path.join (directory_pad if resultaat_pad is None else resultaat_pad, operatieNaam + '_' + ('actueel' if testen else 'resultaat') + '.html')
         try:
             if os.path.isfile (actueelPad):
                 os.remove (actueelPad)
@@ -119,6 +124,7 @@ def __VoerTestUit (directory_pad, operatieNaam, methode):
         else:
             try:
                 if not testen or not testlog.HeeftFouten ():
+                    os.makedirs (os.path.dirname (actueelPad), exist_ok = True)
                     with open (actueelPad, 'w', encoding='utf-8') as html_file:
                         html_file.write (actueel)
                     if testen:
@@ -171,7 +177,7 @@ def __VoerTestUit (directory_pad, operatieNaam, methode):
             # Kijk in subdirectories
             for dir in os.scandir(directory_pad):
                 if dir.is_dir():
-                    __VoerTestUit (dir.path, operatieNaam, methode)
+                    __VoerTestUit (dir.path, None if resultaat_pad is None else os.path.join (resultaat_pad, dir.name), operatieNaam, methode)
 
 class JsonClassEncoder(json.JSONEncoder):
 
@@ -189,9 +195,9 @@ class JsonClassEncoder(json.JSONEncoder):
 
 
 for directory_pad in directory_paden:
-    __VoerTestUit (directory_pad, 'toon_geo', ToonGeo.ResultaatHtml)
-    __VoerTestUit (directory_pad, 'maak_gio_wijziging', MaakGIOWijziging.ResultaatHtml)
-    __VoerTestUit (directory_pad, 'toon_gio_wijziging', ToonGIOWijziging.ResultaatHtml)
-    __VoerTestUit (directory_pad, 'gio_wijziging', GIOWijziging.ResultaatHtml)
+    __VoerTestUit (directory_pad, resultaat_pad, 'toon_geo', ToonGeo.ResultaatHtml)
+    __VoerTestUit (directory_pad, resultaat_pad, 'maak_gio_wijziging', MaakGIOWijziging.ResultaatHtml)
+    __VoerTestUit (directory_pad, resultaat_pad, 'toon_gio_wijziging', ToonGIOWijziging.ResultaatHtml)
+    __VoerTestUit (directory_pad, resultaat_pad, 'gio_wijziging', GIOWijziging.ResultaatHtml)
 
 log.ToonHtml (meldingen_pad)

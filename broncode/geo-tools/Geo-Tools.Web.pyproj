@@ -33,9 +33,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sld_maker.py" />
-    <Compile Include="voorbeeld.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="gfs_maker.css" />
@@ -47,7 +44,6 @@
     <Content Include="sld_maker.js" />
     <Content Include="static\applicatie_web_favicon.png" />
     <Content Include="vercel.json" />
-    <Content Include="voorbeeld_selectie.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="static\" />

@@ -1,0 +1,15 @@
+{
+  "beschrijving": "Demonstratie van de GIO-wijziging en geo-renvooi voor een GIO met vlakken waarin elke GIO-locatie een GIO-deel is.",
+  "symbolisatie": "gemeenten_symbolisatie.xml",
+  "juridische-nauwkeurigheid": 50,
+  "toon-maken": false,
+  "toon-gio-wijziging": true,
+  "wijziging": [
+    {
+      "was": "gemeenten_2017.gml",
+      "wordt": "gemeenten_2023.gml",
+      "wijziging": "gio_wijziging.gml",
+      "beschrijving-toon": "Deze GIO-wijziging toont de verandering van de gemeentelijke indeling tussen eind 2017 en begin 2023. Het GIO heeft de gemeenten als GIO-locaties die tevens een GIO-deel zijn.</p><p><span class=\"leestip\"></span> Selecteer alleen <i>Ongewijzigd/gereviseerd</i> en zet <i>Wijzigmarkeringen</i> uit. Beweeg de slider (blauwe lijn met bal) naar rechts om de originele GIO-versie (2017) te zien, en naar links om de nieuwe versie (2023) te zien. Klik op een vlak voor extra informatie.</p><p>Als een geïnteresseerde alleen de volledige GIO-versies zou kunnen zien als onderdeel van een besluit, dan is eigenlijk niet te zien wat er precies veranderd is. Met het heen en weer bewegen van de slider vallen nog wel de gemeentelijke herindelingen op, maar grenscorrecties (zoals in het zuidwestelijke puntje van Limburg) vallen niet op. De weergave voldoet niet goed als bekendmaking van een wijziging waarop besloten is.</p><p><span class=\"leestip\"></span> Selecteer <i>Wijzigmarkeringen</i> en zet <i>Ongewijzigd/gereviseerd</i> uit. Alleen de wijzigingen blijven zichtbaar. De rood/groene lijnen geven aan waar de (juridische) wijzigingen ongeveer optreden. Een ster staat voor meerdere wijzigingen; zoom in om de individuele wijzigingen te zien.</p><p>Nu zijn de gemeentelijke herindelingen duidelijk zichtbaar omdat de rood/groene lijnen de contouren van de nieuwe gemeente weergeeft. De grenscorrectie in Limburg is te herkennen aan de ster; inzoomen levert uiteindelijk de contouren van de correctie op. De wijzigmarkeringen tonen niet het exacte verschil, maar geven aan waar gekeken moet worden. Door de slider heen en weer te bewegen kan het echte verschil geconstateerd worden."
+    }
+  ]
+}

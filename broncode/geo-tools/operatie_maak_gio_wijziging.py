@@ -348,9 +348,9 @@ class MaakGIOWijziging (ToonGIOWijziging):
                         markeringen = [markeringen]
                     for markering in markeringen:
                         # Omzetting naar een Punt, Lijn, Vlak conform STOP
-                        if markering.type == 'Point':
+                        if markering.geom_type == 'Point':
                             dimensie = 0
-                        elif markering.type == 'Polygon':
+                        elif markering.geom_type == 'Polygon':
                             dimensie = 2
                         else:
                             dimensie = 1

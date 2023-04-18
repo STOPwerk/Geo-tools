@@ -3718,7 +3718,7 @@ class Kaart {
             var ctx = event.context;
             ctx.save();
             ctx.beginPath();
-            ctx.rect(0, 0, self._SliderPositie, ctx.canvas.height);
+            ctx.rect(0, 0, Math.round(self._SliderPositie * ctx.canvas.width), ctx.canvas.height);
             ctx.clip();
         });
 
@@ -3739,7 +3739,7 @@ class Kaart {
             var ctx = event.context;
             ctx.save();
             ctx.beginPath();
-            ctx.rect(self._SliderPositie, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.rect(Math.round(self._SliderPositie * ctx.canvas.width), 0, ctx.canvas.width, ctx.canvas.height);
             ctx.clip();
         });
 
@@ -3771,7 +3771,7 @@ class Kaart {
         var zoomLevelX = Math.max(Math.floor(Math.log2((opties['kaartelementWidth'] * (1 - legeRuimteOmGeometrie) * Kaart._BRT_Resolutions[0]) / (opties['bbox'][2] - opties['bbox'][0]))), 0);
         var zoomLevelY = Math.max(Math.floor(Math.log2((opties['kaartelementHeight'] * (1 - legeRuimteOmGeometrie) * Kaart._BRT_Resolutions[0]) / (opties['bbox'][3] - opties['bbox'][1]))), 0);
         zoomLevel += (zoomLevelX < zoomLevelY ? zoomLevelX : zoomLevelY);
-        this._SliderPositie = opties['kaartelementWidth'] / 2;
+        this._SliderPositie = 0.5;
 
         // Achtergrondkaart
         var matrixIds = [];
@@ -4007,7 +4007,7 @@ class Slider {
             var slider = this._Sliders[i]
             slider.style.left = (pos - (slider.offsetWidth / 2)) + "px";
         }
-        this._OnSlide(pos)
+        this._OnSlide(pos * 1.0 / this._Width)
     }
     _GetCursorPos(e) {
         e = (e.changedTouches) ? e.changedTouches[0] : e;
@@ -4218,7 +4218,7 @@ Dit levert 1 markering op.</li>
                     &lt;geo:Vlak&gt;
                         &lt;geo:geometrie&gt;
                             &lt;basisgeo:Geometrie&gt;
-                                &lt;basisgeo:id&gt;0005b446-5e5f-45ed-a2fe-857bfecfc0d2&lt;/basisgeo:id&gt;
+                                &lt;basisgeo:id&gt;ac230491-eae6-4137-bb96-cf8a4e1bdaac&lt;/basisgeo:id&gt;
                                 &lt;basisgeo:geometrie&gt;
                                     &lt;gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:exterior&gt;&lt;gml:LinearRing&gt;&lt;gml:posList&gt;85943.29754 447593.4058 85943.29754 447570.5942 85898.29754 447570.5942 85898.29754 447593.4058 85943.29754 447593.4058&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;&lt;/gml:exterior&gt;&lt;/gml:Polygon&gt;
                                 &lt;/basisgeo:geometrie&gt;
@@ -4228,7 +4228,7 @@ Dit levert 1 markering op.</li>
                     &lt;geo:Vlak&gt;
                         &lt;geo:geometrie&gt;
                             &lt;basisgeo:Geometrie&gt;
-                                &lt;basisgeo:id&gt;fbe720ec-04f1-41e0-be09-0f6674bfa9b7&lt;/basisgeo:id&gt;
+                                &lt;basisgeo:id&gt;3508ec77-b45b-42aa-9a6d-a7dd5efe662b&lt;/basisgeo:id&gt;
                                 &lt;basisgeo:geometrie&gt;
                                     &lt;gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:exterior&gt;&lt;gml:LinearRing&gt;&lt;gml:posList&gt;85836.23843869919 447586.7171332435 85836.23415 447586.6353 85836.23415 447577.3647 85836.24784526553 447577.1033788042 85836.2887810139 447576.84492069896 85836.35650874433 447576.59215740615 85836.45028641741 447576.3478582541 85836.56908658508 447576.11469983624 85836.71160764743 447575.8952366857 85842.16067764744 447568.3952366857 85842.21220984512 447568.33159978274 85783.32038810207 447548.84387167194 85777.13930376922 447567.86721548554 85836.23843869919 447586.7171332435&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;&lt;/gml:exterior&gt;&lt;/gml:Polygon&gt;
                                 &lt;/basisgeo:geometrie&gt;
@@ -4262,7 +4262,7 @@ Dit levert 1 markering op.</li>
 <div id="log_detail">
 
 <table id="meldingen_tabel">
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-04-18 13:36:54.</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-04-18 23:13:45.</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Toon GIO: '1. Voorbeeld noodmaatregel.gml'</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>
@@ -5035,7 +5035,7 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym39",`<FeatureTypeStyle version=
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data40_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"id": "0005b446-5e5f-45ed-a2fe-857bfecfc0d2"}, "geometry": {"type": "Polygon", "coordinates": [[[85943.29754, 447593.4058], [85943.29754, 447570.5942], [85898.29754, 447570.5942], [85898.29754, 447593.4058], [85943.29754, 447593.4058]]]}, "_shape": null}, {"type": "Feature", "properties": {"id": "fbe720ec-04f1-41e0-be09-0f6674bfa9b7"}, "geometry": {"type": "Polygon", "coordinates": [[[85836.23843869919, 447586.7171332435], [85836.23415, 447586.6353], [85836.23415, 447577.3647], [85836.24784526553, 447577.1033788042], [85836.2887810139, 447576.84492069896], [85836.35650874433, 447576.59215740615], [85836.45028641741, 447576.3478582541], [85836.56908658508, 447576.11469983624], [85836.71160764743, 447575.8952366857], [85842.16067764744, 447568.3952366857], [85842.21220984512, 447568.33159978274], [85783.32038810207, 447548.84387167194], [85777.13930376922, 447567.86721548554], [85836.23843869919, 447586.7171332435]]]}, "_shape": null}], "bbox": [85777.13930376922, 447548.84387167194, 85943.29754, 447593.4058]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"id": "ac230491-eae6-4137-bb96-cf8a4e1bdaac"}, "geometry": {"type": "Polygon", "coordinates": [[[85943.29754, 447593.4058], [85943.29754, 447570.5942], [85898.29754, 447570.5942], [85898.29754, 447593.4058], [85943.29754, 447593.4058]]]}, "_shape": null}, {"type": "Feature", "properties": {"id": "3508ec77-b45b-42aa-9a6d-a7dd5efe662b"}, "geometry": {"type": "Polygon", "coordinates": [[[85836.23843869919, 447586.7171332435], [85836.23415, 447586.6353], [85836.23415, 447577.3647], [85836.24784526553, 447577.1033788042], [85836.2887810139, 447576.84492069896], [85836.35650874433, 447576.59215740615], [85836.45028641741, 447576.3478582541], [85836.56908658508, 447576.11469983624], [85836.71160764743, 447575.8952366857], [85842.16067764744, 447568.3952366857], [85842.21220984512, 447568.33159978274], [85783.32038810207, 447548.84387167194], [85777.13930376922, 447567.86721548554], [85836.23843869919, 447586.7171332435]]]}, "_shape": null}], "bbox": [85777.13930376922, 447548.84387167194, 85943.29754, 447593.4058]}
 );
 
 

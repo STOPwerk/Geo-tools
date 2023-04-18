@@ -3718,7 +3718,7 @@ class Kaart {
             var ctx = event.context;
             ctx.save();
             ctx.beginPath();
-            ctx.rect(0, 0, self._SliderPositie, ctx.canvas.height);
+            ctx.rect(0, 0, Math.round(self._SliderPositie * ctx.canvas.width), ctx.canvas.height);
             ctx.clip();
         });
 
@@ -3739,7 +3739,7 @@ class Kaart {
             var ctx = event.context;
             ctx.save();
             ctx.beginPath();
-            ctx.rect(self._SliderPositie, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.rect(Math.round(self._SliderPositie * ctx.canvas.width), 0, ctx.canvas.width, ctx.canvas.height);
             ctx.clip();
         });
 
@@ -3771,7 +3771,7 @@ class Kaart {
         var zoomLevelX = Math.max(Math.floor(Math.log2((opties['kaartelementWidth'] * (1 - legeRuimteOmGeometrie) * Kaart._BRT_Resolutions[0]) / (opties['bbox'][2] - opties['bbox'][0]))), 0);
         var zoomLevelY = Math.max(Math.floor(Math.log2((opties['kaartelementHeight'] * (1 - legeRuimteOmGeometrie) * Kaart._BRT_Resolutions[0]) / (opties['bbox'][3] - opties['bbox'][1]))), 0);
         zoomLevel += (zoomLevelX < zoomLevelY ? zoomLevelX : zoomLevelY);
-        this._SliderPositie = opties['kaartelementWidth'] / 2;
+        this._SliderPositie = 0.5;
 
         // Achtergrondkaart
         var matrixIds = [];
@@ -4007,7 +4007,7 @@ class Slider {
             var slider = this._Sliders[i]
             slider.style.left = (pos - (slider.offsetWidth / 2)) + "px";
         }
-        this._OnSlide(pos)
+        this._OnSlide(pos * 1.0 / this._Width)
     }
     _GetCursorPos(e) {
         e = (e.changedTouches) ? e.changedTouches[0] : e;
@@ -4148,7 +4148,7 @@ Dit levert geen wijzigmarkeringen op
 <div id="log_detail">
 
 <table id="meldingen_tabel">
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-04-18 13:36:54.</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-04-18 23:13:45.</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Toon GIO: '1. Kwantitatieve norm.gml'</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>

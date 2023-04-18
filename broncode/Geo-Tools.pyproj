@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  "geo-tools\voorbeelden\02 Uitleg - Noodzaak juridische nauwkeurigheid"</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  "..\docs\Uitleg\03 Maken van een GIO-wijziging"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>

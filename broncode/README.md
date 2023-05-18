@@ -9,7 +9,7 @@ De ondersteunende scripts (en deze readme) gaan ervan uit dat:
 
 * Voor de doorontwikkeling van de geo-tools gebruik wordt gemaakt van de branch `development`.
 
-* Vanuit deze branch wordt een uitlevering gedaan die op de `main` branch van deze kloon terecht komt en uiteindelijk gepushd wordt naar de public repository.
+* Vanuit deze branch wordt een uitlevering gedaan die op de `main` branch van deze kloon terecht komt en uiteindelijk gepusht wordt naar de public repository.
 
 * Dat een online versie van de geo-tools gehost wordt pp [vercel.com](https://vercel.com/).
 
@@ -17,11 +17,11 @@ De ondersteunende scripts (en deze readme) gaan ervan uit dat:
 
 * Gebruik dit deel van de repository om de Geo-tools door te ontwikkelen of te onderhouden. Doe dat op de _development_ branch (of een feature branch).
 
-* De documentatie wordt bijgehouden in [wiki](wiki); deze wordt naar de wiki van de publiceke repository uitgeleverd. 
+* De documentatie wordt bijgehouden in [wiki](wiki); deze wordt naar de wiki van de publieke repository uitgeleverd. 
 
 * Er zijn geen unit tests in code. Wel zijn er testen in [tests](tests) die controleren of de scripts voor gegeven invoerbestanden nog steeds dezelfde HTML output maakt. Voor het maken van invoerbestanden en het uitvoeren van de applicatie: zie de [documentatie](wiki).
 
-* Simmige testen gebruiken voorbeelden uit [voorbeelden](..\voorbeelden). De brondata voor de voorbeelden staat in de [tests](tests) directories.
+* Sommige testen gebruiken voorbeelden uit [voorbeelden](..\voorbeelden). De brondata voor de voorbeelden staat in de [tests](tests) directories.
 
 ^ Om codewijzigingen uit te leveren: ga naar [uitleveren](uitleveren) en volg de instructies in de README.md..
 

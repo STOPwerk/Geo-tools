@@ -112,8 +112,8 @@ with zipfile.ZipFile (downloadPad, 'w') as zip:
             if file.startswith ('Geo-Tools.Web') or file == '.gitignore':
                 # Visual Studio / git bestanden
                 pass
-            elif file.startswith ('index') or file.startswith ('gfs_maker') or file.startswith ('sld_maker') or file == 'requirements.txt' or file == 'vercel.json':
-                # Web bestanden
+            elif file == 'vercel.json':
+                # Web deployment bestanden
                 pass
             else:
                 try:

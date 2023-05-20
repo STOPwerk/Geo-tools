@@ -32,11 +32,17 @@ De Python scripts kunnen gedownload worden en op de eigen computer uitgevoerd wo
 
 - [Download](download.zip) de tools en pak het zip bestand uit.
 
+Nu is er de keuze hoe verder te gaan. Om de [online versie](@@@GeoTools_Online_Url@@@) lokaal te draaien:
+
+- Voer `start_webserver` uit om de webserver te starten. De online versie is daarna beschikbaar via [http://localhost:5555/](http://localhost:5555/).
+
+De script kunnen ook op voorbeeldbestanden toegepast worden:
+
 - Lees de [documentatie](../../wiki) waarin staat hoe de invoerbestanden gemaakt moeten worden.
 
 - Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_tools_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken.
 
 - Bekijk de [voorbeelden](broncode/geo-tools/voorbeelden) om inspiratie op te doen. De tools zijn ook gebruikt voor de [STOP voorbeelden](@@@STOP_Voorbeelden_Url@@@Coderingen/GIO/GIO-wijziging).
 
-De twee webpsagina's kunnen op de eigen computer opgeslagen worden en van daaruit gestart worden. Ze gebruiken geen andere bestanden van het internet en zijn offline uit te voeren.
+De twee webpagina's kunnen op de eigen computer opgeslagen worden en van daaruit gestart worden. Ze gebruiken geen andere bestanden van het internet en zijn offline uit te voeren.
 

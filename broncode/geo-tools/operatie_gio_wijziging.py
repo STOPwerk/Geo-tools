@@ -78,7 +78,7 @@ class GIOWijziging (Operatie):
                 request._FormData["geometrie"] = gio["pad"]
                 request._FormData["beschrijving"] = gio.get ("beschrijving")
                 request._FormData["symbolisatie"] = __Waarde (gio, "symbolisatie")
-                request._FormData["juridische-nauwkeurigheid"] = __Waarde (gio, "juridische-nauwkeurigheid")
+                request._FormData["toepassingsnauwkeurigheid"] = __Waarde (gio, "toepassingsnauwkeurigheid")
                 request._FormData["toon-gio-schaalafhankelijk"] = __Waarde (gio, "toon-gio-schaalafhankelijk")
                 request._FormData["kwaliteitscontrole"] = __Waarde (gio, "kwaliteitscontrole")
 
@@ -115,7 +115,7 @@ class GIOWijziging (Operatie):
                 request._FormData["symbolisatie"] = __Waarde (wijziging, "symbolisatie")
                 request._FormData["toon-maken"] = __Waarde (wijziging, "toon-maken")
                 request._FormData["toon-gio-wijziging"] = False
-                request._FormData["juridische-nauwkeurigheid"] = __Waarde (wijziging, "juridische-nauwkeurigheid")
+                request._FormData["toepassingsnauwkeurigheid"] = __Waarde (wijziging, "toepassingsnauwkeurigheid")
                 toonMaken = request.IsOptie ("toon-maken", True)
 
                 if toonMaken:

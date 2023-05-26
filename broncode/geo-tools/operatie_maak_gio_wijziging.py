@@ -51,7 +51,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
     def __init__(self, request : Parameters, log: Meldingen, defaultTitel = None, titelBijFout = None):
         super ().__init__ (request, log, "GIO-wijziging" if defaultTitel is None else defaultTitel, "GIO-wijziging - geen resultaat" if titelBijFout is None else titelBijFout)
         # Locaties uit was- en wordt-versie
-        # key = id, value = dimensie, locatie
+        # key = wId + basisgeo:id, value = dimensie, locatie
         self._WasLocaties : Dict[str,Tuple[int,object]] = None
         self._WordtLocaties : Dict[str,Tuple[int,object]] = None
         # Geeft aan of het maken van de GIO-wijziging in de resultaat-pagina gemeld moet worden
@@ -126,20 +126,20 @@ class MaakGIOWijziging (ToonGIOWijziging):
                         self.Log.Fout ("Label van GIO-deel verschilt: groepID '" + groepId + "' had label '" + gioDeel.Label + "' en dat wordt '" + nieuw.Label + "'")
                         succes = False
 
-            nauwkeurigheid = self.Request.JuridischeNauwkeurigheidInDecimeter (False)
-            if self._Wordt.JuridischeNauwkeurigheid is None and self._Was.JuridischeNauwkeurigheid is None:
-                self.Log.Fout ("De juridische nauwkeurigheid van de originele en nieuwe versie is onbekend en moet opgegeven worden")
+            nauwkeurigheid = self.Request.ToepassingsnauwkeurigheidInCentimeter (False)
+            if self._Wordt.Toepassingsnauwkeurigheid is None and self._Was.Toepassingsnauwkeurigheid is None:
+                self.Log.Fout ("De toepassingsnauwkeurigheid van de originele en nieuwe versie is onbekend en moet opgegeven worden")
                 succes = False
-            elif nauwkeurigheid is None and self._Wordt.JuridischeNauwkeurigheid != self._Was.JuridischeNauwkeurigheid:
-                self.Log.Fout ("De juridische nauwkeurigheid van de originele en nieuwe versie is verschillend en moet daarom opgegeven worden")
+            elif nauwkeurigheid is None and self._Wordt.Toepassingsnauwkeurigheid != self._Was.Toepassingsnauwkeurigheid:
+                self.Log.Fout ("De toepassingsnauwkeurigheid van de originele en nieuwe versie is verschillend en moet daarom opgegeven worden")
                 succes = False
             elif not nauwkeurigheid is None:
-                if self._Wordt.JuridischeNauwkeurigheid != nauwkeurigheid:
-                    self.Log.Informatie ("Als juridische nauwkeurigheid van de nieuwe versie wordt " + str(nauwkeurigheid) + " decimeter gebruikt in plaats van " + str (self._Wordt.JuridischeNauwkeurigheid))
-                    self._Wordt.JuridischeNauwkeurigheid = nauwkeurigheid
-                if self._Was.JuridischeNauwkeurigheid != nauwkeurigheid:
-                    self.Log.Informatie ("Als juridische nauwkeurigheid van de originele versie wordt " + str(nauwkeurigheid) + " decimeter gebruikt in plaats van " + str (self._Was.JuridischeNauwkeurigheid))
-                    self._Was.JuridischeNauwkeurigheid = nauwkeurigheid
+                if self._Wordt.Toepassingsnauwkeurigheid != nauwkeurigheid:
+                    self.Log.Informatie ("Als toepassingsnauwkeurigheid van de nieuwe versie wordt " + str(nauwkeurigheid) + " centimeter gebruikt in plaats van " + str (self._Wordt.Toepassingsnauwkeurigheid))
+                    self._Wordt.Toepassingsnauwkeurigheid = nauwkeurigheid
+                if self._Was.Toepassingsnauwkeurigheid != nauwkeurigheid:
+                    self.Log.Informatie ("Als toepassingsnauwkeurigheid van de originele versie wordt " + str(nauwkeurigheid) + " centiimeter gebruikt in plaats van " + str (self._Was.Toepassingsnauwkeurigheid))
+                    self._Was.Toepassingsnauwkeurigheid = nauwkeurigheid
 
             self._InitSymbolisatieNamen ([self._Was, self._Wordt])
 
@@ -163,7 +163,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
         self._Wijziging.Attributen = self._Was.Attributen | self._Wordt.Attributen
         self._Wijziging.AttribuutNaam = self._Was.AttribuutNaam
         self._Wijziging.LabelNaam = self._Wordt.LabelNaam
-        self._Wijziging.JuridischeNauwkeurigheid = self._Wordt.JuridischeNauwkeurigheid
+        self._Wijziging.Toepassingsnauwkeurigheid = self._Wordt.Toepassingsnauwkeurigheid
         self._Wijziging.Was = GeoData ()
         self._Wijziging.Was.WorkId = self._Wordt.WorkId
         self._Wijziging.Was.ExpressionId = self._Was.ExpressionId
@@ -195,17 +195,17 @@ class MaakGIOWijziging (ToonGIOWijziging):
             Deze kunnen gecontroleerd worden als onderdeel van het <a href="@@@GeoTools_Url@@@/toon_geo" target="_blank">tonen van een GIO-versie</a>.
             De bepaling bestaat uit de volgende stappen:</p>
             <p><ol><li>Bepaal de te verwijderen en toe te voegen locaties waarvan de geometrie is gewijzigd.
-            Dit zijn alle locaties met een basisgeometrie-id die alleen in de originele en nieuwe versie terugkomt.''')
-        self._WasLocaties = { locatie["properties"]["id"] : (dimensie, locatie) for dimensie, locaties in self._Was.Locaties.items () for locatie in locaties }
-        self._WordtLocaties = { locatie["properties"]["id"] : (dimensie, locatie) for dimensie, locaties in self._Wordt.Locaties.items () for locatie in locaties }
+            Dit zijn alle locaties met een wId/basisgeometrie-id combinatie die alleen in de originele of in de nieuwe versie terugkomt.''')
+        self._WasLocaties = { locatie['properties']['wId'] + '\n'+ locatie['properties']['geoId'] : (dimensie, locatie) for dimensie, locaties in self._Was.Locaties.items () for locatie in locaties }
+        self._WordtLocaties = { locatie['properties']['wId'] + '\n'+ locatie['properties']['geoId'] : (dimensie, locatie) for dimensie, locaties in self._Wordt.Locaties.items () for locatie in locaties }
         numWas = 0
         numWordt = 0
-        for id, (dimensie, locatie) in self._WasLocaties.items ():
-            if not id in self._WordtLocaties:
+        for wgid, (dimensie, locatie) in self._WasLocaties.items ():
+            if not wgid in self._WordtLocaties:
                 _VoegLocatieToe (self._Wijziging.Was.Locaties, dimensie, locatie)
                 numWas += 1
-        for id, (dimensie, locatie) in self._WordtLocaties.items ():
-            if not id in self._WasLocaties:
+        for wgid, (dimensie, locatie) in self._WordtLocaties.items ():
+            if not wgid in self._WasLocaties:
                 _VoegLocatieToe (self._Wijziging.Wordt.Locaties, dimensie, locatie)
                 numWordt += 1
         if self._Toon:
@@ -213,23 +213,23 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
         numWaarde = 0
         numLabel = 0
-        for id, (dimensie, locatie) in self._WordtLocaties.items ():
-            wasLocatie = self._WasLocaties.get (id)
+        for wgid, (dimensie, locatie) in self._WordtLocaties.items ():
+            wasLocatie = self._WasLocaties.get (wgid)
             if not wasLocatie is None:
                 wasLocatie = wasLocatie[1]
                 if not self._Wijziging.AttribuutNaam is None:
-                    if locatie["properties"][self._Wijziging.AttribuutNaam] != wasLocatie["properties"][self._Wijziging.AttribuutNaam]:
+                    if locatie['properties'][self._Wijziging.AttribuutNaam] != wasLocatie['properties'][self._Wijziging.AttribuutNaam]:
                         _VoegLocatieToe (self._Wijziging.Was.Locaties, dimensie, wasLocatie)
                         _VoegLocatieToe (self._Wijziging.Wordt.Locaties, dimensie, locatie)
                         numWaarde += 1
                         continue
-                if locatie["properties"].get (self._Wijziging.LabelNaam) != wasLocatie["properties"].get (self._Wijziging.LabelNaam):
+                if locatie['properties'].get (self._Wijziging.LabelNaam) != wasLocatie['properties'].get (self._Wijziging.LabelNaam):
                     numLabel += 1
                     _VoegLocatieToe (self._Wijziging.WordtRevisies.Locaties, dimensie, locatie)
                     continue
         if self._Toon:
             if not self._Wijziging.AttribuutNaam is None:
-                self.Generator.VoegHtmlToe ('''<li>Van de locaties met een manifest ongewijzigde geometrie (basisgeometrie-id komt in zowel de originele als nieuwe versie voor) 
+                self.Generator.VoegHtmlToe ('''<li>Van de locaties met een manifest ongewijzigde geometrie (combinatie wId/basisgeometrie-id komt in zowel de originele als nieuwe versie voor) 
                 die in beide versies een verschillende waarde voor ''' + self._Wijziging.AttribuutNaam + ''' hebben moet de originele verwijderd en de nieuwe toegevoegd worden.
                 Het betreft ''' + str(numWaarde) + ' locatie' + ('' if numWaarde == 1 else 's') + '.</li>')
             self.Generator.VoegHtmlToe ('''<li>De locaties met een manifest ongewijzigde geometrie die in beide versies een verschillende waarde voor het label hebben 
@@ -243,9 +243,9 @@ class MaakGIOWijziging (ToonGIOWijziging):
                 self.Log.Detail ("Neem gebruikte GIO-delen over")
                 if self._Toon:
                     self.Generator.VoegHtmlToe ('''<li>Maak een lijst van alle GIO-delen die in de opgenomen locaties voorkomen en geef aan welke origneel of nieuw zijn.''')
-                wasGroepID = set (locatie["properties"]["groepID"] for locaties in self._Wijziging.Was.Locaties.values () for locatie in locaties)
-                wordtGroepID = set (locatie["properties"]["groepID"] for locaties in self._Wijziging.Wordt.Locaties.values () for locatie in locaties)
-                wordtGroepID = wordtGroepID.union (set (locatie["properties"]["groepID"] for locaties in self._Wijziging.WordtRevisies.Locaties.values () for locatie in locaties))
+                wasGroepID = set (locatie['properties']["groepID"] for locaties in self._Wijziging.Was.Locaties.values () for locatie in locaties)
+                wordtGroepID = set (locatie['properties']["groepID"] for locaties in self._Wijziging.Wordt.Locaties.values () for locatie in locaties)
+                wordtGroepID = wordtGroepID.union (set (locatie['properties']["groepID"] for locaties in self._Wijziging.WordtRevisies.Locaties.values () for locatie in locaties))
                 self._Wijziging.GIODelen = {}
                 numWas = 0
                 numWordt = 0
@@ -281,14 +281,14 @@ class MaakGIOWijziging (ToonGIOWijziging):
         if self._Toon:
             self.Generator.VoegHtmlToe ('''<li>Bepaal de wijzigmarkeringen. Hierbij wordt bedoeld met:<ul>
             <li>De "buitenrand" van een geometrie: de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
-            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (toepassingsnauwkeurigheid / 2)</code></li>
             <li>De "buitenrand" van meerdere geometrieën: de "buitenrand" van de <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (geometrieën)
             <li>Het "binnengebied": de binnenste rand van de geometrie getekend met een "dikke pen":<br/>
             <code>binnengebied = locatie.geometrie</code> voor een punt of lijn,<br/>
-            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.</li></ul>
+            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid / 2)</code> voor vlakken.</li></ul>
             <li>Het "binnengebied" van meerdere geometrieën:<br/>
             <code>binnengebied = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (binnengebieden van de geometrieën)</code> voor punten of lijnen,<br/>
-            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid)</code> voor vlakken.<br/>
+            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid)</code> voor vlakken.<br/>
             De manier van samenvoegen van vlakken zorgt ervoor dat vlakken die net niet op elkaar aansluiten toch als aansluitend gezien worden.</li></ul>
             De wijzigmarkeringen worden opgesplitst in enkelvoudige geometrieën (punt, lijn, vlak) om bij weergave clustering te vereenvoudigen. Ze worden in meerdere stappen bepaald:
             <ol>''')
@@ -296,14 +296,14 @@ class MaakGIOWijziging (ToonGIOWijziging):
         # De verschillende stappen gebruiken steeds hetzelfde patroon:
         # Voeg de buitenranden van alle te vergelijken locaties samen
         def _VoegBuitenrandToe (gebied, locatie):
-            buitenrand = GeoData.MaakShapelyShape (locatie).buffer (0.05 * self._Wijziging.JuridischeNauwkeurigheid)
+            buitenrand = GeoData.MaakShapelyShape (locatie).buffer (0.005 * self._Wijziging.Toepassingsnauwkeurigheid)
             if gebied is None:
                 return buitenrand
             else:
                 try:
                     return gebied.union (buitenrand)
                 except Exception as e:
-                    self.Log.Fout ("Het binnengebied van locatie " + locatie['properties']['id'] + " levert problemen op. Is er iets mis met de geometrie?")
+                    self.Log.Fout ("Het binnengebied van locatie met wId '" + locatie['properties']['wId'] + "' levert problemen op. Is er iets mis met de geometrie?")
                     raise e
 
         # Voeg de geometrieën per type samen voor alle locaties waarvoor de wijziging bepaald moet worden
@@ -312,12 +312,12 @@ class MaakGIOWijziging (ToonGIOWijziging):
             if dimensie == 2:
                 # Truukje om net niet helemaal aansluitende gebieden toch aansluitend te maken:
                 # voeg de buitenrand toe, in _BepaalWijzigmarkeringen wordt daarvan de binnenrand gemaakt.
-                binnengebied = binnengebied.buffer (0.05 * self._Wijziging.JuridischeNauwkeurigheid)
+                binnengebied = binnengebied.buffer (0.005 * self._Wijziging.Toepassingsnauwkeurigheid)
             if dimensie in gebieden:
                 try:
                     gebieden[dimensie] = gebieden[dimensie].union (binnengebied)
                 except Exception as e:
-                    self.Log.Fout ("Het binnengebied van locatie " + locatie['properties']['id'] + " levert problemen op. Is er iets mis met de geometrie?")
+                    self.Log.Fout ("Het binnengebied van locatie met wId '" + locatie['properties']['wId'] + "' levert problemen op. Is er iets mis met de geometrie?")
                     raise e
             else:
                 gebieden[dimensie] = binnengebied
@@ -327,9 +327,9 @@ class MaakGIOWijziging (ToonGIOWijziging):
             binnengebieden = None
             for dimensie, gebied in gebieden.items ():
                 if dimensie == 2:
-                    # Gebruik volledige juridische nauwkeurigheid omdat in _VoegGeometrieToe 
+                    # Gebruik volledige toepassingsnauwkeurigheid omdat in _VoegGeometrieToe 
                     # niet het binnengebied maar de buitenrand is gebruikt.
-                    binnengebied = gebied.buffer (- 0.1 * self._Wijziging.JuridischeNauwkeurigheid)
+                    binnengebied = gebied.buffer (- 0.01 * self._Wijziging.Toepassingsnauwkeurigheid)
                     if binnengebied.is_empty:
                         continue
                 else:
@@ -359,7 +359,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
                         self._Wijziging.WijzigMarkering.Locaties[dimensie].append ({
                             'type': 'Feature',
                             'properties': {
-                                'id': str(uuid4()) 
+                                'geoId': str(uuid4()) 
                             },
                             'geometry': mapping (markering)
                         })
@@ -459,40 +459,40 @@ class MaakGIOWijziging (ToonGIOWijziging):
         self.Log.Detail ("Toon de onderdelen van de GIO-wijziging in een kaart")
         kaart = KaartGenerator.Kaart (self.Kaartgenerator)
 
-        # Voeg de juridische nauwkeurigheid toe
+        # Voeg de toepassingsnauwkeurigheid toe
 #region Maak de binnen- en buitenranden voor de was- en wordt-locaties
-        juridischeNauwkeurigheid_was = GeoData ()
-        juridischeNauwkeurigheid_was.Locaties = { 2:[] }
-        juridischeNauwkeurigheid_wordt = GeoData ()
-        juridischeNauwkeurigheid_wordt.Locaties = { 2:[] }
-        for id, (dimensie, locatie) in self._WasLocaties.items ():
-            buitenrand = GeoData.MaakShapelyShape (locatie).buffer (0.05 * self._Wijziging.JuridischeNauwkeurigheid)
+        toepassingsnauwkeurigheid_was = GeoData ()
+        toepassingsnauwkeurigheid_was.Locaties = { 2:[] }
+        toepassingsnauwkeurigheid_wordt = GeoData ()
+        toepassingsnauwkeurigheid_wordt.Locaties = { 2:[] }
+        for wgid, (dimensie, locatie) in self._WasLocaties.items ():
+            buitenrand = GeoData.MaakShapelyShape (locatie).buffer (0.005 * self._Wijziging.Toepassingsnauwkeurigheid)
             if dimensie == 2:
-                buitenrand = buitenrand.difference (GeoData.MaakShapelyShape(locatie).buffer (-0.05 * self._Wijziging.JuridischeNauwkeurigheid))
+                buitenrand = buitenrand.difference (GeoData.MaakShapelyShape(locatie).buffer (-0.005 * self._Wijziging.Toepassingsnauwkeurigheid))
             buitenrand = {
                     'type': 'Feature',
                     'geometry': mapping (buitenrand)
                 }
-            juridischeNauwkeurigheid_was.Locaties[2].append (buitenrand)
-            if id in self._WordtLocaties:
-                juridischeNauwkeurigheid_wordt.Locaties[2].append (buitenrand)
-        for id, (dimensie, locatie) in self._WordtLocaties.items ():
-            if not id in self._WasLocaties:
-                buitenrand = GeoData.MaakShapelyShape (locatie).buffer (0.05 * self._Wijziging.JuridischeNauwkeurigheid)
+            toepassingsnauwkeurigheid_was.Locaties[2].append (buitenrand)
+            if wgid in self._WordtLocaties:
+                toepassingsnauwkeurigheid_wordt.Locaties[2].append (buitenrand)
+        for wgid, (dimensie, locatie) in self._WordtLocaties.items ():
+            if not wgid in self._WasLocaties:
+                buitenrand = GeoData.MaakShapelyShape (locatie).buffer (0.005 * self._Wijziging.Toepassingsnauwkeurigheid)
                 if dimensie == 2:
-                    buitenrand = buitenrand.difference (GeoData.MaakShapelyShape(locatie).buffer (-0.05 * self._Wijziging.JuridischeNauwkeurigheid))
+                    buitenrand = buitenrand.difference (GeoData.MaakShapelyShape(locatie).buffer (-0.005 * self._Wijziging.Toepassingsnauwkeurigheid))
                 buitenrand = {
                         'type': 'Feature',
                         'geometry': mapping (buitenrand)
                     }
-                juridischeNauwkeurigheid_wordt.Locaties[2].append (buitenrand)
-        namen_was = self.Kaartgenerator.VoegGeoDataToe (juridischeNauwkeurigheid_was)[2]
-        namen_wordt = self.Kaartgenerator.VoegGeoDataToe (juridischeNauwkeurigheid_wordt)[2]
+                toepassingsnauwkeurigheid_wordt.Locaties[2].append (buitenrand)
+        namen_was = self.Kaartgenerator.VoegGeoDataToe (toepassingsnauwkeurigheid_was)[2]
+        namen_wordt = self.Kaartgenerator.VoegGeoDataToe (toepassingsnauwkeurigheid_wordt)[2]
         symbolisatie = self.Kaartgenerator.VoegUniformeSymbolisatieToe (2, '#CCCCCC', '#000000', '0.5')
 #endregion
-        kaart.VoegLaagToe ('Juridische nauwkeurigheid', namen_was, symbolisatie, True, False)
+        kaart.VoegLaagToe ('Toepassingsnauwkeurigheid', namen_was, symbolisatie, True, False)
         kaart.LaatsteLaagAlsOud ()
-        kaart.VoegLaagToe ('Juridische nauwkeurigheid', namen_wordt, symbolisatie, True, False)
+        kaart.VoegLaagToe ('Toepassingsnauwkeurigheid', namen_wordt, symbolisatie, True, False)
         kaart.LaatsteLaagAlsNieuw ()
 
         # Voeg de originelen toe

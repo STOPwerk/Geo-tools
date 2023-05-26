@@ -513,9 +513,9 @@ class KaartGenerator:
                 'kaartelementWidth': 900,
                 'kaartelementHeight': 600
             }
-            nauwkeurigheid = self._Generator._Request.LeesString ("juridische-nauwkeurigheid");
+            nauwkeurigheid = self._Generator._Request.LeesString ("toepassingsnauwkeurigheid");
             if not nauwkeurigheid is None:
-                self._Opties['juridische-nauwkeurigheid'] = int (nauwkeurigheid)
+                self._Opties['toepassingsnauwkeurigheid'] = int (nauwkeurigheid)
             self._Generator._Log.Detail ("Prepareer kaart " + self._Opties['kaartelementId'])
 
 
@@ -628,13 +628,13 @@ class KaartGenerator:
             self._InitialisatieScripts[self._DimensieLaatsteWijzigingInitialisatieScripts] += '.LimiteerZoomLevel (' + str(0 if minZoom is None else minZoom) + ', ' + str(100 if maxZoom is None else maxZoom) + ')'
 
         def ZoomTotNauwkeurigheid (self, extraZoom : bool):
-            """Geeft aan dat het maximale zoom level overen moet komen met de juridische nauwkeurigheid
+            """Geeft aan dat het maximale zoom level overen moet komen met de toepassingsnauwkeurigheid
             
             Argumenten:
 
-            extraZoom bool  Geeft aan dat er extra zoom levels moeten zijn zodat het effect van de juridische nauwkeurigheid te zien is
+            extraZoom bool  Geeft aan dat er extra zoom levels moeten zijn zodat het effect van de toepassingsnauwkeurigheid te zien is
             """
-            nauwkeurigheid = self._Generator._Request.JuridischeNauwkeurigheidInDecimeter (False)
+            nauwkeurigheid = self._Generator._Request.ToepassingsnauwkeurigheidInCentimeter (False)
             if nauwkeurigheid is None:
                 self._Opties.pop ('maxZoom', None)
             else:
@@ -658,14 +658,14 @@ class KaartGenerator:
 #----------------------------------------------------------------------
 #region Zoom levels
     @staticmethod
-    def MaximaalZoomLevel (nauwkeurigheidDecimeter : int):
+    def MaximaalZoomLevel (nauwkeurigheidCentimeter : int):
         """Maximaal zoom level voor een GIO bij gegeven nauwkeurigheid.
         
         Argumenten:
 
-        nauwkeurigheidDecimeter int  Juridische nauwkeurigheid van de GIO.
+        nauwkeurigheidCentimeter int  Toepassingsnauwkeurigheid van de GIO.
         """
-        maxZoom = 22 - math.floor(math.log2(nauwkeurigheidDecimeter))
+        maxZoom = 22 - math.floor(math.log2(10*nauwkeurigheidCentimeter))
         return 22 if maxZoom > 22 else maxZoom
 
     @staticmethod
@@ -795,12 +795,12 @@ class KaartGenerator:
 
         Geeft de vereenvoudigde geometrieën en markers als GeoData terug.
         """
-        nauwkeurigheid = geoData.JuridischeNauwkeurigheid
+        nauwkeurigheid = geoData.Toepassingsnauwkeurigheid
         if nauwkeurigheid is None:
-            nauwkeurigheid = self._Request.JuridischeNauwkeurigheidInDecimeter (False)
+            nauwkeurigheid = self._Request.ToepassingsnauwkeurigheidInCentimeter (False)
             if nauwkeurigheid is None:
-                nauwkeurigheid = 1
-        self._Log.Detail ("Maak schaalafhankelijke geometrie met juridische nauwkeurigheid " + str (nauwkeurigheid) + " decimeter")
+                nauwkeurigheid = 10
+        self._Log.Detail ("Maak schaalafhankelijke geometrie met toepassingsnauwkeurigheid " + str (nauwkeurigheid) + " centimeter")
         resultaat = KaartGenerator.SchaalafhankelijkeGeoData (geoData)
         resultaat.Nauwkeurigheid = nauwkeurigheid
         resultaat.Naam = naam

@@ -1,4 +1,4 @@
 {
   "geometrie": "testdata_gebiedsmarkering.gml",
-  "juridische-nauwkeurigheid": 1
+  "toepassingsnauwkeurigheid": 10
 }

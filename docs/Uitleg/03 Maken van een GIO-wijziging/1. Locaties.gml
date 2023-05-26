@@ -8,6 +8,7 @@
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/uitleg4/nld@2022;1</geo:FRBRExpression>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:naam>Sportvelden</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -31,6 +32,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>2</geo:wId>
 			<geo:naam>Entreegebied</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -57,6 +59,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>3</geo:wId>
 			<geo:naam>Kynologie</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -82,6 +85,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>4</geo:wId>
 			<geo:naam>Wijkpark</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -110,6 +114,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>5</geo:wId>
 			<geo:naam>Bos</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -138,6 +143,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>6</geo:wId>
 			<geo:naam>Spoorzone</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -169,6 +175,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>7</geo:wId>
 			<geo:naam>Spoorzone</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -197,6 +204,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>8</geo:wId>
 			<geo:naam>Houtwal</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -225,6 +233,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>9</geo:wId>
 			<geo:naam>Moeder Aarde</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -258,6 +267,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>10</geo:wId>
 			<geo:naam>Vijver</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>

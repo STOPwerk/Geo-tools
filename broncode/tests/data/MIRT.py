@@ -148,6 +148,7 @@ def __GIO (subdir, jaar, multiLijnen, attribuut):
             <geo:Locatie>''')
             if not multiLijnen:
                 gml_file.write ('''
+                <geo:wId>''' + str(jaar) + str(projecten[0]['ID']).zfill(6) + '''</wId>
                 <geo:naam>''' + projecten[0]['Naam'] + '</geo:naam>')
             gml_file.write ('''
                 <geo:geometrie>
@@ -294,5 +295,5 @@ for mapPad in symbolisatie.GIOMappen ():
             { "was": 'mirt_' + str(jaren[0]) + '.gml', "wordt": 'mirt_' + str(jaren[-1]) + '.gml' }
         ],
         'symbolisatie': symbolisatie.SymbolisatiePad (mapPad, ''),
-        'juridische-nauwkeurigheid': nauwkeurigheid
+        'toepassingsnauwkeurigheid': nauwkeurigheid
     })

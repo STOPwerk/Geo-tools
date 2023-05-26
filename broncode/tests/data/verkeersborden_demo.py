@@ -21,7 +21,7 @@ from symbolisatie import Symbolisatie
 #
 #==============================================================================
 datadir = os.path.dirname (os.path.realpath (__file__))
-testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "01 Demo - GIO-wijziging en geo-renvooi", "STOP borden")
+testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "Demo", "STOP borden")
 
 normwaarde = lambda jaar: 2024 if jaar < 2004 else jaar + 20
 
@@ -81,6 +81,7 @@ def __GIO (versie, waardeVeld):
             if waardeVeld in bord:
                 gml_file.write ('''
         <geo:Locatie>
+            <geo:wId>''' + str(bord['id']) + '''</geo:wId>
             <geo:geometrie>
                 <basisgeo:Geometrie>
                     <basisgeo:id>37b0a09f-36a0-4e69-80c0-''' + str(bord['id']).zfill(12) + '''</basisgeo:id>

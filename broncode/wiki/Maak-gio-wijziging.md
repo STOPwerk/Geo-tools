@@ -11,15 +11,15 @@ Python script: [toon_geo.py](../blob/main/broncode/geo-tools/maak_gio_wijziging.
 
 ## Algoritme
 
-De uitgangspunten voor dit algeoritme zijn:
+De uitgangspunten voor dit algoritme zijn:
 * De geo-tools werken alleen als een GIO uitsluitend punten, lijnen of vlakken hebben. Dit is een implementatiebeperking. Het algoritme kan uitgebreid worden naar GIO's waarin een mix van punten, lijnen en vlakken voorkomen.
-* Beide GIO-versies zijn [geschikt bevonden](Toon-controleer-gio) voor dezelfde juridische nauwkeurigheid die gebruikt wordt bij deze operatie.
-* Als het een GIO betreft met GIO-delen, dan zijn de groepID en bijbehorende naam onveranderlijk in de tijd en onderanderlijk aan elkaar gekoppeld. Als in de was- en wordt-versie van het GIO dezelfde groepID voorkomt, dan hoort daar dezelfde naam bij. Als dezelfde naam voorkomt, dan heeft die dezelfde groepID. 
+* Beide GIO-versies zijn [geschikt bevonden](Toon-controleer-gio) voor dezelfde toepassingsnauwkeurigheid die gebruikt wordt bij deze operatie.
+* Als het een GIO betreft met GIO-delen, dan zijn de groepID en bijbehorende naam onveranderlijk in de tijd en onveranderlijk aan elkaar gekoppeld. Als in de was- en wordt-versie van het GIO dezelfde groepID voorkomt, dan hoort daar dezelfde naam bij. Als dezelfde naam voorkomt, dan heeft die dezelfde groepID. 
 
 De bepaling van de GIO-wijziging kan opgesplitst worden in:
 
 * Een vergelijking van de locaties met een manifest ongewijzigde geometrie, d.w.z. locaties met een geometrie met een basisgeometrie-ID die zowel in de was- als wordt-versie voorkomt. Deze locaties nemen geen deel aan geo-operaties.
-* Een vergelijking van de overige locaties. Hierbij moeten geo-operaties uitgevoerd worden om te bepalen of (en in hoeverre) geometriën gewijzigd zijn.
+* Een vergelijking van de overige locaties. Hierbij moeten geo-operaties uitgevoerd worden om te bepalen of (en in hoeverre) geometrieën gewijzigd zijn.
 
 Het algoritme blijft werken als de basisgeometrie_IDs van de locaties voor elke GIO-versie opnieuw bepaald worden. Maar zeker als er eigenlijk weinig verschil zit tussen de was- en wordt-versie neemt de bepaling van GIO-wijziging in dat geval veel meer rekentijd in beslag.
 
@@ -34,8 +34,8 @@ De uitkomst van het algoritme is een GIO-wijziging die bestaat uit:
 Als dezelfde basisgeometrie-ID zowel in de was- als wordt-versie bij een GIO-Locatie voorkomt, dan:
 
 * is de geometrie ongewijzigd, want dat is de eis om dezelfde basisgeometrie-ID te mogen gebruiken;
-* zijn er binnen de wordt-versie geen andere locaties die (voor de opgegeven juridische nauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de wordt-versie ongeschikt bevonden zijn);
-* zijn er binnen de was-versie geen andere locaties die (voor de opgegeven juridische nauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de was-versie ongeschikt bevonden zijn).
+* zijn er binnen de wordt-versie geen andere locaties die (voor de opgegeven toepassingsnauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de wordt-versie ongeschikt bevonden zijn);
+* zijn er binnen de was-versie geen andere locaties die (voor de opgegeven toepassingsnauwkeurigheid) op een juridisch significante manier met de geometrie overlappen (want anders zou de was-versie ongeschikt bevonden zijn).
 
 De bijbehorende GIO-locatie uit de was-versie muteert daarom naar de GIO-Locatie in wordt-versie en overlapt io geen enkele manier geometrisch met de overige locaties uit de GIO-versies. Voor deze locaties geldt:
 
@@ -48,5 +48,5 @@ De bijbehorende GIO-locatie uit de was-versie muteert daarom naar de GIO-Locatie
     * Zo niet, dan hoeft de locatie niet opgenomen te worden in de GIO-wijziging.
 * Als de locatie niet ongewijzigd is, dan:
     * wordt zowel de GIO-locatie uit de was- en de wordt-versie opgenomen in de GIO-wijziging;
-    * wordt de geometrie daarnaast opgenomen in de wijzigingmarkeringen van de GIO-wijziging.
+    * wordt de geometrie daarnaast opgenomen in de wijzigmarkeringen van de GIO-wijziging.
 

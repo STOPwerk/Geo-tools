@@ -251,7 +251,7 @@
         width: 4px;
     }
 
-.juridische_nauwkeurigheid {
+.toepassingsnauwkeurigheid {
     background-color: #000000;
     border-radius: 50%;
     display: inline-block;
@@ -3877,7 +3877,7 @@ class Kaart {
             }
         }
         var aanUitLagenElt = null;
-        if (aanUitLagen.length > 0 || 'juridische-nauwkeurigheid' in opties) {
+        if (aanUitLagen.length > 0 || 'toepassingsnauwkeurigheid' in opties) {
             var elt = document.createElement('p');
             kaartElement.insertAdjacentElement('afterend', elt); var parent = elt;
             elt = document.createElement('table'); parent.appendChild(elt); parent = elt;
@@ -3887,10 +3887,10 @@ class Kaart {
                 aanUitLagenElt = elt
                 aanUitLagenElt.innerHTML = 'Gegevens in de kaart die wel/niet zichtbaar gemaakt kunnen worden:</br>';
             }
-            if ('juridische-nauwkeurigheid' in opties) {
+            if ('toepassingsnauwkeurigheid' in opties) {
                 elt.width = '100%';
                 elt = document.createElement('td'); parent.appendChild(elt);
-                new TekenNauwkeurigheidSchaal(opties['juridische-nauwkeurigheid'], elt, opties['kaartelementId'], view);
+                new TekenNauwkeurigheidSchaal(opties['toepassingsnauwkeurigheid'], elt, opties['kaartelementId'], view);
             }
         }
 
@@ -3931,11 +3931,11 @@ class Kaart {
 }
 
 class TekenNauwkeurigheidSchaal {
-    constructor(juridischeNauwkeurigheid, inElement, kaartElementId, view) {
+    constructor(toepassingsnauwkeurigheid, inElement, kaartElementId, view) {
         inElement.style.textAlign = 'center';
         inElement.style.whiteSpace = 'nowrap';
-        inElement.innerHTML = 'Juridische&nbsp;nauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="juridische_nauwkeurigheid"></div></br>' + juridischeNauwkeurigheid + '&nbsp;decimeter</br>';
-        this._JuridischeNauwkeurigheid = juridischeNauwkeurigheid / 10;
+        inElement.innerHTML = 'Toepassingsnauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="toepassingsnauwkeurigheid"></div></br>' + toepassingsnauwkeurigheid + '&nbsp;centimeter</br>';
+        this._Toepassingsnauwkeurigheid = toepassingsnauwkeurigheid / 10;
         this._View = view;
         this._SchaalElement = document.getElementById(kaartElementId + '_tn');
         this._Schaal();
@@ -3947,7 +3947,7 @@ class TekenNauwkeurigheidSchaal {
     _Schaal() {
         var resolution = this._View.getResolution();
         if (resolution) {
-            var pixels = this._JuridischeNauwkeurigheid / resolution;
+            var pixels = this._Toepassingsnauwkeurigheid / resolution;
             if (pixels < 1) {
                 this._SchaalElement.style.display = 'none';
             } else {
@@ -4032,7 +4032,7 @@ STOP stelt eisen aan de inhoud van de GIO-versies van een muteerbare GIO om het 
 <div class="sectie_toon_geo"><h2>Geo-informatieobjecten</h2>
 <button data-accordion="47" class="accordion_h active"><h3>1. Kwaliteitscontrole</h3></button>
 <div data-accordion-paneel="47" class="accordion_h_paneel" style="display: block">
-<p>De bepaling van wijzigmarkeringen kan behoorlijk complex worden als er geen beperkingen gesteld worden aan de GIO-versies in de hele keten van het bevoegd gezag via LVBB/DSO-LV naar een adviesbureau en terug naar het bevoegd gezag. Dat treedt met name op als geometrieën elkaar gaan overlappen. Het eenvoudige algoritme dat in STOP beschreven is, en dat ook in deze software is verwerkt, kan dan niet alle wijzigingen meer detecteren. Omdat de bijzondere situaties die de complexiteit veroorzaken juridisch niets toevoegen (en soms zelfs juridisch incorrect zijn), worden de situaties in STOP verboden. Dit voorbeeld illustreert de situaties voor een GIO met norm (de symbolisatie is onafhankelijk van de normwaarde)</p><p><span class="leestip"></span> Selecteer <i>Juridische nauwkeurigheid</i> om de overlap van de geometrieën met inachtneming van de juridische nauwkeurigheid te zien.</p><p><span class="leestip"></span> Lees verder onder de kaart met de GIO-versie en bekijk de situaties per geometrie in de tweede kaart door op de geometrie te klikken.</p><p></p>
+<p>De bepaling van wijzigmarkeringen kan behoorlijk complex worden als er geen beperkingen gesteld worden aan de GIO-versies in de hele keten van het bevoegd gezag via LVBB/DSO-LV naar een adviesbureau en terug naar het bevoegd gezag. Dat treedt met name op als geometrieën elkaar gaan overlappen. Het eenvoudige algoritme dat in STOP beschreven is, en dat ook in deze software is verwerkt, kan dan niet alle wijzigingen meer detecteren. Omdat de bijzondere situaties die de complexiteit veroorzaken juridisch niets toevoegen (en soms zelfs juridisch incorrect zijn), worden de situaties in STOP verboden. Dit voorbeeld illustreert de situaties voor een GIO met norm (de symbolisatie is onafhankelijk van de normwaarde)</p><p><span class="leestip"></span> Selecteer <i>Toepassingsnauwkeurigheid</i> om de overlap van de geometrieën met inachtneming van de toepassingsnauwkeurigheid te zien.</p><p><span class="leestip"></span> Lees verder onder de kaart met de GIO-versie en bekijk de situaties per geometrie in de tweede kaart door op de geometrie te klikken.</p><p></p>
 Bestand: 1. Kwaliteitscontrole.gml
 <div id="kaart_7" class="kaart">
 </div>
@@ -4041,18 +4041,18 @@ Bestand: 1. Kwaliteitscontrole.gml
     <div id="kaart_7_popup-content" class="ol-popup-content"></div>
 </div>
 
-<p>De GIO-versie kan gebruikt worden als oude of nieuwe versie in een GIO-wijziging als de juridische nauwkeurigheid in
+<p>De GIO-versie kan gebruikt worden als oude of nieuwe versie in een GIO-wijziging als de toepassingsnauwkeurigheid in
                 overeenstemming is met de detaillering van de geometrieën en als de verschillende locaties voldoende van elkaar gescheiden zijn.</p>
 <p>Om de kwaliteit van de GIO-versie te bepalen worden de volgende stappen doorlopen:.</p>
         <p><ol><li>Bepaal voor elke losse geometrie de "buitenrand": de buitenste rand van de geometrie met een "dikke rand":<br/>
-        <code>buitenrand = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+        <code>buitenrand = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (toepassingsnauwkeurigheid / 2)</code></li>
         <li>Bepaal voor elke losse geometrie het "binnengebied": de binnenste rand van de geometrie met een "dikke rand":<br/>
         <code>binnengebied = geometrie</code> voor een punt of lijn,<br/>
-        <code>binnengebied = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.<br/>
+        <code>binnengebied = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid / 2)</code> voor vlakken.<br/>
 </li>
-<li>Verifieer dat locaties met vlakken geen uitstulpingen hebben die dunner zijn dan de juridische nauwkeurigheid
+<li>Verifieer dat locaties met vlakken geen uitstulpingen hebben die dunner zijn dan de toepassingsnauwkeurigheid
                 en significant uitsteken buiten het binnengebied:<br/>
-                <code>locatie_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (locatie_binnengebied.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (2 * juridische nauwkeurigheid)) moet leeg zijn</code> 
+                <code>locatie_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (locatie_binnengebied.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (2 * toepassingsnauwkeurigheid)) moet leeg zijn</code> 
                 <br/>Het wijzigen van deze uitstulpingen zal niet worden gedetecteerd.
  Bij 1 locatie  is dit het geval.
 </li>
@@ -4087,7 +4087,7 @@ Bestand: 1. Kwaliteitscontrole.gml
 <div class="sectie_maak_gio_wijziging"><h2>Maak GIO-wijziging</h2>
 <button data-accordion="48" class="accordion_h active"><h3>2. Overlappende geometrie &rarr; 3. Misbare geometrie weggehaald</h3></button>
 <div data-accordion-paneel="48" class="accordion_h_paneel" style="display: block">
-<p>Om te illustreren dat wijzigingen van de (bijna) overlappende geometrieën niet gedetecteerd worden, wordt het verschil tussen de voorgaande GIO-versie (zonder normwaarde) en een GIO-versie met vereenvoudigde geometrie bepaald met het eenvoudige algoritme. Het laat zien dat er juridisch geen wijziging is - alle gebieden waar de juridische regels in de eerste versie gelden, gelden ze (binnen de juridische nauwkeurigheid) ook in de tweede versie. Maar als naar de GIO-locaties wordt gekeken dan is de inhoud sterk verschillend.</p><p><span class="leestip"></span> Selecteer alleen <i>GIO-versies</i> en beweeg de slider heen en weer om de twee GIO-versies te zien.</p>
+<p>Om te illustreren dat wijzigingen van de (bijna) overlappende geometrieën niet gedetecteerd worden, wordt het verschil tussen de voorgaande GIO-versie (zonder normwaarde) en een GIO-versie met vereenvoudigde geometrie bepaald met het eenvoudige algoritme. Het laat zien dat er juridisch geen wijziging is - alle gebieden waar de juridische regels in de eerste versie gelden, gelden ze (binnen de toepassingsnauwkeurigheid) ook in de tweede versie. Maar als naar de GIO-locaties wordt gekeken dan is de inhoud sterk verschillend.</p><p><span class="leestip"></span> Selecteer alleen <i>GIO-versies</i> en beweeg de slider heen en weer om de twee GIO-versies te zien.</p>
 <table><tr><td><button data-accordion="49" class="accordion_t">?</button></td>
 <td data-accordion-titel="49" class="accordion_t_titel" style="display: block">&#8678;Bepaling GIO-Wijziging</td>
 <td data-accordion-paneel="49" class="accordion_t_paneel" style="display: none">
@@ -4095,20 +4095,20 @@ Bestand: 1. Kwaliteitscontrole.gml
             Deze kunnen gecontroleerd worden als onderdeel van het <a href="@@@GeoTools_Url@@@/toon_geo" target="_blank">tonen van een GIO-versie</a>.
             De bepaling bestaat uit de volgende stappen:</p>
             <p><ol><li>Bepaal de te verwijderen en toe te voegen locaties waarvan de geometrie is gewijzigd.
-            Dit zijn alle locaties met een basisgeometrie-id die alleen in de originele en nieuwe versie terugkomt.
+            Dit zijn alle locaties met een wId/basisgeometrie-id combinatie die alleen in de originele of in de nieuwe versie terugkomt.
  Het gaat om 13 locaties uit de originele versie en 8 locaties uit de nieuwe versie</li>
 <li>De locaties met een manifest ongewijzigde geometrie die in beide versies een verschillende waarde voor het label hebben 
             moet als revisie toegevoegd worden. Het betreft 0 locaties.</li>
 <li>Bepaal de wijzigmarkeringen. Hierbij wordt bedoeld met:<ul>
             <li>De "buitenrand" van een geometrie: de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
-            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (toepassingsnauwkeurigheid / 2)</code></li>
             <li>De "buitenrand" van meerdere geometrieën: de "buitenrand" van de <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (geometrieën)
             <li>Het "binnengebied": de binnenste rand van de geometrie getekend met een "dikke pen":<br/>
             <code>binnengebied = locatie.geometrie</code> voor een punt of lijn,<br/>
-            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.</li></ul>
+            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid / 2)</code> voor vlakken.</li></ul>
             <li>Het "binnengebied" van meerdere geometrieën:<br/>
             <code>binnengebied = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (binnengebieden van de geometrieën)</code> voor punten of lijnen,<br/>
-            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid)</code> voor vlakken.<br/>
+            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid)</code> voor vlakken.<br/>
             De manier van samenvoegen van vlakken zorgt ervoor dat vlakken die net niet op elkaar aansluiten toch als aansluitend gezien worden.</li></ul>
             De wijzigmarkeringen worden opgesplitst in enkelvoudige geometrieën (punt, lijn, vlak) om bij weergave clustering te vereenvoudigen. Ze worden in meerdere stappen bepaald:
             <ol>
@@ -4151,9 +4151,10 @@ Dit levert 0 markeringen op.</li>
         &lt;geo:GeoInformatieObjectMutatie&gt;
             &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/uitleg5&lt;/geo:FRBRWork&gt;
             &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/uitleg5/nld@2022;3&lt;/geo:FRBRExpression&gt;
-            &lt;geo:juridischeNauwkeurigheid&gt;50&lt;/geo:juridischeNauwkeurigheid&gt;
+            &lt;!-- Gebruikte toepassingsnauwkeurigheid: 500 (staat in metadata) --&gt;
             &lt;geo:locatieMutaties&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;1&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4166,6 +4167,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;2&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4178,6 +4180,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;3&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4190,6 +4193,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;4&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #4&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4202,6 +4206,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;5&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4214,6 +4219,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;6&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4226,6 +4232,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;7&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4238,6 +4245,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;8&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #4&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4250,6 +4258,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;9&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #5&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4262,6 +4271,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;10&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Punt #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4274,6 +4284,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;11&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Punt #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4286,6 +4297,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;12&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Punt #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4298,6 +4310,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;13&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Punt #4&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4310,6 +4323,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;1&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4322,6 +4336,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;2&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4334,6 +4349,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;3&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4346,6 +4362,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;14&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4358,6 +4375,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;6&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4370,6 +4388,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;7&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4382,6 +4401,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;9&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #5&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4394,6 +4414,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;10&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Punt #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4429,20 +4450,20 @@ Dit levert 0 markeringen op.</li>
             Deze kunnen gecontroleerd worden als onderdeel van het <a href="@@@GeoTools_Url@@@/toon_geo" target="_blank">tonen van een GIO-versie</a>.
             De bepaling bestaat uit de volgende stappen:</p>
             <p><ol><li>Bepaal de te verwijderen en toe te voegen locaties waarvan de geometrie is gewijzigd.
-            Dit zijn alle locaties met een basisgeometrie-id die alleen in de originele en nieuwe versie terugkomt.
+            Dit zijn alle locaties met een wId/basisgeometrie-id combinatie die alleen in de originele of in de nieuwe versie terugkomt.
  Het gaat om 8 locaties uit de originele versie en 8 locaties uit de nieuwe versie</li>
 <li>De locaties met een manifest ongewijzigde geometrie die in beide versies een verschillende waarde voor het label hebben 
             moet als revisie toegevoegd worden. Het betreft 0 locaties.</li>
 <li>Bepaal de wijzigmarkeringen. Hierbij wordt bedoeld met:<ul>
             <li>De "buitenrand" van een geometrie: de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
-            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (toepassingsnauwkeurigheid / 2)</code></li>
             <li>De "buitenrand" van meerdere geometrieën: de "buitenrand" van de <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (geometrieën)
             <li>Het "binnengebied": de binnenste rand van de geometrie getekend met een "dikke pen":<br/>
             <code>binnengebied = locatie.geometrie</code> voor een punt of lijn,<br/>
-            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.</li></ul>
+            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid / 2)</code> voor vlakken.</li></ul>
             <li>Het "binnengebied" van meerdere geometrieën:<br/>
             <code>binnengebied = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (binnengebieden van de geometrieën)</code> voor punten of lijnen,<br/>
-            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid)</code> voor vlakken.<br/>
+            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid)</code> voor vlakken.<br/>
             De manier van samenvoegen van vlakken zorgt ervoor dat vlakken die net niet op elkaar aansluiten toch als aansluitend gezien worden.</li></ul>
             De wijzigmarkeringen worden opgesplitst in enkelvoudige geometrieën (punt, lijn, vlak) om bij weergave clustering te vereenvoudigen. Ze worden in meerdere stappen bepaald:
             <ol>
@@ -4485,9 +4506,10 @@ Dit levert 0 markeringen op.</li>
         &lt;geo:GeoInformatieObjectMutatie&gt;
             &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/uitleg5&lt;/geo:FRBRWork&gt;
             &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/uitleg5/nld@2022;4&lt;/geo:FRBRExpression&gt;
-            &lt;geo:juridischeNauwkeurigheid&gt;50&lt;/geo:juridischeNauwkeurigheid&gt;
+            &lt;!-- Gebruikte toepassingsnauwkeurigheid: 500 (staat in metadata) --&gt;
             &lt;geo:locatieMutaties&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;1&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4500,6 +4522,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;2&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4512,6 +4535,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;3&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4524,6 +4548,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;14&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4536,6 +4561,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;6&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4548,6 +4574,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;7&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4560,6 +4587,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;9&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #5&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4572,6 +4600,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;10&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Punt #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4584,6 +4613,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;1&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4596,6 +4626,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;2&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4608,6 +4639,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;3&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4620,6 +4652,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;14&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Vlak #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4632,6 +4665,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;6&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #2&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4644,6 +4678,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;7&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #3&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4656,6 +4691,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;9&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Lijn #5&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4668,6 +4704,7 @@ Dit levert 0 markeringen op.</li>
                     &lt;geo:wijzigactie&gt;voegtoe&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;10&lt;/geo:wId&gt;
                     &lt;geo:naam&gt;Punt #1&lt;/geo:naam&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
@@ -4703,20 +4740,20 @@ Dit levert 0 markeringen op.</li>
             Deze kunnen gecontroleerd worden als onderdeel van het <a href="@@@GeoTools_Url@@@/toon_geo" target="_blank">tonen van een GIO-versie</a>.
             De bepaling bestaat uit de volgende stappen:</p>
             <p><ol><li>Bepaal de te verwijderen en toe te voegen locaties waarvan de geometrie is gewijzigd.
-            Dit zijn alle locaties met een basisgeometrie-id die alleen in de originele en nieuwe versie terugkomt.
+            Dit zijn alle locaties met een wId/basisgeometrie-id combinatie die alleen in de originele of in de nieuwe versie terugkomt.
  Het gaat om 1 locatie uit de originele versie en 1 locatie uit de nieuwe versie</li>
 <li>De locaties met een manifest ongewijzigde geometrie die in beide versies een verschillende waarde voor het label hebben 
             moet als revisie toegevoegd worden. Het betreft 0 locaties.</li>
 <li>Bepaal de wijzigmarkeringen. Hierbij wordt bedoeld met:<ul>
             <li>De "buitenrand" van een geometrie: de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
-            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (toepassingsnauwkeurigheid / 2)</code></li>
             <li>De "buitenrand" van meerdere geometrieën: de "buitenrand" van de <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (geometrieën)
             <li>Het "binnengebied": de binnenste rand van de geometrie getekend met een "dikke pen":<br/>
             <code>binnengebied = locatie.geometrie</code> voor een punt of lijn,<br/>
-            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.</li></ul>
+            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid / 2)</code> voor vlakken.</li></ul>
             <li>Het "binnengebied" van meerdere geometrieën:<br/>
             <code>binnengebied = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (binnengebieden van de geometrieën)</code> voor punten of lijnen,<br/>
-            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid)</code> voor vlakken.<br/>
+            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid)</code> voor vlakken.<br/>
             De manier van samenvoegen van vlakken zorgt ervoor dat vlakken die net niet op elkaar aansluiten toch als aansluitend gezien worden.</li></ul>
             De wijzigmarkeringen worden opgesplitst in enkelvoudige geometrieën (punt, lijn, vlak) om bij weergave clustering te vereenvoudigen. Ze worden in meerdere stappen bepaald:
             <ol>
@@ -4759,9 +4796,10 @@ Dit levert 1 markering op.</li>
         &lt;geo:GeoInformatieObjectMutatie&gt;
             &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/uitleg5&lt;/geo:FRBRWork&gt;
             &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/uitleg5/nld@2022;5&lt;/geo:FRBRExpression&gt;
-            &lt;geo:juridischeNauwkeurigheid&gt;50&lt;/geo:juridischeNauwkeurigheid&gt;
+            &lt;!-- Gebruikte toepassingsnauwkeurigheid: 500 (staat in metadata) --&gt;
             &lt;geo:locatieMutaties&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;1&lt;/geo:wId&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
                             &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c2-20000000001A&lt;/basisgeo:id&gt;
@@ -4773,6 +4811,7 @@ Dit levert 1 markering op.</li>
                     &lt;geo:wijzigactie&gt;verwijder&lt;/geo:wijzigactie&gt;
                 &lt;/geo:LocatieMutatie&gt;
                 &lt;geo:LocatieMutatie&gt;
+                    &lt;geo:wId&gt;1&lt;/geo:wId&gt;
                     &lt;geo:geometrie&gt;
                         &lt;basisgeo:Geometrie&gt;
                             &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c2-20000000001B&lt;/basisgeo:id&gt;
@@ -4788,7 +4827,7 @@ Dit levert 1 markering op.</li>
                     &lt;geo:Vlak&gt;
                         &lt;geo:geometrie&gt;
                             &lt;basisgeo:Geometrie&gt;
-                                &lt;basisgeo:id&gt;27e54c09-c059-4301-aa26-e7e671fb27ed&lt;/basisgeo:id&gt;
+                                &lt;basisgeo:id&gt;310745db-ce25-422c-8fb9-c590a31b9a38&lt;/basisgeo:id&gt;
                                 &lt;basisgeo:geometrie&gt;
                                     &lt;gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:exterior&gt;&lt;gml:LinearRing&gt;&lt;gml:posList&gt;85210.75570329413 443767.5 85221.5 443767.5 85221.5 443767.44883958384 85221.52289091161 443766.9709430236 85221.59135404891 443766.49742225854 85221.70476253846 443766.0326130174 85221.71161255546 443766.0129383825 85211.21097212499 443762.83832615934 85211.24305280807 443762.89604615123 85211.34192452367 443763.1251345672 85211.41746800365 443763.36293763935 85211.46893074892 443763.6070865782 85211.49580013193 443763.85514938226 85211.497808503 443764.1046550634 85211.4749358565 443764.353118261 85211.42741003001 443764.59806399845 85211.35570443491 443764.8370523373 85210.40308099685 443767.5180068701 85210.75570329413 443767.5&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;&lt;/gml:exterior&gt;&lt;/gml:Polygon&gt;
                                 &lt;/basisgeo:geometrie&gt;
@@ -4833,15 +4872,16 @@ Bij het tonen van de GIO-wijziging moet daarom via schaalafhankelijke markeringe
 <p>Door combinatie van de originele GIO-versie en de GIO-wijziging kan de nieuwe versie gereconstrueerd worden.
 De volgorde van de Locaties in het GIO hoeft niet overeen te komen met de volgorde in de GIO-versie die voor de bepaling van de GIO-wijziging
 is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO-versie.</p>
-<textarea id="resultaat_77" class="resultaat"
+<textarea id="resultaat_73" class="resultaat"
 >
 &lt;geo:GeoInformatieObjectVersie schemaversie="@@@IMOP_Versie@@@" xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/geo/
   https://standaarden.overheid.nl/stop/@@@IMOP_Versie@@@/imop-geo.xsd"&gt;
     &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/uitleg5&lt;/geo:FRBRWork&gt;
     &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/uitleg5/nld@2022;5&lt;/geo:FRBRExpression&gt;
-    &lt;geo:juridischeNauwkeurigheid&gt;50&lt;/geo:juridischeNauwkeurigheid&gt;
+    &lt;!-- Gebruikte toepassingsnauwkeurigheid: 500 (staat in metadata) --&gt;
     &lt;geo:locaties&gt;
             &lt;geo:Locatie&gt;
+                &lt;geo:wId&gt;1&lt;/geo:wId&gt;
                 &lt;geo:geometrie&gt;
                     &lt;basisgeo:Geometrie&gt;
                         &lt;basisgeo:id&gt;37b0a09f-36a0-4e69-80c2-20000000001B&lt;/basisgeo:id&gt;
@@ -4855,7 +4895,7 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 &lt;/geo:GeoInformatieObjectVersie&gt;
 </textarea>
 
-<div><a data-copy="resultaat_77" href="#">Kopieer</a> of <a data-download_xml="resultaat_77" data-filenaam="Wordt_versie.gml" href="#">download</a></div>
+<div><a data-copy="resultaat_73" href="#">Kopieer</a> of <a data-download_xml="resultaat_73" data-filenaam="Wordt_versie.gml" href="#">download</a></div>
 
 </div>
 
@@ -4901,7 +4941,7 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data6_0</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data6_0</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Prepareer kaart kaart_7</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data5_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data5_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versie' (data6_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versie' (data6_1)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versie' (data6_0)</td></tr>
@@ -4914,7 +4954,7 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Kwaliteitscontrole afgerond</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak overzicht van analyseresultaten</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Prepareer kaart kaart_8</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data5_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data5_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versie' (data6_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versie' (data6_1)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versie' (data6_0)</td></tr>
@@ -4955,8 +4995,8 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data20_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data21_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data21_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data20_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data21_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data20_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data21_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data23_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data23_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data23_1</td></tr>
@@ -5018,8 +5058,8 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data43_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data44_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data44_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data43_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data44_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data43_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data44_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data45_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data45_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data45_1</td></tr>
@@ -5081,8 +5121,8 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data53_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data54_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data54_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data53_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data54_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data53_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data54_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data55_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data55_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data56_2</td></tr>
@@ -5125,26 +5165,14 @@ is gebruikt, of (voor de behouden locaties) voor de locaties in de originele GIO
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data67_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-wijziging' (data66_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-wijziging' (data67_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak schaalafhankelijke geometrie met juridische nauwkeurigheid 1 decimeter</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak schaalafhankelijke geometrie met toepassingsnauwkeurigheid 10 centimeter</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data60_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data71_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data71_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data71_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data72_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data72_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data72_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data73_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data73_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data73_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data74_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data74_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data74_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data75_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data75_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data75_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data76_0</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data76_0</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data76_0)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data72_0</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data72_0</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Wijzigmarkering' (data72_0)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Toon kaart kaart_63</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">De verwerking is voltooid.</td></tr>
 </table>
@@ -5339,27 +5367,27 @@ Kaartgegevens.Instantie.VoegDataToe ("data5_2",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data6_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001A", "naam": "Vlak #1", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000002A", "naam": "Vlak #2", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82292.0, 445349.0], [82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82279.0, 445332.0], [82245.0, 445330.0], [82218.0, 445333.0], [82157.0, 445278.0], [82157.0, 445279.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000003A", "naam": "Vlak #3", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82274.0, 445274.0], [82354.0, 445298.0], [82364.0, 445264.0], [82308.0, 445203.0], [82274.0, 445274.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000004A", "naam": "Vlak #4", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}], "properties": {"id": ["ID", ""], "kwalitatieveNormwaarde": ["ChatGPT universum", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001A", "wId": "1", "naam": "Vlak #1", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000002A", "wId": "2", "naam": "Vlak #2", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82292.0, 445349.0], [82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82279.0, 445332.0], [82245.0, 445330.0], [82218.0, 445333.0], [82157.0, 445278.0], [82157.0, 445279.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000003A", "wId": "3", "naam": "Vlak #3", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82274.0, 445274.0], [82354.0, 445298.0], [82364.0, 445264.0], [82308.0, 445203.0], [82274.0, 445274.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000004A", "wId": "4", "naam": "Vlak #4", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "kwalitatieveNormwaarde": ["ChatGPT universum", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data6_1",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82142.0, 445338.0], [82208.0, 445355.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000001A", "naam": "Lijn #1", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82353.0, 445392.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000002A", "naam": "Lijn #2", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82359.0, 445301.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000003A", "naam": "Lijn #3", "kwalitatieveNormwaarde": "TheNitromeFan"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82190.0, 445260.0], [82232.0, 445271.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000004A", "naam": "Lijn #4", "kwalitatieveNormwaarde": "TheNitromeFan"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000005A", "naam": "Lijn #5", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}], "properties": {"id": ["ID", ""], "kwalitatieveNormwaarde": ["ChatGPT universum", ""], "naam": ["Naam", ""]}, "bbox": [82142.0, 445188.0, 82359.0, 445392.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82142.0, 445338.0], [82208.0, 445355.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000001A", "wId": "5", "naam": "Lijn #1", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82353.0, 445392.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000002A", "wId": "6", "naam": "Lijn #2", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82359.0, 445301.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000003A", "wId": "7", "naam": "Lijn #3", "kwalitatieveNormwaarde": "TheNitromeFan"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82190.0, 445260.0], [82232.0, 445271.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000004A", "wId": "8", "naam": "Lijn #4", "kwalitatieveNormwaarde": "TheNitromeFan"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000005A", "wId": "9", "naam": "Lijn #5", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "kwalitatieveNormwaarde": ["ChatGPT universum", ""], "naam": ["Naam", ""]}, "bbox": [82142.0, 445188.0, 82359.0, 445392.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data6_0",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000001A", "naam": "Punt #1", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000002A", "naam": "Punt #2", "kwalitatieveNormwaarde": "StreamerBot"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000003A", "naam": "Punt #3", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000004A", "naam": "Punt #4", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}], "properties": {"id": ["ID", ""], "kwalitatieveNormwaarde": ["ChatGPT universum", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445276.0, 82308.0, 445390.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000001A", "wId": "10", "naam": "Punt #1", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000002A", "wId": "11", "naam": "Punt #2", "kwalitatieveNormwaarde": "StreamerBot"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000003A", "wId": "12", "naam": "Punt #3", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000004A", "wId": "13", "naam": "Punt #4", "kwalitatieveNormwaarde": "SolidGoldMagikarp"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "kwalitatieveNormwaarde": ["ChatGPT universum", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445276.0, 82308.0, 445390.0]}
 );
 
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data5_2", "sym4").AlsAanUitLaag (false);
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data5_2", "sym4").AlsAanUitLaag (false);
 kaart.VoegLaagToe ("GIO-versie", "data6_2", "sym3");
 kaart.VoegLaagToe ("GIO-versie", "data6_1", "sym2");
 kaart.VoegLaagToe ("GIO-versie", "data6_0", "sym1");
-kaart.Toon ({"kaartelementId": "kaart_7", "kaartelementWidth": 900, "kaartelementHeight": 600, "juridische-nauwkeurigheid": 50, "maxZoom": 21, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
+kaart.Toon ({"kaartelementId": "kaart_7", "kaartelementWidth": 900, "kaartelementHeight": 600, "toepassingsnauwkeurigheid": 500, "maxZoom": 18, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
 });
 
 Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym9",`<FeatureTypeStyle version="1.1.0"
@@ -5434,17 +5462,17 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym11",`<FeatureTypeStyle version=
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data12_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie", "id": "37b0a09f-36a0-4e69-80c2-20000000001A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "id": "37b0a09f-36a0-4e69-80c2-20000000002A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82292.0, 445349.0], [82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82279.0, 445332.0], [82245.0, 445330.0], [82218.0, 445333.0], [82157.0, 445278.0], [82157.0, 445279.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "id": "37b0a09f-36a0-4e69-80c2-20000000003A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82274.0, 445274.0], [82354.0, 445298.0], [82364.0, 445264.0], [82308.0, 445203.0], [82274.0, 445274.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Binnengebied geheel in buitenrand andere geometrieën", "id": "37b0a09f-36a0-4e69-80c2-20000000004A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82157.0, 445278.0], [82157.0, 445279.0], [82214.61876628136, 445330.9513466471], [82214.94570645635, 445330.2461287721], [82157.0, 445278.0]]]}, "properties": {"r": "<br/>Locatie-geometrie heeft uitstulpingen", "id": "37b0a09f-36a0-4e69-80c2-20000000003A"}, "_shape": null}], "properties": {"r": ["Bevindingen", ""], "id": ["Locatie ID", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie", "w": "1", "g": "37b0a09f-36a0-4e69-80c2-20000000001A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "w": "2", "g": "37b0a09f-36a0-4e69-80c2-20000000002A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82292.0, 445349.0], [82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82279.0, 445332.0], [82245.0, 445330.0], [82218.0, 445333.0], [82157.0, 445278.0], [82157.0, 445279.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "w": "3", "g": "37b0a09f-36a0-4e69-80c2-20000000003A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82274.0, 445274.0], [82354.0, 445298.0], [82364.0, 445264.0], [82308.0, 445203.0], [82274.0, 445274.0]]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën<br/>Binnengebied overlapt met binnengebied andere geometrie", "w": "4", "g": "37b0a09f-36a0-4e69-80c2-20000000004A"}}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82157.0, 445278.0], [82157.0, 445279.0], [82214.61876628136, 445330.9513466471], [82214.94570645635, 445330.2461287721], [82157.0, 445278.0]]]}, "properties": {"r": "<br/>Locatie-geometrie heeft uitstulpingen", "w": "3", "g": "37b0a09f-36a0-4e69-80c2-20000000003A"}, "_shape": null}], "properties": {"r": ["Bevindingen", ""], "w": ["Locatie wId", ""], "geoId": ["basisgeo:id", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data12_1",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82142.0, 445338.0], [82208.0, 445355.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Binnengebied geheel in buitenrand andere geometrieën", "id": "37b0a09f-36a0-4e69-80c2-10000000001A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82353.0, 445392.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie", "id": "37b0a09f-36a0-4e69-80c2-10000000002A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82359.0, 445301.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "id": "37b0a09f-36a0-4e69-80c2-10000000003A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82190.0, 445260.0], [82232.0, 445271.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën", "id": "37b0a09f-36a0-4e69-80c2-10000000004A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "id": "37b0a09f-36a0-4e69-80c2-10000000005A"}}], "properties": {"r": ["Bevindingen", ""], "id": ["Locatie ID", ""]}, "bbox": [82142.0, 445188.0, 82359.0, 445392.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82142.0, 445338.0], [82208.0, 445355.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën<br/>Binnengebied overlapt met binnengebied andere geometrie", "w": "5", "g": "37b0a09f-36a0-4e69-80c2-10000000001A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82353.0, 445392.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie", "w": "6", "g": "37b0a09f-36a0-4e69-80c2-10000000002A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82359.0, 445301.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "w": "7", "g": "37b0a09f-36a0-4e69-80c2-10000000003A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82190.0, 445260.0], [82232.0, 445271.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën", "w": "8", "g": "37b0a09f-36a0-4e69-80c2-10000000004A"}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "w": "9", "g": "37b0a09f-36a0-4e69-80c2-10000000005A"}}], "properties": {"r": ["Bevindingen", ""], "w": ["Locatie wId", ""], "geoId": ["basisgeo:id", ""]}, "bbox": [82142.0, 445188.0, 82359.0, 445392.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data12_0",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Binnengebied geheel in buitenrand andere geometrieën<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "id": "37b0a09f-36a0-4e69-80c2-00000000002A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Binnengebied geheel in buitenrand andere geometrieën", "id": "37b0a09f-36a0-4e69-80c2-00000000003A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën", "id": "37b0a09f-36a0-4e69-80c2-00000000004A"}}], "properties": {"r": ["Bevindingen", ""], "id": ["Locatie ID", ""]}, "bbox": [82232.0, 445276.0, 82308.0, 445337.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "w": "11", "g": "37b0a09f-36a0-4e69-80c2-00000000002A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën<br/>Binnengebied overlapt met binnengebied andere geometrie", "w": "12", "g": "37b0a09f-36a0-4e69-80c2-00000000003A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën", "w": "13", "g": "37b0a09f-36a0-4e69-80c2-00000000004A"}}], "properties": {"r": ["Bevindingen", ""], "w": ["Locatie wId", ""], "geoId": ["basisgeo:id", ""]}, "bbox": [82232.0, 445276.0, 82308.0, 445337.0]}
 );
 
 
@@ -5521,14 +5549,14 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym15",`<FeatureTypeStyle version=
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data5_2", "sym4").AlsAanUitLaag (false);
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data5_2", "sym4").AlsAanUitLaag (false);
 kaart.VoegLaagToe ("GIO-versie", "data6_2", "sym11");
 kaart.VoegLaagToe ("Resultaat kwaliteitscontrole", "data12_2", "sym15").AlsAanUitLaag (true);
 kaart.VoegLaagToe ("GIO-versie", "data6_1", "sym10");
 kaart.VoegLaagToe ("Resultaat kwaliteitscontrole", "data12_1", "sym14").AlsAanUitLaag (true);
 kaart.VoegLaagToe ("GIO-versie", "data6_0", "sym9");
 kaart.VoegLaagToe ("Resultaat kwaliteitscontrole", "data12_0", "sym13").AlsAanUitLaag (true);
-kaart.Toon ({"kaartelementId": "kaart_8", "kaartelementWidth": 900, "kaartelementHeight": 600, "juridische-nauwkeurigheid": 50, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
+kaart.Toon ({"kaartelementId": "kaart_8", "kaartelementWidth": 900, "kaartelementHeight": 600, "toepassingsnauwkeurigheid": 500, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
 });
 
 Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym16",`<FeatureTypeStyle version="1.1.0" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
@@ -5631,32 +5659,32 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym22",`<FeatureTypeStyle version=
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data23_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001A", "naam": "Vlak #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000002A", "naam": "Vlak #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82292.0, 445349.0], [82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82279.0, 445332.0], [82245.0, 445330.0], [82218.0, 445333.0], [82157.0, 445278.0], [82157.0, 445279.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000003A", "naam": "Vlak #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82274.0, 445274.0], [82354.0, 445298.0], [82364.0, 445264.0], [82308.0, 445203.0], [82274.0, 445274.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000004A", "naam": "Vlak #4"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001A", "wId": "1", "naam": "Vlak #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000002A", "wId": "2", "naam": "Vlak #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82292.0, 445349.0], [82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82279.0, 445332.0], [82245.0, 445330.0], [82218.0, 445333.0], [82157.0, 445278.0], [82157.0, 445279.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000003A", "wId": "3", "naam": "Vlak #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82274.0, 445274.0], [82354.0, 445298.0], [82364.0, 445264.0], [82308.0, 445203.0], [82274.0, 445274.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000004A", "wId": "4", "naam": "Vlak #4"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data23_1",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82142.0, 445338.0], [82208.0, 445355.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000001A", "naam": "Lijn #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82353.0, 445392.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000002A", "naam": "Lijn #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82359.0, 445301.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000003A", "naam": "Lijn #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82190.0, 445260.0], [82232.0, 445271.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000004A", "naam": "Lijn #4"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000005A", "naam": "Lijn #5"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82142.0, 445188.0, 82359.0, 445392.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82142.0, 445338.0], [82208.0, 445355.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000001A", "wId": "5", "naam": "Lijn #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82353.0, 445392.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000002A", "wId": "6", "naam": "Lijn #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82359.0, 445301.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000003A", "wId": "7", "naam": "Lijn #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82190.0, 445260.0], [82232.0, 445271.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000004A", "wId": "8", "naam": "Lijn #4"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000005A", "wId": "9", "naam": "Lijn #5"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82142.0, 445188.0, 82359.0, 445392.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data23_0",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000001A", "naam": "Punt #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000002A", "naam": "Punt #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000003A", "naam": "Punt #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000004A", "naam": "Punt #4"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445276.0, 82308.0, 445390.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000001A", "wId": "10", "naam": "Punt #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000002A", "wId": "11", "naam": "Punt #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000003A", "wId": "12", "naam": "Punt #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000004A", "wId": "13", "naam": "Punt #4"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445276.0, 82308.0, 445390.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data24_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001B", "naam": "Vlak #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000002B", "naam": "Vlak #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82245.0, 445330.0], [82218.0, 445333.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000003B", "naam": "Vlak #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82352.0, 445376.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000003C", "naam": "Vlak #3"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001B", "wId": "1", "naam": "Vlak #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000002B", "wId": "2", "naam": "Vlak #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82245.0, 445330.0], [82218.0, 445333.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000003B", "wId": "3", "naam": "Vlak #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82352.0, 445376.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000003C", "wId": "14", "naam": "Vlak #3"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data24_1",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82233.0, 445360.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000002B", "naam": "Lijn #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82265.0, 445280.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000003B", "naam": "Lijn #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000005B", "naam": "Lijn #5"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82162.0, 445188.0, 82303.0, 445382.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82233.0, 445360.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000002B", "wId": "6", "naam": "Lijn #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82265.0, 445280.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000003B", "wId": "7", "naam": "Lijn #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000005B", "wId": "9", "naam": "Lijn #5"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82162.0, 445188.0, 82303.0, 445382.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data24_0",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000001B", "naam": "Punt #1"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445390.0, 82206.0, 445390.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000001B", "wId": "10", "naam": "Punt #1"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445390.0, 82206.0, 445390.0]}
 );
 
 
@@ -5905,8 +5933,8 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym37",`<FeatureTypeStyle version=
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data20_2", "sym22").AlsAanUitLaag (false).AlsOudLaag ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data21_2", "sym22").AlsAanUitLaag (false).AlsNieuwLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data20_2", "sym22").AlsAanUitLaag (false).AlsOudLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data21_2", "sym22").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data23_2", "sym18").AlsAanUitLaag (false).AlsOudLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data24_2", "sym18").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data25_2", "sym15").AlsAanUitLaag (true).AlsOudLaag ();
@@ -5919,7 +5947,7 @@ kaart.VoegLaagToe ("GIO-versies", "data23_0", "sym16").AlsAanUitLaag (false).Als
 kaart.VoegLaagToe ("GIO-versies", "data24_0", "sym16").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data25_0", "sym13").AlsAanUitLaag (true).AlsOudLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data26_0", "sym27").AlsAanUitLaag (true).AlsNieuwLaag ();
-kaart.Toon ({"kaartelementId": "kaart_19", "kaartelementWidth": 900, "kaartelementHeight": 600, "juridische-nauwkeurigheid": 50, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
+kaart.Toon ({"kaartelementId": "kaart_19", "kaartelementWidth": 900, "kaartelementHeight": 600, "toepassingsnauwkeurigheid": 500, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
 });
 
 Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym39",`<FeatureTypeStyle version="1.1.0" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
@@ -5999,17 +6027,17 @@ Kaartgegevens.Instantie.VoegDataToe ("data44_2",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data45_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001C", "naam": "Vlak #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000002C", "naam": "Vlak #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82245.0, 445330.0], [82218.0, 445333.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000003D", "naam": "Vlak #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82352.0, 445376.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000003E", "naam": "Vlak #3"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82138.0, 445354.0], [82136.0, 445337.0], [82156.0, 445286.0], [82214.0, 445339.0], [82195.0, 445383.0], [82138.0, 445354.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001C", "wId": "1", "naam": "Vlak #1"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82217.0, 445383.0], [82305.0, 445195.0], [82373.0, 445263.0], [82350.0, 445421.0], [82217.0, 445383.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000002C", "wId": "2", "naam": "Vlak #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82236.0, 445346.0], [82245.0, 445330.0], [82218.0, 445333.0], [82218.0, 445334.0], [82236.0, 445346.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000003D", "wId": "3", "naam": "Vlak #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[82352.0, 445376.0], [82406.0, 445367.0], [82406.0, 445359.0], [82352.0, 445363.0], [82352.0, 445376.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000003E", "wId": "14", "naam": "Vlak #3"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82136.0, 445195.0, 82406.0, 445421.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data45_1",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82233.0, 445360.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000002C", "naam": "Lijn #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82265.0, 445280.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000003C", "naam": "Lijn #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-10000000005C", "naam": "Lijn #5"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82162.0, 445188.0, 82303.0, 445382.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82218.0, 445358.0], [82233.0, 445360.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000002C", "wId": "6", "naam": "Lijn #2"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82162.0, 445253.0], [82265.0, 445280.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000003C", "wId": "7", "naam": "Lijn #3"}, "_shape": null}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[82213.0, 445382.0], [82233.0, 445337.0], [82303.0, 445188.0]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-10000000005C", "wId": "9", "naam": "Lijn #5"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82162.0, 445188.0, 82303.0, 445382.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data45_0",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-00000000001C", "naam": "Punt #1"}, "_shape": null}], "properties": {"id": ["ID", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445390.0, 82206.0, 445390.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82206.0, 445390.0]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-00000000001C", "wId": "10", "naam": "Punt #1"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "naam": ["Naam", ""]}, "bbox": [82206.0, 445390.0, 82206.0, 445390.0]}
 );
 
 
@@ -6045,8 +6073,8 @@ Kaartgegevens.Instantie.VoegDataToe ("data47_0",
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data43_2", "sym22").AlsAanUitLaag (false).AlsOudLaag ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data44_2", "sym22").AlsAanUitLaag (false).AlsNieuwLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data43_2", "sym22").AlsAanUitLaag (false).AlsOudLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data44_2", "sym22").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data24_2", "sym41").AlsAanUitLaag (false).AlsOudLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data45_2", "sym41").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data46_2", "sym15").AlsAanUitLaag (true).AlsOudLaag ();
@@ -6059,7 +6087,7 @@ kaart.VoegLaagToe ("GIO-versies", "data24_0", "sym39").AlsAanUitLaag (false).Als
 kaart.VoegLaagToe ("GIO-versies", "data45_0", "sym39").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data46_0", "sym13").AlsAanUitLaag (true).AlsOudLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data47_0", "sym27").AlsAanUitLaag (true).AlsNieuwLaag ();
-kaart.Toon ({"kaartelementId": "kaart_42", "kaartelementWidth": 900, "kaartelementHeight": 600, "juridische-nauwkeurigheid": 50, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
+kaart.Toon ({"kaartelementId": "kaart_42", "kaartelementWidth": 900, "kaartelementHeight": 600, "toepassingsnauwkeurigheid": 500, "bbox": [82133.50044846836, 445185.50270196295, 82408.5, 445423.49936711177]});
 });
 
 Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym51",`<FeatureTypeStyle version="1.1.0" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
@@ -6096,12 +6124,12 @@ Kaartgegevens.Instantie.VoegDataToe ("data54_2",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data55_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443764.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001A"}, "_shape": null}], "properties": {"id": ["ID", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443764.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001A", "wId": "1"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data56_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443770.0], [85224.0, 443770.0], [85224.0, 443765.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001B"}, "_shape": null}], "properties": {"id": ["ID", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443770.0], [85224.0, 443770.0], [85224.0, 443765.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001B", "wId": "1"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
 );
 
 
@@ -6116,20 +6144,20 @@ Kaartgegevens.Instantie.VoegDataToe ("data58_2",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data60_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"id": "27e54c09-c059-4301-aa26-e7e671fb27ed"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.5, 443767.44883958384], [85221.52289091161, 443766.9709430236], [85221.59135404891, 443766.49742225854], [85221.70476253846, 443766.0326130174], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85211.24305280807, 443762.89604615123], [85211.34192452367, 443763.1251345672], [85211.41746800365, 443763.36293763935], [85211.46893074892, 443763.6070865782], [85211.49580013193, 443763.85514938226], [85211.497808503, 443764.1046550634], [85211.4749358565, 443764.353118261], [85211.42741003001, 443764.59806399845], [85211.35570443491, 443764.8370523373], [85210.40308099685, 443767.5180068701], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.40308099685, 443762.83832615934, 85221.71161255546, 443767.5180068701]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"geoId": "310745db-ce25-422c-8fb9-c590a31b9a38"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.5, 443767.44883958384], [85221.52289091161, 443766.9709430236], [85221.59135404891, 443766.49742225854], [85221.70476253846, 443766.0326130174], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85211.24305280807, 443762.89604615123], [85211.34192452367, 443763.1251345672], [85211.41746800365, 443763.36293763935], [85211.46893074892, 443763.6070865782], [85211.49580013193, 443763.85514938226], [85211.497808503, 443764.1046550634], [85211.4749358565, 443764.353118261], [85211.42741003001, 443764.59806399845], [85211.35570443491, 443764.8370523373], [85210.40308099685, 443767.5180068701], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.40308099685, 443762.83832615934, 85221.71161255546, 443767.5180068701]}
 );
 
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data53_2", "sym22").AlsAanUitLaag (false).AlsOudLaag ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data54_2", "sym22").AlsAanUitLaag (false).AlsNieuwLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data53_2", "sym22").AlsAanUitLaag (false).AlsOudLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data54_2", "sym22").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data55_2", "sym51").AlsAanUitLaag (false).AlsOudLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data56_2", "sym51").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data57_2", "sym15").AlsAanUitLaag (true).AlsOudLaag ();
 kaart.VoegLaagToe ("LocatieMutaties (geen revisie)", "data58_2", "sym29").AlsAanUitLaag (true).AlsNieuwLaag ();
 kaart.VoegLaagToe ("Wijzigmarkeringen", "data60_2", "sym37").AlsAanUitLaag (true);
-kaart.Toon ({"kaartelementId": "kaart_52", "kaartelementWidth": 900, "kaartelementHeight": 600, "juridische-nauwkeurigheid": 50, "bbox": [84158.50291852215, 442759.50309280277, 85501.49951575354, 444169.4990782871]});
+kaart.Toon ({"kaartelementId": "kaart_52", "kaartelementWidth": 900, "kaartelementHeight": 600, "toepassingsnauwkeurigheid": 500, "bbox": [84158.50291852215, 442759.50309280277, 85501.49951575354, 444169.4990782871]});
 });
 
 Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym62",`<FeatureTypeStyle version="1.1.0" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
@@ -6156,22 +6184,22 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym62",`<FeatureTypeStyle version=
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data64_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""]}}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data65_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [], "properties": {"id": ["ID", ""]}}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""]}}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data66_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443764.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]], "crs": {"properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001A"}, "_shape": null}], "properties": {"id": ["ID", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443764.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]], "crs": {"properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001A", "wId": "1"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
 );
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data67_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443770.0], [85224.0, 443770.0], [85224.0, 443765.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]], "crs": {"properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-20000000001B"}, "_shape": null}], "properties": {"id": ["ID", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": [[[[84849.0, 444119.0], [84960.0, 443692.0], [85140.0, 443734.0], [85007.0, 444157.0], [84849.0, 444119.0]]], [[[85007.0, 444157.0], [85051.0, 444167.0], [85069.0, 444158.0], [85209.0, 443770.0], [85224.0, 443770.0], [85224.0, 443765.0], [85184.0, 443753.0], [85171.0, 443790.0], [85129.0, 443777.0], [85007.0, 444157.0]]], [[[85113.0, 443730.0], [85136.0, 443657.0], [85209.0, 443674.0], [85171.0, 443790.0], [85129.0, 443777.0], [85140.0, 443734.0], [85113.0, 443730.0]]], [[[84229.0, 443966.0], [84849.0, 444119.0], [84915.0, 443873.0], [84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84161.0, 443869.0], [84247.0, 443892.0], [84229.0, 443966.0]]], [[[84835.0, 443863.0], [84621.0, 443805.0], [84501.0, 443907.0], [84167.0, 443828.0], [84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84873.0, 443658.0], [84828.0, 443825.0], [84835.0, 443863.0]]], [[[84872.0, 443657.0], [84827.0, 443825.0], [84836.0, 443862.0], [84915.0, 443873.0], [84959.0, 443689.0], [85113.0, 443731.0], [85137.0, 443657.0], [85207.0, 443676.0], [85184.0, 443752.0], [85227.0, 443765.0], [85327.0, 443443.0], [85077.0, 443378.0], [84872.0, 443657.0]]], [[[85327.0, 443443.0], [85078.0, 443376.0], [85140.0, 443281.0], [85187.0, 443124.0], [85404.0, 443000.0], [85421.0, 442963.0], [85466.0, 442953.0], [85488.0, 442895.0], [85499.0, 442899.0], [85327.0, 443443.0]]], [[[85186.0, 443125.0], [85404.0, 443000.0], [85421.0, 442963.0], [85465.0, 442952.0], [85489.0, 442896.0], [85312.0, 442849.0], [85311.0, 442831.0], [85043.0, 442762.0], [84976.0, 443071.0], [85186.0, 443125.0]]], [[[84272.0, 443386.0], [84467.0, 443442.0], [84688.0, 443598.0], [84874.0, 443657.0], [85075.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84272.0, 443386.0]]], [[[85077.0, 443377.0], [84775.0, 443303.0], [84772.0, 443318.0], [84660.0, 443253.0], [84651.0, 443221.0], [84625.0, 443197.0], [84540.0, 443179.0], [84522.0, 443154.0], [84513.0, 443106.0], [84350.0, 443062.0], [84382.0, 442923.0], [85186.0, 443124.0], [85140.0, 443281.0], [85077.0, 443377.0]]]], "crs": {"properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-20000000001B", "wId": "1"}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""]}, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]}
 );
 
 
@@ -6292,31 +6320,11 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym70",`<FeatureTypeStyle version=
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data71_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"id": "27e54c09-c059-4301-aa26-e7e671fb27ed"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85211.46893074892, 443763.6070865782], [85211.4749358565, 443764.353118261], [85210.40308099685, 443767.5180068701], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.40308099685, 443762.83832615934, 85221.71161255546, 443767.5180068701]}
-);
-
-
-Kaartgegevens.Instantie.VoegDataToe ("data72_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"id": "27e54c09-c059-4301-aa26-e7e671fb27ed"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85211.4749358565, 443764.353118261], [85210.40308099685, 443767.5180068701], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.40308099685, 443762.83832615934, 85221.71161255546, 443767.5180068701]}
-);
-
-
-Kaartgegevens.Instantie.VoegDataToe ("data73_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"id": "27e54c09-c059-4301-aa26-e7e671fb27ed"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85211.4749358565, 443764.353118261], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.75570329413, 443762.83832615934, 85221.71161255546, 443767.5]}
-);
-
-
-Kaartgegevens.Instantie.VoegDataToe ("data74_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"id": "27e54c09-c059-4301-aa26-e7e671fb27ed"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.75570329413, 443762.83832615934, 85221.71161255546, 443767.5]}
-);
-
-
-Kaartgegevens.Instantie.VoegDataToe ("data75_2",
 {"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": []}
 );
 
 
-Kaartgegevens.Instantie.VoegDataToe ("data76_0",
+Kaartgegevens.Instantie.VoegDataToe ("data72_0",
 {"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"n": 1}, "geometry": {"type": "Point", "coordinates": [85218.95, 443765.50999999995]}, "_shape": null}], "properties": {"n": ["Aantal niet-getoonde locaties", ""]}, "bbox": [85218.95, 443765.50999999995, 85218.95, 443765.50999999995]}
 );
 
@@ -6327,13 +6335,9 @@ kaart.VoegLaagToe ("Ongewijzigd/gereviseerd", "data64_2", "sym62").AlsAanUitLaag
 kaart.VoegLaagToe ("Ongewijzigd/gereviseerd", "data65_2", "sym62").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("GIO-wijziging", "data66_2", "sym62").AlsOudLaag ();
 kaart.VoegLaagToe ("GIO-wijziging", "data67_2", "sym62").AlsNieuwLaag ();
-kaart.VoegLaagToe ("Wijzigmarkering", "data60_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (22, 100);
-kaart.VoegLaagToe ("Wijzigmarkering", "data71_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (21, 22);
-kaart.VoegLaagToe ("Wijzigmarkering", "data72_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (20, 21);
-kaart.VoegLaagToe ("Wijzigmarkering", "data73_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (19, 20);
-kaart.VoegLaagToe ("Wijzigmarkering", "data74_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (16, 19);
-kaart.VoegLaagToe ("Wijzigmarkering", "data75_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (0, 16);
-kaart.VoegLaagToe ("Wijzigmarkering", "data76_0", "sym68").AlsAanUitLaag (true).LimiteerZoomLevel (0, 16);
+kaart.VoegLaagToe ("Wijzigmarkering", "data60_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (16, 100);
+kaart.VoegLaagToe ("Wijzigmarkering", "data71_2", "sym70").AlsAanUitLaag (true).LimiteerZoomLevel (0, 16);
+kaart.VoegLaagToe ("Wijzigmarkering", "data72_0", "sym68").AlsAanUitLaag (true).LimiteerZoomLevel (0, 16);
 kaart.Toon ({"kaartelementId": "kaart_63", "kaartelementWidth": 900, "kaartelementHeight": 600, "bbox": [84161.0, 442762.0, 85499.0, 444167.0]});
 });
 </script>

@@ -1,4 +1,4 @@
 {
   "geometrie": "testdata_lijnen.gml",
-  "juridische-nauwkeurigheid": 50
+  "toepassingsnauwkeurigheid": 500
 }

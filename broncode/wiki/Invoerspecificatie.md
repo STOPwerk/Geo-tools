@@ -32,7 +32,7 @@ Het specificatiebestand `toon_geo.json` geeft de invoer voor de geo-tool die een
 {
     "geometrie": "geometrische_data.gml",
     "symbolisatie": [ "punt_style.xml", "lijn_style.xml", "vlak_style.xml" ],
-    "juridische-nauwkeurigheid": 1,
+    "toepassingsnauwkeurigheid": 1,
     "toon-gio-schaalafhankelijk": true | false,
     "kwaliteitscontrole": false | true,
     "beschrijving": "Optionele beschrijving"
@@ -44,9 +44,9 @@ met:
 | --------- | ------------ |
 | `geometrie` | Het pad naar het bestand met de STOP module [Effectgebied](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Effectgebied.html), [Gebiedsmarkering](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_Gebiedsmarkering.html), [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) |
 | `symbolisatie` | Opsomming van de paden naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) voor de weergave van een punt, lijn of vlak van de geometrie. Optioneel; als dit niet gegeven is (of niet gegeven voor een punt/lijn of vlak) worden de gebieden, lijnen en/of punten op een standaard-manier weergegeven. |
-| `juridische-nauwkeurigheid` | Als de STOP-module een GIO-versie bevat: de [juridische nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in het GIO. Deze waarde wordt alleen gebruikt als de juridische nauwkeurigheid niet (conform STOP 2) in de GIO-versie is opgenomen. Optioneel. |
-| `toon-gio-schaalafhankelijk` |  Als de STOP-module een GIO-versie bevat en de juridische nauwkeurigheid bekend is: gebruik dit om de GIO-versie schaalafhankelijk weer te geven. Optioneel; default is true.|
-| `kwaliteitscontrole` |  Als de STOP-module een GIO-versie bevat en de juridische nauwkeurigheid bekend is: controleer dat de GIO-versie aan de kwaliteitseisen voor een muteerbare GIO voldoet. Optioneel; default is false.|
+| `toepassingsnauwkeurigheid` | Als de STOP-module een GIO-versie bevat: de [toepassingsnauwkeurigheid](Algoritme-controle) in centimeter van de geometrieën in het GIO. Deze waarde wordt alleen gebruikt als de toepassingsnauwkeurigheid niet (conform STOP 2) in de GIO-versie is opgenomen. Optioneel. |
+| `toon-gio-schaalafhankelijk` |  Als de STOP-module een GIO-versie bevat en de toepassingsnauwkeurigheid bekend is: gebruik dit om de GIO-versie schaalafhankelijk weer te geven. Optioneel; default is true.|
+| `kwaliteitscontrole` |  Als de STOP-module een GIO-versie bevat en de toepassingsnauwkeurigheid bekend is: controleer dat de GIO-versie aan de kwaliteitseisen voor een muteerbare GIO voldoet. Optioneel; default is false.|
 | `beschrijving` | Optioneel: een beschrijving van het GIO die in de resultaatpagina wordt opgenomen |
 
 
@@ -56,7 +56,7 @@ Het specificatiebestand `maak_gio_wijziging.json` geeft de invoer voor de geo-to
 {
     "was": "GIO_was_versie.gml",
     "wordt": "GIO_wordt_versie.gml",
-    "juridische-nauwkeurigheid": 1,
+    "toepassingsnauwkeurigheid": 1,
     "symbolisatie": [ "style.xml" ],
     "toon-gio-wijziging": true | false,
     "wijziging": "GIO_wijziging.gml",
@@ -69,7 +69,7 @@ met:
 | --------- | ------------ |
 | `was` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de oorspronkelijke (was-)versie van het GIO bevat.|
 | `wordt` | Het pad naar het bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) of [GeoInformatieObjectVersie](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVersie.html) dat de nieuwe (wordt-)versie van het GIO bevat.|
-| `juridische-nauwkeurigheid` | De (juridische) [juridische-nauwkeurigheid](Algoritme-controle) in decimeter van de geometrieën in de GIO. |
+| `toepassingsnauwkeurigheid` | De [toepassingsnauwkeurigheid](Algoritme-controle) in centimeter van de geometrieën in de GIO. |
 | `symbolisatie` | Opsomming van de paden naar het bestand met de STOP module [FeatureTypeStyle](@@@STOP_Documentatie_Url@@@se_xsd_Element_se_FeatureTypeStyle.html) voor de weergave van een punt, lijn of vlak voor zowel de was- als de wordt-versie van het GIO bevat. De symbolisatie wordt gebruuikt om (tussen-)resultaten van de bepaling te laten zien. Als dit niet gegeven is (voor een geometrietype) worden alle gebieden, lijnen en/of punten op een standaard-manier weergegeven. |
 | `wijziging` | Optioneel. Als een pad wordt opgegeven plaatst de geo-tool daar een bestand met de STOP module [GeoInformatieObjectVaststelling](@@@STOP_Documentatie_Url@@@geo_xsd_Element_geo_GeoInformatieObjectVaststelling.html) met de GIO-wijziging. Dit bestand kan als invoer gebruikt worden voor de [Toon GIO wijziging](#toon-gio-wijziging) geo-tool. |
 | `toon-gio-wijziging` |  Toon de GIO-wijziging op de manier zoals een viewer dat zou (moeten) doen. Optioneel; default is true.|
@@ -105,7 +105,7 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
         {
             "pad": "gio_1.gml", 
             "beschrijving": "Optionele beschrijving van de GIO",
-            "juridische-nauwkeurigheid": 10,
+            "toepassingsnauwkeurigheid": 10,
             "kwaliteitscontrole": false,
             "symbolisatie": [ "afwijkende_style.xml" ]
         },
@@ -113,13 +113,13 @@ Het specificatiebestand `gio_wijziging.json` is een specificatie voor een gecomb
         {"pad": "gio_3.gml" }
     ]
     "symbolisatie": [ "punt_style.xml", "vlak_style.xml"],
-    "juridische-nauwkeurigheid": 1,
+    "toepassingsnauwkeurigheid": 1,
     "kwaliteitscontrole": true,
     "wijziging": [
         {
             "was": "gio_1.gml", 
             "wordt": "gio_2.gml", 
-            "juridische-nauwkeurigheid": 10,
+            "toepassingsnauwkeurigheid": 10,
             "beschrijving": "Optionele beschrijving van de GIO-wijziging",
             "toon-maken": true | false,
             "toon-gio-wijziging": true | false,
@@ -136,7 +136,7 @@ Elk `geometrie` element wordt omgevormd naar een [toon_geo.json](#toon-geo) spec
 | ---------------------- | --------------------- |
 | [toon_geo.json](#toon-geo): `geometrie` | `geometrie`: `pad` |
 | [toon_geo.json](#toon-geo): `symbolisatie` | `geometrie`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
-| [toon_geo.json](#toon-geo): `juridische-nauwkeurigheid` | `geometrie`: `juridische-nauwkeurigheid` indien aanwezig, anders `juridische-nauwkeurigheid` |
+| [toon_geo.json](#toon-geo): `toepassingsnauwkeurigheid` | `geometrie`: `toepassingsnauwkeurigheid` indien aanwezig, anders `toepassingsnauwkeurigheid` |
 | [toon_geo.json](#toon-geo): `kwaliteitscontrole` | `geometrie`: `kwaliteitscontrole` indien aanwezig, anders `kwaliteitscontrole` |
 | [toon_geo.json](#toon-geo): `beschrijving` | `geometrie`: `beschrijving` |
 
@@ -146,7 +146,7 @@ Elk `wijziging` element wordt omgevormd naar een [maak_gio_wijziging.json](#maak
 | ---------------------- | --------------------- |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `was` | `wijziging`: `was` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `wordt` | `wijziging`: `wordt` |
-| [maak_gio_wijziging.json](#maak-gio-wijziging): `juridische-nauwkeurigheid` | `wijziging`: `juridische-nauwkeurigheid` indien aanwezig, anders `juridische-nauwkeurigheid` |
+| [maak_gio_wijziging.json](#maak-gio-wijziging): `toepassingsnauwkeurigheid` | `wijziging`: `toepassingsnauwkeurigheid` indien aanwezig, anders `toepassingsnauwkeurigheid` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `symbolisatie` | `wijziging`: `symbolisatie` indien aanwezig, anders `symbolisatie` |
 | [maak_gio_wijziging.json](#maak-gio-wijziging): `beschrijving` | `wijziging`: `beschrijving` |
 | beschrijving van maken niet opnemen in resultaat | `wijziging`: `toon-maken` = `false` (waarde van `toon-maken` is `true` indien niet opgegeven) |

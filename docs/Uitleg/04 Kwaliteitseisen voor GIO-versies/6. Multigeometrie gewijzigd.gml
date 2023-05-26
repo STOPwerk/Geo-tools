@@ -8,6 +8,7 @@
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/uitleg5/nld@2022;5</geo:FRBRExpression>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000001B</basisgeo:id>

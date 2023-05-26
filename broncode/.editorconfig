@@ -17,7 +17,7 @@ indent_style = space
 indent_size = 4
 
 # VS spell checker
-spelling_languages = nl-nl, en-us
+spelling_languages = nl-nl
 #spelling_checkable_types = strings,identifiers,comments
 spelling_checkable_types = strings,comments
 spelling_error_severity = warning

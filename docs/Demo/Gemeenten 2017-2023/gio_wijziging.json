@@ -1,7 +1,7 @@
 {
   "beschrijving": "Demonstratie van de GIO-wijziging en geo-renvooi voor een GIO met vlakken waarin elke GIO-locatie een GIO-deel is.",
   "symbolisatie": "gemeenten_symbolisatie.xml",
-  "juridische-nauwkeurigheid": 50,
+  "toepassingsnauwkeurigheid": 500,
   "toon-maken": false,
   "toon-gio-wijziging": true,
   "wijziging": [

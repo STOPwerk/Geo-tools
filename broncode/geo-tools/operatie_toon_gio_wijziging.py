@@ -136,31 +136,31 @@ class ToonGIOWijziging (Operatie):
                     del self._Wordt.GIODelen[i]
                 elif g.WijzigActie == GIODeel._WIJZIGACTIE_VOEGTOE:
                     self._Wordt.GIODelen[i]= GIODeel(i, g.Label)
-        self._Wordt.JuridischeNauwkeurigheid = self._Wijziging.JuridischeNauwkeurigheid
+        self._Wordt.Toepassingsnauwkeurigheid = self._Wijziging.Toepassingsnauwkeurigheid
 
-        wordtLocaties = {locatie['properties']['id'] : (dimensie, locatie) for dimensie, locaties in self._Was.Locaties.items () for locatie in locaties}
+        wordtLocaties = {locatie['properties']['wId'] : (dimensie, locatie) for dimensie, locaties in self._Was.Locaties.items () for locatie in locaties}
 
         for locaties in self._Wijziging.Was.Locaties.values ():
             for locatie in locaties:
-                if wordtLocaties.pop (locatie['properties']['id'], None) is None:
-                    self.Log.Fout ("GIO-wijziging verwijdert een locatie met basisgeometrie-ID '" + locatie['properties']['id'] + "' die niet voorkomt in de originele versie")
+                if wordtLocaties.pop (locatie['properties']['wId'], None) is None:
+                    self.Log.Fout ("GIO-wijziging verwijdert een locatie met wId '" + locatie['properties']['wId'] + "' die niet voorkomt in de originele versie")
                     succes = False
 
         for locaties in self._Wijziging.WordtRevisies.Locaties.values ():
             for locatie in locaties:
-                if wordtLocaties.pop (locatie['properties']['id'], None) is None:
-                    self.Log.Fout ("GIO-wijziging reviseert een locatie met basisgeometrie-ID '" + locatie['properties']['id'] + "' die niet voorkomt in de originele versie")
+                if wordtLocaties.pop (locatie['properties']['wId'], None) is None:
+                    self.Log.Fout ("GIO-wijziging reviseert een locatie met wId '" + locatie['properties']['wId'] + "' die niet voorkomt in de originele versie")
                     succes = False
 
         toegevoegd = set ()
         for dimensie, locaties in self._Wijziging.Wordt.Locaties.items ():
             for locatie in locaties:
-                wordt_id = locatie['properties']['id']
+                wordt_id = locatie['properties']['wId']
                 if wordt_id in toegevoegd:
-                    self.Log.Fout ("GIO-wijziging bevat twee toegevoegde locaties met basisgeometrie-ID '" + wordt_id + "'")
+                    self.Log.Fout ("GIO-wijziging bevat twee toegevoegde locaties met wId '" + wordt_id + "'")
                     succes = False
                 elif wordt_id in wordtLocaties:
-                    self.Log.Fout ("GIO-wijziging voegt een locatie toe met basisgeometrie-ID '" + locatie['properties']['id'] + "' die al voorkomt in de originele versie en niet verwijderd is")
+                    self.Log.Fout ("GIO-wijziging voegt een locatie toe met wId '" + locatie['properties']['wId'] + "' die al voorkomt in de originele versie en niet verwijderd is")
                     succes = False
                 else:
                     toegevoegd.add (wordt_id)
@@ -168,9 +168,9 @@ class ToonGIOWijziging (Operatie):
 
         for dimensie, locaties in self._Wijziging.WordtRevisies.Locaties.items ():
             for locatie in locaties:
-                wordt_id = locatie['properties']['id']
+                wordt_id = locatie['properties']['wId']
                 if wordt_id in toegevoegd:
-                    self.Log.Fout ("GIO-wijziging reviseert een locaties toe met basisgeometrie-ID '" + wordt_id + "' die dubbel in de GIO-wijziging voorkomt (als voegtoe en/of reviseer)")
+                    self.Log.Fout ("GIO-wijziging reviseert een locaties met wId '" + wordt_id + "' die dubbel in de GIO-wijziging voorkomt (als voegtoe en/of reviseer)")
                     succes = False
                 else:
                     toegevoegd.add (wordt_id)
@@ -212,15 +212,15 @@ Bij het tonen van de GIO-wijziging moet daarom via schaalafhankelijke markeringe
         kaart = KaartGenerator.Kaart (self.Kaartgenerator)
 
         # Voeg de ongewijzigde locaties toe
-        mutatie_id = set (locatie['properties']['id'] for locaties in self._Wijziging.Was.Locaties.values () for locatie in locaties)
+        mutatie_id = set (locatie['properties']['wId'] for locaties in self._Wijziging.Was.Locaties.values () for locatie in locaties)
         ongewijzigd = GeoData ()
         ongewijzigd.Attributen = self._Was.Attributen
-        ongewijzigd.Locaties = { dimensie : [locatie for locatie in locaties if not locatie['properties']['id'] in mutatie_id] for dimensie, locaties in self._Was.Locaties.items () }
+        ongewijzigd.Locaties = { dimensie : [locatie for locatie in locaties if not locatie['properties']['wId'] in mutatie_id] for dimensie, locaties in self._Was.Locaties.items () }
         namen_was = self.Kaartgenerator.VoegGeoDataToe (ongewijzigd)
-        mutatie_id = set (locatie['properties']['id'] for locaties in self._Wijziging.Wordt.Locaties.values () for locatie in locaties)
+        mutatie_id = set (locatie['properties']['wId'] for locaties in self._Wijziging.Wordt.Locaties.values () for locatie in locaties)
         ongewijzigd = GeoData ()
         ongewijzigd.Attributen = self._Wordt.Attributen
-        ongewijzigd.Locaties = { dimensie : [locatie for locatie in locaties if not locatie['properties']['id'] in mutatie_id] for dimensie, locaties in self._Wordt.Locaties.items () }
+        ongewijzigd.Locaties = { dimensie : [locatie for locatie in locaties if not locatie['properties']['wId'] in mutatie_id] for dimensie, locaties in self._Wordt.Locaties.items () }
         namen_wordt = self.Kaartgenerator.VoegGeoDataToe (ongewijzigd)
         kaart.VoegLagenToe ('Ongewijzigd/gereviseerd', namen_was, self._SymbolisatieNamen, True, False, postLaag = lambda _: kaart.LaatsteLaagAlsOud ())
         kaart.VoegLagenToe ('Ongewijzigd/gereviseerd', namen_wordt, self._SymbolisatieNamen, True, False, postLaag = lambda _: kaart.LaatsteLaagAlsNieuw ())

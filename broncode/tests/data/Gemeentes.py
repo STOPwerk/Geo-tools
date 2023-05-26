@@ -189,6 +189,7 @@ def __GIO (subdir, jaar, multiVlakken, attribuut):
             <geo:Locatie>''')
             if not multiVlakken or attribuut == 3:
                 gml_file.write ('''
+                <geo:wId>''' + str(jaar) + str(samengevoegdeGemeenten[0]['ID']).zfill(6) + '''</geo:wId>
                 <geo:naam>''' + samengevoegdeGemeenten[0]['Naam'] + '</geo:naam>')
             gml_file.write ('''
                 <geo:geometrie>

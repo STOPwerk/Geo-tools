@@ -46,5 +46,5 @@
     }
   ],
   "symbolisatie": "gemeenten_alle_jaren_symbolisatie.xml",
-  "juridische-nauwkeurigheid": 10
+  "toepassingsnauwkeurigheid": 100
 }

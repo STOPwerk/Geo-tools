@@ -8,6 +8,7 @@
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/uitleg2/nld@2022;2</geo:FRBRExpression>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:naam>Speciaal getekend</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -31,6 +32,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>2</geo:wId>
 			<geo:naam>Speciaal getekend</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -54,6 +56,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>3</geo:wId>
 			<geo:naam>Speciaal getekend</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -77,6 +80,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>4</geo:wId>
 			<geo:naam>Bestaande geometrie ambtsgebied</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>

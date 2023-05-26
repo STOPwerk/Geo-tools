@@ -9,6 +9,7 @@
 	<geo:normlabel>Kwantitatieve norm</geo:normlabel>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:naam>Binnengebied</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -39,6 +40,7 @@
 			<geo:kwantitatieveNormwaarde>101.009999999999999999999999999</geo:kwantitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>2</geo:wId>
 			<geo:naam>Buitengebied</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>

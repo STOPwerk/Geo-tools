@@ -12,6 +12,7 @@ GML32_ENCODER.id_required = False # Basisgeometrie gebruikt geen gml:id
 from lxml import etree as lxml_etree
 from shapely.geometry import shape
 
+import re
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
@@ -79,8 +80,8 @@ class GeoData:
         self.EenheidLabel = None
         # ID voor de eenheid van de normwaarden
         self.EenheidID = None
-        # Juridische nauwkeurigheid in decimeter
-        self.JuridischeNauwkeurigheid : int = None
+        # Toepassingsnauwkeurigheid in centimeter
+        self.Toepassingsnauwkeurigheid : int = None
         #----------------------------------------------------------
         # Voor een GIO-versie
         #----------------------------------------------------------
@@ -181,8 +182,8 @@ class GeoData:
                 request.Log.Fout ("Het GIO, gebiedsmarkering of effectgebied '" + request.Bestandsnaam (key) + "' kan niet ingelezen worden")
             else:
                 request.Log.Informatie (data.Soort + " ingelezen uit '" + request.Bestandsnaam (key) + "'")
-                if data.JuridischeNauwkeurigheid is None:
-                    data.JuridischeNauwkeurigheid = request.JuridischeNauwkeurigheidInDecimeter (False)
+                if data.Toepassingsnauwkeurigheid is None:
+                    data.Toepassingsnauwkeurigheid = request.ToepassingsnauwkeurigheidInCentimeter (False)
                 return data
 
     @staticmethod
@@ -195,7 +196,8 @@ class GeoData:
             log.Fout ("GML is geen valide XML: " + str(e))
             return
         data = GeoData ()
-        data.Attributen['id'] = Attribuut ('id', "ID")
+        data.Attributen['geoId'] = Attribuut ('geoId', "basisgeo:id")
+        data.Attributen['wId'] = Attribuut ('wId', "wId")
         succes = True
 
         # Vertaal naar GeoData afhankelijk van het bronformaat
@@ -215,7 +217,7 @@ class GeoData:
             gioMutatie = None
             wasID = None
             if geoXml.tag == GeoData._GeoNS + 'GeoInformatieObjectVaststelling':
-                # Vastgestelde GIO-versie of GIO-wijziging
+                # Vastgestelde GIO-versie of GIO-wijzigingfv
                 wasID = geoXml.find (GeoData._GeoNS + 'wasID')
                 data.Vaststellingscontext = geoXml.find (GeoData._GeoNS + 'context')
                 if not data.Vaststellingscontext is None:
@@ -237,9 +239,14 @@ class GeoData:
             else:
                 log.Fout ("GIO-versie bevat geen FRBRWork")
                 succes = False
-            elt = geoXml.find (GeoData._GeoNS + 'juridischeNauwkeurigheid')
-            if not elt is None:
-                data.JuridischeNauwkeurigheid = elt.text
+            # Als de toepassingsnauwkeurigheid in de GML staat:
+            #elt = geoXml.find (GeoData._GeoNS + 'toepassingsnauwkeurigheid')
+            #if not elt is None:
+            #    data.Toepassingsnauwkeurigheid = elt.text
+            # Anders staat het in de metadata. Om de waarde toch door te kunnen geven, kan het in een comment staan
+            elt = re.match ('[\s]+toepassingsnauwkeurigheid[\s:]+([^\s]+)', gml)
+            if elt:
+                data.Toepassingsnauwkeurigheid = elt.group(1);
 
             elt = geoXml.find (GeoData._GeoNS + 'groepen')
             if not elt is None:
@@ -469,13 +476,15 @@ class GeoData:
             geoLocatie = {
                     'type': 'Feature',
                     'geometry': geoLocatie.geometry,
-                    'properties': { 'id' : basisgeo_id }
+                    'properties': { 'geoId' : basisgeo_id }
                 }
             if not dimensie in self.Locaties:
                 self.Locaties[dimensie] = []
             self.Locaties[dimensie].append (geoLocatie)
 
             # Kijk welke attributen er bij de locatie aanwezig zijn
+            elt = locatie.find (GeoData._GeoNS + 'wId')
+            geoLocatie['properties']['wId'] = basisgeo_id if elt is None else elt.text
             elt = locatie.find (GeoData._GeoNS + labelNaam)
             if not elt is None:
                 geoLocatie['properties'][labelNaam] = elt.text
@@ -533,9 +542,13 @@ class GeoData:
   https://standaarden.overheid.nl/stop/2.0.0-rc/imop-geo.xsd">
     <geo:FRBRWork>''' + self.WorkId + '''</geo:FRBRWork>
     <geo:FRBRExpression>''' + self.ExpressionId + '''</geo:FRBRExpression>'''
-        if hasattr (self, 'JuridischeNauwkeurigheid'):
+        if hasattr (self, 'Toepassingsnauwkeurigheid'):
+    # Als de toepassingsnauwkeurigheid in de GML staat:
+    #        gioGML += '''
+    #<geo:toepassingsnauwkeurigheid>''' + str (self.Toepassingsnauwkeurigheid) + '''</geo:toepassingsnauwkeurigheid>'''
+    # Anders: maak er een comment van
             gioGML += '''
-    <geo:juridischeNauwkeurigheid>''' + str (self.JuridischeNauwkeurigheid) + '''</geo:juridischeNauwkeurigheid>'''
+    <!-- Gebruikte toepassingsnauwkeurigheid: ''' + str (self.Toepassingsnauwkeurigheid) + ''' (staat in metadata) -->'''
 
         if not self.GIODelen is None:
             gioGML += '''
@@ -567,9 +580,10 @@ class GeoData:
 
         for locaties in self.Locaties.values ():
             for locatie in locaties:
-                gioGML += '''
-            <geo:Locatie>'''
                 props = locatie.get ('properties')
+                gioGML += '''
+            <geo:Locatie>
+                <geo:wId>''' + props['wId'] + '''</geo:wId>'''
                 waarde = props.get('naam')
                 if not waarde is None:
                     gioGML += '''
@@ -577,7 +591,7 @@ class GeoData:
                 gioGML += '''
                 <geo:geometrie>
                     <basisgeo:Geometrie>
-                        <basisgeo:id>''' + props['id'] + '''</basisgeo:id>
+                        <basisgeo:id>''' + props['geoId'] + '''</basisgeo:id>
                         <basisgeo:geometrie>
                             ''' + GeoData._GeometrieGML (locatie['geometry']) + '''
                         </basisgeo:geometrie>
@@ -604,8 +618,13 @@ class GeoData:
     <geo:vastgesteldeVersie>
         <geo:GeoInformatieObjectMutatie>
             <geo:FRBRWork>''' + self.WorkId + '''</geo:FRBRWork>
-            <geo:FRBRExpression>''' + self.Wordt.ExpressionId + '''</geo:FRBRExpression>
-            <geo:juridischeNauwkeurigheid>''' + str (self.JuridischeNauwkeurigheid) + '''</geo:juridischeNauwkeurigheid>'''
+            <geo:FRBRExpression>''' + self.Wordt.ExpressionId + '''</geo:FRBRExpression>'''
+        # Als de toepassingsnauwkeurigheid in de GML staat:
+        #wijzigingGML += '''
+        #    <geo:toepassingsnauwkeurigheid>''' + str (self.Toepassingsnauwkeurigheid) + '''</geo:toepassingsnauwkeurigheid>'''
+        # Anders: maak er een comment van
+        wijzigingGML += '''
+            <!-- Gebruikte toepassingsnauwkeurigheid: ''' + str (self.Toepassingsnauwkeurigheid) + ''' (staat in metadata) -->'''
 
         if not self.GIODelen is None:
             wijzigingGML += '''
@@ -641,9 +660,10 @@ class GeoData:
             <geo:locatieMutaties>'''
 
         def __VoegLocatieToe (wijzigingGML, locatie, actie):
-            wijzigingGML += '''
-                <geo:LocatieMutatie>'''
             props = locatie.get ('properties')
+            wijzigingGML += '''
+                <geo:LocatieMutatie>
+                    <geo:wId>''' + props['wId'] + '''</geo:wId>'''
             waarde = props.get('naam')
             if not waarde is None:
                 wijzigingGML += '''
@@ -651,7 +671,7 @@ class GeoData:
             wijzigingGML += '''
                     <geo:geometrie>
                         <basisgeo:Geometrie>
-                            <basisgeo:id>''' + props['id'] + '''</basisgeo:id>
+                            <basisgeo:id>''' + props['geoId'] + '''</basisgeo:id>
                             <basisgeo:geometrie>
                                 ''' + GeoData._GeometrieGML (locatie['geometry']) + '''
                             </basisgeo:geometrie>
@@ -691,7 +711,7 @@ class GeoData:
                     <geo:''' + markeringType + '''>
                         <geo:geometrie>
                             <basisgeo:Geometrie>
-                                <basisgeo:id>''' + markering['properties']['id'] + '''</basisgeo:id>
+                                <basisgeo:id>''' + markering['properties']['geoId'] + '''</basisgeo:id>
                                 <basisgeo:geometrie>
                                     ''' + GeoData._GeometrieGML (markering['geometry']) + '''
                                 </basisgeo:geometrie>
@@ -763,7 +783,8 @@ class GeoData:
             attribuutwaarde str  Als het GIO normwaarden bevat: de normwaarde van de locatie.
                                  Als het GIO GIO-delen bevat: de groepID van de locatie.
             """
-            self.ID = locatie['properties']['id']
+            self.GeoId = locatie['properties']['geoId']
+            self.wId = locatie['properties']['wId'] if 'wId' in locatie['properties'] else 'geoId:' + self.GeoId 
             self.Locatie = locatie
             self.Geometrie = geometrie
             self.Attribuutwaarde = attribuutwaarde

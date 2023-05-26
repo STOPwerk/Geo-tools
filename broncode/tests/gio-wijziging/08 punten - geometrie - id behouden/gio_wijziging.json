@@ -14,5 +14,5 @@
         }
     ],
     "symbolisatie": null,
-    "juridische-nauwkeurigheid": 10
+    "toepassingsnauwkeurigheid": 100
 }

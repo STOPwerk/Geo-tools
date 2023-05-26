@@ -1,6 +1,6 @@
 {
   "beschrijving": "STOP stelt eisen aan de inhoud van de GIO-versies van een muteerbare GIO om het opstellen van een GIO-wijziging eenvoudig te houden en niet verzeild te raken in complexe geo-berekeningen. Deze kwaliteitseisen worden hier nader toegelicht.",
-  "juridische-nauwkeurigheid": 50,
+  "toepassingsnauwkeurigheid": 500,
   "toon-gio-schaalafhankelijk": false,
   "toon-gio-wijziging": false,
   "symbolisatie": [ "symbolisatie_punten.xml", "symbolisatie_lijnen.xml", "symbolisatie_vlakken.xml" ],
@@ -8,14 +8,14 @@
     {
       "pad": "1. Kwaliteitscontrole.gml",
       "kwaliteitscontrole": true,
-      "beschrijving": "De bepaling van wijzigmarkeringen kan behoorlijk complex worden als er geen beperkingen gesteld worden aan de GIO-versies in de hele keten van het bevoegd gezag via LVBB/DSO-LV naar een adviesbureau en terug naar het bevoegd gezag. Dat treedt met name op als geometrieën elkaar gaan overlappen. Het eenvoudige algoritme dat in STOP beschreven is, en dat ook in deze software is verwerkt, kan dan niet alle wijzigingen meer detecteren. Omdat de bijzondere situaties die de complexiteit veroorzaken juridisch niets toevoegen (en soms zelfs juridisch incorrect zijn), worden de situaties in STOP verboden. Dit voorbeeld illustreert de situaties voor een GIO met norm (de symbolisatie is onafhankelijk van de normwaarde)</p><p><span class=\"leestip\"></span> Selecteer <i>Juridische nauwkeurigheid</i> om de overlap van de geometrieën met inachtneming van de juridische nauwkeurigheid te zien.</p><p><span class=\"leestip\"></span> Lees verder onder de kaart met de GIO-versie en bekijk de situaties per geometrie in de tweede kaart door op de geometrie te klikken.</p><p>"
+      "beschrijving": "De bepaling van wijzigmarkeringen kan behoorlijk complex worden als er geen beperkingen gesteld worden aan de GIO-versies in de hele keten van het bevoegd gezag via LVBB/DSO-LV naar een adviesbureau en terug naar het bevoegd gezag. Dat treedt met name op als geometrieën elkaar gaan overlappen. Het eenvoudige algoritme dat in STOP beschreven is, en dat ook in deze software is verwerkt, kan dan niet alle wijzigingen meer detecteren. Omdat de bijzondere situaties die de complexiteit veroorzaken juridisch niets toevoegen (en soms zelfs juridisch incorrect zijn), worden de situaties in STOP verboden. Dit voorbeeld illustreert de situaties voor een GIO met norm (de symbolisatie is onafhankelijk van de normwaarde)</p><p><span class=\"leestip\"></span> Selecteer <i>Toepassingsnauwkeurigheid</i> om de overlap van de geometrieën met inachtneming van de toepassingsnauwkeurigheid te zien.</p><p><span class=\"leestip\"></span> Lees verder onder de kaart met de GIO-versie en bekijk de situaties per geometrie in de tweede kaart door op de geometrie te klikken.</p><p>"
     }
   ],
   "wijziging": [
     {
       "was": "2. Overlappende geometrie.gml",
       "wordt": "3. Misbare geometrie weggehaald.gml",
-      "beschrijving": "Om te illustreren dat wijzigingen van de (bijna) overlappende geometrieën niet gedetecteerd worden, wordt het verschil tussen de voorgaande GIO-versie (zonder normwaarde) en een GIO-versie met vereenvoudigde geometrie bepaald met het eenvoudige algoritme. Het laat zien dat er juridisch geen wijziging is - alle gebieden waar de juridische regels in de eerste versie gelden, gelden ze (binnen de juridische nauwkeurigheid) ook in de tweede versie. Maar als naar de GIO-locaties wordt gekeken dan is de inhoud sterk verschillend.</p><p><span class=\"leestip\"></span> Selecteer alleen <i>GIO-versies</i> en beweeg de slider heen en weer om de twee GIO-versies te zien."
+      "beschrijving": "Om te illustreren dat wijzigingen van de (bijna) overlappende geometrieën niet gedetecteerd worden, wordt het verschil tussen de voorgaande GIO-versie (zonder normwaarde) en een GIO-versie met vereenvoudigde geometrie bepaald met het eenvoudige algoritme. Het laat zien dat er juridisch geen wijziging is - alle gebieden waar de juridische regels in de eerste versie gelden, gelden ze (binnen de toepassingsnauwkeurigheid) ook in de tweede versie. Maar als naar de GIO-locaties wordt gekeken dan is de inhoud sterk verschillend.</p><p><span class=\"leestip\"></span> Selecteer alleen <i>GIO-versies</i> en beweeg de slider heen en weer om de twee GIO-versies te zien."
     },
     {
       "was": "3. Misbare geometrie weggehaald.gml",

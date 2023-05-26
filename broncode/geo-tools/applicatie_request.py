@@ -214,39 +214,39 @@ class Parameters:
 #endregion
 
 #region Ondersteuning voor nauwkeurigheden
-    def JuridischeNauwkeurigheidInDecimeter (self, verplicht: bool = True) -> int:
-        """Haal de nauwkeurigheid in decimeters uit de request parameters
+    def ToepassingsnauwkeurigheidInCentimeter (self, verplicht: bool = True) -> int:
+        """Haal de nauwkeurigheid in centimeter uit de request parameters
         
         Argumenten:
 
-        verplicht bool  Geeft aan dat de juridische nauwkeurigheid een verplichte parameter is
+        verplicht bool  Geeft aan dat de toepassingsnauwkeurigheid een verplichte parameter is
 
-        Geeft de waarde als int terug, of None als de juridische nauwkeurigheid niet is opgegeven
+        Geeft de waarde als int terug, of None als de toepassingsnauwkeurigheid niet is opgegeven
         """
-        if self.LeesString ("juridische-nauwkeurigheid") is None:
+        if self.LeesString ("toepassingsnauwkeurigheid") is None:
             if verplicht:
-                self.Log.Fout ("De juridische nauwkeurigheid is niet opgegeven in de specificatie")
+                self.Log.Fout ("De toepassingsnauwkeurigheid is niet opgegeven in de specificatie")
             return None
         try:
-            nauwkeurigheid = int (self.LeesString ("juridische-nauwkeurigheid"))
+            nauwkeurigheid = int (self.LeesString ("toepassingsnauwkeurigheid"))
         except:
-            self.Log.Fout ('De opgegeven juridische nauwkeurigheid is geen getal: "' + self.LeesString ("juridische-nauwkeurigheid") + '"')
+            self.Log.Fout ('De opgegeven toepassingsnauwkeurigheid is geen getal: "' + self.LeesString ("toepassingsnauwkeurigheid") + '"')
             return None
         return nauwkeurigheid
 
-    def JuridischeNauwkeurigheidInMeter (self, verplicht: bool = True) -> float:
+    def ToepassingsnauwkeurigheidInMeter (self, verplicht: bool = True) -> float:
         """Haal de nauwkeurigheid in meters uit de request parameters
         
         Argumenten:
 
-        verplicht bool  Geeft aan dat de juridische nauwkeurigheid een verplichte parameter is
+        verplicht bool  Geeft aan dat de toepassingsnauwkeurigheid een verplichte parameter is
 
-        Geeft de waarde als float terug, of None als de juridische nauwkeurigheid niet is opgegeven
+        Geeft de waarde als float terug, of None als de toepassingsnauwkeurigheid niet is opgegeven
         """
-        nauwkeurigheid = self.JuridischeNauwkeurigheidInDecimeter (verplicht)
+        nauwkeurigheid = self.ToepassingsnauwkeurigheidInCentimeter (verplicht)
         if not nauwkeurigheid is None:
             try:
-                return 0.1 * float (nauwkeurigheid)
+                return 0.01 * float (nauwkeurigheid)
             except:
-                self.Log.Fout ('De opgegeven juridische nauwkeurigheid is geen getal: "' + self.LeesString ("juridische-nauwkeurigheid") + '"')
+                self.Log.Fout ('De opgegeven toepassingsnauwkeurigheid is geen getal: "' + self.LeesString ("toepassingsnauwkeurigheid") + '"')
 #endregion

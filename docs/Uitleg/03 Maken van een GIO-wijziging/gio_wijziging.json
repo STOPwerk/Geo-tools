@@ -1,6 +1,6 @@
 {
   "beschrijving": "Samenstellen van een GIO-wijziging: welke locaties en andere eigenschappen van het GIO moeten uit de twee GIO-versies gehaald worden en in de GIO-wijziging opgenomen.",
-  "juridische-nauwkeurigheid": 50,
+  "toepassingsnauwkeurigheid": 500,
   "toon-gio-schaalafhankelijk": false,
   "toon-gio-wijziging": true,
   "wijziging": [

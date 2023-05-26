@@ -8,6 +8,7 @@
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/uitleg3/nld@2022;1</geo:FRBRExpression>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>2</geo:wId>
 			<geo:naam>Vlak #2</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -34,6 +35,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:naam>Vlak #1</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -58,6 +60,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>3</geo:wId>
 			<geo:naam>Lijn #1</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -77,6 +80,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>4</geo:wId>
 			<geo:naam>Lijn #2</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -98,6 +102,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>5</geo:wId>
 			<geo:naam>Punt #1</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -113,6 +118,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>6</geo:wId>
 			<geo:naam>Punt #2</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>

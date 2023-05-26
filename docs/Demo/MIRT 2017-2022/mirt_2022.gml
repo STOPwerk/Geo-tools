@@ -8,6 +8,7 @@
     <geo:FRBRExpression>/join/id/regdata/mnre1130/1839/mirt/nld@2022</geo:FRBRExpression>
     <geo:locaties>
             <geo:Locatie>
+                <geo:wId>89</geo:wId>
                 <geo:naam>A28 Amersfoort-Hoogeveen</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -21,6 +22,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>90</geo:wId>
                 <geo:naam>A1/A35 Knooppunt Azelo-Buren</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -34,6 +36,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>91</geo:wId>
                 <geo:naam>Maaslijn</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -47,6 +50,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>92</geo:wId>
                 <geo:naam>A20 Nieuwerkerk a/d IJssel-Knooppunt Gouwe</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -60,6 +64,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>93</geo:wId>
                 <geo:naam>A7/A8 Amsterdam-Hoorn</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -73,6 +78,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>94</geo:wId>
                 <geo:naam>A7/A8 Amsterdam-Hoorn</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -86,6 +92,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>95</geo:wId>
                 <geo:naam>Twentekanalen, verruiming (fase 2)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -99,6 +106,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>96</geo:wId>
                 <geo:naam>A67 Leenderheide - Geldrop</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -112,6 +120,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>97</geo:wId>
                 <geo:naam>A4 Haaglanden-N14</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -125,6 +134,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>98</geo:wId>
                 <geo:naam>A4 Haaglanden-N14</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -138,6 +148,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>99</geo:wId>
                 <geo:naam>Burgerveen - N14</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -151,6 +162,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>64</geo:wId>
                 <geo:naam>Krib- en oeververlaging Pannerdensch Kanaal</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -164,6 +176,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>67</geo:wId>
                 <geo:naam>N50 Kampen â€“ Kampen-Zuid</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -177,6 +190,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>50</geo:wId>
                 <geo:naam>Ombouw Amstelveenlijn (hoogwaardige tramverbinding)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -190,6 +204,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>49</geo:wId>
                 <geo:naam>Ombouw Amstelveenlijn (hoogwaardige tramverbinding)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -203,6 +218,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>60</geo:wId>
                 <geo:naam>A6 Almere Oostvaarders-Lelystad</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -216,6 +232,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>34</geo:wId>
                 <geo:naam>Capaciteitsuitbreiding ligplaatsen Amsterdam - Lemmer</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -229,6 +246,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>56</geo:wId>
                 <geo:naam>Calandbrug (TheemswegtracÃ©)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -242,6 +260,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>66</geo:wId>
                 <geo:naam>A67 / A73 Knooppunt Zaarderheiken</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -255,6 +274,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>45</geo:wId>
                 <geo:naam>A7 Zuidelijke Ringweg Groningen, fase 2</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -277,6 +297,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>48</geo:wId>
                 <geo:naam>N35 Nijverdal-Wierden</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -290,6 +311,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>62</geo:wId>
                 <geo:naam>N33 Zuidbroek - Appingedam</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -303,6 +325,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>65</geo:wId>
                 <geo:naam>PHS Meteren - Boxtel</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -316,6 +339,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>44</geo:wId>
                 <geo:naam>InnovA58</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -329,6 +353,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>43</geo:wId>
                 <geo:naam>InnovA58</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -342,6 +367,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>54</geo:wId>
                 <geo:naam>N65 Vught-Haaren</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -355,6 +381,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>16</geo:wId>
                 <geo:naam>HOV-Net Zuid-Holland Noord</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -368,6 +395,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>61</geo:wId>
                 <geo:naam>PHS: Rijswijk - Rotterdam</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -381,6 +409,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>63</geo:wId>
                 <geo:naam>A15 Papendrecht â€“ Sliedrecht</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -394,6 +423,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>31</geo:wId>
                 <geo:naam>A1/A6/A9 Schiphol-Amsterdam-Almere</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -436,6 +466,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>59</geo:wId>
                 <geo:naam>Rijnlandroute</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -468,6 +499,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>58</geo:wId>
                 <geo:naam>Zwolle-Herfte</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -481,6 +513,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>55</geo:wId>
                 <geo:naam>A2 Het Vonderen-Kerensheide</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -494,6 +527,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>53</geo:wId>
                 <geo:naam>A24 Blankenburgverbinding</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -546,6 +580,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>41</geo:wId>
                 <geo:naam>Spooraansluitingen Tweede Maasvlakte</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -559,6 +594,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>26</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -572,6 +608,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>40</geo:wId>
                 <geo:naam>A1 Apeldoorn-Azelo</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -585,6 +622,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>37</geo:wId>
                 <geo:naam>A27/A12 Ring Utrecht</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -598,6 +636,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>11</geo:wId>
                 <geo:naam>Sloelijn en Geluidsmaatregelen Zeeuwse Lijn</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -611,6 +650,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>28</geo:wId>
                 <geo:naam>Zandmaas</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -624,6 +664,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>7</geo:wId>
                 <geo:naam>Maasroute, modernisering fase 2</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -637,6 +678,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>3</geo:wId>
                 <geo:naam>Toekomstvisie Waal</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -650,6 +692,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>14</geo:wId>
                 <geo:naam>HOV-Net Zuid-Holland Noord</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -663,6 +706,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>13</geo:wId>
                 <geo:naam>HOV-Net Zuid-Holland Noord</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -676,6 +720,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>30</geo:wId>
                 <geo:naam>A16 Rotterdam</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -689,6 +734,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>33</geo:wId>
                 <geo:naam>A12/A15 Ressen - Oudbroeken (ViA15)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -702,6 +748,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>32</geo:wId>
                 <geo:naam>A12/A15 Ressen - Oudbroeken (ViA15)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -715,6 +762,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>51</geo:wId>
                 <geo:naam>Sporendriehoek Noord-Nederland</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -728,6 +776,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>52</geo:wId>
                 <geo:naam>Sporendriehoek Noord-Nederland</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -741,6 +790,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>47</geo:wId>
                 <geo:naam>Quickscan Decentraal Spoor: Oost-Nederland</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -754,6 +804,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>8</geo:wId>
                 <geo:naam>Vaarweg IJsselmeer - Meppel</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -767,6 +818,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>9</geo:wId>
                 <geo:naam>Vaarweg IJsselmeer - Meppel</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -780,6 +832,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>17</geo:wId>
                 <geo:naam>Bovenloop IJssel (IJsselkop tot Zutphen)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -793,6 +846,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>35</geo:wId>
                 <geo:naam>Capaciteitsuitbreiding ligplaatsen IJssel</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -806,6 +860,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>24</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -819,6 +874,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>23</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -832,6 +888,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>22</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -845,6 +902,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>4</geo:wId>
                 <geo:naam>Twentekanalen, verruiming (fase 2)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -858,6 +916,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>5</geo:wId>
                 <geo:naam>Twentekanalen, verruiming (fase 2)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -871,6 +930,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>21</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -884,6 +944,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>20</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -897,6 +958,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>19</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -910,6 +972,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>25</geo:wId>
                 <geo:naam>Vooroeververdediging en Herstel steenbekleding Oosterschelde en Westerschelde</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -923,6 +986,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>10</geo:wId>
                 <geo:naam>Vaarweg IJsselmeer - Meppel</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -936,6 +1000,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>27</geo:wId>
                 <geo:naam>Grensmaas</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -949,6 +1014,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>6</geo:wId>
                 <geo:naam>Maasroute, modernisering fase 2</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -962,6 +1028,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>18</geo:wId>
                 <geo:naam>De Zaan (Wilhelminasluis)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -975,6 +1042,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>2</geo:wId>
                 <geo:naam>Verbeteren vaargeul IJsselmeer (Amsterdam - Lemmer)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -988,6 +1056,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>100</geo:wId>
                 <geo:naam>A28/A1 Knooppunt Hoevelaken</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1001,6 +1070,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>39</geo:wId>
                 <geo:naam>Vaarweg Lemmer - Delfzijl, fase 2</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1014,6 +1084,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>46</geo:wId>
                 <geo:naam>Quickscan Decentraal Spoor: Oost-Nederland</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1027,6 +1098,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>12</geo:wId>
                 <geo:naam>Goederenroute Elst - Deventer - Twente (NaNOV)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1040,6 +1112,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>1</geo:wId>
                 <geo:naam>Traject Oost</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1053,6 +1126,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>15</geo:wId>
                 <geo:naam>HOV-Net Zuid-Holland Noord</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1066,6 +1140,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>42</geo:wId>
                 <geo:naam>Afsluitdijk</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1079,6 +1154,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>36</geo:wId>
                 <geo:naam>A27/A12 Ring Utrecht</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1092,6 +1168,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>101</geo:wId>
                 <geo:naam>A28/A1 Knooppunt Hoevelaken</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1105,6 +1182,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>38</geo:wId>
                 <geo:naam>A27/A12 Ring Utrecht</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1118,6 +1196,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>57</geo:wId>
                 <geo:naam>Noordelijke Randweg Utrecht (NRU)</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1131,6 +1210,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>29</geo:wId>
                 <geo:naam>A27 Houten-Hooipolder</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>
@@ -1144,6 +1224,7 @@
                 </geo:geometrie>
             </geo:Locatie>
             <geo:Locatie>
+                <geo:wId>102</geo:wId>
                 <geo:naam>PHS Alkmaar-Amsterdam</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>

@@ -8,6 +8,7 @@
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/uitleg2/nld@2022;3</geo:FRBRExpression>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:naam>Binnengebied</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -37,6 +38,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>2</geo:wId>
 			<geo:naam>Buitengebied</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>

@@ -1,7 +1,7 @@
 {
   "beschrijving": "Demonstratie van de GIO-wijziging en geo-renvooi voor een GIO met punten waarin elk punt een GIO-locatie met normwaarde is.",
   "symbolisatie": "stopborden_symbolisatie.xml",
-  "juridische-nauwkeurigheid": 10,
+  "toepassingsnauwkeurigheid": 100,
   "toon-maken": false,
   "toon-gio-wijziging": true,
   "wijziging": [

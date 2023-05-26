@@ -1,5 +1,5 @@
 {
   "was": "testdata_was_punten.gml",
   "wordt": "testdata_wordt_punten.gml",
-  "juridische-nauwkeurigheid": 10
+  "toepassingsnauwkeurigheid": 100
 }

@@ -9,6 +9,7 @@
 	<geo:normlabel>Gebruiksfunctie</geo:normlabel>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000001A</basisgeo:id>
@@ -32,6 +33,7 @@
 			<geo:kwalitatieveNormwaarde>Sport</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>2</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000002A</basisgeo:id>
@@ -58,6 +60,7 @@
 			<geo:kwalitatieveNormwaarde>Sport</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>3</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000003A</basisgeo:id>
@@ -83,6 +86,7 @@
 			<geo:kwalitatieveNormwaarde>Educatie</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>4</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000004A</basisgeo:id>
@@ -111,6 +115,7 @@
 			<geo:kwalitatieveNormwaarde>Recreatie</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>5</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000005A</basisgeo:id>
@@ -139,6 +144,7 @@
 			<geo:kwalitatieveNormwaarde>Recreatie</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>6</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000006A</basisgeo:id>
@@ -170,6 +176,7 @@
 			<geo:kwalitatieveNormwaarde>Recreatie</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>7</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000007A</basisgeo:id>
@@ -198,6 +205,7 @@
 			<geo:kwalitatieveNormwaarde>Recreatie</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>8</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000008A</basisgeo:id>
@@ -226,6 +234,7 @@
 			<geo:kwalitatieveNormwaarde>Recreatie</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>9</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000009A</basisgeo:id>
@@ -259,6 +268,7 @@
 			<geo:kwalitatieveNormwaarde>Recreatie</geo:kwalitatieveNormwaarde>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>10</geo:wId>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
 					<basisgeo:id>37b0a09f-36a0-4e69-80c2-20000000010A</basisgeo:id>

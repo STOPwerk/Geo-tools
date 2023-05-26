@@ -8,6 +8,7 @@
 	<geo:FRBRExpression>/join/id/regdata/mnre9999/2022/uitleg5/nld@2022;1</geo:FRBRExpression>
 	<geo:locaties>
 		<geo:Locatie>
+			<geo:wId>1</geo:wId>
 			<geo:naam>Vlak #1</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -32,6 +33,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>2</geo:wId>
 			<geo:naam>Vlak #2</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -55,6 +57,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>3</geo:wId>
 			<geo:naam>Vlak #3</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -86,6 +89,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>4</geo:wId>
 			<geo:naam>Vlak #4</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -109,6 +113,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>5</geo:wId>
 			<geo:naam>Lijn #1</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -125,6 +130,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>6</geo:wId>
 			<geo:naam>Lijn #2</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -141,6 +147,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>7</geo:wId>
 			<geo:naam>Lijn #3</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -157,6 +164,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>8</geo:wId>
 			<geo:naam>Lijn #4</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -173,6 +181,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>9</geo:wId>
 			<geo:naam>Lijn #5</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -190,6 +199,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>10</geo:wId>
 			<geo:naam>Punt #1</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -205,6 +215,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>11</geo:wId>
 			<geo:naam>Punt #2</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -220,6 +231,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>12</geo:wId>
 			<geo:naam>Punt #3</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>
@@ -235,6 +247,7 @@
 			</geo:geometrie>
 		</geo:Locatie>
 		<geo:Locatie>
+			<geo:wId>13</geo:wId>
 			<geo:naam>Punt #4</geo:naam>
 			<geo:geometrie>
 				<basisgeo:Geometrie>

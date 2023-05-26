@@ -251,7 +251,7 @@
         width: 4px;
     }
 
-.juridische_nauwkeurigheid {
+.toepassingsnauwkeurigheid {
     background-color: #000000;
     border-radius: 50%;
     display: inline-block;
@@ -3877,7 +3877,7 @@ class Kaart {
             }
         }
         var aanUitLagenElt = null;
-        if (aanUitLagen.length > 0 || 'juridische-nauwkeurigheid' in opties) {
+        if (aanUitLagen.length > 0 || 'toepassingsnauwkeurigheid' in opties) {
             var elt = document.createElement('p');
             kaartElement.insertAdjacentElement('afterend', elt); var parent = elt;
             elt = document.createElement('table'); parent.appendChild(elt); parent = elt;
@@ -3887,10 +3887,10 @@ class Kaart {
                 aanUitLagenElt = elt
                 aanUitLagenElt.innerHTML = 'Gegevens in de kaart die wel/niet zichtbaar gemaakt kunnen worden:</br>';
             }
-            if ('juridische-nauwkeurigheid' in opties) {
+            if ('toepassingsnauwkeurigheid' in opties) {
                 elt.width = '100%';
                 elt = document.createElement('td'); parent.appendChild(elt);
-                new TekenNauwkeurigheidSchaal(opties['juridische-nauwkeurigheid'], elt, opties['kaartelementId'], view);
+                new TekenNauwkeurigheidSchaal(opties['toepassingsnauwkeurigheid'], elt, opties['kaartelementId'], view);
             }
         }
 
@@ -3931,11 +3931,11 @@ class Kaart {
 }
 
 class TekenNauwkeurigheidSchaal {
-    constructor(juridischeNauwkeurigheid, inElement, kaartElementId, view) {
+    constructor(toepassingsnauwkeurigheid, inElement, kaartElementId, view) {
         inElement.style.textAlign = 'center';
         inElement.style.whiteSpace = 'nowrap';
-        inElement.innerHTML = 'Juridische&nbsp;nauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="juridische_nauwkeurigheid"></div></br>' + juridischeNauwkeurigheid + '&nbsp;decimeter</br>';
-        this._JuridischeNauwkeurigheid = juridischeNauwkeurigheid / 10;
+        inElement.innerHTML = 'Toepassingsnauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="toepassingsnauwkeurigheid"></div></br>' + toepassingsnauwkeurigheid + '&nbsp;centimeter</br>';
+        this._Toepassingsnauwkeurigheid = toepassingsnauwkeurigheid / 10;
         this._View = view;
         this._SchaalElement = document.getElementById(kaartElementId + '_tn');
         this._Schaal();
@@ -3947,7 +3947,7 @@ class TekenNauwkeurigheidSchaal {
     _Schaal() {
         var resolution = this._View.getResolution();
         if (resolution) {
-            var pixels = this._JuridischeNauwkeurigheid / resolution;
+            var pixels = this._Toepassingsnauwkeurigheid / resolution;
             if (pixels < 1) {
                 this._SchaalElement.style.display = 'none';
             } else {
@@ -4055,9 +4055,9 @@ Bestand: 1. Kwantitatieve norm.gml
             Deze kunnen gecontroleerd worden als onderdeel van het <a href="https://github.com/STOPwerk/Geo-tools//toon_geo" target="_blank">tonen van een GIO-versie</a>.
             De bepaling bestaat uit de volgende stappen:</p>
             <p><ol><li>Bepaal de te verwijderen en toe te voegen locaties waarvan de geometrie is gewijzigd.
-            Dit zijn alle locaties met een basisgeometrie-id die alleen in de originele en nieuwe versie terugkomt.
+            Dit zijn alle locaties met een wId/basisgeometrie-id combinatie die alleen in de originele of in de nieuwe versie terugkomt.
  Het gaat om 0 locaties uit de originele versie en 0 locaties uit de nieuwe versie</li>
-<li>Van de locaties met een manifest ongewijzigde geometrie (basisgeometrie-id komt in zowel de originele als nieuwe versie voor) 
+<li>Van de locaties met een manifest ongewijzigde geometrie (combinatie wId/basisgeometrie-id komt in zowel de originele als nieuwe versie voor) 
                 die in beide versies een verschillende waarde voor kwantitatieveNormwaarde hebben moet de originele verwijderd en de nieuwe toegevoegd worden.
                 Het betreft 0 locaties.</li>
 <li>De locaties met een manifest ongewijzigde geometrie die in beide versies een verschillende waarde voor het label hebben 
@@ -4065,14 +4065,14 @@ Bestand: 1. Kwantitatieve norm.gml
 <li>Neem de eigenschappen van de norm en eenheid over uit de nieuwe versie.</li>
 <li>Bepaal de wijzigmarkeringen. Hierbij wordt bedoeld met:<ul>
             <li>De "buitenrand" van een geometrie: de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
-            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+            <code>buitenrand = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (toepassingsnauwkeurigheid / 2)</code></li>
             <li>De "buitenrand" van meerdere geometrieën: de "buitenrand" van de <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (geometrieën)
             <li>Het "binnengebied": de binnenste rand van de geometrie getekend met een "dikke pen":<br/>
             <code>binnengebied = locatie.geometrie</code> voor een punt of lijn,<br/>
-            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.</li></ul>
+            <code>binnengebied = locatie.geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid / 2)</code> voor vlakken.</li></ul>
             <li>Het "binnengebied" van meerdere geometrieën:<br/>
             <code>binnengebied = <a href="https://shapely.readthedocs.io/en/stable/reference/shapely.union.html#shapely.union" target="_blank">union</a> (binnengebieden van de geometrieën)</code> voor punten of lijnen,<br/>
-            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid)</code> voor vlakken.<br/>
+            <code>binnengebied = (buitenrand van de geometrieën).<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid)</code> voor vlakken.<br/>
             De manier van samenvoegen van vlakken zorgt ervoor dat vlakken die net niet op elkaar aansluiten toch als aansluitend gezien worden.</li></ul>
             De wijzigmarkeringen worden opgesplitst in enkelvoudige geometrieën (punt, lijn, vlak) om bij weergave clustering te vereenvoudigen. Ze worden in meerdere stappen bepaald:
             <ol>
@@ -4118,7 +4118,7 @@ Dit levert geen wijzigmarkeringen op
         &lt;geo:GeoInformatieObjectMutatie&gt;
             &lt;geo:FRBRWork&gt;/join/id/regdata/mnre9999/2022/uitleg6&lt;/geo:FRBRWork&gt;
             &lt;geo:FRBRExpression&gt;/join/id/regdata/mnre9999/2022/uitleg6/nld@2022;2&lt;/geo:FRBRExpression&gt;
-            &lt;geo:juridischeNauwkeurigheid&gt;50&lt;/geo:juridischeNauwkeurigheid&gt;
+            &lt;!-- Gebruikte toepassingsnauwkeurigheid: 500 (staat in metadata) --&gt;
                     &lt;geo:normlabel&gt;Kwantitatieve norm&lt;/geo:normlabel&gt;
             &lt;geo:locatieMutaties&gt;
             &lt;/geo:locatieMutaties&gt;
@@ -4148,7 +4148,7 @@ Dit levert geen wijzigmarkeringen op
 <div id="log_detail">
 
 <table id="meldingen_tabel">
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-04-18 23:13:45.</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Geo-tools (https://github.com/STOPwerk/Geo-tools/) versie 2023-05-26 23:55:27.</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Toon GIO: '1. Kwantitatieve norm.gml'</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Lees het GIO, gebiedsmarkering of effectgebied</td></tr>
@@ -4166,7 +4166,7 @@ Dit levert geen wijzigmarkeringen op
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data4_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data4_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Prepareer kaart kaart_5</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data3_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data3_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versie' (data4_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Toon kaart kaart_5</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Maak de pagina af</td></tr>
@@ -4190,8 +4190,8 @@ Dit levert geen wijzigmarkeringen op
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data8_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data9_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data9_2</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data8_2)</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Juridische nauwkeurigheid' (data9_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data8_2)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'Toepassingsnauwkeurigheid' (data9_2)</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">VoegGeoDataToe: data11_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">GeoData toegevoegd: data11_2</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voeg laag toe: 'GIO-versies' (data4_2)</td></tr>
@@ -4379,15 +4379,15 @@ Kaartgegevens.Instantie.VoegDataToe ("data3_2",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data4_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85857.63525, 447596.2658], [85865.13525, 447590.8168], [85868.0, 447582.0], [85865.13525, 447573.1832], [85857.63525, 447567.7342], [85848.36475, 447567.7342], [85781.71948, 447545.6808], [85773.98493, 447569.4852], [85840.86475, 447590.8168], [85846.19014, 447595.3651], [85857.63525, 447596.2658]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-100000000001", "naam": "Binnengebied", "kwantitatieveNormwaarde": 101.01}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85853.0, 447597.0], [85861.81678, 447594.1353], [85867.26585, 447586.6353], [85867.26585, 447577.3647], [85861.81678, 447569.8647], [85853.0, 447567.0], [85853.0, 447537.0], [85866.90576, 447539.2025], [85879.45034, 447545.5942], [85889.40576, 447555.5497], [85895.79754, 447568.0942], [85895.79754, 447595.9058], [85889.40576, 447608.4503], [85879.45034, 447618.4058], [85866.90576, 447624.7975], [85853.0, 447627.0], [85853.0, 447597.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-100000000002", "naam": "Buitengebied", "kwantitatieveNormwaarde": 123.456}, "_shape": null}], "properties": {"id": ["ID", ""], "kwantitatieveNormwaarde": ["Kwantitatieve norm", ""], "naam": ["Naam", ""]}, "bbox": [85773.98493, 447537.0, 85895.79754, 447627.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85857.63525, 447596.2658], [85865.13525, 447590.8168], [85868.0, 447582.0], [85865.13525, 447573.1832], [85857.63525, 447567.7342], [85848.36475, 447567.7342], [85781.71948, 447545.6808], [85773.98493, 447569.4852], [85840.86475, 447590.8168], [85846.19014, 447595.3651], [85857.63525, 447596.2658]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-100000000001", "wId": "1", "naam": "Binnengebied", "kwantitatieveNormwaarde": 101.01}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85853.0, 447597.0], [85861.81678, 447594.1353], [85867.26585, 447586.6353], [85867.26585, 447577.3647], [85861.81678, 447569.8647], [85853.0, 447567.0], [85853.0, 447537.0], [85866.90576, 447539.2025], [85879.45034, 447545.5942], [85889.40576, 447555.5497], [85895.79754, 447568.0942], [85895.79754, 447595.9058], [85889.40576, 447608.4503], [85879.45034, 447618.4058], [85866.90576, 447624.7975], [85853.0, 447627.0], [85853.0, 447597.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-100000000002", "wId": "2", "naam": "Buitengebied", "kwantitatieveNormwaarde": 123.456}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "kwantitatieveNormwaarde": ["Kwantitatieve norm", ""], "naam": ["Naam", ""]}, "bbox": [85773.98493, 447537.0, 85895.79754, 447627.0]}
 );
 
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data3_2", "sym2").AlsAanUitLaag (false);
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data3_2", "sym2").AlsAanUitLaag (false);
 kaart.VoegLaagToe ("GIO-versie", "data4_2", "sym1");
-kaart.Toon ({"kaartelementId": "kaart_5", "kaartelementWidth": 900, "kaartelementHeight": 600, "juridische-nauwkeurigheid": 50, "maxZoom": 21, "bbox": [85771.48536348171, 447534.50152269314, 85898.29754, 447629.49847730686]});
+kaart.Toon ({"kaartelementId": "kaart_5", "kaartelementWidth": 900, "kaartelementHeight": 600, "toepassingsnauwkeurigheid": 500, "maxZoom": 18, "bbox": [85771.48536348171, 447534.50152269314, 85898.29754, 447629.49847730686]});
 });
 
 Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym6",`<FeatureTypeStyle version="1.1.0" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
@@ -4477,7 +4477,7 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym10",`<FeatureTypeStyle version=
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data11_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85857.63525, 447596.2658], [85865.13525, 447590.8168], [85868.0, 447582.0], [85865.13525, 447573.1832], [85857.63525, 447567.7342], [85848.36475, 447567.7342], [85781.71948, 447545.6808], [85773.98493, 447569.4852], [85840.86475, 447590.8168], [85846.19014, 447595.3651], [85857.63525, 447596.2658]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-100000000001", "naam": "Binnengebied", "kwantitatieveNormwaarde": 101.01}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85853.0, 447597.0], [85861.81678, 447594.1353], [85867.26585, 447586.6353], [85867.26585, 447577.3647], [85861.81678, 447569.8647], [85853.0, 447567.0], [85853.0, 447537.0], [85866.90576, 447539.2025], [85879.45034, 447545.5942], [85889.40576, 447555.5497], [85895.79754, 447568.0942], [85895.79754, 447595.9058], [85889.40576, 447608.4503], [85879.45034, 447618.4058], [85866.90576, 447624.7975], [85853.0, 447627.0], [85853.0, 447597.0]]]}, "properties": {"id": "37b0a09f-36a0-4e69-80c2-100000000002", "naam": "Buitengebied", "kwantitatieveNormwaarde": 123.456}, "_shape": null}], "properties": {"id": ["ID", ""], "kwantitatieveNormwaarde": ["Kwantitatieve norm", ""], "naam": ["Naam", ""]}, "bbox": [85773.98493, 447537.0, 85895.79754, 447627.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85857.63525, 447596.2658], [85865.13525, 447590.8168], [85868.0, 447582.0], [85865.13525, 447573.1832], [85857.63525, 447567.7342], [85848.36475, 447567.7342], [85781.71948, 447545.6808], [85773.98493, 447569.4852], [85840.86475, 447590.8168], [85846.19014, 447595.3651], [85857.63525, 447596.2658]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-100000000001", "wId": "1", "naam": "Binnengebied", "kwantitatieveNormwaarde": 101.01}, "_shape": null}, {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[85853.0, 447597.0], [85861.81678, 447594.1353], [85867.26585, 447586.6353], [85867.26585, 447577.3647], [85861.81678, 447569.8647], [85853.0, 447567.0], [85853.0, 447537.0], [85866.90576, 447539.2025], [85879.45034, 447545.5942], [85889.40576, 447555.5497], [85895.79754, 447568.0942], [85895.79754, 447595.9058], [85889.40576, 447608.4503], [85879.45034, 447618.4058], [85866.90576, 447624.7975], [85853.0, 447627.0], [85853.0, 447597.0]]]}, "properties": {"geoId": "37b0a09f-36a0-4e69-80c2-100000000002", "wId": "2", "naam": "Buitengebied", "kwantitatieveNormwaarde": 123.456}, "_shape": null}], "properties": {"geoId": ["basisgeo:id", ""], "wId": ["wId", ""], "kwantitatieveNormwaarde": ["Kwantitatieve norm", ""], "naam": ["Naam", ""]}, "bbox": [85773.98493, 447537.0, 85895.79754, 447627.0]}
 );
 
 
@@ -4767,11 +4767,11 @@ Kaartgegevens.Instantie.VoegSymbolisatieToe ("sym27",`<FeatureTypeStyle version=
 
 window.addEventListener("load", function () {
 var kaart = new Kaart ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data8_2", "sym10").AlsAanUitLaag (false).AlsOudLaag ();
-kaart.VoegLaagToe ("Juridische nauwkeurigheid", "data9_2", "sym10").AlsAanUitLaag (false).AlsNieuwLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data8_2", "sym10").AlsAanUitLaag (false).AlsOudLaag ();
+kaart.VoegLaagToe ("Toepassingsnauwkeurigheid", "data9_2", "sym10").AlsAanUitLaag (false).AlsNieuwLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data4_2", "sym6").AlsAanUitLaag (false).AlsOudLaag ();
 kaart.VoegLaagToe ("GIO-versies", "data11_2", "sym6").AlsAanUitLaag (false).AlsNieuwLaag ();
-kaart.Toon ({"kaartelementId": "kaart_7", "kaartelementWidth": 900, "kaartelementHeight": 600, "juridische-nauwkeurigheid": 50, "bbox": [85771.48536348171, 447534.50152269314, 85898.29754, 447629.49847730686]});
+kaart.Toon ({"kaartelementId": "kaart_7", "kaartelementWidth": 900, "kaartelementHeight": 600, "toepassingsnauwkeurigheid": 500, "bbox": [85771.48536348171, 447534.50152269314, 85898.29754, 447629.49847730686]});
 });
 </script>
 </body>

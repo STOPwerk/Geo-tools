@@ -21,12 +21,12 @@ from symbolisatie import Symbolisatie
 #
 #==============================================================================
 datadir = os.path.dirname (os.path.realpath (__file__))
-testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "01 Demo - GIO-wijziging en geo-renvooi", "MIRT 2017-2022")
+testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "Demo", "MIRT 2017-2022")
 
 was_jaar = 2019
 wordt_jaar = 2022
 
-juridischeNauwkeurigheid = 50 # decimeter
+toepassingsnauwkeurigheid = 500 # centimeter
 
 met_normwaarde = False
 
@@ -111,9 +111,9 @@ for code in sorted (shapes[was_jaar].keys ()):
     wordt_shape = shapes[wordt_jaar].get (code)
     if not wordt_shape is None:
         was_shape = shapes[was_jaar][code]
-        if not was_shape.difference (wordt_shape.buffer (0.05 * juridischeNauwkeurigheid)).is_empty:
+        if not was_shape.difference (wordt_shape.buffer (0.05 * toepassingsnauwkeurigheid)).is_empty:
             continue
-        if not wordt_shape.difference (was_shape.buffer (0.05 * juridischeNauwkeurigheid)).is_empty:
+        if not wordt_shape.difference (was_shape.buffer (0.05 * toepassingsnauwkeurigheid)).is_empty:
             continue
         geometrie_index += 1
         manifestOngewijzigd[code] = geometrie_index
@@ -149,6 +149,7 @@ def __GIO (jaar, geometrie_index : int):
                 index = geometrie_index
             gml_file.write ('''
             <geo:Locatie>
+                <geo:wId>''' + str(index) + '''</geo:wId>
                 <geo:naam>''' + prj['Naam'] + '''</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>

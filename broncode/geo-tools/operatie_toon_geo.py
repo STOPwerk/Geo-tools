@@ -80,7 +80,7 @@ class ToonGeo (Operatie):
         self.Generator.VoegHtmlToe ('Bestand: ' + self.Request.Bestandsnaam ('geometrie'))
 
 
-        if self._Geometrie.Soort == GeoData.SOORT_GIOVersie and not self._Geometrie.JuridischeNauwkeurigheid is None:
+        if self._Geometrie.Soort == GeoData.SOORT_GIOVersie and not self._Geometrie.Toepassingsnauwkeurigheid is None:
             self._MaakRanden ()
 
         self.Log.Informatie ('Maak de kaartweergave')
@@ -88,14 +88,14 @@ class ToonGeo (Operatie):
         kaart = KaartGenerator.Kaart (self.Kaartgenerator)
         kaart.ZoomTotNauwkeurigheid (True)
         if not self._RandDataNaam is None:
-            kaart.VoegLaagToe ('Juridische nauwkeurigheid', self._RandDataNaam, self._RandSymbolisatieNaam, True, False)
+            kaart.VoegLaagToe ('Toepassingsnauwkeurigheid', self._RandDataNaam, self._RandSymbolisatieNaam, True, False)
         kaart.VoegLagenToe (self._Geometrie.Soort, self._DataNamen, self._SymbolisatieNamen)
         kaart.Toon ()
 
-        if self._Geometrie.Soort == GeoData.SOORT_GIOVersie and not self._Geometrie.JuridischeNauwkeurigheid is None:
+        if self._Geometrie.Soort == GeoData.SOORT_GIOVersie and not self._Geometrie.Toepassingsnauwkeurigheid is None:
             if self.Request.IsOptie ("toon-gio-schaalafhankelijk", True):
                 self.Log.Informatie ('Toon GIO met schaalafhankelijkheid')
-                self.Generator.VoegHtmlToe ('<p>De GIO-versie is met een juridische nauwkeurigheid van ' + str(self._Geometrie.JuridischeNauwkeurigheid) +  ''' decimeter opgesteld.
+                self.Generator.VoegHtmlToe ('<p>De GIO-versie is met een toepassingsnauwkeurigheid van ' + str(self._Geometrie.Toepassingsnauwkeurigheid) +  ''' centimeter opgesteld.
                 Een GIO-viewer zou dat kunnen laten zien en/of gebruiken om het maximale zoom-niveau in te perken. Een viewer kan ook andere schaal-afhankelijke vereenvoudigingen doorvoeren,
                 bijvoorbeeld vereenvoudiging van geometrieën en/of het clusteren van vrijwel onzichtbare geometrieën, zoals in deze kaart gedaan is:.</p>''')
 
@@ -108,7 +108,7 @@ class ToonGeo (Operatie):
 
             if self.Request.IsOptie ("kwaliteitscontrole", False):
                 self.Log.Informatie ('Onderzoek de kwaliteit van de GIO-versie')
-                self.Generator.VoegHtmlToe ('''<p>De GIO-versie kan gebruikt worden als oude of nieuwe versie in een GIO-wijziging als de juridische nauwkeurigheid in
+                self.Generator.VoegHtmlToe ('''<p>De GIO-versie kan gebruikt worden als oude of nieuwe versie in een GIO-wijziging als de toepassingsnauwkeurigheid in
                 overeenstemming is met de detaillering van de geometrieën en als de verschillende locaties voldoende van elkaar gescheiden zijn.</p>''')
                 self._VoerKwaliteitscontroleUit ();
 
@@ -118,7 +118,7 @@ class ToonGeo (Operatie):
                     self.Generator.VoegHtmlToe ('''<p>De geometrieën waar problemen gevonden zijn, zijn op de kaart weergegeven. Klik op een geometrie om de beschrijving te tonen.</p>''')
                     kaart = KaartGenerator.Kaart (self.Kaartgenerator)
                     if not self._RandDataNaam is None:
-                        kaart.VoegLaagToe ('Juridische nauwkeurigheid', self._RandDataNaam, self._RandSymbolisatieNaam, True, False)
+                        kaart.VoegLaagToe ('Toepassingsnauwkeurigheid', self._RandDataNaam, self._RandSymbolisatieNaam, True, False)
                     kaart.VoegLagenToe (self._Geometrie.Soort, self._DataNamen, {d: self.Kaartgenerator.VoegUniformeSymbolisatieToe (d, '#ffffff', '#888888', '0.5') for d in [0,1,2]})
                     analysenamen = self.Kaartgenerator.VoegGeoDataToe (self._AnalyseResultaat)
                     kaart.VoegLagenToe ('Resultaat kwaliteitscontrole', analysenamen, {d: self.Kaartgenerator.VoegUniformeSymbolisatieToe (d, '#F8CECC', '#B85450') for d in [0,1,2]}, True)
@@ -131,10 +131,10 @@ class ToonGeo (Operatie):
 
 #======================================================================
 #
-# Rekenen met juridische nauwkeurigheid
+# Rekenen met toepassingsnauwkeurigheid
 #
 #======================================================================
-#region Rekenen met juridische nauwkeurigheid
+#region Rekenen met toepassingsnauwkeurigheid
     def _MaakRanden (self):
         if self._RandSymbolisatieNaam is None:
             self._RandSymbolisatieNaam = self.Kaartgenerator.VoegUniformeSymbolisatieToe (2, '#cccccc', '#000000', '0.5')
@@ -146,9 +146,9 @@ class ToonGeo (Operatie):
         randen.Locaties = { 2: [] }
         for dimensie in sorted (self._Geometrie.Locaties.keys (), reverse=True):
             for locatie in self._Geometrie.Locaties[dimensie]:
-                rand = GeoData.MaakShapelyShape (locatie).buffer (0.05 * self._Geometrie.JuridischeNauwkeurigheid)
+                rand = GeoData.MaakShapelyShape (locatie).buffer (0.005 * self._Geometrie.Toepassingsnauwkeurigheid)
                 if dimensie == 2:
-                    rand = rand.difference (GeoData.MaakShapelyShape (locatie).buffer (-0.05 * self._Geometrie.JuridischeNauwkeurigheid))
+                    rand = rand.difference (GeoData.MaakShapelyShape (locatie).buffer (-0.005 * self._Geometrie.Toepassingsnauwkeurigheid))
                 randen.Locaties[2].append ({ 
                     'type': 'Feature', 
                     'geometry': mapping (rand)
@@ -160,10 +160,10 @@ class ToonGeo (Operatie):
 
         self.Generator.VoegHtmlToe ('''<p>Om de kwaliteit van de GIO-versie te bepalen worden de volgende stappen doorlopen:.</p>
         <p><ol><li>Bepaal voor elke losse geometrie de "buitenrand": de buitenste rand van de geometrie met een "dikke rand":<br/>
-        <code>buitenrand = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (juridische nauwkeurigheid / 2)</code></li>
+        <code>buitenrand = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (toepassingsnauwkeurigheid / 2)</code></li>
         <li>Bepaal voor elke losse geometrie het "binnengebied": de binnenste rand van de geometrie met een "dikke rand":<br/>
         <code>binnengebied = geometrie</code> voor een punt of lijn,<br/>
-        <code>binnengebied = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- juridische nauwkeurigheid / 2)</code> voor vlakken.<br/>''')
+        <code>binnengebied = geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (- toepassingsnauwkeurigheid / 2)</code> voor vlakken.<br/>''')
 
         self.Log.Detail ('Maak binnengebieden en buitenranden voor losse geometrieën')
 
@@ -182,7 +182,7 @@ class ToonGeo (Operatie):
                 geometrie._Index = len (enkeleGeometrieen)
                 enkeleGeometrieen.append (geometrie)
 
-                buitenrand = GeoData.MaakShapelyShape (geometrie.Geometrie).buffer (0.05 * self._Geometrie.JuridischeNauwkeurigheid)
+                buitenrand = GeoData.MaakShapelyShape (geometrie.Geometrie).buffer (0.005 * self._Geometrie.Toepassingsnauwkeurigheid)
                 buitenrand = GeoData.EnkeleGeometrie (geometrie.Locatie, buitenrand, geometrie.Attribuutwaarde) # Geometrie is hier een shape
                 buitenrand._Bron = geometrie
                 buitenranden.append (buitenrand)
@@ -191,14 +191,14 @@ class ToonGeo (Operatie):
                 geometrie._Binnengebied = None
                 binnengebied = GeoData.MaakShapelyShape (geometrie.Geometrie)
                 if dimensie == 2:
-                    binnengebied = binnengebied.buffer (-0.05 * self._Geometrie.JuridischeNauwkeurigheid)
+                    binnengebied = binnengebied.buffer (-0.005 * self._Geometrie.Toepassingsnauwkeurigheid)
                     if binnengebied.is_empty:
                         geometrie._Analyse.add ('Vlak heeft geen binnengebied')
                         numGeometrieMetGebrek += 1
                         continue
-                    lijst = locatieVlakken.get (geometrie.ID)
+                    lijst = locatieVlakken.get (geometrie.wId)
                     if lijst is None:
-                        locatieVlakken[geometrie.ID] = [geometrie]
+                        locatieVlakken[geometrie.wId] = [geometrie]
                     else:
                         lijst.append (geometrie)
 
@@ -210,16 +210,16 @@ class ToonGeo (Operatie):
         if numGeometrieMetGebrek > 0:
             geenProblemen = False
             self.Generator.VoegHtmlToe ('Voor ' + str(numGeometrieMetGebrek) + ' vlak' + ('' if numGeometrieMetGebrek == 1 else 'ken') + '''  is er geen "binnengebied" omdat de geometrie 
-            te smal of klein is in vergelijking met de juridische nauwkeurigheid. Het wijzigen van zo\'n vlak zal niet worden gedetecteerd.''')
+            te smal of klein is in vergelijking met de toepassingsnauwkeurigheid. Het wijzigen van zo\'n vlak zal niet worden gedetecteerd.''')
         self.Generator.VoegHtmlToe ('</li>')
 
         if len (binnengebieden) == 0:
             self.Generator.VoegHtmlToe ('<li>Er zijn geen losse geometrieën die een "binnengebied" hebben. De overige stappen in de kwaliteitscontrole worden overgeslagen.</li>')
         else:
             if len (locatieVlakken) > 0:
-                self.Generator.VoegHtmlToe ('''<li>Verifieer dat locaties met vlakken geen uitstulpingen hebben die dunner zijn dan de juridische nauwkeurigheid
+                self.Generator.VoegHtmlToe ('''<li>Verifieer dat locaties met vlakken geen uitstulpingen hebben die dunner zijn dan de toepassingsnauwkeurigheid
                 en significant uitsteken buiten het binnengebied:<br/>
-                <code>locatie_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (locatie_binnengebied.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (2 * juridische nauwkeurigheid)) moet leeg zijn</code> 
+                <code>locatie_geometrie.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.difference.html#shapely.difference" target="_blank">difference</a> (locatie_binnengebied.<a href="https://shapely.readthedocs.io/en/stable/reference/shapely.buffer.html#shapely.buffer" target="_blank">buffer</a> (2 * toepassingsnauwkeurigheid)) moet leeg zijn</code> 
                 <br/>Het wijzigen van deze uitstulpingen zal niet worden gedetecteerd.''')
                 
                 self.Log.Detail ('Bepaal vergroot binnengebied per locatie-met-vlakken, en verifieer dat alle vlakken daar binnen liggen')
@@ -234,16 +234,16 @@ class ToonGeo (Operatie):
                                 try:
                                     binnengebied = binnengebied.union (geometrie._Binnengebied.Geometrie)
                                 except Exception as e:
-                                    self.Log.Fout ("Kan geen union uitvoeren met het binnengebied van de locatie " + geometrie.ID + ". Klopt de geometrie wel?")
+                                    self.Log.Fout ("Kan geen union uitvoeren met het binnengebied van de locatie met wId '" + geometrie.wId + "'. Klopt de geometrie wel?")
                                     raise e
                     if not binnengebied is None:
                         # Maak het binnengebied groter
-                        binnengebied = binnengebied.buffer (0.2 * self._Geometrie.JuridischeNauwkeurigheid)
+                        binnengebied = binnengebied.buffer (0.02 * self._Geometrie.Toepassingsnauwkeurigheid)
                         for geometrie in vlakken:
                             try:
                                 uitstulpingen = GeoData.MaakShapelyShape (geometrie.Geometrie).difference (binnengebied)
                             except Exception as e:
-                                self.Log.Fout ("Kan geen difference uitvoeren met de geometrie/binnengebied van de locatie " + geometrie.ID + ". Klopt de geometrie wel?")
+                                self.Log.Fout ("Kan geen difference uitvoeren met de geometrie/binnengebied van de locatie met wId '" + geometrie.wId + "'. Klopt de geometrie wel?")
                                 raise e
                             if not uitstulpingen.is_empty:
                                 uitstulpingen = GeoData.EnkeleGeometrie (geometrie.Locatie, uitstulpingen, geometrie.Attribuutwaarde) # Geometrie is hier een shape
@@ -272,7 +272,7 @@ class ToonGeo (Operatie):
                         try:
                             nietInRand = nietInRand.difference (buitenrand.Geometrie)
                         except Exception as e:
-                            self.Log.Fout ("Kan geen difference uitvoeren met de buitenrand van locatie " + buitenrand.ID + " en binnengebied van " + binnengebied.ID + ". Klopt de geometrie wel?")
+                            self.Log.Fout ("Kan geen difference uitvoeren met de buitenrand van locatie met wId '" + buitenrand.wId + "' en binnengebied van wId '" + binnengebied.wId + "'. Klopt de geometrie wel?")
                             raise e
                         if nietInRand.is_empty:
                             break
@@ -301,7 +301,7 @@ class ToonGeo (Operatie):
                         try:
                             overlap = binnengebiedShape.intersection (binnengebied2.Geometrie)
                         except Exception as e:
-                            self.Log.Fout ("Kan geen intersection uitvoeren met de binnengebieden van locaties " + binnengebied1.ID + " en " + binnengebied2.ID + ". Klopt de geometrie wel?")
+                            self.Log.Fout ("Kan geen intersection uitvoeren met de binnengebieden van locaties met wId '" + binnengebied1.wId + "' en '" + binnengebied2.wId + "'. Klopt de geometrie wel?")
                             raise e
                         if not overlap.is_empty:
                             numGeometrieMetGebrek += 1
@@ -326,13 +326,14 @@ class ToonGeo (Operatie):
         if not geenProblemen:
             self.Log.Detail ('Maak overzicht van analyseresultaten')
             self._AnalyseResultaat = GeoData ()
-            self._AnalyseResultaat.Attributen = { 'r' : Attribuut ('r', 'Bevindingen'), 'id' : Attribuut ('id', 'Locatie ID') }
+            self._AnalyseResultaat.Attributen = { 'r' : Attribuut ('r', 'Bevindingen'), 'w' : Attribuut ('w', 'Locatie wId') , 'g' : Attribuut ('geoId', 'basisgeo:id') }
             self._AnalyseResultaat.Locaties = { }
             for geometrie in enkeleGeometrieen:
                 if len (geometrie._Analyse) > 0:
                     geometrie.Geometrie['properties'] = {
                             'r' : '<br/>' + '<br/>'.join (geometrie._Analyse),
-                            'id': geometrie.ID
+                            'w': geometrie.wId,
+                            'g': geometrie.GeoId
                         }
                     if not geometrie._Dimensie in self._AnalyseResultaat.Locaties:
                         self._AnalyseResultaat.Locaties[geometrie._Dimensie] = []
@@ -343,7 +344,8 @@ class ToonGeo (Operatie):
                         'geometry': mapping (geometrie.Geometrie),
                         'properties': {
                             'r' : '<br/>' + '<br/>'.join (geometrie._Analyse),
-                            'id': geometrie.ID
+                            'w': geometrie.wId,
+                            'g': geometrie.GeoId
                         }
                     }
                 if not geometrie._Dimensie in self._AnalyseResultaat.Locaties:

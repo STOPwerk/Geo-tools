@@ -26,12 +26,12 @@ from symbolisatie import Symbolisatie
 #
 #==============================================================================
 datadir = os.path.dirname (os.path.realpath (__file__))
-testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "01 Demo - GIO-wijziging en geo-renvooi", "Gemeenten 2017-2023")
+testscenario_dir = os.path.join (datadir, "..", "..", "..", "docs", "Demo", "Gemeenten 2017-2023")
 
 was_jaar = 2017
 wordt_jaar = 2023
 
-juridischeNauwkeurigheid = 10 # decimeter
+toepassingsnauwkeurigheid = 100 # centimeter
 
 
 symbolisatie = Symbolisatie (os.path.join (datadir, 'Gemeentes_Vlaksymbolen.json'))
@@ -143,9 +143,9 @@ for gmcode in sorted (shapes[was_jaar].keys ()):
     wordt_shape = shapes[wordt_jaar].get (gmcode)
     if not wordt_shape is None:
         was_shape = shapes[was_jaar][gmcode]
-        if not was_shape.buffer (-0.05 * juridischeNauwkeurigheid).difference (wordt_shape.buffer (0.05 * juridischeNauwkeurigheid)).is_empty:
+        if not was_shape.buffer (-0.05 * toepassingsnauwkeurigheid).difference (wordt_shape.buffer (0.05 * toepassingsnauwkeurigheid)).is_empty:
             continue
-        if not wordt_shape.buffer (-0.05 * juridischeNauwkeurigheid).difference (was_shape.buffer (0.05 * juridischeNauwkeurigheid)).is_empty:
+        if not wordt_shape.buffer (-0.05 * toepassingsnauwkeurigheid).difference (was_shape.buffer (0.05 * toepassingsnauwkeurigheid)).is_empty:
             continue
         geometrie_index += 1
         manifestOngewijzigd[gmcode] = geometrie_index
@@ -189,6 +189,7 @@ def __GIO (jaar, geometrie_index):
                 index = geometrie_index
             gml_file.write ('''
             <geo:Locatie>
+                <geo:wId>''' + str(index) + '''</geo:wId>
                 <geo:naam>''' + gem['Naam'] + '''</geo:naam>
                 <geo:geometrie>
                     <basisgeo:Geometrie>

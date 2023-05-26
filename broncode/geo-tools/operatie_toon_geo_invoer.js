@@ -6,24 +6,24 @@ window.addEventListener('load', function () {
     const geometrieFile = document.getElementById('geometrie');
     const symbolisatieFile = document.getElementById('symbolisatie');
     const symbolisatieInvoer = document.getElementById('symbolisatie_invoer');
-    const juridischeNauwkeurigheidInvoer = document.getElementById('nauwkeurigheid_invoer');
-    const juridischeNauwkeurigheidWaarde = document.getElementById('juridische-nauwkeurigheid');
+    const toepassingsnauwkeurigheidInvoer = document.getElementById('nauwkeurigheid_invoer');
+    const toepassingsnauwkeurigheidWaarde = document.getElementById('toepassingsnauwkeurigheid');
     const kwaliteitscontroleInvoer = document.getElementById('kwaliteitscontrole_invoer');
     const kwaliteitscontroleWaarde = document.getElementById('kwaliteitscontrole');
     const startknop = this.document.getElementById("startknop");
 
     var geoFileType = '';
     var symbolisatieNodig = false;
-    var juridischeNauwkeurigheidNodig = false;
+    var toepassingsnauwkeurigheidNodig = false;
     var kwaliteitscontroleMogelijk = false;
     var teveelFiles = false;
     var geometrieOk = false;
 
     function InvoerControlsStatus() {
-        juridischeNauwkeurigheidInvoer.style.display = (juridischeNauwkeurigheidNodig ? '' : 'none');
+        toepassingsnauwkeurigheidInvoer.style.display = (toepassingsnauwkeurigheidNodig ? '' : 'none');
         kwaliteitscontroleInvoer.style.display = (kwaliteitscontroleMogelijk ? '' : 'none');
-        if (kwaliteitscontroleMogelijk && juridischeNauwkeurigheidNodig) {
-            kwaliteitscontroleWaarde.disabled = (juridischeNauwkeurigheidWaarde.value == "");
+        if (kwaliteitscontroleMogelijk && toepassingsnauwkeurigheidNodig) {
+            kwaliteitscontroleWaarde.disabled = (toepassingsnauwkeurigheidWaarde.value == "");
         } else {
             kwaliteitscontroleWaarde.disabled = false;
         }
@@ -70,9 +70,9 @@ window.addEventListener('load', function () {
                         || gml.match(/\<([^:]+:){0,1}groepID[\s>]/)) {
                         symbolisatieNodig = true;
                     }
-                    juridischeNauwkeurigheidNodig = true;
-                    if (gml.match(/\<([^:]+:){0,1}juridischeNauwkeurigheid[\s>]/)) {
-                        juridischeNauwkeurigheidNodig = false;
+                    toepassingsnauwkeurigheidNodig = true;
+                    if (gml.match(/\<([^:]+:){0,1}toepassingsnauwkeurigheid[\s>]/)) {
+                        toepassingsnauwkeurigheidNodig = false;
                     }
                     kwaliteitscontroleMogelijk = true;
                 }
@@ -178,6 +178,6 @@ window.addEventListener('load', function () {
     }
     InitBox(document.getElementById('geometrie_box'), geometrieFile, true);
     InitBox(document.getElementById('symbolisatie_box'), symbolisatieFile, false);
-    juridischeNauwkeurigheidWaarde.addEventListener('click', InvoerControlsStatus);
-    juridischeNauwkeurigheidWaarde.addEventListener('change', InvoerControlsStatus);
+    toepassingsnauwkeurigheidWaarde.addEventListener('click', InvoerControlsStatus);
+    toepassingsnauwkeurigheidWaarde.addEventListener('change', InvoerControlsStatus);
 });

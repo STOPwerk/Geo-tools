@@ -1,14 +1,14 @@
 # Geo-tools
 
-[Geo-tools online](https://geo-tools.vercel.app/) - huidige versie: `2023-05-26 23:55:27`.
+[Geo-tools online](https://geo-tools.vercel.app/) - huidige versie: `2023-06-06 09:23:53`.
 
 ## Wat is het?
 
 Het voornaamste doel is om te laten zien hoe het muteren van [geografische informatieobjecten](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/gio-intro.html) (GIO's) in [STOP](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/) werkt, waarom bepaalde keuzes zijn gemaakt. Het gaat hierbij om het maken van de GIO-wijziging die het verschil tussen twee GIO-versies beschrijft. Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd worden met de [versiebeheer-simulator](https://github.com/STOPwerk/Versiebeheer-simulator/).
 
-- Er is een [demo en uitleg](https://geo-tools.vercel.app/voorbeeld) beschikbaar van het maken en tonen van een GIO-wijziging.
+- Er is een [demo en uitleg](https://geo-tools.vercel.app/) beschikbaar van het maken en tonen van een GIO-wijziging.
 
-De [brondata](broncode/geo-tools/voorbeelden) daarvan staat in deze repository. 
+De [brondata](docs) daarvan staat in deze repository. 
 
 ## Wat zit er in?
 
@@ -42,7 +42,8 @@ De script kunnen ook op voorbeeldbestanden toegepast worden:
 
 - Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_tools_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken.
 
-- Bekijk de [voorbeelden](broncode/geo-tools/voorbeelden) om inspiratie op te doen. De tools zijn ook gebruikt voor de [STOP voorbeelden](https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeeldenCoderingen/GIO/GIO-wijziging).
+- Bekijk de [voorbeelden](docs) om inspiratie op te doen. De tools zijn ook gebruikt voor de [STOP voorbeelden](https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeeldenCoderingen/GIO/GIO-wijziging).
 
 De twee webpagina's kunnen op de eigen computer opgeslagen worden en van daaruit gestart worden. Ze gebruiken geen andere bestanden van het internet en zijn offline uit te voeren.
 
+- In de [documentatie](../../wiki) staat ook een toelichting op de structuur van de Python code

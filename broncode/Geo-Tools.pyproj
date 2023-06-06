@@ -84,7 +84,7 @@
     <Content Include="uitleveren\wiki_extra\Maak STOPwerk git user.bat" />
     <Content Include="uitleveren\wiki_extra\__LEESMIJ.txt" />
     <Content Include="wiki\Toepassingsnauwkeurigheid.md" />
-    <Content Include="wiki\structuur-code.md" />
+    <Content Include="wiki\Structuur-code.md" />
     <Content Include="wiki\Geo-tools-uitvoeren.md" />
     <Content Include="wiki\Home.md" />
     <Content Include="wiki\Invoerspecificatie.md" />

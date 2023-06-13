@@ -3935,7 +3935,7 @@ class TekenNauwkeurigheidSchaal {
         inElement.style.textAlign = 'center';
         inElement.style.whiteSpace = 'nowrap';
         inElement.innerHTML = 'Toepassingsnauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="toepassingsnauwkeurigheid"></div></br>' + toepassingsnauwkeurigheid + '&nbsp;centimeter</br>';
-        this._Toepassingsnauwkeurigheid = toepassingsnauwkeurigheid / 10;
+        this._Toepassingsnauwkeurigheid = toepassingsnauwkeurigheid / 100;
         this._View = view;
         this._SchaalElement = document.getElementById(kaartElementId + '_tn');
         this._Schaal();

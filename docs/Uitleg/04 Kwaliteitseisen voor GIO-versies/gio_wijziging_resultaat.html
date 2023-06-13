@@ -3935,7 +3935,7 @@ class TekenNauwkeurigheidSchaal {
         inElement.style.textAlign = 'center';
         inElement.style.whiteSpace = 'nowrap';
         inElement.innerHTML = 'Toepassingsnauwkeurigheid<br><div id="' + kaartElementId + '_tn" class="toepassingsnauwkeurigheid"></div></br>' + toepassingsnauwkeurigheid + '&nbsp;centimeter</br>';
-        this._Toepassingsnauwkeurigheid = toepassingsnauwkeurigheid / 10;
+        this._Toepassingsnauwkeurigheid = toepassingsnauwkeurigheid / 100;
         this._View = view;
         this._SchaalElement = document.getElementById(kaartElementId + '_tn');
         this._Schaal();
@@ -4827,7 +4827,7 @@ Dit levert 1 markering op.</li>
                     &lt;geo:Vlak&gt;
                         &lt;geo:geometrie&gt;
                             &lt;basisgeo:Geometrie&gt;
-                                &lt;basisgeo:id&gt;112df96e-035e-4147-81f0-5f1290e83800&lt;/basisgeo:id&gt;
+                                &lt;basisgeo:id&gt;0bc476d2-4d91-4c59-9850-c3febf73cca3&lt;/basisgeo:id&gt;
                                 &lt;basisgeo:geometrie&gt;
                                     &lt;gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992"&gt;&lt;gml:exterior&gt;&lt;gml:LinearRing&gt;&lt;gml:posList&gt;85210.75570329413 443767.5 85221.5 443767.5 85221.5 443767.44883958384 85221.52289091161 443766.9709430236 85221.59135404891 443766.49742225854 85221.70476253846 443766.0326130174 85221.71161255546 443766.0129383825 85211.21097212499 443762.83832615934 85211.24305280807 443762.89604615123 85211.34192452367 443763.1251345672 85211.41746800365 443763.36293763935 85211.46893074892 443763.6070865782 85211.49580013193 443763.85514938226 85211.497808503 443764.1046550634 85211.4749358565 443764.353118261 85211.42741003001 443764.59806399845 85211.35570443491 443764.8370523373 85210.40308099685 443767.5180068701 85210.75570329413 443767.5&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;&lt;/gml:exterior&gt;&lt;/gml:Polygon&gt;
                                 &lt;/basisgeo:geometrie&gt;
@@ -5472,7 +5472,7 @@ Kaartgegevens.Instantie.VoegDataToe ("data12_1",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data12_0",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Binnengebied geheel in buitenrand andere geometrieën<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde", "w": "11", "g": "37b0a09f-36a0-4e69-80c2-00000000002A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Binnengebied geheel in buitenrand andere geometrieën", "w": "12", "g": "37b0a09f-36a0-4e69-80c2-00000000003A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën", "w": "13", "g": "37b0a09f-36a0-4e69-80c2-00000000004A"}}], "properties": {"r": ["Bevindingen", ""], "w": ["Locatie wId", ""], "geoId": ["basisgeo:id", ""]}, "bbox": [82232.0, 445276.0, 82308.0, 445337.0]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [82232.0, 445337.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Overlappend binnengebied met verschillende waarde voor kwalitatieveNormwaarde<br/>Binnengebied geheel in buitenrand andere geometrieën", "w": "11", "g": "37b0a09f-36a0-4e69-80c2-00000000002A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82308.0, 445317.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied overlapt met binnengebied andere geometrie<br/>Binnengebied geheel in buitenrand andere geometrieën", "w": "12", "g": "37b0a09f-36a0-4e69-80c2-00000000003A"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [82251.0, 445276.0]}, "_shape": null, "properties": {"r": "<br/>Binnengebied geheel in buitenrand andere geometrieën", "w": "13", "g": "37b0a09f-36a0-4e69-80c2-00000000004A"}}], "properties": {"r": ["Bevindingen", ""], "w": ["Locatie wId", ""], "geoId": ["basisgeo:id", ""]}, "bbox": [82232.0, 445276.0, 82308.0, 445337.0]}
 );
 
 
@@ -6144,7 +6144,7 @@ Kaartgegevens.Instantie.VoegDataToe ("data58_2",
 
 
 Kaartgegevens.Instantie.VoegDataToe ("data60_2",
-{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"geoId": "112df96e-035e-4147-81f0-5f1290e83800"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.5, 443767.44883958384], [85221.52289091161, 443766.9709430236], [85221.59135404891, 443766.49742225854], [85221.70476253846, 443766.0326130174], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85211.24305280807, 443762.89604615123], [85211.34192452367, 443763.1251345672], [85211.41746800365, 443763.36293763935], [85211.46893074892, 443763.6070865782], [85211.49580013193, 443763.85514938226], [85211.497808503, 443764.1046550634], [85211.4749358565, 443764.353118261], [85211.42741003001, 443764.59806399845], [85211.35570443491, 443764.8370523373], [85210.40308099685, 443767.5180068701], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.40308099685, 443762.83832615934, 85221.71161255546, 443767.5180068701]}
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::28992"}}, "features": [{"type": "Feature", "properties": {"geoId": "0bc476d2-4d91-4c59-9850-c3febf73cca3"}, "geometry": {"type": "Polygon", "coordinates": [[[85210.75570329413, 443767.5], [85221.5, 443767.5], [85221.5, 443767.44883958384], [85221.52289091161, 443766.9709430236], [85221.59135404891, 443766.49742225854], [85221.70476253846, 443766.0326130174], [85221.71161255546, 443766.0129383825], [85211.21097212499, 443762.83832615934], [85211.24305280807, 443762.89604615123], [85211.34192452367, 443763.1251345672], [85211.41746800365, 443763.36293763935], [85211.46893074892, 443763.6070865782], [85211.49580013193, 443763.85514938226], [85211.497808503, 443764.1046550634], [85211.4749358565, 443764.353118261], [85211.42741003001, 443764.59806399845], [85211.35570443491, 443764.8370523373], [85210.40308099685, 443767.5180068701], [85210.75570329413, 443767.5]]]}, "_shape": null}], "bbox": [85210.40308099685, 443762.83832615934, 85221.71161255546, 443767.5180068701]}
 );
 
 

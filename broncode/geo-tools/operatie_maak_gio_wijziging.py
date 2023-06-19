@@ -183,6 +183,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 #endregion
 
 #region Toevoegen locaties aan Was, Wordt en WordtRevisies
+        self.Log.Informatie ("Bepaal de gewijzigde onderdelen van het GIO")
         self.Log.Detail ("Voeg de locaties aan de was, wordt en wordt-revisies toe; locaties met dezelfde basisgeo-id moeten gelijke geometrie hebben.")
         def _VoegLocatieToe (locaties, dimensie, locatie):
             if not dimensie in locaties:
@@ -278,6 +279,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 #endregion
 
 #region Bepaling GIO-wijzigingen
+        self.Log.Informatie ("Bepaal de wijzigmarkeringen")
         if self._Toon:
             self.Generator.VoegHtmlToe ('''<li>Bepaal de wijzigmarkeringen. Hierbij wordt bedoeld met:<ul>
             <li>De "buitenrand" van een geometrie: de buitenste rand van de geometrie van een locatie getekend met een "dikke pen":<br/>
@@ -456,7 +458,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 #======================================================================
 #region Toon GIO-wijziging op de kaart
     def _ToonGIOWijzigingOnderdelen (self):
-        self.Log.Detail ("Toon de onderdelen van de GIO-wijziging in een kaart")
+        self.Log.Informatie ("Toon de onderdelen van de GIO-wijziging in een kaart")
         kaart = KaartGenerator.Kaart (self.Kaartgenerator)
 
         # Voeg de toepassingsnauwkeurigheid toe
@@ -536,7 +538,7 @@ class MaakGIOWijziging (ToonGIOWijziging):
 
 #region Toon GIO-wijziging als GML
     def _ToonGIOWijzigingGML (self):
-        self.Log.Detail ("Maak en presenteer de GIO-wijziging als GML")
+        self.Log.Informatie ("Maak en presenteer de GIO-wijziging als GML")
         if self._Toon:
             self.Generator.VoegHtmlToe ('''
 <p>De GIO-wijziging is een GML bestand waarin de vaststellingscontext nog aangepast moet worden:</p>''')

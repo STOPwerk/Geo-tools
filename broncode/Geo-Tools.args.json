@@ -37,6 +37,10 @@
     {
       "Id": "eea34192-19a3-404b-b58a-5c5a0295fdc6",
       "Command": "\"..\\docs\\Uitleg\\03 Maken van een GIO-wijziging\""
+    },
+    {
+      "Id": "dd9df6b6-dc0a-45a8-8bac-02b5961c2261",
+      "Command": "-p \"..\\docs\\Demo\\Gemeenten 2017-2023\""
     }
   ]
 }

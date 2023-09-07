@@ -1,6 +1,8 @@
 # Geo-tools
 
-[Geo-tools online](https://geo-tools.vercel.app/) - huidige versie: `2023-06-13 10:17:37`.
+[Geo-tools online](https://geo-tools.vercel.app/) - huidige versie: `2023-09-07 13:13:53`.
+
+**Deze versie is gebaseerd op de release candidate van STOP 2.0. In afwachting van de uitkomsten van de bespreking van de release candidate is de (door-)ontwikkeling van deze simulator gepauzeerd.**
 
 ## Wat is het?
 

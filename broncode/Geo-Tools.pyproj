@@ -12,7 +12,7 @@
     <RootNamespace>Geo-Tools</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  ..\docs\</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -p "..\docs\Demo\Gemeenten 2017-2023"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>

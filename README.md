@@ -2,6 +2,8 @@
 
 [Geo-tools online](@@@GeoTools_Online_Url@@@) - huidige versie: `@@@VERSIE@@@`.
 
+**Deze versie is gebaseerd op de release candidate van STOP 2.0. In afwachting van de uitkomsten van de bespreking van de release candidate is de (door-)ontwikkeling van deze simulator gepauzeerd.**
+
 ## Wat is het?
 
 Het voornaamste doel is om te laten zien hoe het muteren van [geografische informatieobjecten](@@@STOP_Documentatie_Url@@@gio-intro.html) (GIO's) in [STOP](@@@STOP_Documentatie_Url@@@) werkt, waarom bepaalde keuzes zijn gemaakt. Het gaat hierbij om het maken van de GIO-wijziging die het verschil tussen twee GIO-versies beschrijft. Het versiebeheer dat nodig is voor de consolidatie van GIO's kan gesimuleerd worden met de [versiebeheer-simulator](@@@VersiebeheerSimulator_Url@@@).
